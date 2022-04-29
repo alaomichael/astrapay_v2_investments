@@ -4,7 +4,7 @@ import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class InvestmentsController {
-  public async index({ params, request }: HttpContextContract) {
+  public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
@@ -22,10 +22,13 @@ export default class InvestmentsController {
     if (limit) {
       sortedInvestments = sortedInvestments.slice(0, Number(limit))
     }
+    if(sortedInvestments.length < 1){
+       return response.status(200).json({'message':'no investment matched your search'})
+    }
     // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
     console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
     // return investment
-    return sortedInvestments
+    return response.status(200).json(sortedInvestments)
   }
   public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
