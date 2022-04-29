@@ -3,12 +3,12 @@ import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class InvestmentsController {
-  public async index({ params, request }: HttpContextContract) {
+  public async index({ params}: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     // console.log('INVESTMENT query: ', request)
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
-    // const investment = await Investment.query().preload('user')
+    // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
     investment
     console.log(
