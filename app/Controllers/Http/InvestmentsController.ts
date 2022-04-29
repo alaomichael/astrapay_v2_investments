@@ -12,22 +12,16 @@ export default class InvestmentsController {
     )
     return investment
   }
-  public async show({ params, request, response }: HttpContextContract) {
+  public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    console.log('INVESTMENT query params: ', request.ctx)
-    // let investmentId = request.input('investmentId')!
+    // console.log('INVESTMENT query params: ', request.ctx)
     try {
       const investment = await Investment.query()
         .where('user_id', params.user_id)
         .where('id', params.id)
-      // const investment = await Investment.findBy('id', 7)
       if (investment) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT ATTRIBUTES: ', investment)
-        // let investData = investment.map((inv) => inv.$extras)
-        // let investData1 = investment[0].$attributes
-        // let investData = investment[0].$extras
-        // return investment
+        console.log('INVESTMENT DATA: ', investment)
         return response.status(200).json({ investment })
       }
     } catch (error) {
