@@ -23,7 +23,10 @@ export default class InvestmentsController {
       sortedInvestments = sortedInvestments.slice(0, Number(limit))
     }
     if(sortedInvestments.length < 1){
-       return response.status(200).json({'message':'no investment matched your search'})
+       return response.status(200).json({
+        'success': true,
+        'message':'no investment matched your search',
+        'data': []})
     }
     // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
     console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
