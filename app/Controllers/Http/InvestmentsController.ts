@@ -3,9 +3,14 @@ import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class InvestmentsController {
-  public async index({}: HttpContextContract) {
+  public async index({ params, request }: HttpContextContract) {
+    console.log('INVESTMENT params: ', params)
+    // console.log('INVESTMENT query: ', request)
+    const count = await Investment.query().where('currency_code', 'NGN').getCount()
+    console.log('INVESTMENT count: ', count)
     // const investment = await Investment.query().preload('user')
     const investment = await Investment.all()
+    investment
     console.log(
       'INVESTMENT MAPPING: ',
       investment.map((inv) => inv.$extras)
@@ -14,11 +19,31 @@ export default class InvestmentsController {
   }
   public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
+    // console.log('INVESTMENT query: ', request)
+
+    // post will always be of type Post
+    // const investment1 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => new Investment())
+    // console.log('INVESTMENT 1 query: ', investment1)
+
+    // post can be of type Post or string
+    // const investment2 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => 'working')
+    // console.log('INVESTMENT 2 query: ', investment2)
+
+    // use a fallback query!
+    // const investment3 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => Investment.query().where('id', 2).first())
+    // console.log('INVESTMENT 3 query: ', investment3)
     // console.log('INVESTMENT query params: ', request.ctx)
     try {
       const investment = await Investment.query()
-        .where('user_id', params.user_id)
         .where('id', params.id)
+        .andWhere('user_id', params.user_id)
+      // .limit()
       if (investment) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
         console.log('INVESTMENT DATA: ', investment)
@@ -79,7 +104,7 @@ export default class InvestmentsController {
     return investment
   }
 
-  public async store2({  request }: HttpContextContract) {
+  public async store2({ request }: HttpContextContract) {
     // const user = await auth.authenticate()
     const investment = new Investment()
     investment.amount = request.input('amount')
