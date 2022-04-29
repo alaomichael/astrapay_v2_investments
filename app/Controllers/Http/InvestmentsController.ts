@@ -1,22 +1,31 @@
+/* eslint-disable prettier/prettier */
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class InvestmentsController {
-  public async index({ params }: HttpContextContract) {
+  public async index({ params, request }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    // const {search, limit} = request.query;
-    // console.log('INVESTMENT query: ', request)
+    const { search, limit } = request.qs()
+    console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
-    investment
-    console.log(
-      'INVESTMENT MAPPING: ',
-      investment.map((inv) => inv.$extras)
-    )
-    return investment
+    let sortedInvestments = investment
+    if (search) {
+      sortedInvestments = sortedInvestments.filter((investment) => {
+        console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        return investment.walletHolderDetails.lastName!.startsWith(search)
+      })
+    }
+    if (limit) {
+      sortedInvestments = sortedInvestments.slice(0, Number(limit))
+    }
+    // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
+    console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
+    // return investment
+    return sortedInvestments
   }
   public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
