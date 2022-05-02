@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Mon May 02 2022 11:15:20 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* contracts/events.ts
+
+
+Created files:
+* start/events.ts
+
+
+Deleted files:
+
+
+Renamed files:

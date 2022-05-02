@@ -109,6 +109,7 @@ export default class InvestmentsController {
       walletHolderDetails: schema.object().members({
         firstName: schema.string(),
         lastName: schema.string(),
+        email: schema.string([rules.email()]),
         phone: schema.number(),
         investorFundingWalletId: schema.string(),
       }),
@@ -121,7 +122,8 @@ export default class InvestmentsController {
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
     // ... code to create a new investment
-    Event.emit('new:investment', { id: investment.id, email })
+    // @ts-ignore
+    Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email!})
     return investment
   }
 
