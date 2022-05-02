@@ -114,15 +114,24 @@ function dueForPayout(created_at, period) {
       reject(new Error('Incomplete parameters or out of range'))
     }
     let isDueForPayout
-    isDueForPayout = true
-    console.log(
-      `Interest due for your investment of ${amount} for ${period} days is ${interestDue}`
-    )
-    return resolve(interestDue)
+    let investmentCreationDate = Date(created_at).getDate()
+    let investmentPayoutDate = new Date().setDate(parseInt(period))
+    let investmentDuration
+    let currentDate = new Date().getDate()
+    console.log(' Current Date: ' + currentDate)
+    investmentDuration = ( currentDate -  investmentCreationDate)
+    if ( currentDate === investmentPayoutDate ){
+isDueForPayout = true
+console.log(`Your investment is due for payout on ${currentDate}`)
+} else {
+isDueForPayout = false
+console.log(`Your investment will be due for payout on ${investmentPayoutDate}`)
+}
+    return resolve(isDueForPayout)
   })
 }
 
-dueForPayout(150000, 0.1, 180)
+dueForPayout(150000, 180)
 
 /**
  * An utility function which returns a random number
