@@ -2,10 +2,13 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import Event from '@ioc:Adonis/Core/Event'
+import {EventsList} from '@ioc:Adonis/Core/Event'
 
 export default class InvestmentsController {
-  public async index({ params, request, response }: HttpContextContract) {
+  public async index(
+    { params, request, response }: HttpContextContract,
+    { user, type }: EventsList['auth::send-code']
+  ) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
@@ -35,7 +38,10 @@ export default class InvestmentsController {
     // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
     // console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
     // @ts-ignore
-    Event.emit('list:investments', {id: investment[0].id,email: investment[0].walletHolderDetails.email})
+    Event.emit('list:investments', {
+      id: investment[0].id,
+      email: investment[0].walletHolderDetails.email,
+    })
     // return investment
     return response.status(200).json(sortedInvestments)
   }
@@ -126,7 +132,7 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
     // ... code to create a new investment
     // @ts-ignore
-    Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email})
+    Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })
     return investment
   }
 

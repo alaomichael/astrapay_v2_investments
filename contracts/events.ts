@@ -5,6 +5,8 @@
  * file.
  */
 
+import Investment from 'App/Models/Investment'
+
 declare module '@ioc:Adonis/Core/Event' {
   /*
   |--------------------------------------------------------------------------
@@ -29,5 +31,6 @@ declare module '@ioc:Adonis/Core/Event' {
     // making event type safe
     'new:investment': { id: number; email: string }
     'list:investments': { id: number; email: string }
+    'investments:list': { investment: Investment | null }
   }
 }
