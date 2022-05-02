@@ -15,7 +15,9 @@ export default class InvestmentsController {
     let sortedInvestments = investment
     if (search) {
       sortedInvestments = sortedInvestments.filter((investment) => {
-        console.log(' Sorted :', investment.walletHolderDetails.lastName.startsWith(search))
+        // @ts-ignore
+        console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        // @ts-ignore
         return investment.walletHolderDetails.lastName!.startsWith(search)
       })
     }
