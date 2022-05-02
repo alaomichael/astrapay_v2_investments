@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 'use strict'
-export function generateRate(amount, period){
+function generateRate(amount, period) {
   return new Promise((resolve, reject) => {
-    if (!amount || !period || amount <= 0) reject(new Error('Incomplete parameters'))
+    if (!amount || !period || amount <= 0)
+      reject(new Error('Incomplete parameters or amount is less than allowed range'))
     let rate
     if (parseInt(period) >= 90 && 180 > parseInt(period)) {
       period = '3 months'
@@ -64,6 +65,6 @@ export function generateRate(amount, period){
   })
 }
 
-generateRate(10, '361')
+generateRate(198, '752')
 // @ts-ignore
-// export generateRate 
+export { generateRate }
