@@ -2,6 +2,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
@@ -119,6 +120,8 @@ export default class InvestmentsController {
     // return response.ok(investment)
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
+    // ... code to create a new investment
+    Event.emit('new:investment', { id: investment.id, email })
     return investment
   }
 

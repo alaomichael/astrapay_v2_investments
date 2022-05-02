@@ -25,5 +25,8 @@ declare module '@ioc:Adonis/Core/Event' {
   | an instance of the the UserModel only.
   |
   */
-  interface EventsList {}
+  interface EventsList {
+    // making event type safe
+    'new:investment': { id: number; email: string }
+  }
 }
