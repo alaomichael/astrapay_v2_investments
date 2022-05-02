@@ -89,7 +89,7 @@ function generateRate(amount, period) {
 generateRate(198, '752')
 
 generateRate(1000, '300')
-module.exports.generateRate = generateRate
+
 
 // Generate Return on Investment
 // export const interestDueOnPayout =
@@ -215,3 +215,4 @@ dueForPayout(150000, 180)
 
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
+module.exports.generateRate = generateRate

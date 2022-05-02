@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 'use strict'
-function generateRate(amount, period) {
+function generateRates(amount, period) {
   return new Promise((resolve, reject) => {
     if (!amount || !period || amount <= 0)
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
@@ -65,6 +65,7 @@ function generateRate(amount, period) {
   })
 }
 
-generateRate(198, '752')
+generateRates(19098, '702')
 // @ts-ignore
-export { generateRate }
+// export {generateRates};
+module.exports.generateRates = generateRates
