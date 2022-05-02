@@ -105,6 +105,25 @@ function interestDueOnPayout(amount, rate, period) {
 
 interestDueOnPayout(150000, 0.1, 180)
 
+
+// Check Investment due for payout
+// export const dueForPayout =
+function dueForPayout(created_at, period) {
+  return new Promise((resolve, reject) => {
+    if (!created_at || !period) {
+      reject(new Error('Incomplete parameters or out of range'))
+    }
+    let isDueForPayout
+    isDueForPayout = true
+    console.log(
+      `Interest due for your investment of ${amount} for ${period} days is ${interestDue}`
+    )
+    return resolve(interestDue)
+  })
+}
+
+dueForPayout(150000, 0.1, 180)
+
 /**
  * An utility function which returns a random number
  * @param {number} min Minimum value
