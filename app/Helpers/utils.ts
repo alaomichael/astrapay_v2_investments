@@ -105,7 +105,6 @@ function interestDueOnPayout(amount, rate, period) {
 
 interestDueOnPayout(150000, 0.1, 180)
 
-
 // Check Investment due for payout
 // export const dueForPayout =
 function dueForPayout(created_at, period) {
@@ -114,19 +113,20 @@ function dueForPayout(created_at, period) {
       reject(new Error('Incomplete parameters or out of range'))
     }
     let isDueForPayout
-    let investmentCreationDate = Date(created_at).getDate()
-    let investmentPayoutDate = new Date().setDate(parseInt(period))
+    let investmentCreationDate = new Date(created_at).toDateString()
+    let investmentPayoutDate = new Date(created_at).setDate(parseInt(period))
     let investmentDuration
-    let currentDate = new Date().getDate()
+    let currentDate = new Date().toDateString()
     console.log(' Current Date: ' + currentDate)
-    investmentDuration = ( currentDate -  investmentCreationDate)
-    if ( currentDate === investmentPayoutDate ){
-isDueForPayout = true
-console.log(`Your investment is due for payout on ${currentDate}`)
-} else {
-isDueForPayout = false
-console.log(`Your investment will be due for payout on ${investmentPayoutDate}`)
-}
+    // investmentDuration = ( currentDate -  investmentCreationDate)
+    if (currentDate === investmentPayoutDate) {
+      isDueForPayout = true
+      console.log(`Your investment is due for payout on ${currentDate}`)
+    } else {
+      isDueForPayout = false
+      investmentPayoutDate = investmentPayoutDate
+      console.log(`Your investment will be due for payout on ${investmentPayoutDate}`)
+    }
     return resolve(isDueForPayout)
   })
 }
