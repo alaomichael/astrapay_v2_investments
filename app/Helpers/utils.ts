@@ -1,6 +1,5 @@
 'use strict'
 
-
 import Env from '@ioc:Adonis/Core/Env'
 
 export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
@@ -11,6 +10,27 @@ export const UUID_REGEX =
 export const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/
 export const urlRegex =
   /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+
+export type DiscountType = 'percentage' | 'number'
+export type RoundingType = 'none' | 'nearest' | 'down' | 'up'
+export type ThousandSeparator = 'comma' | 'period' | 'none' | 'space'
+
+export const generateRate = (amount: number, period: string): Promise<number> {
+    period = parseInt(period)
+  return new Promise((resolve, reject) => {
+    if (!amount || !period) reject(new Error('Incomplete parameters'))
+    let rate
+    switch (period) {
+        case 180:
+            rate = 0.05
+            break;
+    
+        default:
+            break;
+    }
+    return resolve(rate)
+  })
+}
 
 /**
  * An utility function which returns a random number
@@ -29,7 +49,6 @@ export const generateCode = function (min: number, max: number): Promise<number>
 
 export const bytesToKbytes = (bytes: number) => Math.round((bytes / 1000) * 100) / 100
 
-
 export const commonEmailProperties = function () {
   const APP_NAME = Env.get('APP_NAME')
   const APP_SENDING_EMAIL = Env.get('APP_SENDING_EMAIL')
@@ -42,47 +61,6 @@ export const IS_DEMO_MODE = Env.get('DEMO_MODE')
 export const discountTypes: DiscountType[] = ['number', 'percentage']
 export const roundingTypes: RoundingType[] = ['none', 'nearest', 'down', 'up']
 export const thousandSeparatorTypes: ThousandSeparator[] = ['comma', 'period', 'none', 'space']
-
-export const itemCollectionTypes: ItemCollectionType[] = [
-  'set(s)',
-  'piece(s)',
-  'pack(s)',
-  'carton(s)',
-  'box(es)',
-  'bottle(s)',
-  'truck(s)',
-  'container(s)',
-  'dozen(s)',
-  'wrap(s)',
-  'roll(s)',
-]
-
-export const unitOfMeasurementTypes = [
-  ...itemCollectionTypes,
-  'kg',
-  'lb',
-  'm',
-  'yd',
-  'ft',
-  'in',
-  'cm',
-  'sq.m',
-  'sq.ft',
-  'sq.in',
-  'cu.m',
-  'cu.ft',
-  'cu.in',
-]
-
-export const InvoiceQuotationTypes: InvoiceQuotationType[] = ['invoice', 'quotation']
-
-export const sanitiseHTML: SanitiseHTML = function (input, config) {
-  const defaultConfig: SanitiserConfig = {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['strike']),
-  }
-
-  return sanitizeHtml(input, merge(config, defaultConfig))
-}
 
 export const getPrintServerBaseUrl = function () {
   let host: string
