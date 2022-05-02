@@ -3,6 +3,8 @@
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
 // import Env from '@ioc:Adonis/Core/Env'
+const JSJoda = require('js-joda')
+const LocalDate = JSJoda.LocalDate
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -112,12 +114,42 @@ function dueForPayout(created_at, period) {
     if (!created_at || !period) {
       reject(new Error('Incomplete parameters or out of range'))
     }
+
+    function getNumberOfDays(start, end) {
+      const date1 = new Date(start)
+      const date2 = new Date(end)
+
+      // One day in milliseconds
+      const oneDay = 1000 * 60 * 60 * 24
+
+      // Calculating the time difference between two dates
+      const diffInTime = date2.getTime() - date1.getTime()
+
+      // Calculating the no. of days between two dates
+      const diffInDays = Math.round(diffInTime / oneDay)
+
+      return diffInDays
+    }
+
+    console.log('From Date Comparism function:', getNumberOfDays('2/1/2021', '3/1/2021'))
+
+    function getNumberOfDays2(start, end) {
+      const start_date = new LocalDate.parse(start)
+      const end_date = new LocalDate.parse(end)
+
+      return JSJoda.ChronoUnit.DAYS.between(start_date, end_date)
+    }
+
+    console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2021-03-01'))
+
     let isDueForPayout
     let investmentCreationDate = new Date(created_at).toDateString()
-    let investmentPayoutDate = new Date(created_at).setDate(parseInt(period))
+    let investmentPayoutDate = new Date(created_at).setDate(created_at + parseInt(period))
+    investmentPayoutDate = new Date(investmentPayoutDate).toDateString()
     let investmentDuration
     let currentDate = new Date().toDateString()
     console.log(' Current Date: ' + currentDate)
+    console.log(' Investment Payout Date: ' + investmentPayoutDate)
     // investmentDuration = ( currentDate -  investmentCreationDate)
     if (currentDate === investmentPayoutDate) {
       isDueForPayout = true

@@ -10,7 +10,7 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "test": "node ace test --watch",
-     "deploy": "git add . && git commit -m Heroku && git push heroku main"
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "eslintConfig": {
     "extends": [
@@ -64,6 +64,7 @@
     "@adonisjs/session": "^6.1.2",
     "@shagital/adonisjs-crud-generator": "^3.0.3",
     "adonis-jsonable": "^0.2.1",
+    "js-joda": "^1.11.0",
     "knex": "^2.0.0",
     "luxon": "^2.3.2",
     "objection": "^3.0.1",
