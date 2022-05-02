@@ -2,13 +2,11 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import {EventsList} from '@ioc:Adonis/Core/Event'
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class InvestmentsController {
   public async index(
-    { params, request, response }: HttpContextContract,
-    { user, type }: EventsList['auth::send-code']
-  ) {
+    { params, request, response }: HttpContextContract ) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
@@ -40,6 +38,7 @@ export default class InvestmentsController {
     // @ts-ignore
     Event.emit('list:investments', {
       id: investment[0].id,
+      // @ts-ignore
       email: investment[0].walletHolderDetails.email,
     })
     // return investment

@@ -8,4 +8,4 @@ Event.on('list:investments', (investment) => {
   console.log('List of Investment: ', investment)
 })
 
-Event.on('investments:list', 'InvestmentsController.index')
+// Event.on('investments:list', 'InvestmentsController.index')
