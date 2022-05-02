@@ -123,7 +123,7 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
     // ... code to create a new investment
     // @ts-ignore
-    Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email!})
+    await Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email!})
     return investment
   }
 
