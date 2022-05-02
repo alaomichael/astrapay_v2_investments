@@ -90,7 +90,7 @@ node ace migration:run --connection=custom, this will run the migration against 
     },
   },
 
-  orm: {},
+  // orm: {},
 }
 
 export default databaseConfig
