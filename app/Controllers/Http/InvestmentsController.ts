@@ -17,7 +17,7 @@ export default class InvestmentsController {
     if (search) {
       sortedInvestments = sortedInvestments.filter((investment) => {
         // @ts-ignore
-        console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
         // @ts-ignore
         return investment.walletHolderDetails.lastName!.startsWith(search)
       })
@@ -25,14 +25,17 @@ export default class InvestmentsController {
     if (limit) {
       sortedInvestments = sortedInvestments.slice(0, Number(limit))
     }
-    if(sortedInvestments.length < 1){
-       return response.status(200).json({
-        'success': true,
-        'message':'no investment matched your search',
-        'data': []})
+    if (sortedInvestments.length < 1) {
+      return response.status(200).json({
+        success: true,
+        message: 'no investment matched your search',
+        data: [],
+      })
     }
     // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
-    console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
+    // console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
+    // @ts-ignore
+    Event.emit('list:investments', {id: investment[0].id,email: investment[0].walletHolderDetails.email})
     // return investment
     return response.status(200).json(sortedInvestments)
   }
@@ -123,7 +126,7 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
     // ... code to create a new investment
     // @ts-ignore
-    await Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email!})
+    Event.emit('new:investment', {id: investment.id,email: investment.walletHolderDetails.email})
     return investment
   }
 
