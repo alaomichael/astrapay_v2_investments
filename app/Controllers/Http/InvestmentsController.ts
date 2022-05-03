@@ -14,8 +14,7 @@ export default class InvestmentsController {
     console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
-    
-    // const investment = await Investment.query().offset(0).limit(1)
+   // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
     let sortedInvestments = investment
     if (search) {
@@ -132,6 +131,9 @@ export default class InvestmentsController {
     // return response.ok(investment)
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
+
+    // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
+    console.log('The new investment:' , investment)
     // ... code to create a new investment
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })

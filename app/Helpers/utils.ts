@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 'use strict'
 
-import { string } from '@ioc:Adonis/Core/Helpers'
+// import { string } from '@ioc:Adonis/Core/Helpers'
 // const string = require('@ioc:Adonis/Core/Helpers')
-import Env from '@ioc:Adonis/Core/Env'
+// import Env from '@ioc:Adonis/Core/Env'
 // const Env = require('@ioc:Adonis/Core/Env')
 const JSJoda = require('js-joda')
 const LocalDate = JSJoda.LocalDate
@@ -189,14 +189,30 @@ const dueForPayout = (created_at, period) => {
 dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 const payoutDueDate = (created_at, period) => {
-  console.log(
-    `The payout date for investment created on ${new Date(
-      created_at
-    ).toDateString()} for a period of ${period} is `
-  )
+  return new Promise((resolve, reject) => {
+    if (!created_at || !period) {
+      reject(new Error('Incomplete parameters or out of range'))
+    }
+    let payoutDueDate
+    let investmentCreationDate = new Date(created_at).getTime()
+    let periodToMs = parseInt(period) * 24 * 60 * 60 * 1000
+    let investmentPayoutDate = new Date(periodToMs + investmentCreationDate).getTime()
+    let currentDate = new Date().getTime()
+    console.log('Current Date: ' + currentDate)
+    console.log('Period converted to Ms: ' + periodToMs)
+    console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
+    console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
+    payoutDueDate = new Date(investmentPayoutDate).toDateString()
+    console.log(
+      `The payout date for investment created on ${new Date(
+        created_at
+      ).toDateString()} for a period of ${period} is ${payoutDueDate}`
+    )
+    return resolve(payoutDueDate)
+  })
 }
 
-payoutDueDate('2022-04-29 10:02:07.58+01', '190')
+payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
 /**
  * An utility function which returns a random number
