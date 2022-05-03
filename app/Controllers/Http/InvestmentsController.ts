@@ -3,6 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
+ // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 
 export default class InvestmentsController {
@@ -13,7 +14,7 @@ export default class InvestmentsController {
     console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
-    generateRate(19098, '702')
+    
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
     let sortedInvestments = investment

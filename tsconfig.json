@@ -11,6 +11,11 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
+    "lib": ["es2020"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "ES2020",
+        "esModuleInterop": true,
     "paths": {
       "App/*": [
         "./app/*"
@@ -31,6 +36,7 @@
       "@japa/preset-adonis/build/adonis-typings",
       "@adonisjs/lucid"
     ],
-     "lib": ["es5", "es6", "dom", "dom.iterable", "es2015"]
+
+
   }
 }
