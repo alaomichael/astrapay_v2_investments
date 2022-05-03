@@ -2,9 +2,12 @@
 'use strict'
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
+// const string = require('@ioc:Adonis/Core/Helpers')
 // import Env from '@ioc:Adonis/Core/Env'
+// const Env = require('@ioc:Adonis/Core/Env')
 const JSJoda = require('js-joda')
 const LocalDate = JSJoda.LocalDate
+const Moment = require('moment')
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -90,7 +93,6 @@ generateRate(198, '752')
 
 generateRate(1000, '300')
 
-
 // Generate Return on Investment
 // export const interestDueOnPayout =
 function interestDueOnPayout(amount, rate, period) {
@@ -117,6 +119,7 @@ function dueForPayout(created_at, period) {
       reject(new Error('Incomplete parameters or out of range'))
     }
 
+    // Get numbers of days difference between two dates
     function getNumberOfDays(start, end) {
       const date1 = new Date(start)
       const date2 = new Date(end)
@@ -135,37 +138,53 @@ function dueForPayout(created_at, period) {
 
     console.log('From Date Comparism function:', getNumberOfDays('2/1/2021', '3/1/2021'))
 
-    function getNumberOfDays2(start, end) {
-      const start_date = new LocalDate.parse(start)
-      const end_date = new LocalDate.parse(end)
+    // function getNumberOfDays2(start, end) {
+    //   const start_date = new LocalDate.parse(start)
+    //   const end_date = new LocalDate.parse(end)
 
-      return JSJoda.ChronoUnit.DAYS.between(start_date, end_date)
-    }
+    //   return JSJoda.ChronoUnit.DAYS.between(start_date, end_date)
+    // }
 
-    console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2021-03-01'))
+    // console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2022-04-29'))
 
     let isDueForPayout
-    let investmentCreationDate = new Date(created_at).toDateString()
-    let investmentPayoutDate = new Date(created_at).setDate(created_at + parseInt(period))
-    investmentPayoutDate = new Date(investmentPayoutDate).toDateString()
+    let investmentCreationDate = new Date(created_at).getTime()
+    let periodToMs = parseInt(period) * 24 * 60 * 60 * 1000
+    let investmentPayoutDate = new Date(periodToMs + investmentCreationDate).getTime()
     let investmentDuration
-    let currentDate = new Date().toDateString()
-    console.log(' Current Date: ' + currentDate)
-    console.log(' Investment Payout Date: ' + investmentPayoutDate)
-    // investmentDuration = ( currentDate -  investmentCreationDate)
-    if (currentDate === investmentPayoutDate) {
+    let currentDate = new Date().getTime()
+    console.log('Current Date: ' + currentDate)
+    console.log('Period converted to Ms: ' + periodToMs)
+    console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
+    console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
+    investmentDuration =  getNumberOfDays(new Date(investmentCreationDate).toLocaleDateString(),new Date(currentDate).toLocaleDateString())
+
+    console.log(
+      'From Date Comparism function 2:',
+      getNumberOfDays(
+        new Date(investmentCreationDate).toLocaleDateString(),
+        new Date(currentDate).toLocaleDateString()
+      )
+    )
+
+    console.log('Investment duration is : ' + investmentDuration + ' days.')
+    if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(period)) {
       isDueForPayout = true
-      console.log(`Your investment is due for payout on ${currentDate}`)
+      // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
+      console.log(
+        `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      )
     } else {
       isDueForPayout = false
-      investmentPayoutDate = investmentPayoutDate
-      console.log(`Your investment will be due for payout on ${investmentPayoutDate}`)
+      console.log(
+        `Your investment will be due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      )
     }
     return resolve(isDueForPayout)
   })
 }
 
-dueForPayout(150000, 180)
+dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 /**
  * An utility function which returns a random number
