@@ -2,7 +2,7 @@
 'use strict'
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
-// const string = require('@ioc:Adonis/Core/Helpers')
+const string = require('@ioc:Adonis/Core/Helpers')
 // import Env from '@ioc:Adonis/Core/Env'
 // const Env = require('@ioc:Adonis/Core/Env')
 const JSJoda = require('js-joda')
