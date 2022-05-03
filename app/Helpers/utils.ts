@@ -202,7 +202,7 @@ const payoutDueDate = (created_at, period) => {
     console.log('Period converted to Ms: ' + periodToMs)
     console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
     console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
-    payoutDueDate = new Date(investmentPayoutDate).toDateString()
+    payoutDueDate = new Date(investmentPayoutDate).toISOString() //.toISOString()
     console.log(
       `The payout date for investment created on ${new Date(
         created_at
