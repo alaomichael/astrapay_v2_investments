@@ -138,7 +138,7 @@ export default class InvestmentsController {
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.period)
     investment.interestDueOnInvestment = amountDueOnPayout
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-    investment.payoutDate = await payoutDueDate(investment.createdAt, investment.period) //.toISOString()
+    investment.payoutDate = await payoutDueDate(investment.createdAt, investment.period)
     // @ts-ignore
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
     await investment.save()
