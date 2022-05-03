@@ -7,14 +7,13 @@ import Event from '@ioc:Adonis/Core/Event'
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 
 export default class InvestmentsController {
-  public async index(
-    { params, request, response }: HttpContextContract ) {
+  public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
-   // const investment = await Investment.query().offset(0).limit(1)
+    // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
     let sortedInvestments = investment
     if (search) {
@@ -164,6 +163,19 @@ export default class InvestmentsController {
     console.log('Investment:', investment)
     // await user.related('investments').save(investment)
     return investment
+  }
+
+  public async rate({ request, response }: HttpContextContract) {
+    // let amount = request.input('amount')
+    // let duration = request.input('duration')
+    const { amount, duration } = request.qs()
+    console.log('INVESTMENT RATE query: ', request.qs())
+    let rate = await generateRate(amount, duration)
+    console.log('Investment rate:', rate)
+    return response.status(200).json({
+      "status": "ok",
+      "data": rate
+    })
   }
 
   public async destroy({ request, response, params }: HttpContextContract) {
