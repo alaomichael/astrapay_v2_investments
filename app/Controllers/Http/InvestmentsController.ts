@@ -133,7 +133,16 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-    console.log('The new investment:' , investment)
+    let rate = generateRate(investment.amount, investment.period)
+    investment.interestRate = rate
+    let amountDueOnPayout = interestDueOnPayout(investment.amount, rate, investment.period)
+    investment.interestDueOnInvestment = amountDueOnPayout
+    investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+    investment.payoutDate = payoutDueDate(investment.createdAt, investment.period)
+    // @ts-ignore
+    investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+    investment.save()
+    console.log('The new investment:', investment)
     // ... code to create a new investment
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })

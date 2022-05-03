@@ -45,7 +45,7 @@ export default class Investment extends BaseModel {
   public interestDueOnInvestment: number
 
   @column()
-  public totalAmount: number
+  public totalAmountToPayout: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

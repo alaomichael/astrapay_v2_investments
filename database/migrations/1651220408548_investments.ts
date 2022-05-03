@@ -18,6 +18,8 @@ export default class Investments extends BaseSchema {
       table.jsonb('wallet_holder_details').notNullable()
       table.date('payout_date').nullable()
       table.float('interest_rate').unsigned().nullable()
+      table.integer('interest_due_on_investment').unsigned().nullable()
+      table.integer('total_amount_to_payout').unsigned().nullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
