@@ -30,6 +30,7 @@
       "@adonisjs/repl",
       "@japa/preset-adonis/build/adonis-typings",
       "@adonisjs/lucid"
-    ]
+    ],
+     "lib": ["es5", "es6", "dom", "dom.iterable", "es2015"]
   }
 }
