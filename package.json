@@ -79,5 +79,5 @@
   },
   "engines": {
     "node": "^16.14.2"
-  }, "type": "module"
+  }, "type": "commonjs"
 }

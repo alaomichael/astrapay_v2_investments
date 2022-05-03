@@ -24,7 +24,7 @@ const Moment = require('moment')
 
 // Generate rate
 // export const generateRate =
-export const generateRate = (amount, period) => {
+const generateRate = (amount, period) => {
   return new Promise((resolve, reject) => {
     if (!amount || !period || amount <= 0)
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
@@ -94,7 +94,7 @@ generateRate(198, '752')
 generateRate(1000, '300')
 
 // Generate Return on Investment
-export const interestDueOnPayout = (amount, rate, period) => {
+const interestDueOnPayout = (amount, rate, period) => {
   return new Promise((resolve, reject) => {
     if (!amount || !rate || !period || amount <= 0) {
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
@@ -112,7 +112,7 @@ interestDueOnPayout(150000, 0.1, 180)
 
 // Check Investment due for payout
 // export const dueForPayout =
-export const dueForPayout = (created_at, period) => {
+const dueForPayout = (created_at, period) => {
   return new Promise((resolve, reject) => {
     if (!created_at || !period) {
       reject(new Error('Incomplete parameters or out of range'))
@@ -188,9 +188,11 @@ export const dueForPayout = (created_at, period) => {
 
 dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
-export const payoutDueDate = (created_at, period) => {
+const payoutDueDate = (created_at, period) => {
   console.log(
-    `The payout date for investment created on ${created_at} for a period of ${period} is `
+    `The payout date for investment created on ${new Date(
+      created_at
+    ).toDateString()} for a period of ${period} is `
   )
 }
 
@@ -220,27 +222,29 @@ payoutDueDate('2022-04-29 10:02:07.58+01', '190')
 //   return { APP_NAME, APP_SENDING_EMAIL }
 // }
 
-export const IS_DEMO_MODE = Env.get('DEMO_MODE')
+// export const IS_DEMO_MODE = Env.get('DEMO_MODE')
 
-export const rateTypes: RateType[] = ['number', 'percentage']
-export const roundingTypes: RoundingType[] = ['none', 'nearest', 'down', 'up']
-export const thousandSeparatorTypes: ThousandSeparator[] = ['comma', 'period', 'none', 'space']
+// export const rateTypes: RateType[] = ['number', 'percentage']
+// export const roundingTypes: RoundingType[] = ['none', 'nearest', 'down', 'up']
+// export const thousandSeparatorTypes: ThousandSeparator[] = ['comma', 'period', 'none', 'space']
 
-export const getPrintServerBaseUrl = function () {
-  let host: string
-  let port: number
-  const NODE_ENV = Env.get('NODE_ENV')
+// export const getPrintServerBaseUrl = function () {
+//   let host: string
+//   let port: number
+//   const NODE_ENV = Env.get('NODE_ENV')
 
-  if (NODE_ENV === 'production' || NODE_ENV === 'testing') {
-    host = Env.get('PROD_PRINT_SERVER_HOST')
-    port = Env.get('PROD_PRINT_SERVER_PORT')
-  } else {
-    host = Env.get('DEV_PRINT_SERVER_HOST')
-    port = Env.get('DEV_PRINT_SERVER_PORT')
-  }
+//   if (NODE_ENV === 'production' || NODE_ENV === 'testing') {
+//     host = Env.get('PROD_PRINT_SERVER_HOST')
+//     port = Env.get('PROD_PRINT_SERVER_PORT')
+//   } else {
+//     host = Env.get('DEV_PRINT_SERVER_HOST')
+//     port = Env.get('DEV_PRINT_SERVER_PORT')
+//   }
 
-  return `http://${host}:${port}`
-}
+//   return `http://${host}:${port}`
+// }
 
-export const isProduction = Env.get('NODE_ENV') === 'production'
-export const isDevelopment = Env.get('NODE_ENV') === 'development'
+// export const isProduction = Env.get('NODE_ENV') === 'production'
+// export const isDevelopment = Env.get('NODE_ENV') === 'development'
+
+module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate }
