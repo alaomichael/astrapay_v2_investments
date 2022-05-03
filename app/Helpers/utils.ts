@@ -235,3 +235,4 @@ dueForPayout('2022-04-29 10:02:07.58+01', '190')
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
 module.exports.generateRate = generateRate
+module.exports.dueForPayout = dueForPayout
