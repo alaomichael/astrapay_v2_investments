@@ -180,13 +180,26 @@ export default class InvestmentsController {
 
   public async destroy({ request, response, params }: HttpContextContract) {
     let id = request.input('userId')
-    const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    let isDueForPayout = await dueForPayout(investment[0].created_at, investment[0].period)
+    // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+    let investment = await Investment.query().where('user_id', id).where('id', params.id)
+    let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
+if (isDueForPayout) {
+  investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
     console.log('Deleted investment data:', investment)
     const payout = await Payout.create(investment[0])
-    payout.status = 'terminated'
+    payout.status = 'payout'
     await payout.save()
     console.log('Payout investment data:', payout)
     return response.send('Investment Terminated or Payout.')
+} else {
+    investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+    console.log('Terminated investment data:', investment)
+    const payout = await Payout.create(investment[0])
+    payout.status = 'terminated'
+    await payout.save()
+    console.log('Terminated Payout investment data:', payout)
+    return response.send('Investment Terminated.')
+
+}
   }
 }
