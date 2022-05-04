@@ -25,6 +25,7 @@ export default class Payouts extends BaseSchema {
        */
       table.timestamp('created_at', { useTz: true })
       table.date('payout_date').nullable()
+      table.timestamp('date_payout_was_done', { useTz: true })
       table.string('status', 255).notNullable()
       table.timestamp('updated_at', { useTz: true })
     })
