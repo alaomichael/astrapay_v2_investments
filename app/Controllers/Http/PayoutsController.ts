@@ -8,8 +8,10 @@ export default class PayoutsController {
     console.log('PAYOUT params: ', params)
     const { search, limit } = request.qs()
     console.log('PAYOUT query: ', request.qs())
-    const count = await Payout.query().where('status', 'ongoing').getCount()
-    console.log('PAYOUT count: ', count)
+    const countPayouts = await Payout.query().where('status', 'on going').getCount()
+    console.log('PAYOUT Investment count: ', countPayouts)
+    const countTerminated = await Payout.query().where('status', 'terminated').getCount()
+    console.log('Terminated Investment count: ', countTerminated)
     // const payout = await Investment.query().offset(0).limit(1)
     const payout = await Payout.all()
     let sortedPayouts = payout

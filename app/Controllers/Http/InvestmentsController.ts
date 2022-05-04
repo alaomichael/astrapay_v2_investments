@@ -122,6 +122,7 @@ export default class InvestmentsController {
         phone: schema.number(),
         investorFundingWalletId: schema.string(),
       }),
+      status: schema.string({ escape: true }, [rules.maxLength(50)]),
     })
     const payload: any = await request.validate({ schema: investmentSchema })
     const investment = await Investment.create(payload)
@@ -181,23 +182,24 @@ export default class InvestmentsController {
   public async destroy({ request, response, params }: HttpContextContract) {
     let id = request.input('userId')
     // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    let investment = await Investment.query().where('user_id', id).where('id', params.id)
+    // let investment = await Investment.query().where('user_id', id).where('id', params.id)
+    let investment = await Investment.query().where('id', params.id)
     let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
 if (isDueForPayout) {
+  const payout = await Payout.create(investment[0])
+  payout.status = 'payout'
+  await payout.save()
+  console.log('Payout investment data 2:', payout)
   investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    console.log('Deleted investment data:', investment)
-    const payout = await Payout.create(investment[0])
-    payout.status = 'payout'
-    await payout.save()
-    console.log('Payout investment data:', payout)
+  console.log('Payout investment data 1:', investment)
     return response.send('Investment Terminated or Payout.')
 } else {
-    investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    console.log('Terminated investment data:', investment)
-    const payout = await Payout.create(investment[0])
-    payout.status = 'terminated'
-    await payout.save()
-    console.log('Terminated Payout investment data:', payout)
+  const payout = await Payout.create(investment[0])
+  payout.status = 'terminated'
+  await payout.save()
+  console.log('Terminated Payout investment data:', payout)
+  investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+  console.log('Terminated Payout investment data:', investment)
     return response.send('Investment Terminated.')
 
 }
