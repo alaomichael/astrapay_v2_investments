@@ -8,7 +8,7 @@ export default class PayoutsController {
     console.log('PAYOUT params: ', params)
     const { search, limit } = request.qs()
     console.log('PAYOUT query: ', request.qs())
-    const countPayouts = await Payout.query().where('status', 'on going').getCount()
+    const countPayouts = await Payout.query().where('status', 'payout').getCount()
     console.log('PAYOUT Investment count: ', countPayouts)
     const countTerminated = await Payout.query().where('status', 'terminated').getCount()
     console.log('Terminated Investment count: ', countTerminated)
@@ -33,6 +33,8 @@ export default class PayoutsController {
         data: [],
       })
     }
+    // return investment
+    return response.status(200).json(sortedPayouts)
   }
 
   public async destroy({ request, response, params }: HttpContextContract) {

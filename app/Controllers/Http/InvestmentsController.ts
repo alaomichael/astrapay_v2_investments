@@ -180,28 +180,37 @@ export default class InvestmentsController {
   }
 
   public async destroy({ request, response, params }: HttpContextContract) {
-    let id = request.input('userId')
-    // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    // let investment = await Investment.query().where('user_id', id).where('id', params.id)
-    let investment = await Investment.query().where('id', params.id)
-    let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
-if (isDueForPayout) {
-  const payout = await Payout.create(investment[0])
-  payout.status = 'payout'
-  await payout.save()
-  console.log('Payout investment data 2:', payout)
-  investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-  console.log('Payout investment data 1:', investment)
-    return response.send('Investment Terminated or Payout.')
-} else {
-  const payout = await Payout.create(investment[0])
-  payout.status = 'terminated'
-  await payout.save()
-  console.log('Terminated Payout investment data:', payout)
-  investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-  console.log('Terminated Payout investment data:', investment)
-    return response.send('Investment Terminated.')
+try {
 
+  let id = request.input('userId')
+  // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+  // let investment = await Investment.query().where('user_id', id).where('id', params.id)
+  let investment = await Investment.query().where('id', params.id)
+  console.log('investment search data :', investment)
+  // @ts-ignore
+  let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
+  if (isDueForPayout) {
+    const payout = await Payout.create(investment[0])
+    payout.status = 'payout'
+    await payout.save()
+    console.log('Payout investment data 1:', payout)
+    // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+    investment = await Investment.query().where('id', params.id).delete()
+    console.log('Payout investment data 2:', investment)
+    return response.send('Investment Terminated or Payout.')
+  } else {
+    const payout = await Payout.create(investment[0])
+    payout.status = 'terminated'
+    await payout.save()
+    console.log('Terminated Payout investment data 1:', payout)
+    // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+    investment = await Investment.query().where('id', params.id).delete()
+    console.log('Terminated Payout investment data 2:', investment)
+    return response.send('Investment Terminated.')
+  }
+} catch (error) {
+  console.error(error)
 }
+
   }
 }
