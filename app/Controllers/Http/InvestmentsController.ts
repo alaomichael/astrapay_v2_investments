@@ -189,33 +189,34 @@ export default class InvestmentsController {
       // @ts-ignore
       let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
       console.log('Is due for payout status :', isDueForPayout)
+
+
+      if (isDueForPayout) {
       let payload = investment[0].$original
-      payload.datePayoutWasDone = new Date()
+      payload.datePayoutWasDone = new Date().toISOString()
+      console.log('Payout investment data 1:', payload)
       const payout = await Payout.create(payload)
       payout.status = 'payout'
       await payout.save()
-      console.log('Payout investment data 1:', payout)
-      // if (isDueForPayout) {
-      //   let payload = investment[0].$original
-
-      //   const payout = await Payout.create(payload)
-      //   payout.status = 'payout'
-      //   await payout.save()
-      //   console.log('Payout investment data 1:', payout)
-      //   // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-      //   investment = await Investment.query().where('id', params.id).delete()
-      //   console.log('Payout investment data 2:', investment)
-      //   return response.send('Investment Terminated or Payout.')
-      // } else {
-      //   const payout = await Payout.create(investment[0].$original)
-      //   payout.status = 'terminated'
-      //   await payout.save()
-      //   console.log('Terminated Payout investment data 1:', payout)
-      //   // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-      //   investment = await Investment.query().where('id', params.id).delete()
-      //   console.log('Terminated Payout investment data 2:', investment)
-      //   return response.send('Investment Terminated.')
-      // }
+      console.log('Payout investment data 2:', payout)
+        // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+        investment = await Investment.query().where('id', params.id).delete()
+        console.log('Payout investment data 2:', investment)
+        return response.send('Investment Terminated or Payout.')
+      } else {
+              let payload = investment[0].$original
+              payload.datePayoutWasDone = new Date().toISOString()
+              console.log('Payout investment data 1:', payload)
+              const payout = await Payout.create(payload)
+              payout.status = 'payout'
+              await payout.save()
+              console.log('Payout investment data 2:', payout)
+        console.log('Terminated Payout investment data 1:', payout)
+        // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+        investment = await Investment.query().where('id', params.id).delete()
+        console.log('Terminated Payout investment data 2:', investment)
+        return response.send('Investment Terminated.')
+      }
     } catch (error) {
       console.error(error)
     }
