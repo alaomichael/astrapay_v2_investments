@@ -31,6 +31,7 @@ Route.get('health', async ({ response }) => {
 
 Route.group(() => {
   Route.group(() => {
+    Route.resource('investments/payouts', 'PayoutsController').apiOnly()
     Route.resource('users.investments', 'InvestmentsController').apiOnly()
     Route.resource('investments', 'InvestmentsController').apiOnly()
     Route.get('investments/:userId', 'InvestmentsController.show')

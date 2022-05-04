@@ -181,7 +181,7 @@ export default class InvestmentsController {
   public async destroy({ request, response, params }: HttpContextContract) {
     let id = request.input('userId')
     const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-    console.log('Deleted data:', investment)
-    return response.send('Investment Delete or Payout.')
+    console.log('Deleted investment data:', investment)
+    return response.send('Investment Terminated or Payout.')
   }
 }
