@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
+import Payout from 'App/Models/Payout'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
  // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
-
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -181,7 +181,12 @@ export default class InvestmentsController {
   public async destroy({ request, response, params }: HttpContextContract) {
     let id = request.input('userId')
     const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+    let isDueForPayout = await dueForPayout(investment[0].created_at, investment[0].period)
     console.log('Deleted investment data:', investment)
+    const payout = await Payout.create(investment[0])
+    payout.status = 'terminated'
+    await payout.save()
+    console.log('Payout investment data:', payout)
     return response.send('Investment Terminated or Payout.')
   }
 }
