@@ -170,22 +170,22 @@ export default class InvestmentsController {
     return investment
   }
 
-  public async store2({ request }: HttpContextContract) {
-    // const user = await auth.authenticate()
-    const investment = new Investment()
-    investment.amount = request.input('amount')
-    investment.duration = request.input('duration')
-    investment.rolloverType = request.input('rolloverType')
-    investment.tagName = request.input('tagName')
-    investment.currencyCode = request.input('currencyCode')
-    investment.long = request.input('long')
-    investment.lat = request.input('lat')
-    investment.walletHolderDetails = request.input('walletHolderDetails')
-    //  investment.walletHolderDetails = JSON.stringify(request.input('walletHolderDetails'))
-    console.log('Investment:', investment)
-    // await user.related('investments').save(investment)
-    return investment
-  }
+  // public async store2({ request }: HttpContextContract) {
+  //   // const user = await auth.authenticate()
+  //   const investment = new Investment()
+  //   investment.amount = request.input('amount')
+  //   investment.duration = request.input('duration')
+  //   investment.rolloverType = request.input('rolloverType')
+  //   investment.tagName = request.input('tagName')
+  //   investment.currencyCode = request.input('currencyCode')
+  //   investment.long = request.input('long')
+  //   investment.lat = request.input('lat')
+  //   investment.walletHolderDetails = request.input('walletHolderDetails')
+  //   //  investment.walletHolderDetails = JSON.stringify(request.input('walletHolderDetails'))
+  //   console.log('Investment:', investment)
+  //   // await user.related('investments').save(investment)
+  //   return investment
+  // }
 
   public async rate({ request, response }: HttpContextContract) {
     // let amount = request.input('amount')
