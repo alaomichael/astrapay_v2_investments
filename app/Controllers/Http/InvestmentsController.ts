@@ -87,8 +87,11 @@ export default class InvestmentsController {
       user_id: params.id,
       id: request.input('investmentId'),
     })
-    console.log('Update Investment:', investment)
-    if (investment) {
+    console.log('Investment Selected for Update:', investment)
+    let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+    console.log('Is due for payout status :', isDueForPayout)
+    // Restrict update to timed/fixed deposit only
+    if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false) {
       investment[0].amount = request.input('amount')
       investment[0].duration = request.input('duration')
       investment[0].rolloverType = request.input('rolloverType')
@@ -207,8 +210,11 @@ export default class InvestmentsController {
         // Date payout was effected
         investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
-        console.log('Payout investment data 2:', investment)
-        return response.send('Investment Terminated or Payout.')
+        console.log('Investment data after payout 2:', investment)
+         return response.status(200).json({
+           status: 'ok',
+           data: investment,
+         })
       } else {
         let payload = investment[0].$original
         // Date payout was effected due to termination
@@ -221,6 +227,7 @@ export default class InvestmentsController {
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
         investment = await Investment.query().where('id', params.id)
         investment[0].status = 'terminated'
+        investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
         console.log('Terminated Payout investment data 2:', investment)
         return response.status(200).json({
