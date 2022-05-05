@@ -64,10 +64,12 @@
     "@adonisjs/session": "^6.1.2",
     "@shagital/adonisjs-crud-generator": "^3.0.3",
     "adonis-jsonable": "^0.2.1",
+    "agnese": "^0.3.0",
     "esm": "^3.2.25",
     "js-joda": "^1.11.0",
     "knex": "^2.0.0",
     "luxon": "^2.3.2",
+    "map-anything": "^2.0.2",
     "moment": "^2.29.3",
     "objection": "^3.0.1",
     "pg": "^8.7.3",
@@ -81,5 +83,4 @@
   "engines": {
     "node": "^16.14.2"
   }
-
 }
