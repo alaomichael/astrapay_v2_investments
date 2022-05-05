@@ -35,6 +35,7 @@ Route.group(() => {
     Route.resource('users.investments', 'InvestmentsController').apiOnly()
     Route.resource('investments', 'InvestmentsController').apiOnly()
     Route.get('investment/rates', 'InvestmentsController.rate')
+    Route.put('investment/payout', 'InvestmentsController.payout')
     Route.get('investments/:userId', 'InvestmentsController.show')
   })
 }).prefix('api/v2')

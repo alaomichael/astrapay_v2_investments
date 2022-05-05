@@ -186,10 +186,12 @@ export default class InvestmentsController {
   public async payout({ request, response, params }: HttpContextContract) {
     try {
       // @ts-ignore
-      let id = request.input('userId')
+      // let id = request.input('userId')
+      let { userId, investmentId } = request.all()
+      console.log('Params for update line 191: ', userId, investmentId)
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
-      let investment = await Investment.query().where('id', params.id)
+      let investment = await Investment.query().where('id', investmentId)
       console.log('investment search data :', investment[0].$original)
       // @ts-ignore
       let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
@@ -205,16 +207,16 @@ export default class InvestmentsController {
         await payout.save()
         console.log('Payout investment data 2:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-        investment = await Investment.query().where('id', params.id)
+        investment = await Investment.query().where('id', investmentId)
         investment[0].status = 'payout'
         // Date payout was effected
         investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
         console.log('Investment data after payout 2:', investment)
-         return response.status(200).json({
-           status: 'ok',
-           data: investment,
-         })
+        return response.status(200).json({
+          status: 'ok',
+          data: investment,
+        })
       } else {
         let payload = investment[0].$original
         // Date payout was effected due to termination
@@ -225,7 +227,7 @@ export default class InvestmentsController {
         await payout.save()
         console.log('Terminated Payout investment data 1:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-        investment = await Investment.query().where('id', params.id)
+        investment = await Investment.query().where('id', investmentId)
         investment[0].status = 'terminated'
         investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
