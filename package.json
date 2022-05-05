@@ -70,6 +70,7 @@
     "knex": "^2.0.0",
     "luxon": "^2.3.2",
     "map-anything": "^2.0.2",
+    "mapper-utils": "^0.0.1",
     "moment": "^2.29.3",
     "objection": "^3.0.1",
     "pg": "^8.7.3",
