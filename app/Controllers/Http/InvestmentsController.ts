@@ -90,7 +90,7 @@ export default class InvestmentsController {
     console.log('Update Investment:', investment)
     if (investment) {
       investment[0].amount = request.input('amount')
-      investment[0].period = request.input('period')
+      investment[0].duration = request.input('duration')
       investment[0].rolloverType = request.input('rolloverType')
 
       if (investment) {
@@ -109,7 +109,8 @@ export default class InvestmentsController {
     const investmentSchema = schema.create({
       amount: schema.number(),
       rolloverType: schema.string({ escape: true }, [rules.maxLength(3)]),
-      period: schema.string({ escape: true }, [rules.maxLength(100)]),
+      investmentType: schema.string({ escape: true }, [rules.maxLength(50)]),
+      duration: schema.string({ escape: true }, [rules.maxLength(100)]),
       userId: schema.number(),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
@@ -133,12 +134,12 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-    let rate = await generateRate(investment.amount, investment.period)
+    let rate = await generateRate(investment.amount, investment.duration)
     investment.interestRate = rate
-    let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.period)
+    let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
     investment.interestDueOnInvestment = amountDueOnPayout
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-    investment.payoutDate = await payoutDueDate(investment.createdAt, investment.period)
+    investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
     // @ts-ignore
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
     await investment.save()
@@ -153,7 +154,7 @@ export default class InvestmentsController {
     // const user = await auth.authenticate()
     const investment = new Investment()
     investment.amount = request.input('amount')
-    investment.period = request.input('period')
+    investment.duration = request.input('duration')
     investment.rolloverType = request.input('rolloverType')
     investment.tagName = request.input('tagName')
     investment.currencyCode = request.input('currencyCode')
@@ -187,30 +188,29 @@ export default class InvestmentsController {
       let investment = await Investment.query().where('id', params.id)
       console.log('investment search data :', investment[0].$original)
       // @ts-ignore
-      let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].period)
+      let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
       console.log('Is due for payout status :', isDueForPayout)
 
-
       if (isDueForPayout) {
-      let payload = investment[0].$original
-      payload.datePayoutWasDone = new Date().toISOString()
-      console.log('Payout investment data 1:', payload)
-      const payout = await Payout.create(payload)
-      payout.status = 'payout'
-      await payout.save()
-      console.log('Payout investment data 2:', payout)
+        let payload = investment[0].$original
+        payload.datePayoutWasDone = new Date().toISOString()
+        console.log('Payout investment data 1:', payload)
+        const payout = await Payout.create(payload)
+        payout.status = 'payout'
+        await payout.save()
+        console.log('Payout investment data 2:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
         investment = await Investment.query().where('id', params.id).delete()
         console.log('Payout investment data 2:', investment)
         return response.send('Investment Terminated or Payout.')
       } else {
-              let payload = investment[0].$original
-              payload.datePayoutWasDone = new Date().toISOString()
-              console.log('Payout investment data 1:', payload)
-              const payout = await Payout.create(payload)
-              payout.status = 'payout'
-              await payout.save()
-              console.log('Payout investment data 2:', payout)
+        let payload = investment[0].$original
+        payload.datePayoutWasDone = new Date().toISOString()
+        console.log('Payout investment data 1:', payload)
+        const payout = await Payout.create(payload)
+        payout.status = 'payout'
+        await payout.save()
+        console.log('Payout investment data 2:', payout)
         console.log('Terminated Payout investment data 1:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
         investment = await Investment.query().where('id', params.id).delete()

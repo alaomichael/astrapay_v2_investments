@@ -15,7 +15,7 @@ export default class Investment extends BaseModel {
   public amount: number
 
   @column()
-  public period: string
+  public duration: string
 
   @column()
   public rolloverType: string

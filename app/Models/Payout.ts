@@ -15,11 +15,11 @@ export default class Payout extends BaseModel {
   public amount: number
 
   @column()
-  public period: string
+  public duration: string
 
   @column()
   public rolloverType: string
-  
+
   @column()
   public investmentType: string
 
