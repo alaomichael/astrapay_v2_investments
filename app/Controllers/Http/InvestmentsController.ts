@@ -134,7 +134,7 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-    let rate = await generateRate(investment.amount, investment.duration)
+    let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
     investment.interestRate = rate
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
     investment.interestDueOnInvestment = amountDueOnPayout
@@ -170,9 +170,9 @@ export default class InvestmentsController {
   public async rate({ request, response }: HttpContextContract) {
     // let amount = request.input('amount')
     // let duration = request.input('duration')
-    const { amount, duration } = request.qs()
+    const { amount, duration, investmentType } = request.qs()
     console.log('INVESTMENT RATE query: ', request.qs())
-    let rate = (await ((await generateRate(amount, duration)) * 100)) + ' %'
+    let rate = (await ((await generateRate(amount, duration, investmentType)) * 100)) + ' %'
     console.log('Investment rate:', rate)
     return response.status(200).json({
       status: 'ok',
@@ -180,8 +180,9 @@ export default class InvestmentsController {
     })
   }
 
-  public async destroy({ request, response, params }: HttpContextContract) {
+  public async payout({ request, response, params }: HttpContextContract) {
     try {
+      // @ts-ignore
       let id = request.input('userId')
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
@@ -193,6 +194,7 @@ export default class InvestmentsController {
 
       if (isDueForPayout) {
         let payload = investment[0].$original
+        // Date payout was effected
         payload.datePayoutWasDone = new Date().toISOString()
         console.log('Payout investment data 1:', payload)
         const payout = await Payout.create(payload)
@@ -200,22 +202,31 @@ export default class InvestmentsController {
         await payout.save()
         console.log('Payout investment data 2:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-        investment = await Investment.query().where('id', params.id).delete()
+        investment = await Investment.query().where('id', params.id)
+        investment[0].status = 'payout'
+        // Date payout was effected
+        investment[0].datePayoutWasDone = new Date().toISOString()
+        investment[0].save()
         console.log('Payout investment data 2:', investment)
         return response.send('Investment Terminated or Payout.')
       } else {
         let payload = investment[0].$original
+        // Date payout was effected due to termination
         payload.datePayoutWasDone = new Date().toISOString()
         console.log('Payout investment data 1:', payload)
         const payout = await Payout.create(payload)
-        payout.status = 'payout'
+        payout.status = 'terminated'
         await payout.save()
-        console.log('Payout investment data 2:', payout)
         console.log('Terminated Payout investment data 1:', payout)
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-        investment = await Investment.query().where('id', params.id).delete()
+        investment = await Investment.query().where('id', params.id)
+        investment[0].status = 'terminated'
+        investment[0].save()
         console.log('Terminated Payout investment data 2:', investment)
-        return response.send('Investment Terminated.')
+        return response.status(200).json({
+          status: 'ok',
+          data: investment,
+        })
       }
     } catch (error) {
       console.error(error)

@@ -23,44 +23,44 @@ function generateRates(amount, duration, investment_type) {
       duration = '2 years or more'
     }
 
-    switch (duration) {
-      case '3 months':
-        rate = 0.06
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '6 months':
-        rate = 0.07
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '9 months':
-        rate = 0.08
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '12 months':
-        rate = 0.09
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '1 year and 3 months':
-        rate = 0.1
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '1 year and 6 months':
-        rate = 0.11
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '1 year and 9 months':
-        rate = 0.12
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      case '2 years or more':
-        rate = 0.13
-        console.log(`RATE for ${duration} is:`, rate)
-        break
-      default:
-        rate = 0.05
-        console.log(`RATE for ${duration} days is:`, rate)
-        break
-    }
+     switch (duration) {
+       case '3 months':
+         rate = 0.06
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '6 months':
+         rate = 0.07
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '9 months':
+         rate = 0.08
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '12 months':
+         rate = 0.09
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '1 year and 3 months':
+         rate = 0.1
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '1 year and 6 months':
+         rate = 0.11
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '1 year and 9 months':
+         rate = 0.12
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       case '2 years or more':
+         rate = 0.13
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+       default:
+         rate = 0.05
+         console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         break
+     }
     return resolve(rate)
   })
 }

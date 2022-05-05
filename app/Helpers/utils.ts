@@ -24,9 +24,10 @@ const Moment = require('moment')
 
 // Generate rate
 // export const generateRate =
-const generateRate = (amount, duration) => {
+
+const generateRate = (amount, duration, investment_type) => {
   return new Promise((resolve, reject) => {
-    if (!amount || !duration || amount <= 0)
+    if (!amount || !duration || !investment_type || amount <= 0)
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
     let rate
     if (parseInt(duration) >= 90 && 180 > parseInt(duration)) {
@@ -50,48 +51,48 @@ const generateRate = (amount, duration) => {
     switch (duration) {
       case '3 months':
         rate = 0.06
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '6 months':
         rate = 0.07
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '9 months':
         rate = 0.08
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '12 months':
         rate = 0.09
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '1 year and 3 months':
         rate = 0.1
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '1 year and 6 months':
         rate = 0.11
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '1 year and 9 months':
         rate = 0.12
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       case '2 years or more':
         rate = 0.13
-        console.log(`RATE for ${duration} is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
       default:
         rate = 0.05
-        console.log(`RATE for ${duration} days is:`, rate)
+        console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
         break
     }
     return resolve(rate)
   })
 }
 
-generateRate(198, '752')
+generateRate(198, '752', 'fixed')
 
-generateRate(1000, '300')
+generateRate(1000, '300', 'debenture')
 
 // Generate Return on Investment
 const interestDueOnPayout = (amount, rate, duration) => {
