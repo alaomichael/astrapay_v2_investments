@@ -21,6 +21,9 @@ export default class Investment extends BaseModel {
   public rolloverType: string
 
   @column()
+  public investmentType: string
+
+  @column()
   public tagName: string
 
   @column()
