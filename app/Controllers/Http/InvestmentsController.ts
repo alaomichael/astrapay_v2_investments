@@ -82,29 +82,46 @@ export default class InvestmentsController {
     }
   }
 
-  public async update({ request, params }: HttpContextContract) {
-    let investment = await Investment.query().where({
-      user_id: params.id,
-      id: request.input('investmentId'),
-    })
-    console.log('Investment Selected for Update:', investment)
-    let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
-    console.log('Is due for payout status :', isDueForPayout)
-    // Restrict update to timed/fixed deposit only
-    if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false) {
-      investment[0].amount = request.input('amount')
-      investment[0].duration = request.input('duration')
-      investment[0].rolloverType = request.input('rolloverType')
+  public async update({ request, params, response }: HttpContextContract) {
+    try {
+      let investment = await Investment.query().where({
+        user_id: params.id,
+        id: request.input('investmentId'),
+      })
+      if (investment.length > 0) {
+        console.log('Investment Selected for Update:', investment)
+        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        console.log('Is due for payout status :', isDueForPayout)
+        // Restrict update to timed/fixed deposit only
+        if (
+          investment &&
+          investment[0].investmentType !== 'debenture' &&
+          isDueForPayout === false
+        ) {
+          investment[0].amount = request.input('amount')
+          investment[0].duration = request.input('duration')
+          investment[0].rolloverType = request.input('rolloverType')
+          investment[0].investmentType = request.input('investmentType')
 
-      if (investment) {
-        // send to user
-        await investment[0].save()
-        console.log('Update Investment:', investment)
-        return investment
+          if (investment) {
+            // send to user
+            await investment[0].save()
+            console.log('Update Investment:', investment)
+            return investment
+          }
+          return // 422
+        } else {
+          return response.status(304).json({ status: 'fail', data: investment })
+        }
+      } else {
+        return response
+          .status(404)
+          .json({ status: 'fail', message: 'No data match your query parameters' })
       }
-      return // 422
+    } catch (error) {
+      console.error(error)
     }
-    return // 401
+    // return // 401
   }
 
   public async store({ request }: HttpContextContract) {
