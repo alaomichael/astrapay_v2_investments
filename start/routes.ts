@@ -31,11 +31,14 @@ Route.get('health', async ({ response }) => {
 
 Route.group(() => {
   Route.group(() => {
-    Route.resource('investments/payouts', 'PayoutsController').apiOnly()
-    Route.resource('users.investments', 'InvestmentsController').apiOnly()
-    Route.resource('investments', 'InvestmentsController').apiOnly()
-    Route.get('investment/rates', 'InvestmentsController.rate')
-    Route.put('investment/payout', 'InvestmentsController.payout')
+    // Route.resource('investments/payouts', 'PayoutsController').apiOnly()
+    // Route.resource('users.investment', 'InvestmentsController').apiOnly()
+    // Route.resource('investment', 'InvestmentsController').apiOnly()
+    Route.post('investments', 'investmentsController.store')
+    Route.get('investments', 'InvestmentsController.index')
+    Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/:userId', 'InvestmentsController.show')
+    Route.put('investments/payout', 'InvestmentsController.payout')
+    Route.put('investments/:id', 'InvestmentsController.update')
   })
 }).prefix('api/v2')

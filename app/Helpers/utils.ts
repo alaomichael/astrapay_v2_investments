@@ -90,9 +90,9 @@ const generateRate = (amount, duration, investment_type) => {
   })
 }
 
-generateRate(198, '752', 'fixed')
+// generateRate(198, '752', 'fixed')
 
-generateRate(1000, '300', 'debenture')
+// generateRate(1000, '300', 'debenture')
 
 // Generate Return on Investment
 const interestDueOnPayout = (amount, rate, duration) => {
@@ -109,7 +109,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
   })
 }
 
-interestDueOnPayout(150000, 0.1, 180)
+// interestDueOnPayout(150000, 0.1, 180)
 
 // Check Investment due for payout
 // export const dueForPayout =
@@ -136,7 +136,7 @@ const dueForPayout = (created_at, duration) => {
       return diffInDays
     }
 
-    console.log('From Date Comparism function:', getNumberOfDays('2/1/2021', '3/1/2021'))
+    // console.log('From Date Comparism function:', getNumberOfDays('2/1/2021', '3/1/2021'))
 
     // function getNumberOfDays2(start, end) {
     //   const start_date = new LocalDate.parse(start)
@@ -153,22 +153,22 @@ const dueForPayout = (created_at, duration) => {
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
     let investmentDuration
     let currentDate = new Date().getTime()
-    console.log('Current Date: ' + currentDate)
-    console.log('duration converted to Ms: ' + durationToMs)
-    console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
-    console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
+    // console.log('Current Date: ' + currentDate)
+    // console.log('duration converted to Ms: ' + durationToMs)
+    // console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
+    // console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
     investmentDuration = getNumberOfDays(
       new Date(investmentCreationDate).toLocaleDateString(),
       new Date(currentDate).toLocaleDateString()
     )
 
-    console.log(
-      'From Date Comparism function 2:',
-      getNumberOfDays(
-        new Date(investmentCreationDate).toLocaleDateString(),
-        new Date(currentDate).toLocaleDateString()
-      )
-    )
+    // console.log(
+    //   'From Date Comparism function 2:',
+    //   getNumberOfDays(
+    //     new Date(investmentCreationDate).toLocaleDateString(),
+    //     new Date(currentDate).toLocaleDateString()
+    //   )
+    // )
 
     console.log('Investment duration is : ' + investmentDuration + ' days.')
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
@@ -187,7 +187,7 @@ const dueForPayout = (created_at, duration) => {
   })
 }
 
-dueForPayout('2022-04-29 10:02:07.58+01', '190')
+// dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 const payoutDueDate = (created_at, duration) => {
   return new Promise((resolve, reject) => {
@@ -198,22 +198,22 @@ const payoutDueDate = (created_at, duration) => {
     let investmentCreationDate = new Date(created_at).getTime()
     let durationToMs = parseInt(duration) * 24 * 60 * 60 * 1000
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
-    let currentDate = new Date().getTime()
-    console.log('Current Date: ' + currentDate)
-    console.log('duration converted to Ms: ' + durationToMs)
-    console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
-    console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
+    // let currentDate = new Date().getTime()
+    // console.log('Current Date: ' + currentDate)
+    // console.log('duration converted to Ms: ' + durationToMs)
+    // console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
+    // console.log(`Investment Payout Date is ${new Date(investmentPayoutDate).toDateString()} `)
     payoutDueDate = new Date(investmentPayoutDate).toISOString() // using .toISOString() to convert it to luxon acceptable format
-    console.log(
-      `The payout date for investment created on ${new Date(
-        created_at
-      ).toDateString()} for a duration of ${duration} is ${payoutDueDate}`
-    )
+    // console.log(
+    //   `The payout date for investment created on ${new Date(
+    //     created_at
+    //   ).toDateString()} for a duration of ${duration} is ${payoutDueDate}`
+    // )
     return resolve(payoutDueDate)
   })
 }
 
-payoutDueDate('2022-04-29 10:02:07.58+01', '200')
+// payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
 /**
  * An utility function which returns a random number
