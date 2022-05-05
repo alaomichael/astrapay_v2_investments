@@ -192,7 +192,7 @@ export default class InvestmentsController {
     // let duration = request.input('duration')
     const { amount, duration, investmentType } = request.qs()
     console.log('INVESTMENT RATE query: ', request.qs())
-    let rate = (await ((await generateRate(amount, duration, investmentType)) * 100)) + ' %'
+    let rate = (await generateRate(amount, duration, investmentType)) * 100
     console.log('Investment rate:', rate)
     return response.status(200).json({
       status: 'ok',
