@@ -56,6 +56,9 @@ export default class Investment extends BaseModel {
   @column()
   public status: string
 
+  @column.dateTime({ autoCreate: false })
+  public datePayoutWasDone: DateTime
+
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 }
