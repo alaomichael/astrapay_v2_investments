@@ -131,7 +131,7 @@ export default class InvestmentsController {
       amount: schema.number(),
       rolloverType: schema.enum(['100', '101', '102', '103', '104', '105', '106', '107']),
       investmentType: schema.enum(['fixed', 'debenture']),
-      duration: schema.string({ escape: true }, [rules.maxLength(100)]),
+      duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.number(),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
@@ -159,7 +159,7 @@ export default class InvestmentsController {
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
     investment.interestDueOnInvestment = amountDueOnPayout
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-    investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
+    // investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
     // @ts-ignore
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
     await investment.save()
@@ -169,17 +169,20 @@ export default class InvestmentsController {
     // Send Investment Payload To Transaction Service
 
     // UPDATE Investment Status based on the response from Transaction Service
-
+    let duration = Number(investment.duration)
+    let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
+    let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
+    console.log('updated CreatedAt Time : ' + updatedCreatedAt)
+    console.log('Updated Payout Date: ' + updatedPayoutDate)
     // Save Investment new status to Database
-
+    await investment.save()
     // Send Investment Creation Message to Queue
 
     // Testing
-    let duration = Number(investment.duration)
-     let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP()// .toISODate()
-     let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
-     console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-     console.log('Testing Payout Date: ' + testingPayoutDate)
+    let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
+    let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
+    console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+    console.log('Testing Payout Date: ' + testingPayoutDate)
 
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })

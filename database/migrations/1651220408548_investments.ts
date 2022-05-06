@@ -8,7 +8,7 @@ export default class Investments extends BaseSchema {
       table.increments('id').index().unique().notNullable()
       table.integer('user_id').unsigned().notNullable().index()
       table.integer('wallet_id').unsigned().nullable().index()
-      table.integer('amount', 255).unsigned().notNullable().index()
+      table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table
         .enum('rollover_type', ['100', '101', '102', '103', '104', '105', '106', '107'])
@@ -22,8 +22,8 @@ export default class Investments extends BaseSchema {
       table.float('long').unsigned().nullable()
       table.float('lat').unsigned().nullable()
       table.float('interest_rate').unsigned().nullable()
-      table.integer('interest_due_on_investment').unsigned().nullable()
-      table.integer('total_amount_to_payout').unsigned().nullable().index()
+      table.float('interest_due_on_investment').unsigned().nullable()
+      table.float('total_amount_to_payout').unsigned().nullable().index()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
