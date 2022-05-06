@@ -4,6 +4,7 @@ import Investment from 'App/Models/Investment'
 import Payout from 'App/Models/Payout'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
+import { DateTime } from 'luxon'
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
@@ -128,8 +129,8 @@ export default class InvestmentsController {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
       amount: schema.number(),
-      rolloverType: schema.enum(['200' , '201']),
-      investmentType: schema.enum(['fixed','debenture']),
+      rolloverType: schema.enum(['100', '101', '102', '103', '104', '105', '106', '107']),
+      investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(100)]),
       userId: schema.number(),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
@@ -142,7 +143,7 @@ export default class InvestmentsController {
         email: schema.string([rules.email()]),
         phone: schema.number(),
         investorFundingWalletId: schema.string(),
-      })
+      }),
     })
     const payload: any = await request.validate({ schema: investmentSchema })
     const investment = await Investment.create(payload)
@@ -163,7 +164,23 @@ export default class InvestmentsController {
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
     await investment.save()
     console.log('The new investment:', investment)
-    // ... code to create a new investment
+
+    // TODO
+    // Send Investment Payload To Transaction Service
+
+    // UPDATE Investment Status based on the response from Transaction Service
+
+    // Save Investment new status to Database
+
+    // Send Investment Creation Message to Queue
+
+    // Testing
+    let duration = Number(investment.duration)
+     let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP()// .toISODate()
+     let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
+     console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+     console.log('Testing Payout Date: ' + testingPayoutDate)
+
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })
     return investment
