@@ -40,6 +40,9 @@ export default class Rate extends BaseModel {
   @column()
   public lat: number
 
+  @column()
+  public status: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

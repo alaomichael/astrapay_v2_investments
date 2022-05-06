@@ -6,54 +6,43 @@ export default class Rates extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()
-      table.string('product_name', 100).notNullable().index()
-      table.float('amount', 255).unsigned().notNullable().index()
-      table.string('duration', 100).notNullable().index()
+      table.string('product_name', 50).notNullable().index()
+      table.float('amount', 12).unsigned().notNullable().index()
+      table.string('duration', 5).notNullable().index()
       table.string('rollover_code').unsigned().notNullable().index()
       table.string('investment_type').notNullable().index()
 
-      table.string('tag_name', 255).notNullable()
-      table.string('currency_code', 10).notNullable()
-      table.jsonb('wallet_holder_details').notNullable().index()
+      table.string('tag_name', 25).notNullable().index()
+      table.string('currency_code', 10).notNullable().index()
+      table.jsonb('additional_details').nullable().index()
       table.float('long').unsigned().nullable().index()
       table.float('lat').unsigned().nullable().index()
-      table.float('interest_rate').unsigned().nullable()
-      table.float('interest_due_on_investment').unsigned().nullable()
-      table.float('total_amount_to_payout').unsigned().nullable().index()
+      table.float('interest_rate').unsigned().nullable().index()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      table.timestamp('created_at', { useTz: true })
-      table.date('payout_date').nullable().index()
-      table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
-      table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
-      table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
       table.string('status', 255).notNullable().index()
-      // table.timestamp('date_payout_was_done', { useTz: true })
-      table.string('date_payout_was_done').nullable().index()
+      table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
 
       table.index(
         [
           'id',
-          'user_id',
-          'wallet_id',
+          'product_name',
           'amount',
           'duration',
-          'rollover_type',
+          'rollover_code',
           'investment_type',
-          'wallet_holder_details',
+          'tag_name',
+          'currency_code',
+          'additional_details',
           'long',
           'lat',
-          'total_amount_to_payout',
-          'is_payout_authorized',
-          'is_termination_authorized',
-          'is_payout_successful',
           'status',
-          'date_payout_was_done',
+          'interest_rate',
         ],
-        'payout_full_index'
+        'rate_full_index'
       )
     })
   }
