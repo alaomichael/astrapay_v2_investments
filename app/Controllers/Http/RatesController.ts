@@ -36,6 +36,48 @@ export default class RatesController {
     return response.status(200).json(sortedRates)
   }
 
+  public async store({ request }: HttpContextContract) {
+    // const user = await auth.authenticate()
+    const rateSchema = schema.create({
+      productName: schema.string({ escape: true }, [rules.maxLength(20)]),
+      amount: schema.number(),
+      duration: schema.string({ escape: true }, [rules.maxLength(4)]),
+      rolloverCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+      investmentType: schema.string({ escape: true }, [rules.maxLength(50)]),
+      interestRate: schema.number(),
+      tagName: schema.string({ escape: true }, [rules.maxLength(20)]),
+      currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+      additionalDetails: schema.object().members({}),
+      long: schema.number(),
+      lat: schema.number(),
+    })
+    const payload: any = await request.validate({ schema: rateSchema })
+    const rate = await Rate.create(payload)
+    // const newInvestment = request.all() as Partial<Investment>
+    // const investment = await Investment.create(newInvestment)
+    // return response.ok(investment)
+    // The code below only work when there is auth
+    // await user.related('investments').save(investment)
+
+    // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
+    // let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
+    // @ts-ignore
+    rate.status = 'active'
+    await rate.save()
+    console.log('The new investment:', rate)
+
+    // TODO
+    console.log('A New Rate has been Created.')
+
+    // Save Rate new status to Database
+    await rate.save()
+    // Send Rate Creation Message to Queue
+
+    // @ts-ignore
+    Event.emit('new:rate', { id: rate.id, extras: rate.additionalDetails })
+    return rate
+  }
+
   public async destroy({ request, response, params }: HttpContextContract) {
     let id = request.input('userId')
     const rate = await Rate.query().where('user_id', id).where('id', params.id).delete()
