@@ -5,34 +5,36 @@ export default class Payouts extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('user_id').unsigned().notNullable()
-      table.integer('wallet_id').unsigned().nullable()
-      table.integer('amount', 255).unsigned().notNullable()
-      table.string('duration', 100).notNullable()
-      table.string('rollover_type', 50).unsigned().notNullable()
-      table.string('investment_type', 50).notNullable()
+      table.increments('id').index().unique().notNullable()
+      table.integer('user_id').unsigned().notNullable().index()
+      table.integer('wallet_id').unsigned().nullable().index()
+      table.integer('amount', 255).unsigned().notNullable().index()
+      table.string('duration', 100).notNullable().index()
+      table.string('rollover_type', 50).unsigned().notNullable().index()
+      table.string('investment_type', 50).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
-      table.jsonb('wallet_holder_details').notNullable()
-      table.float('long').unsigned().nullable()
-      table.float('lat').unsigned().nullable()
+      table.jsonb('wallet_holder_details').notNullable().index()
+      table.float('long').unsigned().nullable().index()
+      table.float('lat').unsigned().nullable().index()
       table.float('interest_rate').unsigned().nullable()
       table.integer('interest_due_on_investment').unsigned().nullable()
-      table.integer('total_amount_to_payout').unsigned().nullable()
+      table.integer('total_amount_to_payout').unsigned().nullable().index()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true })
-      table.date('payout_date').nullable()
-      table.boolean('is_payout_authorized').notNullable().defaultTo(false)
-      table.boolean('is_termination_authorized').notNullable().defaultTo(false)
-      table.boolean('is_payout_successful').notNullable().defaultTo(false)
-      table.string('status', 255).notNullable()
+      table.date('payout_date').nullable().index()
+      table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
+      table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
+      table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
+      table.string('status', 255).notNullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
-      table.string('date_payout_was_done').nullable()
+      table.string('date_payout_was_done').nullable().index()
       table.timestamp('updated_at', { useTz: true })
+
+      table.index(['id', 'user_id', 'wallet_id'])
     })
   }
 
