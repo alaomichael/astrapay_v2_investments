@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-type RollOverType = '100' | '101' | '102' | '103' | '104' | '105' | '106' | '107'
+// type RollOverType = '100' | '101' | '102' | '103' | '104' | '105' | '106' | '107'
 
 export default class Rate extends BaseModel {
   @column({ isPrimary: true })
@@ -17,10 +17,13 @@ export default class Rate extends BaseModel {
   public duration: string
 
   @column()
-  public rolloverCode: RollOverType
+  public rolloverCode: string
 
   @column()
-  public investmentType: 'fixed' | 'debenture'
+  public investmentType: string
+
+  @column()
+  public interestRate: number
 
   @column()
   public tagName: string
@@ -29,16 +32,13 @@ export default class Rate extends BaseModel {
   public currencyCode: string
 
   @column()
-  public walletHolderDetails: JSON
+  public additionalDetails: JSON
 
   @column()
   public long: number
 
   @column()
   public lat: number
-
-  @column()
-  public interestRate: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

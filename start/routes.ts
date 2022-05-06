@@ -37,6 +37,7 @@ Route.group(() => {
     Route.post('investments', 'investmentsController.store')
     Route.get('investments', 'InvestmentsController.index')
     Route.get('investments/rates', 'InvestmentsController.rate')
+    Route.get('investments/rate', 'RatesController.index')
     Route.get('investments/:userId', 'InvestmentsController.show')
     Route.put('investments/payout', 'InvestmentsController.payout')
     Route.put('investments/:id', 'InvestmentsController.update')

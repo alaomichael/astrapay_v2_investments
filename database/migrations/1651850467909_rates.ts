@@ -1,21 +1,16 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Payouts extends BaseSchema {
-  protected tableName = 'payouts'
+export default class Rates extends BaseSchema {
+  protected tableName = 'rates'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()
-      table.integer('user_id').unsigned().notNullable().index()
-      table.integer('wallet_id').unsigned().nullable().index()
+      table.string('product_name', 100).notNullable().index()
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
-      table
-        .enum('rollover_type', ['100', '101', '102', '103', '104', '105', '106', '107'])
-        .unsigned()
-        .notNullable()
-        .index()
-      table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
+      table.string('rollover_code').unsigned().notNullable().index()
+      table.string('investment_type').notNullable().index()
 
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
