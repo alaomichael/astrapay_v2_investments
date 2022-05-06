@@ -34,7 +34,27 @@ export default class Payouts extends BaseSchema {
       table.string('date_payout_was_done').nullable().index()
       table.timestamp('updated_at', { useTz: true })
 
-      table.index(['id', 'user_id', 'wallet_id'])
+      table.index(
+        [
+          'id',
+          'user_id',
+          'wallet_id',
+          'amount',
+          'duration',
+          'rollover_type',
+          'investment_type',
+          'wallet_holder_details',
+          'long',
+          'lat',
+          'total_amount_to_payout',
+          'is_payout_authorized',
+          'is_termination_authorized',
+          'is_payout_successful',
+          'status',
+          'date_payout_was_done',
+        ],
+        'payout_full_index'
+      )
     })
   }
 

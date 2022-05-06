@@ -15,10 +15,7 @@ export default class Investments extends BaseSchema {
         .unsigned()
         .notNullable()
         .index()
-      table
-        .enum('investment_type', [fixed | debenture])
-        .notNullable()
-        .index()
+      table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('wallet_holder_details').notNullable().index()
@@ -40,6 +37,29 @@ export default class Investments extends BaseSchema {
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
       table.timestamp('updated_at', { useTz: true })
+
+      // indexes
+      table.index(
+        [
+          'id',
+          'user_id',
+          'wallet_id',
+          'amount',
+          'duration',
+          'rollover_type',
+          'investment_type',
+          'wallet_holder_details',
+          'long',
+          'lat',
+          'total_amount_to_payout',
+          'is_payout_authorized',
+          'is_termination_authorized',
+          'is_payout_successful',
+          'status',
+          'date_payout_was_done',
+        ],
+        'investment_full_index'
+      )
     })
   }
 
