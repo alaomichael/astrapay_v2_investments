@@ -128,8 +128,8 @@ export default class InvestmentsController {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
       amount: schema.number(),
-      rolloverType: schema.enum( [rules.maxLength(3)]),
-      investmentType: schema.enum([rules.maxLength(50)]),
+      rolloverType: schema.enum(['200' , '201']),
+      investmentType: schema.enum(['fixed','debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(100)]),
       userId: schema.number(),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),

@@ -3,6 +3,9 @@
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
 const string = require('@ioc:Adonis/Core/Helpers')
+// import { DateTime } from 'luxon'
+const { DateTime } = require('luxon')
+// const {DateTime} = Luxon
 // import Env from '@ioc:Adonis/Core/Env'
 // const Env = require('@ioc:Adonis/Core/Env')
 const JSJoda = require('js-joda')
@@ -153,6 +156,10 @@ const dueForPayout = (created_at, duration) => {
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
     let investmentDuration
     let currentDate = new Date().getTime()
+    let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 })
+    let testingPayoutDate = DateTime.now().plus({ days: duration })
+    console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+    console.log('Testing Payout Date: ' + testingPayoutDate)
     // console.log('Current Date: ' + currentDate)
     // console.log('duration converted to Ms: ' + durationToMs)
     // console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)
@@ -187,7 +194,7 @@ const dueForPayout = (created_at, duration) => {
   })
 }
 
-// dueForPayout('2022-04-29 10:02:07.58+01', '190')
+dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 const payoutDueDate = (created_at, duration) => {
   return new Promise((resolve, reject) => {
