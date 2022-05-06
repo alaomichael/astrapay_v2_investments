@@ -10,8 +10,11 @@ export default class Investments extends BaseSchema {
       table.integer('wallet_id').unsigned().nullable()
       table.integer('amount', 255).unsigned().notNullable()
       table.string('duration', 100).notNullable()
-      table.string('rollover_type', 50).unsigned().notNullable()
-      table.string('investment_type', 50).notNullable()
+      table
+        .enum('rollover_type', ['100' | '101' | '102' | '103' | 104 | 105 | 106 | 107])
+        .unsigned()
+        .notNullable()
+      table.enum('investment_type', ['fixed', 'debenture']).notNullable()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
       table.jsonb('wallet_holder_details').notNullable()

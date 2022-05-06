@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
+type RollOverType = 100 | 101 | 102 | 103 | 104 | 105 | 106 | 107
+
 export default class Investment extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -18,7 +20,7 @@ export default class Investment extends BaseModel {
   public duration: string
 
   @column()
-  public rolloverType: string
+  public rolloverType: RollOverType
 
   @column()
   public investmentType: string
