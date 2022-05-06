@@ -54,6 +54,15 @@ export default class Payout extends BaseModel {
   public payoutDate: DateTime
 
   @column()
+  public isPayoutAuthorized: boolean
+
+  @column()
+  public isTerminationAuthorized: boolean
+
+  @column()
+  public isPayoutSuccessful: boolean
+
+  @column()
   public status: string
 
   @column.dateTime({ autoCreate: false })

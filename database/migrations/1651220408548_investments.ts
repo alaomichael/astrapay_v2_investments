@@ -26,6 +26,9 @@ export default class Investments extends BaseSchema {
        */
       table.timestamp('created_at', { useTz: true })
       table.date('payout_date').nullable()
+      table.boolean('is_payout_authorized').notNullable().defaultTo(false)
+      table.boolean('is_termination_authorized').notNullable().defaultTo(false)
+      table.boolean('is_payout_successful').notNullable().defaultTo(false)
       table.string('status', 255).notNullable()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable()
