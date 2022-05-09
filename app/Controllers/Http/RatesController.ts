@@ -7,19 +7,26 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class RatesController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('Rate params: ', params)
-    const { search, limit } = request.qs()
+    const { duration, limit, amount } = request.qs()
     console.log('Rate query: ', request.qs())
-    const countPayouts = await Rate.query().where('status', 'good').getCount()
+    const countPayouts = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countPayouts)
     // const countTerminated = await Rate.query().where('status', 'terminated').getCount()
     // console.log('Terminated Investment count: ', countTerminated)
     // const rate = await Rate.query().offset(0).limit(1)
     const rate = await Rate.all()
     let sortedRates = rate
-    if (search) {
+    if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.walletHolderDetails.lastName!.startsWith(search)
+        return rate.duration!.startsWith(duration)
+      })
+    }
+    if (amount) {
+      sortedRates = sortedRates.
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.amount!.startsWith(amount)
       })
     }
     if (limit) {
@@ -45,11 +52,12 @@ export default class RatesController {
       rolloverCode: schema.string({ escape: true }, [rules.maxLength(5)]),
       investmentType: schema.string({ escape: true }, [rules.maxLength(50)]),
       interestRate: schema.number(),
-      tagName: schema.string({ escape: true }, [rules.maxLength(20)]),
+      tagName: schema.string({ escape: true }, [rules.maxLength(100)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
       additionalDetails: schema.object().members({}),
       long: schema.number(),
       lat: schema.number(),
+      status: schema.string({ escape: true }, [rules.maxLength(20)]),
     })
     const payload: any = await request.validate({ schema: rateSchema })
     const rate = await Rate.create(payload)
