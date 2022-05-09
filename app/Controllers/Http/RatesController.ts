@@ -200,10 +200,22 @@ export default class RatesController {
 
   public async destroy({ request, response }: HttpContextContract) {
     // let id = request.input('rateId')
-    const rate = await Rate.query()
+    const { productName, rateId } = request.qs()
+    console.log('Rate query: ', request.qs())
+    // let rate = await Rate.query().where({
+    //   product_name: request.input('productName'),
+    //   id: request.input('rateId'),
+    // })
+    let rate = await Rate.query().where({
+      product_name: productName,
+      id: rateId,
+    })
+    console.log(' QUERY RESULT: ', rate)
+
+    rate = await Rate.query()
       .where({
-        product_name: request.input('productName'),
-        id: request.input('rateId'),
+        product_name: productName,
+        id: rateId,
       })
       .delete()
     console.log('Deleted data:', rate)

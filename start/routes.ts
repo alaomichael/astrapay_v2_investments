@@ -34,14 +34,26 @@ Route.group(() => {
     // Route.resource('investments/payouts', 'PayoutsController').apiOnly()
     // Route.resource('users.investment', 'InvestmentsController').apiOnly()
     // Route.resource('investment', 'InvestmentsController').apiOnly()
+
+    // POST ROUTES
     Route.post('investments', 'InvestmentsController.store')
     Route.post('admin/investments/rates', 'RatesController.store')
+
+    // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')
     // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
     Route.get('investments/:userId', 'InvestmentsController.show')
+
+    // PUT ROUTES
     Route.put('investments/payout', 'InvestmentsController.payout')
     Route.put('investments/:id', 'InvestmentsController.update')
     Route.put('admin/investments/rates', 'RatesController.update')
+    Route.put('admin/investments/approval', 'InvestmentsController.approve')
+
+    // DELETE ROUTES
+    Route.delete('admin/investments/rates', 'RatesController.destroy')
+    // Route.delete('admin/investments/rates', 'RatesController.destroy')
+    Route.delete('investments/:id', 'InvestmentsController.destroy')
   })
 }).prefix('api/v2')

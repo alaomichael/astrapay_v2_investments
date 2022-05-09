@@ -206,20 +206,67 @@ export default class InvestmentsController {
   //   return investment
   // }
 
-  public async rate({ request, response }: HttpContextContract) {
-    // let amount = request.input('amount')
-    // let duration = request.input('duration')
-    const { amount, duration, investmentType } = request.qs()
-    console.log('INVESTMENT RATE query: ', request.qs())
-    let rate = (await generateRate(amount, duration, investmentType)) * 100
-    console.log('Investment rate:', rate)
-    return response.status(200).json({
-      status: 'ok',
-      data: rate,
-    })
+  // public async rate({ request, response }: HttpContextContract) {
+  //   // let amount = request.input('amount')
+  //   // let duration = request.input('duration')
+  //   const { amount, duration, investmentType } = request.qs()
+  //   console.log('INVESTMENT RATE query: ', request.qs())
+  //   let rate = (await generateRate(amount, duration, investmentType)) * 100
+  //   console.log('Investment rate:', rate)
+  //   return response.status(200).json({
+  //     status: 'ok',
+  //     data: rate,
+  //   })
+  // }
+
+  public async approve({ request, params, response }: HttpContextContract) {
+    try {
+      let investment = await Investment.query().where({
+        user_id: params.id,
+        id: request.input('investmentId'),
+      })
+      if (investment.length > 0) {
+        console.log('Investment Selected for Update:', investment)
+        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        console.log('Is due for payout status :', isDueForPayout)
+        // Restrict update to timed/fixed deposit only
+        if (
+          investment &&
+          investment[0].investmentType !== 'debenture' &&
+          isDueForPayout === false
+        ) {
+          // 'is_payout_authorized', 'is_termination_authorized', 'is_payout_successful', 'status'
+          investment[0].status = request.input('status')
+            ? request.input('status')
+            : investment[0].status
+          investment[0].isTerminationAuthorized = request.input('isTerminationAuthorized')
+            ? request.input('isTerminationAuthorized')
+            : investment[0].isTerminationAuthorized
+          investment[0].isPayoutAuthorized = request.input('isPayoutAuthorized')
+            ? request.input('isPayoutAuthorized')
+            : investment[0].isPayoutAuthorized
+          if (investment) {
+            // send to user
+            await investment[0].save()
+            console.log('Update Investment:', investment)
+            return investment
+          }
+          return // 422
+        } else {
+          return response.status(304).json({ status: 'fail', data: investment })
+        }
+      } else {
+        return response
+          .status(404)
+          .json({ status: 'fail', message: 'No data match your query parameters' })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    // return // 401
   }
 
-  public async payout({ request, response, params }: HttpContextContract) {
+  public async payout({ request, response }: HttpContextContract) {
     try {
       // @ts-ignore
       // let id = request.input('userId')
