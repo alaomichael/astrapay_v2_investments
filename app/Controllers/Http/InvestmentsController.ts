@@ -69,8 +69,7 @@ export default class InvestmentsController {
     // console.log('INVESTMENT 3 query: ', investment3)
     // console.log('INVESTMENT query params: ', request.ctx)
     try {
-      const investment = await Investment.query()
-      .where('user_id', params.userId)
+      const investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
       if (investment) {
@@ -275,36 +274,88 @@ export default class InvestmentsController {
     // return // 401
   }
 
-  public async showApprovalRequest({ params, response }: HttpContextContract) {
+  public async showApprovalRequest({ request, params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    // console.log('INVESTMENT query: ', request)
+    const {
+      userId,
+      investmentId,
+      isPayoutAuthorized,
+      isTerminationAuthorized,
+      status,
+      payoutDate,
+      walletId,
+      limit,
+    } = request.qs()
+    console.log('INVESTMENT query: ', request.qs())
 
-    // post will always be of type Post
-    // const investment1 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => new Investment())
-    // console.log('INVESTMENT 1 query: ', investment1)
-
-    // post can be of type Post or string
-    // const investment2 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => 'working')
-    // console.log('INVESTMENT 2 query: ', investment2)
-
-    // use a fallback query!
-    // const investment3 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => Investment.query().where('id', 2).first())
-    // console.log('INVESTMENT 3 query: ', investment3)
-    // console.log('INVESTMENT query params: ', request.ctx)
     try {
       const investment = await Investment.all()
-           // .limit()
-      if (investment) {
-        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA: ', investment)
-        return response.status(200).json({ investment })
+      // .limit()
+      // if (investment) {
+      //   // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+      //   console.log('INVESTMENT DATA: ', investment)
+      //   return response.status(200).json({ status: 'ok', data: investment })
+      // }
+      let sortedApprovalRequest = investment
+      if (userId) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.userId === (parseInt(userId))
+        })
       }
+      if (investmentId) {
+        // @ts-ignore
+        sortedApprovalRequest = await Investment.query().where('id', investmentId)
+      }
+
+      if (isPayoutAuthorized) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.isPayoutAuthorized == `${isPayoutAuthorized}`
+        })
+      }
+
+      if (isTerminationAuthorized) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.isTerminationAuthorized == `${isTerminationAuthorized}`
+        })
+      }
+
+      if (payoutDate) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.payoutDate.includes(payoutDate)
+        })
+      }
+      if (status) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.status === `${status}`
+        })
+      }
+
+      if (walletId) {
+        sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+          // @ts-ignore
+          return investment.walletId ===`${walletId}`
+        })
+      }
+      if (limit) {
+        sortedApprovalRequest = sortedApprovalRequest.slice(0, Number(limit))
+      }
+      if (sortedApprovalRequest.length < 1) {
+        return response.status(200).json({
+          status: 'ok',
+          message: 'no investment approval request matched your search',
+          data: [],
+        })
+      }
+      // return rate(s)
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedApprovalRequest,
+      })
     } catch (error) {
       console.log(error)
     }
