@@ -239,15 +239,19 @@ export default class InvestmentsController {
         // Restrict update to timed/fixed deposit only
         // if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false)
         if (investment) {
-          investment[0].status = request.input('status')
-            ? request.input('status')
-            : investment[0].status
-          investment[0].isTerminationAuthorized = request.input('isTerminationAuthorized')
-            ? request.input('isTerminationAuthorized')
-            : investment[0].isTerminationAuthorized
-          investment[0].isPayoutAuthorized = request.input('isPayoutAuthorized')
-            ? request.input('isPayoutAuthorized')
-            : investment[0].isPayoutAuthorized
+          investment[0].status = request.input('status')? request.input('status'): investment[0].status;
+         let terminate = request.input('isTerminationAuthorized')
+         investment[0].isTerminationAuthorized =
+           request.input('isTerminationAuthorized') !== undefined
+             ? request.input('isTerminationAuthorized')
+             : investment[0].isTerminationAuthorized
+            console.log('terminate :', terminate)
+          let payout = request.input('isPayoutAuthorized')
+          investment[0].isPayoutAuthorized =
+            request.input('isPayoutAuthorized') !== undefined
+              ? request.input('isPayoutAuthorized')
+              : investment[0].isPayoutAuthorized
+            console.log('payout :', payout)
           if (investment) {
             // send to user
             await investment[0].save()
