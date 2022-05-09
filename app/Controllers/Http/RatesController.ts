@@ -20,18 +20,7 @@ export default class RatesController {
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.duration!.includes(duration) && rate.status === `${status}`
-      })
-      if (sortedRates.length < 1) {
-        return response.status(200).json({
-          success: true,
-          message: 'no investment rate matched your search',
-          data: [],
-        })
-      }
-      return response.status(200).json({
-        status: 'ok',
-        data: sortedRates,
+        return rate.duration!.includes(duration)
       })
     }
     if (amount) {
@@ -39,74 +28,34 @@ export default class RatesController {
       sortedRates = await Rate.query()
         .where('lowest_amount', '<=', amount)
         .andWhere('highest_amount', '>=', amount)
-        .where('status', `${status}`)
-      if (sortedRates.length < 1) {
-        return response.status(200).json({
-          success: true,
-          message: 'no investment rate matched your search',
-          data: [],
-        })
-      }
-      return response.status(200).json({
-        status: 'ok',
-        data: sortedRates,
-      })
     }
 
     if (investmentType) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.investmentType!.includes(investmentType) && rate.status === `${status}`
-      })
-      if (sortedRates.length < 1) {
-        return response.status(200).json({
-          success: true,
-          message: 'no investment rate matched your search',
-          data: [],
-        })
-      }
-      return response.status(200).json({
-        status: 'ok',
-        data: sortedRates,
+        return rate.investmentType!.includes(investmentType)
       })
     }
 
     if (rolloverCode) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.rolloverCode!.includes(rolloverCode) && rate.status === `${status}`
-      })
-      if (sortedRates.length < 1) {
-        return response.status(200).json({
-          success: true,
-          message: 'no investment rate matched your search',
-          data: [],
-        })
-      }
-      return response.status(200).json({
-        status: 'ok',
-        data: sortedRates,
+        return rate.rolloverCode!.includes(rolloverCode)
       })
     }
 
     if (productName) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.productName!.includes(productName) // && rate.status === `${status}`
+        return rate.productName!.includes(productName)
       })
-      if (sortedRates.length < 1) {
-        return response.status(200).json({
-          success: true,
-          message: 'no investment rate matched your search',
-          data: [],
-        })
       }
-      return response.status(200).json({
-        status: 'ok',
-        data: sortedRates,
+    if (status) {
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.status === `${status}`
       })
     }
-
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
@@ -117,8 +66,11 @@ export default class RatesController {
         data: [],
       })
     }
-    // return investment
-    return response.status(200).json(sortedRates)
+    // return rate(s)
+    return response.status(200).json({
+      status: 'ok',
+      data: sortedRates,
+    })
   }
 
   public async store({ request }: HttpContextContract) {

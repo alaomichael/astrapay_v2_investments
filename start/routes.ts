@@ -35,7 +35,7 @@ Route.group(() => {
     // Route.resource('users.investment', 'InvestmentsController').apiOnly()
     // Route.resource('investment', 'InvestmentsController').apiOnly()
     Route.post('investments', 'InvestmentsController.store')
-    Route.post('investments/rates', 'RatesController.store')
+    Route.post('admin/investments/rates', 'RatesController.store')
     Route.get('investments', 'InvestmentsController.index')
     // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
