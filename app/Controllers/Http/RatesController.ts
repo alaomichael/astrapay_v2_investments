@@ -132,7 +132,7 @@ export default class RatesController {
     return rate
   }
 
-  public async update({ request, params, response }: HttpContextContract) {
+  public async update({ request, response }: HttpContextContract) {
     try {
       let rate = await Rate.query().where({
         product_name: request.input('productName'),
@@ -142,12 +142,33 @@ export default class RatesController {
         console.log('Investment rate Selected for Update:', rate)
         if (rate) {
           rate[0].productName = request.input('newProductName')
+            ? request.input('newProductName')
+            : rate[0].productName
           rate[0].lowestAmount = request.input('lowestAmount')
+            ? request.input('lowestAmount')
+            : rate[0].lowestAmount
           rate[0].highestAmount = request.input('highestAmount')
+            ? request.input('highestAmount')
+            : rate[0].highestAmount
           rate[0].duration = request.input('duration')
-          rate[0].interestRate = request.input('interestRate')
+            ? request.input('duration')
+            : rate[0].duration
           rate[0].rolloverCode = request.input('rolloverCode')
+            ? request.input('rolloverCode')
+            : rate[0].rolloverCode
           rate[0].investmentType = request.input('investmentType')
+            ? request.input('investmentType')
+            : rate[0].investmentType
+          rate[0].interestRate = request.input('interestRate')
+            ? request.input('interestRate')
+            : rate[0].interestRate
+          rate[0].tagName = request.input('tagName') ? request.input('tagName') : rate[0].tagName
+          rate[0].additionalDetails = request.input('additionalDetails')
+            ? request.input('additionalDetails')
+            : rate[0].additionalDetails
+          rate[0].long = request.input('long') ? request.input('long') : rate[0].long
+          rate[0].lat = request.input('lat') ? request.input('lat') : rate[0].lat
+          rate[0].status = request.input('status') ? request.input('status') : rate[0].status
 
           if (rate) {
             // send to user
@@ -170,9 +191,14 @@ export default class RatesController {
     // return // 401
   }
 
-  public async destroy({ request, response, params }: HttpContextContract) {
-    let id = request.input('userId')
-    const rate = await Rate.query().where('user_id', id).where('id', params.id).delete()
+  public async destroy({ request, response }: HttpContextContract) {
+    // let id = request.input('rateId')
+    const rate = await Rate.query()
+      .where({
+        product_name: request.input('productName'),
+        id: request.input('rateId'),
+      })
+      .delete()
     console.log('Deleted data:', rate)
     return response.send('Rate Delete.')
   }
