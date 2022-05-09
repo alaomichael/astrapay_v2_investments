@@ -7,24 +7,24 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class RatesController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('Rate params: ', params)
-    const { duration, limit, amount } = request.qs()
+    const { duration, limit, amount, investmentType, rolloverCode } = request.qs()
     console.log('Rate query: ', request.qs())
-    const countPayouts = await Rate.query().where('status', 'active').getCount()
-    console.log('Rate Investment count: ', countPayouts)
-    // const countTerminated = await Rate.query().where('status', 'terminated').getCount()
-    // console.log('Terminated Investment count: ', countTerminated)
+    const countActiveRates = await Rate.query().where('status', 'active').getCount()
+    console.log('Rate Investment count: ', countActiveRates)
+    // const countSuspended = await Rate.query().where('status', 'suspended').getCount()
+    // console.log('Terminated Investment count: ', countSuspended)
     // const rate = await Rate.query().offset(0).limit(1)
     const rate = await Rate.all()
     let sortedRates = rate
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.duration!.includes(duration) // .startsWith(duration)
+        return rate.duration!.includes(duration) && rate.status === 'inactive'
       })
-       return response.status(200).json({
-         status: 'ok',
-         data: sortedRates,
-       })
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedRates,
+      })
     }
     if (amount) {
       // @ts-ignore
@@ -35,9 +35,30 @@ export default class RatesController {
         status: 'ok',
         data: sortedRates,
       })
-      }
+    }
 
-      investmentType
+    if (investmentType) {
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.investmentType!.includes(investmentType)
+      })
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedRates,
+      })
+    }
+
+    if (rolloverCode) {
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.rolloverCode!.includes(rolloverCode)
+      })
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedRates,
+      })
+    }
+
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
