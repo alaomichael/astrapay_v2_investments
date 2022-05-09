@@ -134,10 +134,17 @@ export default class RatesController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
+      const { productName, rateId } = request.qs()
+      console.log('Rate query: ', request.qs())
+      // let rate = await Rate.query().where({
+      //   product_name: request.input('productName'),
+      //   id: request.input('rateId'),
+      // })
       let rate = await Rate.query().where({
-        product_name: request.input('productName'),
-        id: request.input('rateId'),
+        product_name: productName,
+        id: rateId,
       })
+      console.log(' QUERY RESULT: ', rate)
       if (rate.length > 0) {
         console.log('Investment rate Selected for Update:', rate)
         if (rate) {
