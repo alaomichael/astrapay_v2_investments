@@ -7,7 +7,7 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class RatesController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('Rate params: ', params)
-    const { duration, limit, amount, investmentType, rolloverCode } = request.qs()
+    const { duration, limit, amount, investmentType, rolloverCode, status } = request.qs()
     console.log('Rate query: ', request.qs())
     const countActiveRates = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countActiveRates)
@@ -19,8 +19,15 @@ export default class RatesController {
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.duration!.includes(duration) && rate.status === 'inactive'
+        return rate.duration!.includes(duration) && rate.status === `${status}`
       })
+      if (sortedRates.length < 1) {
+        return response.status(200).json({
+          success: true,
+          message: 'no investment rate matched your search',
+          data: [],
+        })
+      }
       return response.status(200).json({
         status: 'ok',
         data: sortedRates,
@@ -31,6 +38,14 @@ export default class RatesController {
       sortedRates = await Rate.query()
         .where('lowest_amount', '<=', amount)
         .andWhere('highest_amount', '>=', amount)
+        .where('status', `${status}`)
+      if (sortedRates.length < 1) {
+        return response.status(200).json({
+          success: true,
+          message: 'no investment rate matched your search',
+          data: [],
+        })
+      }
       return response.status(200).json({
         status: 'ok',
         data: sortedRates,
@@ -40,8 +55,15 @@ export default class RatesController {
     if (investmentType) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.investmentType!.includes(investmentType)
+        return rate.investmentType!.includes(investmentType) && rate.status === `${status}`
       })
+      if (sortedRates.length < 1) {
+        return response.status(200).json({
+          success: true,
+          message: 'no investment rate matched your search',
+          data: [],
+        })
+      }
       return response.status(200).json({
         status: 'ok',
         data: sortedRates,
@@ -51,8 +73,15 @@ export default class RatesController {
     if (rolloverCode) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.rolloverCode!.includes(rolloverCode)
+        return rate.rolloverCode!.includes(rolloverCode) && rate.status === `${status}`
       })
+      if (sortedRates.length < 1) {
+        return response.status(200).json({
+          success: true,
+          message: 'no investment rate matched your search',
+          data: [],
+        })
+      }
       return response.status(200).json({
         status: 'ok',
         data: sortedRates,
@@ -101,7 +130,7 @@ export default class RatesController {
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
     // let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
     // @ts-ignore
-    rate.status = 'active'
+    // rate.status = 'active'
     await rate.save()
     console.log('The new investment:', rate)
 
