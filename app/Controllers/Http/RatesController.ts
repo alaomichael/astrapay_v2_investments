@@ -23,11 +23,13 @@ export default class RatesController {
       })
     }
     if (amount) {
-      sortedRates = sortedRates.
-      sortedRates = sortedRates.filter((rate) => {
-        // @ts-ignore
-        return rate.amount!.startsWith(amount)
-      })
+      // @ts-ignore
+      sortedRates = await Rate.query().has('lowest_amount', '==', amount).orHas('highest_amount', '>=' ,amount)
+      return sortedRates
+      // sortedRates = sortedRates.filter((rate) => {
+      //   // @ts-ignore
+      //   return rate.amount!.startsWith(amount)
+      // })
     }
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
@@ -47,7 +49,8 @@ export default class RatesController {
     // const user = await auth.authenticate()
     const rateSchema = schema.create({
       productName: schema.string({ escape: true }, [rules.maxLength(20)]),
-      amount: schema.number(),
+      lowestAmount: schema.number(),
+      highestAmount: schema.number(),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       rolloverCode: schema.string({ escape: true }, [rules.maxLength(5)]),
       investmentType: schema.string({ escape: true }, [rules.maxLength(50)]),

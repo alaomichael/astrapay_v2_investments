@@ -11,7 +11,10 @@ export default class Rate extends BaseModel {
   public productName: string
 
   @column()
-  public amount: number
+  public lowestAmount: number
+
+  @column()
+  public highestAmount: number
 
   @column()
   public duration: string

@@ -7,7 +7,8 @@ export default class Rates extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()
       table.string('product_name', 50).notNullable().index()
-      table.float('amount', 12).unsigned().notNullable().index()
+      table.float('lowest_amount', 12).unsigned().notNullable().index()
+      table.float('highest_amount', 12).unsigned().notNullable().index()
       table.string('duration', 5).notNullable().index()
       table.string('rollover_code').unsigned().notNullable().index()
       table.string('investment_type').notNullable().index()
@@ -30,7 +31,8 @@ export default class Rates extends BaseSchema {
         [
           'id',
           'product_name',
-          'amount',
+          'lowest_amount',
+          'highest_amount',
           'duration',
           'rollover_code',
           'investment_type',
