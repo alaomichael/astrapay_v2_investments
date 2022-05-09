@@ -219,23 +219,26 @@ export default class InvestmentsController {
   //   })
   // }
 
-  public async approve({ request, params, response }: HttpContextContract) {
+  public async approve({ request, response }: HttpContextContract) {
     try {
-      let investment = await Investment.query().where({
-        user_id: params.id,
-        id: request.input('investmentId'),
-      })
+      // let investment = await Investment.query().where({
+      //   user_id: params.id,
+      //   id: request.input('investmentId'),
+      // })
+        const { investmentId, userId } = request.qs()
+        console.log('Investment query: ', request.qs())
+        let investment = await Investment.query().where({
+          user_id: userId,
+          id: investmentId,
+        })
+        console.log(' Investment QUERY RESULT: ', investment)
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
         let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
         // Restrict update to timed/fixed deposit only
-        if (
-          investment &&
-          investment[0].investmentType !== 'debenture' &&
-          isDueForPayout === false
-        ) {
-          // 'is_payout_authorized', 'is_termination_authorized', 'is_payout_successful', 'status'
+        // if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false)
+        if (investment) {
           investment[0].status = request.input('status')
             ? request.input('status')
             : investment[0].status
@@ -249,7 +252,7 @@ export default class InvestmentsController {
             // send to user
             await investment[0].save()
             console.log('Update Investment:', investment)
-            return investment
+            return response.status(200).json({ status: 'ok', data: investment })
           }
           return // 422
         } else {
@@ -293,6 +296,7 @@ export default class InvestmentsController {
         investment = await Investment.query().where('id', investmentId)
         investment[0].status = 'payout'
         // Date payout was effected
+        // @ts-ignore
         investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
         console.log('Investment data after payout 2:', investment)
@@ -312,6 +316,7 @@ export default class InvestmentsController {
         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
         investment = await Investment.query().where('id', investmentId)
         investment[0].status = 'terminated'
+        // @ts-ignore
         investment[0].datePayoutWasDone = new Date().toISOString()
         investment[0].save()
         console.log('Terminated Payout investment data 2:', investment)

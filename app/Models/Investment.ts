@@ -54,6 +54,7 @@ export default class Investment extends BaseModel {
 
   @column.dateTime({ autoCreate: false })
   public payoutDate: DateTime
+
   @column()
   public isPayoutAuthorized: boolean
 
