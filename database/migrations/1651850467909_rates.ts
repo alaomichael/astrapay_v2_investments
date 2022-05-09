@@ -13,7 +13,7 @@ export default class Rates extends BaseSchema {
       table.string('rollover_code').unsigned().notNullable().index()
       table.string('investment_type').notNullable().index()
 
-      table.string('tag_name', 25).notNullable().index()
+      table.string('tag_name', 100).notNullable().index()
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('additional_details').nullable().index()
       table.float('long').unsigned().nullable().index()

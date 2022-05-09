@@ -19,18 +19,25 @@ export default class RatesController {
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.duration!.startsWith(duration)
+        return rate.duration!.includes(duration) // .startsWith(duration)
       })
+       return response.status(200).json({
+         status: 'ok',
+         data: sortedRates,
+       })
     }
     if (amount) {
       // @ts-ignore
-      sortedRates = await Rate.query().has('lowest_amount', '==', amount).orHas('highest_amount', '>=' ,amount)
-      return sortedRates
-      // sortedRates = sortedRates.filter((rate) => {
-      //   // @ts-ignore
-      //   return rate.amount!.startsWith(amount)
-      // })
-    }
+      sortedRates = await Rate.query()
+        .where('lowest_amount', '<=', amount)
+        .andWhere('highest_amount', '>=', amount)
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedRates,
+      })
+      }
+
+      investmentType
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
