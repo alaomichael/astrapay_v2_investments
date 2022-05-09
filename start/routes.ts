@@ -44,6 +44,7 @@ Route.group(() => {
     // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
     Route.get('investments/:userId', 'InvestmentsController.show')
+    Route.get('admin/investments/approval', 'InvestmentsController.showApprovalRequest')
 
     // PUT ROUTES
     Route.put('investments/payout', 'InvestmentsController.payout')

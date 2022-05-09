@@ -70,8 +70,8 @@ export default class InvestmentsController {
     // console.log('INVESTMENT query params: ', request.ctx)
     try {
       const investment = await Investment.query()
-        .where('id', params.id)
-        .andWhere('user_id', params.user_id)
+      .where('user_id', params.userId)
+      // .orWhere('id', params.id)
       // .limit()
       if (investment) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
@@ -225,13 +225,13 @@ export default class InvestmentsController {
       //   user_id: params.id,
       //   id: request.input('investmentId'),
       // })
-        const { investmentId, userId } = request.qs()
-        console.log('Investment query: ', request.qs())
-        let investment = await Investment.query().where({
-          user_id: userId,
-          id: investmentId,
-        })
-        console.log(' Investment QUERY RESULT: ', investment)
+      const { investmentId, userId } = request.qs()
+      console.log('Investment query: ', request.qs())
+      let investment = await Investment.query().where({
+        user_id: userId,
+        id: investmentId,
+      })
+      console.log(' Investment QUERY RESULT: ', investment)
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
         let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
@@ -239,19 +239,21 @@ export default class InvestmentsController {
         // Restrict update to timed/fixed deposit only
         // if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false)
         if (investment) {
-          investment[0].status = request.input('status')? request.input('status'): investment[0].status;
-         let terminate = request.input('isTerminationAuthorized')
-         investment[0].isTerminationAuthorized =
-           request.input('isTerminationAuthorized') !== undefined
-             ? request.input('isTerminationAuthorized')
-             : investment[0].isTerminationAuthorized
-            console.log('terminate :', terminate)
+          investment[0].status = request.input('status')
+            ? request.input('status')
+            : investment[0].status
+          let terminate = request.input('isTerminationAuthorized')
+          investment[0].isTerminationAuthorized =
+            request.input('isTerminationAuthorized') !== undefined
+              ? request.input('isTerminationAuthorized')
+              : investment[0].isTerminationAuthorized
+          console.log('terminate :', terminate)
           let payout = request.input('isPayoutAuthorized')
           investment[0].isPayoutAuthorized =
             request.input('isPayoutAuthorized') !== undefined
               ? request.input('isPayoutAuthorized')
               : investment[0].isPayoutAuthorized
-            console.log('payout :', payout)
+          console.log('payout :', payout)
           if (investment) {
             // send to user
             await investment[0].save()
@@ -271,6 +273,41 @@ export default class InvestmentsController {
       console.error(error)
     }
     // return // 401
+  }
+
+  public async showApprovalRequest({ params, response }: HttpContextContract) {
+    console.log('INVESTMENT params: ', params)
+    // console.log('INVESTMENT query: ', request)
+
+    // post will always be of type Post
+    // const investment1 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => new Investment())
+    // console.log('INVESTMENT 1 query: ', investment1)
+
+    // post can be of type Post or string
+    // const investment2 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => 'working')
+    // console.log('INVESTMENT 2 query: ', investment2)
+
+    // use a fallback query!
+    // const investment3 = await Investment.query()
+    //   .where('id', 1)
+    //   .firstOr(() => Investment.query().where('id', 2).first())
+    // console.log('INVESTMENT 3 query: ', investment3)
+    // console.log('INVESTMENT query params: ', request.ctx)
+    try {
+      const investment = await Investment.all()
+           // .limit()
+      if (investment) {
+        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+        console.log('INVESTMENT DATA: ', investment)
+        return response.status(200).json({ investment })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   public async payout({ request, response }: HttpContextContract) {
