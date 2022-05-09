@@ -41,6 +41,7 @@ Route.group(() => {
 
     // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')
+    Route.get('admin/investments', 'InvestmentsController.index')
     // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
     Route.get('investments/:userId', 'InvestmentsController.show')

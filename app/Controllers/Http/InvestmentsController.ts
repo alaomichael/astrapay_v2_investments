@@ -311,14 +311,14 @@ export default class InvestmentsController {
       if (isPayoutAuthorized) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.isPayoutAuthorized == `${isPayoutAuthorized}`
+          return investment.isPayoutAuthorized.toString() === `${isPayoutAuthorized}`
         })
       }
 
       if (isTerminationAuthorized) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.isTerminationAuthorized == `${isTerminationAuthorized}`
+          return investment.isTerminationAuthorized.toString() === `${isTerminationAuthorized}`
         })
       }
 
@@ -338,7 +338,7 @@ export default class InvestmentsController {
       if (walletId) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.walletId ===`${walletId}`
+          return investment.walletId.toString() === `${walletId}`
         })
       }
       if (limit) {
