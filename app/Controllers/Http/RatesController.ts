@@ -7,7 +7,8 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class RatesController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('Rate params: ', params)
-    const { duration, limit, amount, investmentType, rolloverCode, status } = request.qs()
+    const { duration, limit, amount, investmentType, rolloverCode, status, productName } =
+      request.qs()
     console.log('Rate query: ', request.qs())
     const countActiveRates = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countActiveRates)
@@ -74,6 +75,24 @@ export default class RatesController {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
         return rate.rolloverCode!.includes(rolloverCode) && rate.status === `${status}`
+      })
+      if (sortedRates.length < 1) {
+        return response.status(200).json({
+          success: true,
+          message: 'no investment rate matched your search',
+          data: [],
+        })
+      }
+      return response.status(200).json({
+        status: 'ok',
+        data: sortedRates,
+      })
+    }
+
+    if (productName) {
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.productName!.includes(productName) // && rate.status === `${status}`
       })
       if (sortedRates.length < 1) {
         return response.status(200).json({
