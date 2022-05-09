@@ -57,13 +57,13 @@ export default class RatesController {
         // @ts-ignore
         return rate.productName!.includes(productName)
       })
-      }
-        if (status) {
-          sortedRates = sortedRates.filter((rate) => {
-            // @ts-ignore
-            return rate.status === `${status}`
-          })
-        }
+    }
+    if (status) {
+      sortedRates = sortedRates.filter((rate) => {
+        // @ts-ignore
+        return rate.status === `${status}`
+      })
+    }
 
     if (interestRate) {
       sortedRates = sortedRates.filter((rate) => {
@@ -76,7 +76,7 @@ export default class RatesController {
     }
     if (sortedRates.length < 1) {
       return response.status(200).json({
-        success: true,
+        status: 'ok',
         message: 'no investment rate matched your search',
         data: [],
       })
@@ -130,6 +130,44 @@ export default class RatesController {
     // @ts-ignore
     Event.emit('new:rate', { id: rate.id, extras: rate.additionalDetails })
     return rate
+  }
+
+  public async update({ request, params, response }: HttpContextContract) {
+    try {
+      let rate = await Rate.query().where({
+        product_name: request.input('productName'),
+        id: request.input('rateId'),
+      })
+      if (rate.length > 0) {
+        console.log('Investment rate Selected for Update:', rate)
+        if (rate) {
+          rate[0].productName = request.input('newProductName')
+          rate[0].lowestAmount = request.input('lowestAmount')
+          rate[0].highestAmount = request.input('highestAmount')
+          rate[0].duration = request.input('duration')
+          rate[0].interestRate = request.input('interestRate')
+          rate[0].rolloverCode = request.input('rolloverCode')
+          rate[0].investmentType = request.input('investmentType')
+
+          if (rate) {
+            // send to user
+            await rate[0].save()
+            console.log('Update Investment rate:', rate)
+            return rate
+          }
+          return // 422
+        } else {
+          return response.status(304).json({ status: 'fail', data: rate })
+        }
+      } else {
+        return response
+          .status(404)
+          .json({ status: 'fail', message: 'No data match your query parameters' })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    // return // 401
   }
 
   public async destroy({ request, response, params }: HttpContextContract) {

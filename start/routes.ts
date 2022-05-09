@@ -42,5 +42,6 @@ Route.group(() => {
     Route.get('investments/:userId', 'InvestmentsController.show')
     Route.put('investments/payout', 'InvestmentsController.payout')
     Route.put('investments/:id', 'InvestmentsController.update')
+    Route.put('admin/investments/rates', 'RatesController.update')
   })
 }).prefix('api/v2')
