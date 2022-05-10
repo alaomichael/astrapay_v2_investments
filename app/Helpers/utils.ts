@@ -176,8 +176,11 @@ const dueForPayout = (created_at, duration) => {
     //     new Date(currentDate).toLocaleDateString()
     //   )
     // )
-
-    console.log('Investment duration is : ' + investmentDuration + ' days.')
+    let day = 'day'
+if(investmentDuration > 1) {
+  day = 'days'
+}
+    console.log('Investment duration is : ' + investmentDuration +  ` ${day}`)
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()

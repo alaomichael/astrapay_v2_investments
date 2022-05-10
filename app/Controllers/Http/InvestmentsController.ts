@@ -85,8 +85,8 @@ export default class InvestmentsController {
   public async update({ request, params, response }: HttpContextContract) {
     try {
       let investment = await Investment.query().where({
-        user_id: params.id,
-        id: request.input('investmentId'),
+        user_id: request.input('userId'),
+        id: params.id,
       })
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
@@ -98,10 +98,10 @@ export default class InvestmentsController {
           investment[0].investmentType !== 'debenture' &&
           isDueForPayout === false
         ) {
-          investment[0].amount = request.input('amount')
-          investment[0].duration = request.input('duration')
+          // investment[0].amount = request.input('amount')
+          // investment[0].duration = request.input('duration')
           investment[0].rolloverType = request.input('rolloverType')
-          investment[0].investmentType = request.input('investmentType')
+          // investment[0].investmentType = request.input('investmentType')
 
           if (investment) {
             // send to user
@@ -111,7 +111,7 @@ export default class InvestmentsController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: investment })
+          return response.json({ status: 'fail', data: investment })
         }
       } else {
         return response
