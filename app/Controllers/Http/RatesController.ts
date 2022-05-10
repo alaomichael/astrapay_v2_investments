@@ -28,7 +28,7 @@ export default class RatesController {
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.duration!.includes(duration)
+        return rate.duration === duration
       })
     }
     if (amount) {
@@ -68,7 +68,7 @@ export default class RatesController {
     if (interestRate) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.interestRate == `${interestRate}`
+        return rate.interestRate === parseInt(interestRate)
       })
     }
     if (limit) {
