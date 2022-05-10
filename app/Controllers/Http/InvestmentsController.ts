@@ -82,6 +82,24 @@ export default class InvestmentsController {
     }
   }
 
+  public async showPayouts({ params, response }: HttpContextContract) {
+    console.log('INVESTMENT params: ', params)
+    try {
+      const investment = await Investment.query().where('status', 'payout')
+      // .orWhere('id', params.id)
+      // .limit()
+      if (investment) {
+        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+        console.log('INVESTMENT DATA: ', investment)
+        return response.status(200).json({ status: 'ok', data: investment })
+      } else {
+return response.status(200).json({ status: 'fail', message: 'no investment has been paid out yet.' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   public async update({ request, params, response }: HttpContextContract) {
     try {
       let investment = await Investment.query().where({
@@ -300,7 +318,7 @@ export default class InvestmentsController {
       if (userId) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.userId === (parseInt(userId))
+          return investment.userId === parseInt(userId)
         })
       }
       if (investmentId) {
