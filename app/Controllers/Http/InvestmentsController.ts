@@ -6,12 +6,12 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { string } from '@ioc:Adonis/Core/Helpers'
-import axios from 'axios'
+const axios = require('axios').default
 
+const API_URL = 'http://localhost:3333/api/v2'
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
-  API_URL = 'http://localhost:3333/api/v2/'
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
@@ -177,40 +177,29 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-    // let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
-
-    //     let rate = async (amount, duration, investmentType, status) => {
-    //       let result = await axios.get(this.API_URL + 'rates', {
-    //         amount,
-    //         duration,
-    //         investmentType,
-    //         status,
-    //       })
-    //       console.log('Rate return result: ', result)
-    // return result
-    //     }
-
-    //       console.log(' The Rate return : ', rate)
-
-    let rate2 = async function getUser() {
+       let investmentRate = async function () {
       try {
         const response = await axios.get(
-          this.API_URL +
-            `investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
+          `${API_URL}/investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
         )
-        console.log(response)
-        return response
+        console.log('The API response: ',response.data)
+        if(response.data.status === 'ok'){
+          return response.data.data[0].interest_rate
+        } else {
+          return response.status(404).json({status: 'fail', message:'No rate matched your investment request, please try again.'})
+        }
       } catch (error) {
         console.error(error)
       }
     }
 
-    console.log(' The Rate return for RATE 2: ', rate2)
+    console.log(' The Rate return for RATE 2: ', await investmentRate())
+    let rate = await investmentRate()
 
-    // investment.interestRate = rate
-    // let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
-    // investment.interestDueOnInvestment = amountDueOnPayout
-    // investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+    investment.interestRate = rate
+    let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
+    investment.interestDueOnInvestment = amountDueOnPayout
+    investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
     // investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
     // @ts-ignore
