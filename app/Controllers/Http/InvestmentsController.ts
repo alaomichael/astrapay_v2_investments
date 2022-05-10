@@ -34,7 +34,7 @@ export default class InvestmentsController {
     }
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
-        success: true,
+        status: 'fail',
         message: 'no investment matched your search',
         data: [],
       })
@@ -50,10 +50,10 @@ export default class InvestmentsController {
     // return investment
     return response.status(200).json(sortedInvestments)
   }
-  public async show({ params, response }: HttpContextContract) {
+  public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    // console.log('INVESTMENT query: ', request)
-
+    const { limit } = request.qs()
+    console.log('INVESTMENT query: ', request.qs())
     // post will always be of type Post
     // const investment1 = await Investment.query()
     //   .where('id', 1)
@@ -73,13 +73,21 @@ export default class InvestmentsController {
     // console.log('INVESTMENT 3 query: ', investment3)
     // console.log('INVESTMENT query params: ', request.ctx)
     try {
-      const investment = await Investment.query().where('user_id', params.userId)
+      let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
-      if (investment) {
-        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+      if (investment.length > 0) {
         console.log('INVESTMENT DATA: ', investment)
-        return response.status(200).json({ investment })
+        if (limit) {
+          investment = investment.slice(0, Number(limit))
+        }
+        return response.status(200).json({ status: 'ok', data: investment })
+      } else {
+        return response.status(200).json({
+          status: 'fail',
+          message: 'no investment matched your search',
+          data: [],
+        })
       }
     } catch (error) {
       console.log(error)
@@ -177,16 +185,19 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-       let investmentRate = async function () {
+    let investmentRate = async function () {
       try {
         const response = await axios.get(
           `${API_URL}/investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
         )
-        console.log('The API response: ',response.data)
-        if(response.data.status === 'ok'){
+        console.log('The API response: ', response.data)
+        if (response.data.status === 'ok') {
           return response.data.data[0].interest_rate
         } else {
-          return response.status(404).json({status: 'fail', message:'No rate matched your investment request, please try again.'})
+          return response.status(404).json({
+            status: 'fail',
+            message: 'No rate matched your investment request, please try again.',
+          })
         }
       } catch (error) {
         console.error(error)
@@ -463,5 +474,29 @@ export default class InvestmentsController {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  public async destroy({ params,request, response }: HttpContextContract) {
+    // let id = request.input('rateId')
+    const { investmentId } = request.qs()
+    console.log('Rate query: ', request.qs())
+    // let rate = await Rate.query().where({
+    //   product_name: request.input('productName'),
+    //   id: request.input('rateId'),
+    // })
+    let rate = await Investment.query().where({
+      id: request.input('investmentId'),
+      user_id: params.userId,
+    })
+    console.log(' QUERY RESULT: ', rate)
+
+    rate = await Investment.query()
+      .where({
+        product_name: productName,
+        id: rateId,
+      })
+      .delete()
+    console.log('Deleted data:', rate)
+    return response.send('Rate Delete.')
   }
 }
