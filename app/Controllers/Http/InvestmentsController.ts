@@ -178,27 +178,17 @@ export default class InvestmentsController {
       }),
     })
     const payload: any = await request.validate({ schema: investmentSchema })
-    const investment = await Investment.create(payload)
-    // const newInvestment = request.all() as Partial<Investment>
-    // const investment = await Investment.create(newInvestment)
-    // return response.ok(investment)
-    // The code below only work when there is auth
-    // await user.related('investments').save(investment)
-
-    // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
+    console.log('Payload  :', payload)
     let investmentRate = async function () {
       try {
         const response = await axios.get(
-          `${API_URL}/investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
+          `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
         )
         console.log('The API response: ', response.data)
         if (response.data.status === 'ok' && response.data.data.length > 0) {
           return response.data.data[0].interest_rate
         } else {
-          return response.status(404).json({
-            status: 'fail',
-            message: 'No rate matched your investment request, please try again.',
-          })
+          return
         }
       } catch (error) {
         console.error(error)
@@ -209,12 +199,21 @@ export default class InvestmentsController {
     let rate = await investmentRate()
     console.log(' Rate return line 210 : ', rate)
     if (rate === undefined) {
-      return response.json({
+      return response.status(400).json({
         status: 'fail',
         message: 'no investment rate matched your search, please try again.',
         data: [],
       })
     }
+
+    const investment = await Investment.create(payload)
+    // const newInvestment = request.all() as Partial<Investment>
+    // const investment = await Investment.create(newInvestment)
+    // return response.ok(investment)
+    // The code below only work when there is auth
+    // await user.related('investments').save(investment)
+
+    // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
     investment.interestRate = rate
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
