@@ -65,6 +65,9 @@ export default class Investment extends BaseModel {
   public isPayoutSuccessful: boolean
 
   @column()
+  public requestType: string
+
+  @column()
   public status: string
 
   @column.dateTime({ autoCreate: false })

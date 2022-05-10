@@ -15,7 +15,7 @@ import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from '
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    const { search, limit } = request.qs()
+    const { search, limit, requestType } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
@@ -28,6 +28,14 @@ export default class InvestmentsController {
         // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
         // @ts-ignore
         return investment.walletHolderDetails.lastName!.startsWith(search)
+      })
+    }
+    if (requestType) {
+      sortedInvestments = sortedInvestments.filter((investment) => {
+        // @ts-ignore
+        // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        // @ts-ignore
+        return investment.requestType.startsWith(requestType)
       })
     }
     if (limit) {

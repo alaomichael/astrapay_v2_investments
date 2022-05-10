@@ -1,8 +1,22 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Payouts extends BaseSchema {
+  /**
+   * .enum('rollover_type', ['100' = 'no rollover', '101' = 'rollover ', '102', '103', '104', '105', '106', '107'])
+   */
+
+  /**
+   *
+   * @protected
+   * @memberof Payouts
+   */
+
   protected tableName = 'payouts'
 
+  /**
+   *
+   * @return {void}@memberof Payouts
+   */
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()

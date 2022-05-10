@@ -33,6 +33,7 @@ export default class Investments extends BaseSchema {
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
+      table.string('request_type', 255).notNullable().defaultTo('start investment').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
@@ -55,6 +56,7 @@ export default class Investments extends BaseSchema {
           'is_payout_authorized',
           'is_termination_authorized',
           'is_payout_successful',
+          'request_type',
           'status',
           'date_payout_was_done',
         ],
