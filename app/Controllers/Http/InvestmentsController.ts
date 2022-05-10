@@ -5,6 +5,7 @@ import Payout from 'App/Models/Payout'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
+import { string } from '@ioc:Adonis/Core/Helpers'
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
@@ -43,8 +44,10 @@ export default class InvestmentsController {
       // @ts-ignore
       email: investment[0].walletHolderDetails.email,
     })
+    let convertedSortedInvestments = await string.camelCase(sortedInvestments[0].)
     // return investment
-    return response.status(200).json(sortedInvestments)
+    // return response.status(200).json(sortedInvestments)
+return response.status(200).json(convertedSortedInvestments)
   }
   public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
