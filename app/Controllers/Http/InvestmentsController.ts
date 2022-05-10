@@ -6,9 +6,14 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { string } from '@ioc:Adonis/Core/Helpers'
+import axios from 'axios'
+
+
+
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
+  const API_URL = 'http://localhost:3333/api/v2/admin/'
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
@@ -44,10 +49,8 @@ export default class InvestmentsController {
       // @ts-ignore
       email: investment[0].walletHolderDetails.email,
     })
-    let convertedSortedInvestments = await string.camelCase(sortedInvestments[0].)
     // return investment
-    // return response.status(200).json(sortedInvestments)
-return response.status(200).json(convertedSortedInvestments)
+    return response.status(200).json(sortedInvestments)
   }
   public async show({ params, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -96,7 +99,9 @@ return response.status(200).json(convertedSortedInvestments)
         console.log('INVESTMENT DATA: ', investment)
         return response.status(200).json({ status: 'ok', data: investment })
       } else {
-return response.status(200).json({ status: 'fail', message: 'no investment has been paid out yet.' })
+        return response
+          .status(200)
+          .json({ status: 'fail', message: 'no investment has been paid out yet.' })
       }
     } catch (error) {
       console.log(error)
@@ -174,7 +179,14 @@ return response.status(200).json({ status: 'fail', message: 'no investment has b
     // await user.related('investments').save(investment)
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-    let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
+    // let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
+    let rate = (username, email, password) => {
+  return axios.post(this.API_URL + 'rates', {
+    username,
+    email,
+    password,
+  })
+}
     investment.interestRate = rate
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
     investment.interestDueOnInvestment = amountDueOnPayout
