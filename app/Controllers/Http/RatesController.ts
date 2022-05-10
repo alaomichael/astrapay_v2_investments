@@ -212,13 +212,17 @@ export default class RatesController {
     })
     console.log(' QUERY RESULT: ', rate)
 
-    rate = await Rate.query()
-      .where({
-        product_name: productName,
-        id: rateId,
-      })
-      .delete()
-    console.log('Deleted data:', rate)
-    return response.send('Rate Delete.')
+    if (rate.length > 0) {
+      rate = await Rate.query()
+        .where({
+          product_name: productName,
+          id: rateId,
+        })
+        .delete()
+      console.log('Deleted data:', rate)
+      return response.send('Rate Delete.')
+    } else {
+      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+    }
   }
 }

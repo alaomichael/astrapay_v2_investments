@@ -477,26 +477,25 @@ export default class InvestmentsController {
   }
 
   public async destroy({ params,request, response }: HttpContextContract) {
-    // let id = request.input('rateId')
-    const { investmentId } = request.qs()
+        // const { investmentId } = request.qs()
     console.log('Rate query: ', request.qs())
-    // let rate = await Rate.query().where({
-    //   product_name: request.input('productName'),
-    //   id: request.input('rateId'),
-    // })
-    let rate = await Investment.query().where({
+     let investment = await Investment.query().where({
       id: request.input('investmentId'),
       user_id: params.userId,
     })
-    console.log(' QUERY RESULT: ', rate)
+    console.log(' QUERY RESULT: ', investment)
+if(investment.length > 0) {
 
-    rate = await Investment.query()
-      .where({
-        product_name: productName,
-        id: rateId,
-      })
-      .delete()
-    console.log('Deleted data:', rate)
-    return response.send('Rate Delete.')
+  investment = await Investment.query()
+    .where({
+      id: request.input('investmentId'),
+      user_id: params.userId,
+    })
+    .delete()
+  console.log('Deleted data:', investment)
+  return response.send('Investment Deleted.')
+} else {
+  return response.status(404).json({status: 'fail', message: 'Invalid parameters'})
+}
   }
 }

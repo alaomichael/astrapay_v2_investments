@@ -63,6 +63,6 @@ Route.group(() => {
     Route.delete('admin/investments/rates', 'RatesController.destroy')
     // Route.delete('admin/investments/rates', 'RatesController.destroy')
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
-    Route.delete('investments/:id', 'InvestmentsController.destroy')
+    // Route.delete('investments/:id', 'InvestmentsController.destroy')
   })
 }).prefix('api/v2')
