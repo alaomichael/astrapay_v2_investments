@@ -8,12 +8,10 @@ import { DateTime } from 'luxon'
 import { string } from '@ioc:Adonis/Core/Helpers'
 import axios from 'axios'
 
-
-
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
-  const API_URL = 'http://localhost:3333/api/v2/admin/'
+  API_URL = 'http://localhost:3333/api/v2/'
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { search, limit } = request.qs()
@@ -180,17 +178,40 @@ export default class InvestmentsController {
 
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
     // let rate = await generateRate(investment.amount, investment.duration, investment.investmentType)
-    let rate = (username, email, password) => {
-  return axios.post(this.API_URL + 'rates', {
-    username,
-    email,
-    password,
-  })
-}
-    investment.interestRate = rate
-    let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
-    investment.interestDueOnInvestment = amountDueOnPayout
-    investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+
+    //     let rate = async (amount, duration, investmentType, status) => {
+    //       let result = await axios.get(this.API_URL + 'rates', {
+    //         amount,
+    //         duration,
+    //         investmentType,
+    //         status,
+    //       })
+    //       console.log('Rate return result: ', result)
+    // return result
+    //     }
+
+    //       console.log(' The Rate return : ', rate)
+
+    let rate2 = async function getUser() {
+      try {
+        const response = await axios.get(
+          this.API_URL +
+            `investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
+        )
+        console.log(response)
+        return response
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    console.log(' The Rate return for RATE 2: ', rate2)
+
+    // investment.interestRate = rate
+    // let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
+    // investment.interestDueOnInvestment = amountDueOnPayout
+    // investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+
     // investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
     // @ts-ignore
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
