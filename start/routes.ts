@@ -53,6 +53,7 @@ Route.group(() => {
 
     // PUT ROUTES
     Route.put('investments/payouts', 'InvestmentsController.payout')
+    Route.put('investments/terminates', 'InvestmentsController.payout')
     Route.put('admin/investments/payouts', 'InvestmentsController.payout')
     Route.put('admin/investments/rates', 'RatesController.update')
     Route.put('admin/investments/approvals', 'InvestmentsController.approve')
