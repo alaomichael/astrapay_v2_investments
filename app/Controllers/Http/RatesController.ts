@@ -25,17 +25,20 @@ export default class RatesController {
     // const rate = await Rate.query().offset(0).limit(1)
     const rate = await Rate.all()
     let sortedRates = rate
-    if (duration) {
-      sortedRates = sortedRates.filter((rate) => {
-        // @ts-ignore
-        return rate.duration === duration
-      })
-    }
     if (amount) {
       // @ts-ignore
       sortedRates = await Rate.query()
         .where('lowest_amount', '<=', amount)
         .andWhere('highest_amount', '>=', amount)
+    }
+
+    if (duration) {
+      sortedRates = sortedRates.filter((rate) => {
+        console.log(' Rate Duration:', rate.duration)
+        console.log(' Query Duration:', duration)
+        // @ts-ignore
+        return rate.duration === duration
+      })
     }
 
     if (investmentType) {

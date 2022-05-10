@@ -6,9 +6,10 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { string } from '@ioc:Adonis/Core/Helpers'
+import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
-const API_URL = 'http://localhost:3333/api/v2'
+const API_URL = Env.get('API_URL')
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
 export default class InvestmentsController {
@@ -156,7 +157,7 @@ export default class InvestmentsController {
     // return // 401
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
       amount: schema.number(),
@@ -191,7 +192,7 @@ export default class InvestmentsController {
           `${API_URL}/investments/rates?amount=${investment.amount}&duration=${investment.duration}&investmentType=${investment.investmentType}`
         )
         console.log('The API response: ', response.data)
-        if (response.data.status === 'ok') {
+        if (response.data.status === 'ok' && response.data.data.length > 0) {
           return response.data.data[0].interest_rate
         } else {
           return response.status(404).json({
@@ -206,6 +207,14 @@ export default class InvestmentsController {
 
     console.log(' The Rate return for RATE 2: ', await investmentRate())
     let rate = await investmentRate()
+    console.log(' Rate return line 210 : ', rate)
+    if (rate === undefined) {
+      return response.json({
+        status: 'fail',
+        message: 'no investment rate matched your search, please try again.',
+        data: [],
+      })
+    }
 
     investment.interestRate = rate
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
@@ -239,7 +248,7 @@ export default class InvestmentsController {
 
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })
-    return investment
+    return response.status(201).json({status:'ok', data: investment})
   }
 
   // public async store2({ request }: HttpContextContract) {
@@ -476,26 +485,25 @@ export default class InvestmentsController {
     }
   }
 
-  public async destroy({ params,request, response }: HttpContextContract) {
-        // const { investmentId } = request.qs()
+  public async destroy({ params, request, response }: HttpContextContract) {
+    // const { investmentId } = request.qs()
     console.log('Rate query: ', request.qs())
-     let investment = await Investment.query().where({
+    let investment = await Investment.query().where({
       id: request.input('investmentId'),
       user_id: params.userId,
     })
     console.log(' QUERY RESULT: ', investment)
-if(investment.length > 0) {
-
-  investment = await Investment.query()
-    .where({
-      id: request.input('investmentId'),
-      user_id: params.userId,
-    })
-    .delete()
-  console.log('Deleted data:', investment)
-  return response.send('Investment Deleted.')
-} else {
-  return response.status(404).json({status: 'fail', message: 'Invalid parameters'})
-}
+    if (investment.length > 0) {
+      investment = await Investment.query()
+        .where({
+          id: request.input('investmentId'),
+          user_id: params.userId,
+        })
+        .delete()
+      console.log('Deleted data:', investment)
+      return response.send('Investment Deleted.')
+    } else {
+      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+    }
   }
 }
