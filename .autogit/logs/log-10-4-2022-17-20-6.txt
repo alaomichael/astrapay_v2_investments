@@ -1,0 +1,19 @@
+-------------------- Auto-Git Log --------------------
+		Tue May 10 2022 17:20:06 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* app/Models/Investment.ts
+* database/migrations/1651220408548_investments.ts
+* database/migrations/1651658735814_payouts.ts
+
+
+Created files:
+* .autogit/logs/log-10-4-2022-16-49-44.txt
+
+
+Deleted files:
+
+
+Renamed files:

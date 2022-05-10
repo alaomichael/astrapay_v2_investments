@@ -1,7 +1,13 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-type RollOverType = '100' | '101' | '102' | '103' | '104' | '105' | '106' | '107'
+/**
+   * .enum('rollover_type', ['100' = 'no rollover',
+   *  '101' = 'rollover principal only',
+   * '102' = 'rollover principal with interest',
+   * '103' = 'rollover interest only'])
+   */
+type RollOverType = '100' | '101' | '102' | '103'
 
 export default class Investment extends BaseModel {
   @column({ isPrimary: true })

@@ -1,6 +1,13 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Investments extends BaseSchema {
+  /**
+   * .enum('rollover_type', ['100' = 'no rollover',
+   *  '101' = 'rollover principal only',
+   * '102' = 'rollover principal with interest',
+   * '103' = 'rollover interest only'])
+   */
+
   protected tableName = 'investments'
 
   public async up() {
@@ -10,11 +17,7 @@ export default class Investments extends BaseSchema {
       table.integer('wallet_id').unsigned().nullable().index()
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
-      table
-        .enum('rollover_type', ['100', '101', '102', '103', '104', '105', '106', '107'])
-        .unsigned()
-        .notNullable()
-        .index()
+      table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
       table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
