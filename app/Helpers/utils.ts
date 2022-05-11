@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable prettier/prettier */
 'use strict'
 
@@ -179,10 +180,10 @@ const dueForPayout = (created_at, duration) => {
     //   )
     // )
     let day = 'day'
-if(investmentDuration > 1) {
-  day = 'days'
-}
-    console.log('Investment duration is : ' + investmentDuration +  ` ${day}`)
+    if (investmentDuration > 1) {
+      day = 'days'
+    }
+    console.log('Investment duration is : ' + investmentDuration + ` ${day}`)
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
@@ -227,7 +228,7 @@ const payoutDueDate = (created_at, duration) => {
 
 // payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
-const approvalRequest = async function (userId,investmentId,requestType) {
+const approvalRequest = async function (userId, investmentId, requestType) {
   try {
     // let requestType = 'start investment'
     const response = await axios.post(`${API_URL}/investments/approvals`, {
@@ -235,10 +236,12 @@ const approvalRequest = async function (userId,investmentId,requestType) {
       investmentId,
       requestType,
     })
-    console.log('The API response for approval: ', response.data)
-    if (response.data.status === 'ok' && response.data.data.length > 0) {
-      return response.data.data[0]
+    console.log('The API response for approval request: ', response.data)
+    if (response && response.data.status === 'ok') {
+      console.log('Approval request status is OK')
+      return response.data
     } else {
+      console.log('Approval request status is NOT OK')
       return
     }
   } catch (error) {

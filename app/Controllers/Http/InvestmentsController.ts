@@ -273,10 +273,6 @@ export default class InvestmentsController {
            let investmentId= investment.id
            let requestType = 'start investment'
     let approval = await approvalRequest(userId,investmentId,requestType)
-console.log(
-  ' Approval request return line 277 279: ',
-  await approvalRequest(userId, investmentId, requestType)
-)
     console.log(' Approval request return line 280 : ', approval)
     if (approval === undefined) {
       return response.status(400).json({
