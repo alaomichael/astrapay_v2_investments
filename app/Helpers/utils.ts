@@ -7,10 +7,12 @@ const string = require('@ioc:Adonis/Core/Helpers')
 const { DateTime } = require('luxon')
 // const {DateTime} = Luxon
 // import Env from '@ioc:Adonis/Core/Env'
-// const Env = require('@ioc:Adonis/Core/Env')
+const Env = require('@ioc:Adonis/Core/Env')
+const axios = require('axios').default
 const JSJoda = require('js-joda')
 const LocalDate = JSJoda.LocalDate
 const Moment = require('moment')
+const API_URL = Env.get('API_URL')
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -225,7 +227,24 @@ const payoutDueDate = (created_at, duration) => {
 
 // payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
-const approvalRequest = 
+const approvalRequest = async function (userId,investmentId,requestType) {
+  try {
+    // let requestType = 'start investment'
+    const response = await axios.post(`${API_URL}/investments/approvals`, {
+      userId,
+      investmentId,
+      requestType,
+    })
+    console.log('The API response for approval: ', response.data)
+    if (response.data.status === 'ok' && response.data.data.length > 0) {
+      return response.data.data[0].approvalStatus
+    } else {
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 /**
  * An utility function which returns a random number

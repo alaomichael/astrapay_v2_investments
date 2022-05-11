@@ -73,29 +73,32 @@ export default class ApprovalsController {
   }
 
   public async store({ request }: HttpContextContract) {
-    // const user = await auth.authenticate()
-    const approvalSchema = schema.create({
-      userId: schema.number(),
-      investmentId: schema.number(),
-      requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
-    })
-    const payload: any = await request.validate({ schema: approvalSchema })
-    const approval = await Approval.create(payload)
-    // @ts-ignore
-    // approval.status = 'active'
-    await approval.save()
-    console.log('The new approval request:', approval)
+    try {
+      const approvalSchema = schema.create({
+        userId: schema.number(),
+        investmentId: schema.number(),
+        requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
+      })
+      const payload: any = await request.validate({ schema: approvalSchema })
+      const approval = await Approval.create(payload)
+      // @ts-ignore
+      // approval.status = 'active'
+      await approval.save()
+      console.log('The new approval request:', approval)
 
-    // TODO
-    console.log('A New approval request has been Created.')
+      // TODO
+      console.log('A New approval request has been Created.')
 
-    // Save approval new status to Database
-    await approval.save()
-    // Send approval Creation Message to Queue
+      // Save approval new status to Database
+      await approval.save()
+      // Send approval Creation Message to Queue
 
-    // @ts-ignore
-    Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-    return approval
+      // @ts-ignore
+      Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
+      return approval
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   public async update({ request, response }: HttpContextContract) {

@@ -11,7 +11,7 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate } from 'App/Helpers/utils'
+import {  generateRate,  interestDueOnPayout,  dueForPayout,  payoutDueDate,  approvalRequest,} from 'App/Helpers/utils'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -248,36 +248,39 @@ export default class InvestmentsController {
     // Send Investment Initiation Message to Queue
 
     // Send Approval Request to Admin
- let approvalRequest = async function () {
-   try {
-     let requestType = "start investment"
-     const response = await axios.post(`${API_URL}/investments/approvals`, {
-       userId: investment.userId,
-       investmentId: investment.id,
-       requestType: requestType,
-     })
-     console.log('The API response for approval: ', response.data)
-     if (response.data.status === 'ok' && response.data.data.length > 0) {
-       return response.data.data[0].approvalStatus
-     } else {
-       return
-     }
-   } catch (error) {
-     console.error(error)
-   }
- }
 
- console.log(' The approval return for approval 2: ', await approvalRequest())
- let approval = await approvalRequest()
- console.log(' Rate return line 210 : ', approval)
- if (approval === undefined) {
-   return response.status(400).json({
-     status: 'fail',
-     message: 'investment approval request was not successful, please try again.',
-     data: [],
-   })
- }
+    //  let approvalRequest = async function () {
+    //    try {
+    //      let requestType = "start investment"
+    //      const response = await axios.post(`${API_URL}/investments/approvals`, {
+    //        userId: investment.userId,
+    //        investmentId: investment.id,
+    //        requestType: requestType,
+    //      })
+    //      console.log('The API response for approval: ', response.data)
+    //      if (response.data.status === 'ok' && response.data.data.length > 0) {
+    //        return response.data.data[0].approvalStatus
+    //      } else {
+    //        return
+    //      }
+    //    } catch (error) {
+    //      console.error(error)
+    //    }
+    //  }
 
+    //  console.log(' The approval return for approval 2: ', await approvalRequest())
+           let userId = investment.userId
+           let investmentId= investment.id
+           let requestType = 'start investment'
+    let approval = await approvalRequest(userId,investmentId,requestType)
+    console.log(' Approval request return line 276 : ', approval)
+    if (approval === undefined) {
+      return response.status(400).json({
+        status: 'fail',
+        message: 'investment approval request was not successful, please try again.',
+        data: [],
+      })
+    }
 
     // Testing
     // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
