@@ -72,7 +72,7 @@ export default class ApprovalsController {
     })
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     try {
       const approvalSchema = schema.create({
         userId: schema.number(),
@@ -95,9 +95,13 @@ export default class ApprovalsController {
 
       // @ts-ignore
       Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-      return approval
+      return response.status(201).json({ status: 'ok', data: approval })
     } catch (error) {
       console.error(error)
+      return response.status(404).json({
+        status: 'fail',
+        message: 'your approval request was not successful, please try again.',
+      })
     }
   }
 

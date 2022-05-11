@@ -237,7 +237,7 @@ const approvalRequest = async function (userId,investmentId,requestType) {
     })
     console.log('The API response for approval: ', response.data)
     if (response.data.status === 'ok' && response.data.data.length > 0) {
-      return response.data.data[0].approvalStatus
+      return response.data.data[0]
     } else {
       return
     }
