@@ -36,10 +36,10 @@ export default class ApprovalsController {
       })
     }
 
-    if (remark) {
+    if (remark && sortedApprovals.length > 0) {
       sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return approval.remark!.includes(remark)
+        return approval.remark.includes(remark)
       })
     }
 
@@ -73,8 +73,6 @@ export default class ApprovalsController {
       userId: schema.number(),
       investmentId: schema.number(),
       requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
-      approvalStatus: schema.string({ escape: true }, [rules.maxLength(100)]),
-      remark: schema.string({ escape: true }, [rules.maxLength(255)]),
     })
     const payload: any = await request.validate({ schema: approvalSchema })
     const approval = await Approval.create(payload)
