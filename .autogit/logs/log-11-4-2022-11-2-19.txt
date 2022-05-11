@@ -1,0 +1,18 @@
+-------------------- Auto-Git Log --------------------
+		Wed May 11 2022 11:02:19 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/ApprovalsController.ts
+* database/migrations/1652258441909_approvals.ts
+* start/routes.ts
+
+
+Created files:
+* .autogit/logs/log-11-4-2022-9-47-34.txt
+
+
+Deleted files:
+
+
+Renamed files:

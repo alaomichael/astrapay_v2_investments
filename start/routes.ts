@@ -37,19 +37,21 @@ Route.group(() => {
 
     // POST ROUTES
     Route.post('investments', 'InvestmentsController.store')
+    Route.post('investments/approvals', 'ApprovalsController.store')
     Route.post('admin/investments', 'InvestmentsController.store')
     Route.post('admin/investments/rates', 'RatesController.store')
+    Route.post('admin/investments/approvals', 'ApprovalsController.store')
 
     // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')
     Route.get('admin/investments', 'InvestmentsController.index')
-    // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
     Route.get('admin/investments/rates', 'RatesController.index')
     Route.get('admin/investments/approvals', 'ApprovalsController.index')
     Route.get('admin/investments/payouts', 'InvestmentsController.showPayouts')
     Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/:userId', 'InvestmentsController.show')
+    // Route.get('investments/rates', 'InvestmentsController.rate')
 
     // PUT ROUTES
     Route.put('investments/payouts', 'InvestmentsController.payout')
@@ -63,8 +65,8 @@ Route.group(() => {
     // DELETE ROUTES
     Route.delete('admin/investments/rates', 'RatesController.destroy')
     Route.delete('admin/investments/approvals', 'ApprovalsController.destroy')
-    // Route.delete('admin/investments/rates', 'RatesController.destroy')
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
+    // Route.delete('admin/investments/rates', 'RatesController.destroy')
     // Route.delete('investments/:id', 'InvestmentsController.destroy')
   })
 }).prefix('api/v2')
