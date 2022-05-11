@@ -1,93 +1,71 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Rate from 'App/Models/Rate'
+import Approval from 'App/Models/Approval'
 import { DateTime } from 'luxon'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
-    console.log('Rate params: ', params)
-    const {
-      duration,
-      limit,
-      amount,
-      investmentType,
-      rolloverCode,
-      status,
-      productName,
-      interestRate,
-    } = request.qs()
-    console.log('Rate query: ', request.qs())
-    const countActiveRates = await Rate.query().where('status', 'active').getCount()
-    console.log('Rate Investment count: ', countActiveRates)
+    console.log('Approvals params: ', params)
+    const { userId, limit, investmentId, requestType, approvalStatus, remark } = request.qs()
+    console.log('Approvals query: ', request.qs())
+    const countApprovals = await Approval.query().where('approval_status', 'pending').getCount()
+    console.log('Approval count: ', countApprovals)
     // const countSuspended = await Rate.query().where('status', 'suspended').getCount()
     // console.log('Terminated Investment count: ', countSuspended)
     // const rate = await Rate.query().offset(0).limit(1)
-    const rate = await Rate.all()
-    let sortedRates = rate
-    if (amount) {
+    const approval = await Approval.all()
+    let sortedApprovals = approval
+    if (userId) {
       // @ts-ignore
-      sortedRates = await Rate.query()
-        .where('lowest_amount', '<=', amount)
-        .andWhere('highest_amount', '>=', amount)
+      sortedApprovals = await Approval.query().where('user_id', userId)
     }
-
-    if (duration) {
-      sortedRates = sortedRates.filter((rate) => {
-        console.log(' Rate Duration:', rate.duration)
-        console.log(' Query Duration:', duration)
+    // if (investmentId) {
+    //   // @ts-ignore
+    //   sortedApprovals = await Approval.query().where('investment_id', investmentId)
+    // }
+    if (investmentId) {
+      sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return rate.duration === duration
+        return approval.investmentId === parseInt(investmentId)
       })
     }
 
-    if (investmentType) {
-      sortedRates = sortedRates.filter((rate) => {
+    if (requestType) {
+      sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return rate.investmentType!.includes(investmentType)
+        return approval.requestType!.includes(requestType)
       })
     }
 
-    if (rolloverCode) {
-      sortedRates = sortedRates.filter((rate) => {
+    if (remark) {
+      sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return rate.rolloverCode!.includes(rolloverCode)
+        return approval.remark!.includes(remark)
       })
     }
 
-    if (productName) {
-      sortedRates = sortedRates.filter((rate) => {
+    if (approvalStatus) {
+      sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return rate.productName!.includes(productName)
-      })
-    }
-    if (status) {
-      sortedRates = sortedRates.filter((rate) => {
-        // @ts-ignore
-        return rate.status === `${status}`
+        return approval.approvalStatus === `${approvalStatus}`
       })
     }
 
-    if (interestRate) {
-      sortedRates = sortedRates.filter((rate) => {
-        // @ts-ignore
-        return rate.interestRate === parseInt(interestRate)
-      })
-    }
     if (limit) {
-      sortedRates = sortedRates.slice(0, Number(limit))
+      sortedApprovals = sortedApprovals.slice(0, Number(limit))
     }
-    if (sortedRates.length < 1) {
+    if (sortedApprovals.length < 1) {
       return response.status(200).json({
         status: 'ok',
-        message: 'no investment rate matched your search',
+        message: 'no approval request matched your search',
         data: [],
       })
     }
     // return rate(s)
     return response.status(200).json({
       status: 'ok',
-      data: sortedRates,
+      data: sortedApprovals,
     })
   }
 

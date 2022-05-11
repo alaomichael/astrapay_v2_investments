@@ -46,7 +46,7 @@ Route.group(() => {
     // Route.get('investments/rates', 'InvestmentsController.rate')
     Route.get('investments/rates', 'RatesController.index')
     Route.get('admin/investments/rates', 'RatesController.index')
-    Route.get('admin/investments/approvals', 'InvestmentsController.showApprovalRequest')
+    Route.get('admin/investments/approvals', 'ApprovalsController.index')
     Route.get('admin/investments/payouts', 'InvestmentsController.showPayouts')
     Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/:userId', 'InvestmentsController.show')
@@ -56,12 +56,13 @@ Route.group(() => {
     Route.put('investments/terminates', 'InvestmentsController.payout')
     Route.put('admin/investments/payouts', 'InvestmentsController.payout')
     Route.put('admin/investments/rates', 'RatesController.update')
-    Route.put('admin/investments/approvals', 'InvestmentsController.approve')
+    Route.put('admin/investments/approvals', 'ApprovalsController.update')
     Route.put('admin/investments/:id', 'InvestmentsController.update')
     Route.put('investments/:id', 'InvestmentsController.update')
 
     // DELETE ROUTES
     Route.delete('admin/investments/rates', 'RatesController.destroy')
+    Route.delete('admin/investments/approvals', 'ApprovalsController.destroy')
     // Route.delete('admin/investments/rates', 'RatesController.destroy')
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
     // Route.delete('investments/:id', 'InvestmentsController.destroy')
