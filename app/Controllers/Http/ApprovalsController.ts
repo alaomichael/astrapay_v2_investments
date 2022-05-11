@@ -141,6 +141,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'active'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               // Save the updated investment
               await investment[0].save()
             } else if (
@@ -149,6 +150,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'terminated'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = true
               investment[0].isTerminationAuthorized = true
               // Save the updated investment
@@ -159,6 +161,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'payout'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = true
               investment[0].isTerminationAuthorized = true
               // Save the updated investment
@@ -169,6 +172,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'declined'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               // Save the updated investment
               await investment[0].save()
             } else if (
@@ -177,6 +181,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'declined'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = false
               investment[0].isTerminationAuthorized = false
               // Save the updated investment
@@ -187,6 +192,7 @@ export default class ApprovalsController {
             ) {
               newStatus = 'declined'
               investment[0].status = newStatus
+              investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = false
               investment[0].isTerminationAuthorized = false
               // Save the updated investment

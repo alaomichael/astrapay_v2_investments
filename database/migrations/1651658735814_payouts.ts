@@ -47,6 +47,7 @@ export default class Payouts extends BaseSchema {
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
+      table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
@@ -68,6 +69,7 @@ export default class Payouts extends BaseSchema {
           'is_payout_authorized',
           'is_termination_authorized',
           'is_payout_successful',
+          'approval_status',
           'status',
           'date_payout_was_done',
         ],

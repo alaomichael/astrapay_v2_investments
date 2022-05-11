@@ -74,6 +74,9 @@ export default class Investment extends BaseModel {
   public requestType: string
 
   @column()
+  public approvalStatus: string
+
+  @column()
   public status: string
 
   @column.dateTime({ autoCreate: false })
