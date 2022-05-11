@@ -71,6 +71,9 @@ export default class Payout extends BaseModel {
   public isPayoutSuccessful: boolean
 
   @column()
+  public approvalStatus: string
+
+  @column()
   public status: string
 
   @column.dateTime({ autoCreate: false })
