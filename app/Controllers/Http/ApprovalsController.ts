@@ -163,8 +163,37 @@ export default class ApprovalsController {
               investment[0].isTerminationAuthorized = true
               // Save the updated investment
               await investment[0].save()
+            } else if (
+              approval[0].requestType === 'start investment' &&
+              approval[0].approvalStatus === 'declined'
+            ) {
+              newStatus = 'declined'
+              investment[0].status = newStatus
+              // Save the updated investment
+              await investment[0].save()
+            } else if (
+              approval[0].requestType === 'terminate investment' &&
+              approval[0].approvalStatus === 'declined'
+            ) {
+              newStatus = 'declined'
+              investment[0].status = newStatus
+              investment[0].isPayoutAuthorized = false
+              investment[0].isTerminationAuthorized = false
+              // Save the updated investment
+              await investment[0].save()
+            } else if (
+              approval[0].requestType === 'payout investment' &&
+              approval[0].approvalStatus === 'declined'
+            ) {
+              newStatus = 'declined'
+              investment[0].status = newStatus
+              investment[0].isPayoutAuthorized = false
+              investment[0].isTerminationAuthorized = false
+              // Save the updated investment
+              await investment[0].save()
             }
-
+            // Update Investment data
+            console.log(' Updated investment line 196: ', investment[0].$original)
             // send to user
             return response.status(200).json({ status: 'ok', data: approval })
           }
@@ -199,7 +228,7 @@ export default class ApprovalsController {
         .where({ investment_id: investmentId, user_id: userId, id: approvalId })
         .delete()
       console.log('Deleted data:', approval)
-      return response.send('Approval Delete.')
+      return response.status(200).json({ status: 'ok', message: 'Approval Request Deleted.' })
     } else {
       return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
     }
