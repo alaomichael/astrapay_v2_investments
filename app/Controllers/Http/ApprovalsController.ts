@@ -116,6 +116,12 @@ export default class ApprovalsController {
         user_id: userId,
       })
       console.log(' QUERY RESULT: ', approval)
+      let investment = await Investment.query().where({
+        id: investmentId,
+        user_id: userId,
+      })
+      console.log(' QUERY RESULT for investment: ', investment[0].$original)
+
       if (approval.length > 0) {
         console.log('Investment approval Selected for Update:', approval)
         if (approval) {
@@ -126,10 +132,41 @@ export default class ApprovalsController {
             ? request.input('remark')
             : approval[0].remark
           if (approval) {
-            // send to user
+            let newStatus
             await approval[0].save()
             console.log('Update Approval Request:', approval)
-            return approval
+            if (
+              approval[0].requestType === 'start investment' &&
+              approval[0].approvalStatus === 'approved'
+            ) {
+              newStatus = 'active'
+              investment[0].status = newStatus
+              // Save the updated investment
+              await investment[0].save()
+            } else if (
+              approval[0].requestType === 'terminate investment' &&
+              approval[0].approvalStatus === 'approved'
+            ) {
+              newStatus = 'terminated'
+              investment[0].status = newStatus
+              investment[0].isPayoutAuthorized = true
+              investment[0].isTerminationAuthorized = true
+              // Save the updated investment
+              await investment[0].save()
+            } else if (
+              approval[0].requestType === 'payout investment' &&
+              approval[0].approvalStatus === 'approved'
+            ) {
+              newStatus = 'payout'
+              investment[0].status = newStatus
+              investment[0].isPayoutAuthorized = true
+              investment[0].isTerminationAuthorized = true
+              // Save the updated investment
+              await investment[0].save()
+            }
+
+            // send to user
+            return response.status(200).json({ status: 'ok', data: approval })
           }
           return // 422
         } else {
