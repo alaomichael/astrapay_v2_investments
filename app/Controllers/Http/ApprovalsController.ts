@@ -39,7 +39,11 @@ export default class ApprovalsController {
     if (remark && sortedApprovals.length > 0) {
       sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return approval.remark.includes(remark)
+        if (approval.remark !== null) {
+          return approval.remark.includes(remark)
+        } else {
+          return
+        }
       })
     }
 
