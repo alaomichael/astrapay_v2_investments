@@ -225,6 +225,8 @@ const payoutDueDate = (created_at, duration) => {
 
 // payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
+const approvalRequest = 
+
 /**
  * An utility function which returns a random number
  * @param {number} min Minimum value
@@ -274,4 +276,4 @@ const payoutDueDate = (created_at, duration) => {
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate }
+module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest }

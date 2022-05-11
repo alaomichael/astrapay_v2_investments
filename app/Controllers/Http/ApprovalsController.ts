@@ -32,7 +32,8 @@ export default class ApprovalsController {
     if (requestType) {
       sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return approval.requestType!.includes(requestType)
+        return approval.requestType!.startsWith(requestType)
+        // return approval.requestType!.includes(requestType)
       })
     }
 
@@ -40,7 +41,7 @@ export default class ApprovalsController {
       sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
         if (approval.remark !== null) {
-          return approval.remark.includes(remark)
+          return approval.remark.startsWith(remark)
         } else {
           return
         }

@@ -245,13 +245,45 @@ export default class InvestmentsController {
     console.log('Updated Payout Date: ' + updatedPayoutDate)
     // Save Investment new status to Database
     await investment.save()
-    // Send Investment Creation Message to Queue
+    // Send Investment Initiation Message to Queue
+
+    // Send Approval Request to Admin
+ let approvalRequest = async function () {
+   try {
+     let requestType = "start investment"
+     const response = await axios.post(`${API_URL}/investments/approvals`, {
+       userId: investment.userId,
+       investmentId: investment.id,
+       requestType: requestType,
+     })
+     console.log('The API response for approval: ', response.data)
+     if (response.data.status === 'ok' && response.data.data.length > 0) {
+       return response.data.data[0].approvalStatus
+     } else {
+       return
+     }
+   } catch (error) {
+     console.error(error)
+   }
+ }
+
+ console.log(' The approval return for approval 2: ', await approvalRequest())
+ let approval = await approvalRequest()
+ console.log(' Rate return line 210 : ', approval)
+ if (approval === undefined) {
+   return response.status(400).json({
+     status: 'fail',
+     message: 'investment approval request was not successful, please try again.',
+     data: [],
+   })
+ }
+
 
     // Testing
-    let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
-    let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
-    console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-    console.log('Testing Payout Date: ' + testingPayoutDate)
+    // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
+    // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
+    // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+    // console.log('Testing Payout Date: ' + testingPayoutDate)
 
     // @ts-ignore
     Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })
