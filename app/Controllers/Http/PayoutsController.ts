@@ -64,6 +64,22 @@ export default class PayoutsController {
 
         if (isDueForPayout === true) {
           let payload = investment[0].$original
+          // check rollover type
+
+          // if it has a rollover
+          // check rollover type
+          // check rollover target
+          // A. if rollover target has not been reached, then
+          // act based on the rollover type
+          // update rolloverDone by 1
+          // update status
+          // initiate new investment
+
+          // B. if rollover target has been reached, then
+          // just processed to payout
+          // update status
+          // stop investment
+
           // Date payout was effected
           payload.datePayoutWasDone = new Date().toISOString()
           console.log('Payout investment data 1:', payload)

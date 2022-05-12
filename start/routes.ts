@@ -62,8 +62,8 @@ Route.group(() => {
     Route.put('admin/investments/payouts', 'InvestmentsController.payout')
     Route.put('admin/investments/rates', 'RatesController.update')
     Route.put('admin/investments/approvals', 'ApprovalsController.update')
-    Route.put('admin/investments/:id', 'InvestmentsController.update')
-    Route.put('investments/:id', 'InvestmentsController.update')
+    Route.put('admin/investments', 'InvestmentsController.update')
+    Route.put('investments', 'InvestmentsController.update')
 
     // DELETE ROUTES
     Route.delete('admin/investments/rates', 'RatesController.destroy')

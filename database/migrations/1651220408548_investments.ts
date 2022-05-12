@@ -18,6 +18,8 @@ export default class Investments extends BaseSchema {
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
+      table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
+      table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
       table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
@@ -54,6 +56,8 @@ export default class Investments extends BaseSchema {
           'amount',
           'duration',
           'rollover_type',
+          'rollover_target',
+          'rollover_done',
           'investment_type',
           'wallet_holder_details',
           'long',

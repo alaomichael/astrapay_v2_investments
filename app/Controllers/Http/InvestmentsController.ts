@@ -175,11 +175,11 @@ const investment = await rate
     }
   }
 
-  public async update({ request, params, response }: HttpContextContract) {
+  public async update({ request, response }: HttpContextContract) {
     try {
       let investment = await Investment.query().where({
         user_id: request.input('userId'),
-        id: params.id,
+        id: request.input('investmentId'),
       })
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
@@ -193,7 +193,7 @@ const investment = await rate
           isDueForPayout === false
         ) {
           // investment[0].amount = request.input('amount')
-          // investment[0].duration = request.input('duration')
+          investment[0].rolloverTarget = request.input('rolloverTarget')
           investment[0].rolloverType = request.input('rolloverType')
           // investment[0].investmentType = request.input('investmentType')
 
@@ -223,6 +223,7 @@ const investment = await rate
     const investmentSchema = schema.create({
       amount: schema.number(),
       rolloverType: schema.enum(['100', '101', '102', '103']),
+      rolloverTarget: schema.number(),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.number(),
