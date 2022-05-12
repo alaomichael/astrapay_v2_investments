@@ -149,28 +149,32 @@ export default class InvestmentsController {
           .where('status', 'initiated')
           .where('requestType', requestType)
           .where('userId', userId).where('investmentId', investmentId)
-        console.log('INVESTMENT DATA line 150: ', investment)
+        console.log('INVESTMENT DATA line 152: ', investment)
         investment.status = 'active'
         investment.approvalStatus = approvalStatus.approvalStatus
         // Save
         investment.save()
         // send notification
+        console.log('approvalStatus line 145: ', investment)
       } else if (approvalStatus.approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'initiated')
           .where('requestType', requestType).where('userId', userId).where('investmentId', investmentId)
-        console.log('INVESTMENT DATA line 150: ', investment)
+          investment.status = 'declined'
+        investment.approvalStatus = approvalStatus.approvalStatus
+        console.log('INVESTMENT DATA line 164: ', investment)
+      } else {
+        return response.json({ status: 'ok', data: approvalStatus})
       }
-    }
-        if (requestType === 'terminate investment') {
-      }
-      console.log('INVESTMENT ID', investmentId)
+    } else if (requestType === 'terminate investment') {
+         console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       investment = await Investment.query()
         .where('status', 'active')
         .where('requestType', requestType)
       console.log('INVESTMENT DATA line 157: ', investment)
     } else if (requestType === 'payout investment') {
+      console.log('Request type', requestType)
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       investment = await Investment.query()

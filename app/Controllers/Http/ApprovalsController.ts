@@ -120,6 +120,9 @@ export default class ApprovalsController {
         id: investmentId,
         user_id: userId,
       })
+      if (approval.length < 1 || investment === undefined) {
+        return response.status(404).json({ status: 'fail', message: 'Not Found' })
+      }
       console.log(' QUERY RESULT for investment: ', investment[0].$original)
 
       if (approval.length > 0) {
