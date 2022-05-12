@@ -304,27 +304,6 @@ const investment = await rate
     // Send Investment Initiation Message to Queue
 
     // Send Approval Request to Admin
-
-    //  let approvalRequest = async function () {
-    //    try {
-    //      let requestType = "start investment"
-    //      const response = await axios.post(`${API_URL}/investments/approvals`, {
-    //        userId: investment.userId,
-    //        investmentId: investment.id,
-    //        requestType: requestType,
-    //      })
-    //      console.log('The API response for approval: ', response.data)
-    //      if (response.data.status === 'ok' && response.data.data.length > 0) {
-    //        return response.data.data[0].approvalStatus
-    //      } else {
-    //        return
-    //      }
-    //    } catch (error) {
-    //      console.error(error)
-    //    }
-    //  }
-
-    //  console.log(' The approval return for approval 2: ', await approvalRequest())
     let userId = investment.userId
     let investmentId = investment.id
     let requestType = 'start investment'
@@ -350,8 +329,8 @@ const investment = await rate
   }
 
   // public async rate({ request, response }: HttpContextContract) {
-  //   // let amount = request.input('amount')
-  //   // let duration = request.input('duration')
+    // let amount = request.input('amount')
+    // let duration = request.input('duration')
   //   const { amount, duration, investmentType } = request.qs()
   //   console.log('INVESTMENT RATE query: ', request.qs())
   //   let rate = (await generateRate(amount, duration, investmentType)) * 100
@@ -510,11 +489,11 @@ const investment = await rate
       // @ts-ignore
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
-      console.log('Params for update line 191: ', userId, investmentId)
+      console.log('Params for update line 492: ', userId, investmentId)
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 435: ', investment)
+      console.log('Investment Info, line 496: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -523,10 +502,18 @@ const investment = await rate
 
         if (isDueForPayout) {
           let payload = investment[0].$original
-          // Date payout was effected
+          // send to Admin for approval
+
+          // if payout was approved
+
+          // send to transaction service
+
+          // if transaction was successfully processed
+          // update Date payout was effected
           payload.datePayoutWasDone = new Date().toISOString()
           console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
+          // update investment status
           payout.status = 'payout'
           await payout.save()
           console.log('Payout investment data 2:', payout)
@@ -544,7 +531,14 @@ const investment = await rate
           })
         } else {
           let payload = investment[0].$original
-          // Date payout was effected due to termination
+          // send to Admin for approval
+
+          // if payout was approved
+
+          // send to transaction service
+
+          // if transaction was successfully processed
+          // update Date payout was effected due to termination
           payload.datePayoutWasDone = new Date().toISOString()
           console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
@@ -554,6 +548,8 @@ const investment = await rate
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
           investment[0].status = 'terminated'
+
+          // update datePayoutWasDone
           // @ts-ignore
           investment[0].datePayoutWasDone = new Date().toISOString()
           investment[0].save()
