@@ -29,6 +29,12 @@ export default class Payout extends BaseModel {
   public rolloverType: string
 
   @column()
+  public rolloverTarget: number
+
+  @column()
+  public rolloverDone: number
+  
+  @column()
   public investmentType: string
 
   @column()

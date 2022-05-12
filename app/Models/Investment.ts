@@ -29,6 +29,12 @@ export default class Investment extends BaseModel {
   public rolloverType: RollOverType
 
   @column()
+  public rolloverTarget: number
+
+  @column()
+  public rolloverDone: number
+
+  @column()
   public investmentType: 'fixed' | 'debenture'
 
   @column()

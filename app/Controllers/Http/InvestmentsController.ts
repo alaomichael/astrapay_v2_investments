@@ -9,6 +9,7 @@ import { string } from '@ioc:Adonis/Core/Helpers'
 import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
+
 const API_URL = Env.get('API_URL')
 // @ts-ignore
 import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest,} from 'App/Helpers/utils'
@@ -109,7 +110,7 @@ export default class InvestmentsController {
       const investment = await Investment.query().where('status', 'payout')
       // .orWhere('id', params.id)
       // .limit()
-      if (investment) {
+      if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
         console.log('INVESTMENT DATA: ', investment)
         return response.status(200).json({ status: 'ok', data: investment })
@@ -117,6 +118,57 @@ export default class InvestmentsController {
         return response
           .status(200)
           .json({ status: 'fail', message: 'no investment has been paid out yet.' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  public async feedbacks({ params, response }: HttpContextContract) {
+    console.log('INVESTMENT params: ', params)
+    try {
+let testAmount = 200000
+let testDuration = 90
+let testInvestmentType = 'fixed'
+    let investmentRate = async function () {
+      try {
+        const response = await axios.get(
+          `${API_URL}/investments/rates?amount=${testAmount}&duration=${testDuration}&investmentType=${testInvestmentType}`
+        )
+        console.log('The API response: ', response.data)
+        if (response.data.status === 'ok' && response.data.data.length > 0) {
+          return response.data.data[0].interest_rate
+        } else {
+          return
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    console.log(' The Rate return for RATE: ', await investmentRate())
+    let rate = await investmentRate()
+    console.log(' Rate return line 151 : ', rate)
+    if (rate === undefined) {
+      return response.status(400).json({
+        status: 'fail',
+        message: 'no investment rate matched your search, please try again.',
+        data: [],
+      })
+    }
+
+const investment = await rate
+      // const investment = await Investment.query().where('status', 'pending')
+      // .orWhere('id', params.id)
+      // .limit()
+      if (investment && investment.length > 0) {
+        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+        console.log('INVESTMENT DATA: ', investment)
+        return response.status(200).json({ status: 'ok', data: investment })
+      } else {
+        return response
+          .status(200)
+          .json({ status: 'fail', message: 'no investment has been pending yet.' })
       }
     } catch (error) {
       console.log(error)
@@ -170,7 +222,7 @@ export default class InvestmentsController {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
       amount: schema.number(),
-      rolloverType: schema.enum(['100', '101', '102', '103', '104', '105', '106', '107']),
+      rolloverType: schema.enum(['100', '101', '102', '103']),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.number(),
@@ -296,7 +348,7 @@ export default class InvestmentsController {
     return response.status(201).json({ status: 'ok', data: investment })
   }
 
-   // public async rate({ request, response }: HttpContextContract) {
+  // public async rate({ request, response }: HttpContextContract) {
   //   // let amount = request.input('amount')
   //   // let duration = request.input('duration')
   //   const { amount, duration, investmentType } = request.qs()
