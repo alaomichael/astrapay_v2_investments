@@ -159,10 +159,12 @@ const dueForPayout = (created_at, duration) => {
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
     let investmentDuration
     let currentDate = new Date().getTime()
-    let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 })
-    let testingPayoutDate = DateTime.now().plus({ days: duration })
-    console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-    console.log('Testing Payout Date: ' + testingPayoutDate)
+
+    // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 })
+    // let testingPayoutDate = DateTime.now().plus({ days: duration })
+    // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+    // console.log('Testing Payout Date: ' + testingPayoutDate)
+
     // console.log('Current Date: ' + currentDate)
     // console.log('duration converted to Ms: ' + durationToMs)
     // console.log(`Your investment was created on ${new Date(investmentCreationDate).toDateString()}`)

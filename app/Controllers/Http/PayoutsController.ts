@@ -59,7 +59,7 @@ export default class PayoutsController {
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
-        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
 
         if (isDueForPayout === true) {
