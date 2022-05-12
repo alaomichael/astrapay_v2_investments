@@ -124,8 +124,16 @@ export default class InvestmentsController {
     }
   }
 
-  public async feedbacks({ params, response }: HttpContextContract) {
+  public async feedbacks({ params,request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
+ const { userId, investmentId,requestType } = request.qs()
+ console.log('INVESTMENT query: ', request.qs())
+    if (requestType === 'start investment') {
+console.log('INVESTMENT ID', investmentId)
+console.log('USER ID', userId)
+    } else {
+console.log('USER ID', requestType)
+    }
     try {
 let testAmount = 200000
 let testDuration = 90
