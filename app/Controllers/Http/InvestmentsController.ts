@@ -165,7 +165,7 @@ let testInvestmentType = 'fixed'
       })
     }
 
-const investment = await rate
+const investment = await Investment.query().where('status', 'initiated') // rate
       // const investment = await Investment.query().where('status', 'pending')
       // .orWhere('id', params.id)
       // .limit()
