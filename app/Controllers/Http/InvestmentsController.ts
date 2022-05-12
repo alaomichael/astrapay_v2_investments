@@ -11,7 +11,13 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import {  generateRate,  interestDueOnPayout,  dueForPayout,  payoutDueDate,  approvalRequest,} from 'App/Helpers/utils'
+import {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+} from 'App/Helpers/utils'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -148,7 +154,7 @@ export default class InvestmentsController {
             // send to user
             await investment[0].save()
             console.log('Update Investment:', investment)
-            return investment
+            return response.json({ status: 'ok', data: investment })
           }
           return // 422
         } else {
@@ -269,10 +275,10 @@ export default class InvestmentsController {
     //  }
 
     //  console.log(' The approval return for approval 2: ', await approvalRequest())
-           let userId = investment.userId
-           let investmentId= investment.id
-           let requestType = 'start investment'
-    let approval = await approvalRequest(userId,investmentId,requestType)
+    let userId = investment.userId
+    let investmentId = investment.id
+    let requestType = 'start investment'
+    let approval = await approvalRequest(userId, investmentId, requestType)
     console.log(' Approval request return line 280 : ', approval)
     if (approval === undefined) {
       return response.status(400).json({
