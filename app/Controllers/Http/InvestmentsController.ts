@@ -9,10 +9,15 @@ import { string } from '@ioc:Adonis/Core/Helpers'
 import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
-
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest,} from 'App/Helpers/utils'
+import {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+} from 'App/Helpers/utils'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -124,54 +129,61 @@ export default class InvestmentsController {
     }
   }
 
-  public async feedbacks({ params,request, response }: HttpContextContract) {
+  public async feedbacks({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
- const { userId, investmentId,requestType } = request.qs()
- console.log('INVESTMENT query: ', request.qs())
+    const { userId, investmentId, requestType } = request.qs()
+    console.log('INVESTMENT query: ', request.qs())
+    let investment = await Investment.query().where('status', 'initiated')
     if (requestType === 'start investment') {
-console.log('INVESTMENT ID', investmentId)
-console.log('USER ID', userId)
+      console.log('INVESTMENT ID', investmentId)
+      console.log('USER ID', userId)
+      console.log('INVESTMENT DATA line 141: ', investment)
     } else {
-console.log('USER ID', requestType)
+      console.log('USER ID', requestType)
     }
     try {
-let testAmount = 200000
-let testDuration = 90
-let testInvestmentType = 'fixed'
-    let investmentRate = async function () {
-      try {
-        const response = await axios.get(
-          `${API_URL}/investments/rates?amount=${testAmount}&duration=${testDuration}&investmentType=${testInvestmentType}`
-        )
-        console.log('The API response: ', response.data)
-        if (response.data.status === 'ok' && response.data.data.length > 0) {
-          return response.data.data[0].interest_rate
-        } else {
-          return
+      let testAmount = 505000
+      let testDuration = 180
+      let testInvestmentType = 'fixed'
+      let investmentRate = async function (amount,duration,investmentType) {
+        try {
+          const response = await axios.get(
+            `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
+          )
+          console.log('The API response: ', response.data)
+          if (response.data.status === 'ok' && response.data.data.length > 0) {
+            return response.data.data[0].interest_rate
+          } else {
+            return
+          }
+        } catch (error) {
+          console.error(error)
         }
-      } catch (error) {
-        console.error(error)
       }
-    }
 
-    console.log(' The Rate return for RATE: ', await investmentRate())
-    let rate = await investmentRate()
-    console.log(' Rate return line 151 : ', rate)
-    if (rate === undefined) {
-      return response.status(400).json({
-        status: 'fail',
-        message: 'no investment rate matched your search, please try again.',
-        data: [],
-      })
-    }
+      console.log(
+        ' The Rate return for RATE: ',
+        await investmentRate(testAmount, testDuration, testInvestmentType)
+      )
+      let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
+      console.log(' Rate return line 151 : ', rate)
+      if (rate === undefined) {
+        return response.status(400).json({
+          status: 'fail',
+          message: 'no investment rate matched your search, please try again.',
+          data: [],
+        })
+      }
 
-const investment = await Investment.query().where('status', 'initiated') // rate
+      // const investment = await Investment.query().where('status', 'initiated') // rate
+      // console.log('INVESTMENT DATA line 169: ', investment)
+
       // const investment = await Investment.query().where('status', 'pending')
       // .orWhere('id', params.id)
       // .limit()
       if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA: ', investment)
+        console.log('INVESTMENT DATA line 174: ', investment)
         return response.status(200).json({ status: 'ok', data: investment })
       } else {
         return response
@@ -191,7 +203,7 @@ const investment = await Investment.query().where('status', 'initiated') // rate
       })
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
-let isDueForPayout
+        let isDueForPayout
         try {
           // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
           isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
@@ -344,8 +356,8 @@ let isDueForPayout
   }
 
   // public async rate({ request, response }: HttpContextContract) {
-    // let amount = request.input('amount')
-    // let duration = request.input('duration')
+  // let amount = request.input('amount')
+  // let duration = request.input('duration')
   //   const { amount, duration, investmentType } = request.qs()
   //   console.log('INVESTMENT RATE query: ', request.qs())
   //   let rate = (await generateRate(amount, duration, investmentType)) * 100
