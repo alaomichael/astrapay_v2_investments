@@ -32,6 +32,7 @@ export default class Investments extends BaseSchema {
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true }).index()
+      table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
@@ -57,6 +58,8 @@ export default class Investments extends BaseSchema {
           'wallet_holder_details',
           'long',
           'lat',
+          'start_date',
+          'payout_date',
           'total_amount_to_payout',
           'is_payout_authorized',
           'is_termination_authorized',

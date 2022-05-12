@@ -11,13 +11,7 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import {
-  generateRate,
-  interestDueOnPayout,
-  dueForPayout,
-  payoutDueDate,
-  approvalRequest,
-} from 'App/Helpers/utils'
+import { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest,} from 'App/Helpers/utils'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -137,7 +131,8 @@ export default class InvestmentsController {
       })
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
-        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
         // Restrict update to timed/fixed deposit only
         if (
@@ -230,11 +225,13 @@ export default class InvestmentsController {
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
     investment.interestRate = rate
+
+    // When the Invest has been approved and activated
     let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
     investment.interestDueOnInvestment = amountDueOnPayout
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
-    // investment.payoutDate = await payoutDueDate(investment.createdAt, investment.duration)
+    // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
     // @ts-ignore
     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
     await investment.save()
@@ -299,24 +296,7 @@ export default class InvestmentsController {
     return response.status(201).json({ status: 'ok', data: investment })
   }
 
-  // public async store2({ request }: HttpContextContract) {
-  //   // const user = await auth.authenticate()
-  //   const investment = new Investment()
-  //   investment.amount = request.input('amount')
-  //   investment.duration = request.input('duration')
-  //   investment.rolloverType = request.input('rolloverType')
-  //   investment.tagName = request.input('tagName')
-  //   investment.currencyCode = request.input('currencyCode')
-  //   investment.long = request.input('long')
-  //   investment.lat = request.input('lat')
-  //   investment.walletHolderDetails = request.input('walletHolderDetails')
-  //   //  investment.walletHolderDetails = JSON.stringify(request.input('walletHolderDetails'))
-  //   console.log('Investment:', investment)
-  //   // await user.related('investments').save(investment)
-  //   return investment
-  // }
-
-  // public async rate({ request, response }: HttpContextContract) {
+   // public async rate({ request, response }: HttpContextContract) {
   //   // let amount = request.input('amount')
   //   // let duration = request.input('duration')
   //   const { amount, duration, investmentType } = request.qs()
@@ -344,7 +324,7 @@ export default class InvestmentsController {
       console.log(' Investment QUERY RESULT: ', investment)
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
-        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
         // Restrict update to timed/fixed deposit only
         // if (investment && investment[0].investmentType !== 'debenture' && isDueForPayout === false)
@@ -485,7 +465,7 @@ export default class InvestmentsController {
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
-        let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
 
         if (isDueForPayout) {
