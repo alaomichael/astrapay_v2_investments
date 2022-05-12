@@ -18,6 +18,7 @@ import {
   payoutDueDate,
   approvalRequest,
 } from 'App/Helpers/utils'
+import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -133,19 +134,55 @@ export default class InvestmentsController {
     console.log('INVESTMENT params: ', params)
     const { userId, investmentId, requestType } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
-    let investment = await Investment.query().where('status', 'initiated')
+    let investment
+    let approvalStatus
     if (requestType === 'start investment') {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
-      console.log('INVESTMENT DATA line 141: ', investment)
-    } else {
-      console.log('USER ID', requestType)
+      // check the approval for request
+      approvalStatus = await Approval.query().where('requestType', requestType).where('userId', userId).where('investmentId', investmentId)
+      // check the approval status
+      console.log('approvalStatus line 145: ', approvalStatus)
+      //  if approved update investment status to active, update startDate,  and start investment
+      if (approvalStatus.approvalStatus === 'approved') {
+        investment = await Investment.query()
+          .where('status', 'initiated')
+          .where('requestType', requestType)
+          .where('userId', userId).where('investmentId', investmentId)
+        console.log('INVESTMENT DATA line 150: ', investment)
+        investment.status = 'active'
+        investment.approvalStatus = approvalStatus.approvalStatus
+        // Save
+        investment.save()
+        // send notification
+      } else if (approvalStatus.approvalStatus === 'declined') {
+        investment = await Investment.query()
+          .where('status', 'initiated')
+          .where('requestType', requestType).where('userId', userId).where('investmentId', investmentId)
+        console.log('INVESTMENT DATA line 150: ', investment)
+      }
+    }
+        if (requestType === 'terminate investment') {
+      }
+      console.log('INVESTMENT ID', investmentId)
+      console.log('USER ID', userId)
+      investment = await Investment.query()
+        .where('status', 'active')
+        .where('requestType', requestType)
+      console.log('INVESTMENT DATA line 157: ', investment)
+    } else if (requestType === 'payout investment') {
+      console.log('INVESTMENT ID', investmentId)
+      console.log('USER ID', userId)
+      investment = await Investment.query()
+        .where('status', 'active')
+        .where('requestType', requestType)
+      console.log('INVESTMENT DATA line 164: ', investment)
     }
     try {
       let testAmount = 505000
       let testDuration = 180
       let testInvestmentType = 'fixed'
-      let investmentRate = async function (amount,duration,investmentType) {
+      let investmentRate = async function (amount, duration, investmentType) {
         try {
           const response = await axios.get(
             `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
@@ -166,7 +203,7 @@ export default class InvestmentsController {
         await investmentRate(testAmount, testDuration, testInvestmentType)
       )
       let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
-      console.log(' Rate return line 151 : ', rate)
+      console.log(' Rate return line 191 : ', rate)
       if (rate === undefined) {
         return response.status(400).json({
           status: 'fail',
@@ -183,12 +220,12 @@ export default class InvestmentsController {
       // .limit()
       if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA line 174: ', investment)
+        console.log('INVESTMENT DATA line 208: ', investment)
         return response.status(200).json({ status: 'ok', data: investment })
       } else {
         return response
           .status(200)
-          .json({ status: 'fail', message: 'no investment has been pending yet.' })
+          .json({ status: 'fail', message: 'no investment matched your query.' })
       }
     } catch (error) {
       console.log(error)
