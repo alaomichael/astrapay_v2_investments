@@ -183,9 +183,16 @@ const investment = await rate
       })
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
-        // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
-        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
-        console.log('Is due for payout status :', isDueForPayout)
+let isDueForPayout
+        try {
+          // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+          isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
+          console.log('Is due for payout status :', isDueForPayout)
+        } catch (error) {
+          console.error('Is due for payout status Error :', error)
+          return response.json({ status: 'fail', data: error.message })
+        }
+
         // Restrict update to timed/fixed deposit only
         if (
           investment &&

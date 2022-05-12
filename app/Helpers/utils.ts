@@ -122,7 +122,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
 const dueForPayout = (created_at, duration) => {
   return new Promise((resolve, reject) => {
     if (!created_at || !duration) {
-      reject(new Error('Incomplete parameters or out of range'))
+      reject(new Error('Invalid or incomplete parameters or out of range, please try again.'))
     }
 
     // Get numbers of days difference between two dates
