@@ -153,13 +153,10 @@ export default class InvestmentsController {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
-      if(userId){
-approvalStatus = await Approval.query()
-  .where('requestType', requestType)
-  .where('userId', userId)
-  .where('investmentId', investmentId)
-      }
-
+      approvalStatus = await Approval.query()
+        .where('requestType', requestType)
+        .where('userId', userId)
+        .where('investmentId', investmentId)
       // check the approval status
       console.log('approvalStatus line 159: ', approvalStatus)
       if (approvalStatus.length < 1) {
