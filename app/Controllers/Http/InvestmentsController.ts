@@ -39,7 +39,13 @@ export default class InvestmentsController {
     console.log('INVESTMENT count: ', count)
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
-    let sortedInvestments = investment
+    let newArray: []
+    let sortedInvestments = investment.forEach(async(investment) => {
+     await console.log(investment.$original)
+     newArray.push(investment.$original)
+      return investment
+    })
+    console.log('INVESTMENT before sorting: ', sortedInvestments)
     if (search) {
       sortedInvestments = sortedInvestments.filter((investment) => {
         // @ts-ignore
@@ -75,8 +81,10 @@ export default class InvestmentsController {
       email: investment[0].walletHolderDetails.email,
     })
     // return investment
+    console.log(' SORTED INVESTMENT line 78' + (await sortedInvestments))
     return response.status(200).json(sortedInvestments)
   }
+
   public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     const { limit } = request.qs()
@@ -166,7 +174,10 @@ export default class InvestmentsController {
           .where('id', investmentId)
         console.log('INVESTMENT DATA line 167: ', investment)
         if (investment.length < 1) {
-          return response.json({ status: 'FAILED', message: 'No investment data matched your query, please try again'})
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment data matched your query, please try again',
+          })
         }
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
         // send investment details to Transaction Service
@@ -193,12 +204,12 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-           if (investment.length < 1) {
-             return response.json({
-               status: 'FAILED',
-               message: 'No investment data matched your query, please try again',
-             })
-           }
+        if (investment.length < 1) {
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment data matched your query, please try again',
+          })
+        }
 
         investment[0].status = 'declined'
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
@@ -213,13 +224,12 @@ export default class InvestmentsController {
         .where('status', 'active')
         .where('requestType', requestType)
       console.log('INVESTMENT DATA line 201: ', investment)
-       if (investment.length < 1) {
-         return response.json({
-           status: 'FAILED',
-           message: 'No investment data matched your query, please try again',
-         })
-       }
-
+      if (investment.length < 1) {
+        return response.json({
+          status: 'FAILED',
+          message: 'No investment data matched your query, please try again',
+        })
+      }
     } else if (requestType === 'payout investment') {
       console.log('Request type', requestType)
       console.log('INVESTMENT ID', investmentId)
@@ -228,13 +238,12 @@ export default class InvestmentsController {
         .where('status', 'active')
         .where('requestType', requestType)
       console.log('INVESTMENT DATA line 209: ', investment)
-       if (investment.length < 1) {
-         return response.json({
-           status: 'FAILED',
-           message: 'No investment data matched your query, please try again',
-         })
-       }
-
+      if (investment.length < 1) {
+        return response.json({
+          status: 'FAILED',
+          message: 'No investment data matched your query, please try again',
+        })
+      }
     }
     try {
       let testAmount = 505000
