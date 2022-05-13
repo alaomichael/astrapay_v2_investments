@@ -33,7 +33,7 @@ export default class Payout extends BaseModel {
 
   @column()
   public rolloverDone: number
-  
+
   @column()
   public investmentType: string
 
@@ -78,6 +78,9 @@ export default class Payout extends BaseModel {
 
   @column()
   public isPayoutSuccessful: boolean
+
+  @column()
+  public requestType: string
 
   @column()
   public approvalStatus: string

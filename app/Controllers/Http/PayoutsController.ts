@@ -36,13 +36,16 @@ export default class PayoutsController {
     }
     if (sortedPayouts.length < 1) {
       return response.status(200).json({
-        status: 'ok',
+        status: 'FAILED',
         message: 'no investment payout matched your search',
         data: [],
       })
     }
     // return investment
-    return response.status(200).json(sortedPayouts)
+    return response.status(200).json({
+      status: 'OK',
+      data: sortedPayouts.map((payout)=> {payout.$original}),
+    })
   }
 
 
@@ -64,6 +67,9 @@ export default class PayoutsController {
 
         if (isDueForPayout === true) {
           let payload = investment[0].$original
+          // Get approval
+          // If payout was approved then proceed
+
           // check rollover type
 
           // if it has a rollover
@@ -96,11 +102,14 @@ export default class PayoutsController {
           investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
-            status: 'ok',
-            data: investment,
+            status: 'OK',
+            data: investment.map((inv)=> {inv.$original}),
           })
         } else {
           let payload = investment[0].$original
+          // Get approval
+          // If termination was approved then proceed
+
           // Date payout was effected due to termination
           payload.datePayoutWasDone = new Date().toISOString()
           console.log('Payout investment data 1:', payload)
@@ -116,13 +125,13 @@ export default class PayoutsController {
           investment[0].save()
           console.log('Terminated Payout investment data 2:', investment)
           return response.status(200).json({
-            status: 'ok',
-            data: investment,
+            status: 'OK',
+            data: investment.map((inv)=> {inv.$original}),
           })
         }
       } else {
         return response.status(404).json({
-          status: 'fail',
+          status: 'FAILED',
           message: 'no investment matched your search',
           data: [],
         })
