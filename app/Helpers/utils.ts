@@ -15,7 +15,7 @@ const LocalDate = JSJoda.LocalDate
 const Moment = require('moment')
 const API_URL = Env.get('API_URL')
 
-export default class Utils {
+
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -33,7 +33,7 @@ export default class Utils {
 // Generate rate
 // export const generateRate =
 
-export const generateRate = (amount, duration, investment_type) => {
+const generateRate = (amount, duration, investment_type) => {
   return new Promise((resolve, reject) => {
     if (!amount || !duration || !investment_type || amount <= 0)
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
@@ -103,7 +103,7 @@ export const generateRate = (amount, duration, investment_type) => {
 // generateRate(1000, '300', 'debenture')
 
 // Generate Return on Investment
-export const interestDueOnPayout = (amount, rate, duration) => {
+const interestDueOnPayout = (amount, rate, duration) => {
   return new Promise((resolve, reject) => {
     if (!amount || !rate || !duration || amount <= 0) {
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
@@ -121,7 +121,7 @@ export const interestDueOnPayout = (amount, rate, duration) => {
 
 // Check Investment due for payout
 // export const dueForPayout =
-export const dueForPayout = (created_at, duration) => {
+const dueForPayout = (created_at, duration) => {
   return new Promise((resolve, reject) => {
     if (!created_at || !duration) {
       reject(new Error('Invalid or incomplete parameters or out of range, please try again.'))
@@ -204,9 +204,9 @@ export const dueForPayout = (created_at, duration) => {
   })
 }
 
-// dueForPayout('2022-04-29 10:02:07.58+01', '190')
+dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
-export const payoutDueDate = (created_at, duration) => {
+const payoutDueDate = (created_at, duration) => {
   return new Promise((resolve, reject) => {
     if (!created_at || !duration) {
       reject(new Error('Incomplete parameters or out of range'))
@@ -232,7 +232,7 @@ export const payoutDueDate = (created_at, duration) => {
 
 // payoutDueDate('2022-04-29 10:02:07.58+01', '200')
 
-export const approvalRequest = async function (userId, investmentId, requestType) {
+const approvalRequest = async function (userId, investmentId, requestType) {
   try {
     // let requestType = 'start investment'
     const response = await axios.post(`${API_URL}/investments/approvals`, {
@@ -302,5 +302,4 @@ export const approvalRequest = async function (userId, investmentId, requestType
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-}
-// module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest }
+module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest }

@@ -10,7 +10,6 @@ import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
-// @ts-ignore
 // import {
 //   generateRate,
 //   interestDueOnPayout,
@@ -18,10 +17,16 @@ const API_URL = Env.get('API_URL')
 //   payoutDueDate,
 //   approvalRequest,
 // } from 'App/Helpers/utils'
+
+// @ts-ignore
 import interestDueOnPayout from 'App/Helpers/utils'
+// @ts-ignore
 import generateRate from 'App/Helpers/utils'
+// @ts-ignore
 import dueForPayout from 'App/Helpers/utils'
+// @ts-ignore
 import payoutDueDate from 'App/Helpers/utils'
+// @ts-ignore
 import approvalRequest from 'App/Helpers/utils'
 
 import Approval from 'App/Models/Approval'
@@ -265,33 +270,35 @@ export default class InvestmentsController {
       if (investment.length > 0) {
         console.log('Investment Selected for Update:', investment)
         let isDueForPayout
-        try {
-          // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
-          isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
-          console.log('Is due for payout status :', isDueForPayout)
-        } catch (error) {
-          console.error('Is due for payout status Error :', error)
-          return response.json({ status: 'fail', data: error.message })
-        }
+        if(investment[0].startDate !== null) {
 
-        // Restrict update to timed/fixed deposit only
-        if (
-          investment &&
-          investment[0].investmentType !== 'debenture' &&
-          isDueForPayout === false
-        ) {
-          // investment[0].amount = request.input('amount')
-          investment[0].rolloverTarget = request.input('rolloverTarget')
-          investment[0].rolloverType = request.input('rolloverType')
-          // investment[0].investmentType = request.input('investmentType')
+          try {
+            // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
+            isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
+            console.log('Is due for payout status :', isDueForPayout)
+            // Restrict update to timed/fixed deposit only
+            if (
+              investment &&
+              investment[0].investmentType !== 'debenture' &&
+              isDueForPayout === false
+            ) {
+              // investment[0].amount = request.input('amount')
+              investment[0].rolloverTarget = request.input('rolloverTarget')
+              investment[0].rolloverType = request.input('rolloverType')
+              // investment[0].investmentType = request.input('investmentType')
 
-          if (investment) {
-            // send to user
-            await investment[0].save()
-            console.log('Update Investment:', investment)
-            return response.json({ status: 'ok', data: investment })
+              if (investment) {
+                // send to user
+                await investment[0].save()
+                console.log('Update Investment:', investment)
+                return response.json({ status: 'ok', data: investment })
+              }
+              return // 422
+            }
+          } catch (error) {
+            console.error('Is due for payout status Error :', error)
+            return response.json({ status: 'fail', data: error.message })
           }
-          return // 422
         } else {
           return response.json({ status: 'fail', data: investment })
         }
