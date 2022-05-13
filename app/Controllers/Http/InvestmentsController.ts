@@ -11,13 +11,19 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import {
-  generateRate,
-  interestDueOnPayout,
-  dueForPayout,
-  payoutDueDate,
-  approvalRequest,
-} from 'App/Helpers/utils'
+// import {
+//   generateRate,
+//   interestDueOnPayout,
+//   dueForPayout,
+//   payoutDueDate,
+//   approvalRequest,
+// } from 'App/Helpers/utils'
+import interestDueOnPayout from 'App/Helpers/utils'
+import generateRate from 'App/Helpers/utils'
+import dueForPayout from 'App/Helpers/utils'
+import payoutDueDate from 'App/Helpers/utils'
+import approvalRequest from 'App/Helpers/utils'
+
 import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
