@@ -641,11 +641,11 @@ export default class InvestmentsController {
       // @ts-ignore
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
-      console.log('Params for update line 492: ', userId, investmentId)
+      console.log('Params for update line 644: ', + 'userId ' + userId + 'investmentId ' + investmentId)
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 496: ', investment)
+      console.log('Investment Info, line 648: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -726,13 +726,14 @@ export default class InvestmentsController {
 //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
+          investment[0].requestType = requestType
           investment[0].status = 'termination pending approval'
-          investment[0].approvalStatus = approval[0].approvalStatus
+          investment[0].approvalStatus = 'pending'
           // update datePayoutWasDone
           // @ts-ignore
           // investment[0].datePayoutWasDone = new Date().toISOString()
           investment[0].save()
-          console.log('Terminated Payout investment data 2:', investment)
+          console.log('Terminated Payout investment data line 736:', investment)
           return response.status(200).json({
             status: 'ok',
             data: investment.map((inv) => inv.$original),
