@@ -142,8 +142,8 @@ export default class ApprovalsController {
               approval[0].requestType === 'start investment' &&
               approval[0].approvalStatus === 'approved'
             ) {
-              // newStatus = 'active'
-              // investment[0].status = newStatus
+              newStatus = 'initiated'
+              investment[0].status = newStatus
               investment[0].approvalStatus = approval[0].approvalStatus
               // Save the updated investment
               await investment[0].save()
@@ -173,7 +173,7 @@ export default class ApprovalsController {
               approval[0].requestType === 'start investment' &&
               approval[0].approvalStatus === 'declined'
             ) {
-              newStatus = 'declined'
+              newStatus = 'initiated'
               investment[0].status = newStatus
               investment[0].approvalStatus = approval[0].approvalStatus
               // Save the updated investment
@@ -182,7 +182,7 @@ export default class ApprovalsController {
               approval[0].requestType === 'terminate investment' &&
               approval[0].approvalStatus === 'declined'
             ) {
-              newStatus = 'declined'
+              newStatus = 'active'
               investment[0].status = newStatus
               investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = false
@@ -193,7 +193,7 @@ export default class ApprovalsController {
               approval[0].requestType === 'payout investment' &&
               approval[0].approvalStatus === 'declined'
             ) {
-              newStatus = 'declined'
+              newStatus = 'active'
               investment[0].status = newStatus
               investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = false

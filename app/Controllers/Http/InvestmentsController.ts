@@ -33,7 +33,7 @@ export default class InvestmentsController {
     let sortedInvestments = investment.map((investment) => {
       return investment.$original
     })
-// console.log('INVESTMENT newArray sorting: ', newArray)
+    // console.log('INVESTMENT newArray sorting: ', newArray)
     console.log('INVESTMENT before sorting: ', sortedInvestments)
     if (search) {
       sortedInvestments = sortedInvestments.filter((investment) => {
@@ -100,7 +100,9 @@ export default class InvestmentsController {
       let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
-      let newArray = investment.map((investment) => {return investment.$original})
+      let newArray = investment.map((investment) => {
+        return investment.$original
+      })
       if (newArray.length > 0) {
         console.log('INVESTMENT DATA unconverted: ', investment)
         if (limit) {
@@ -151,12 +153,22 @@ export default class InvestmentsController {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
-      approvalStatus = await Approval.query()
-        .where('requestType', requestType)
-        .where('userId', userId)
-        .where('investmentId', investmentId)
+      if(userId){
+approvalStatus = await Approval.query()
+  .where('requestType', requestType)
+  .where('userId', userId)
+  .where('investmentId', investmentId)
+      }
+
       // check the approval status
-      console.log('approvalStatus line 159: ', approvalStatus[0].approvalStatus)
+      console.log('approvalStatus line 159: ', approvalStatus)
+      if (approvalStatus.length < 1) {
+        return response.json({
+          status: 'FAILED',
+          message: 'No investment approval request data matched your query, please try again',
+        })
+      }
+      console.log('approvalStatus line 160: ', approvalStatus[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
@@ -190,7 +202,7 @@ export default class InvestmentsController {
         investment[0].save()
         // send notification
         console.log('Updated investment Status line 192: ', investment)
-      } else if (approvalStatus[0].approvalStatus === 'declined') {
+      } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'declined')
           .where('requestType', requestType)
@@ -209,7 +221,10 @@ export default class InvestmentsController {
         // Save
         investment[0].save()
         // send notification
-        console.log('INVESTMENT DATA line 212: ', investment.map((inv) => inv.$original))
+        console.log(
+          'INVESTMENT DATA line 212: ',
+          investment.map((inv) => inv.$original)
+        )
       } else {
         return response.json({ status: 'ok', data: approvalStatus })
       }
