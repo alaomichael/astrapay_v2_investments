@@ -655,7 +655,18 @@ export default class InvestmentsController {
         if (isDueForPayout) {
           let payload = investment[0].$original
           // send to Admin for approval
-
+          let userId = payload.userId
+          let investmentId = payload.id
+          let requestType = 'payout investment'
+          let approval = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 662 : ', approval)
+          if (approval === undefined) {
+            return response.status(400).json({
+              status: 'fail',
+              message: 'payout approval request was not successful, please try again.',
+              data: [],
+            })
+          }
           // if payout was approved
 
           // send to transaction service
@@ -684,7 +695,18 @@ export default class InvestmentsController {
         } else {
           let payload = investment[0].$original
           // send to Admin for approval
-
+          let userId = payload.userId
+          let investmentId = payload.id
+          let requestType = 'terminate investment'
+          let approval = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 702 : ', approval)
+          if (approval === undefined) {
+            return response.status(400).json({
+              status: 'fail',
+              message: 'termination approval request was not successful, please try again.',
+              data: [],
+            })
+          }
           // if payout was approved
 
           // send to transaction service
