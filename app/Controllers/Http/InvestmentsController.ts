@@ -39,12 +39,11 @@ export default class InvestmentsController {
     console.log('INVESTMENT count: ', count)
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
-    let newArray: []
-    let sortedInvestments = investment.forEach(async(investment) => {
-     await console.log(investment.$original)
-     newArray.push(investment.$original)
-      return investment
+    // let newArray = investment.map((investment) => {return investment.$original})
+    let sortedInvestments = investment.map((investment) => {
+      return investment.$original
     })
+// console.log('INVESTMENT newArray sorting: ', newArray)
     console.log('INVESTMENT before sorting: ', sortedInvestments)
     if (search) {
       sortedInvestments = sortedInvestments.filter((investment) => {
@@ -111,12 +110,13 @@ export default class InvestmentsController {
       let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
-      if (investment.length > 0) {
-        console.log('INVESTMENT DATA: ', investment)
+      let newArray = investment.map((investment) => {return investment.$original})
+      if (newArray.length > 0) {
+        console.log('INVESTMENT DATA unconverted: ', investment)
         if (limit) {
-          investment = investment.slice(0, Number(limit))
+          newArray = newArray.slice(0, Number(limit))
         }
-        return response.status(200).json({ status: 'ok', data: investment })
+        return response.status(200).json({ status: 'ok', data: newArray })
       } else {
         return response.status(200).json({
           status: 'fail',
@@ -414,7 +414,9 @@ export default class InvestmentsController {
     investment.interestRate = rate
 
     // When the Invest has been approved and activated
-    let amountDueOnPayout = await interestDueOnPayout(investment.amount, rate, investment.duration)
+    let amount = investment.amount
+    let investmentDuration = investment.duration
+    let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
     investment.interestDueOnInvestment = amountDueOnPayout
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
@@ -456,9 +458,13 @@ export default class InvestmentsController {
     // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
     // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
     // console.log('Testing Payout Date: ' + testingPayoutDate)
-
+    let newInvestmentId = investment.id
     // @ts-ignore
-    Event.emit('new:investment', { id: investment.id, email: investment.walletHolderDetails.email })
+    let newInvestmentEmail = investment.walletHolderDetails.email
+    Event.emit('new:investment', {
+      id: newInvestmentId,
+      email: newInvestmentEmail,
+    })
     return response.status(201).json({ status: 'ok', data: investment })
   }
 
