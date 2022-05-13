@@ -713,19 +713,24 @@ export default class InvestmentsController {
 
           // if transaction was successfully processed
           // update Date payout was effected due to termination
-          payload.datePayoutWasDone = new Date().toISOString()
-          console.log('Payout investment data 1:', payload)
-          const payout = await Payout.create(payload)
-          payout.status = 'terminated'
-          await payout.save()
-          console.log('Terminated Payout investment data 1:', payout)
+
+          // TODO
+          // Move th code below to a new function that will check payout approval status and update the transaction
+// START
+          // payload.datePayoutWasDone = new Date().toISOString()
+          // console.log('Payout investment data 1:', payload)
+          // const payout = await Payout.create(payload)
+          // payout.status = 'terminated'
+          // await payout.save()
+          // console.log('Terminated Payout investment data 1:', payout)
+//  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
-          investment[0].status = 'terminated'
-
+          investment[0].status = 'termination pending approval'
+          investment[0].approvalStatus = approval[0].approvalStatus
           // update datePayoutWasDone
           // @ts-ignore
-          investment[0].datePayoutWasDone = new Date().toISOString()
+          // investment[0].datePayoutWasDone = new Date().toISOString()
           investment[0].save()
           console.log('Terminated Payout investment data 2:', investment)
           return response.status(200).json({
