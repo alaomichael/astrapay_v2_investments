@@ -69,7 +69,7 @@ export default class ApprovalsController {
     // return approval(s)
     return response.status(200).json({
       status: 'ok',
-      data: sortedApprovals,
+      data: sortedApprovals.map((approval) => approval.$original),
     })
   }
 
@@ -96,7 +96,7 @@ export default class ApprovalsController {
 
       // @ts-ignore
       Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-      return response.status(201).json({ status: 'ok', data: approval })
+      return response.status(201).json({ status: 'ok', data: approval.$original })
     } catch (error) {
       console.error(error)
       return response.status(404).json({
@@ -204,7 +204,9 @@ export default class ApprovalsController {
             // Update Investment data
             console.log(' Updated investment line 196: ', investment[0].$original)
             // send to user
-            return response.status(200).json({ status: 'ok', data: approval })
+            return response
+              .status(200)
+              .json({ status: 'ok', data: approval.map((inv) => inv.$original) })
           }
           return // 422
         } else {

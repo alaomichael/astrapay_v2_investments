@@ -10,24 +10,14 @@ import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
-// import {
-//   generateRate,
-//   interestDueOnPayout,
-//   dueForPayout,
-//   payoutDueDate,
-//   approvalRequest,
-// } from 'App/Helpers/utils'
-
-// @ts-ignore
-import interestDueOnPayout from 'App/Helpers/utils'
-// @ts-ignore
-import generateRate from 'App/Helpers/utils'
-// @ts-ignore
-import dueForPayout from 'App/Helpers/utils'
-// @ts-ignore
-import payoutDueDate from 'App/Helpers/utils'
-// @ts-ignore
-import approvalRequest from 'App/Helpers/utils'
+import {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+  // @ts-ignore
+} from 'App/Helpers/utils'
 
 import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
@@ -138,7 +128,9 @@ export default class InvestmentsController {
       if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
         console.log('INVESTMENT DATA: ', investment)
-        return response.status(200).json({ status: 'ok', data: investment })
+        return response
+          .status(200)
+          .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
       } else {
         return response
           .status(200)
@@ -288,7 +280,9 @@ export default class InvestmentsController {
       if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
         console.log('INVESTMENT DATA line 253: ', investment)
-        return response.status(200).json({ status: 'ok', data: investment })
+        return response
+          .status(200)
+          .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
       } else {
         return response
           .status(200)
@@ -330,7 +324,7 @@ export default class InvestmentsController {
                 // send to user
                 await investment[0].save()
                 console.log('Update Investment:', investment)
-                return response.json({ status: 'ok', data: investment })
+                return response.json({ status: 'ok', data: investment.map((inv) => inv.$original) })
               }
               return // 422
             }
@@ -339,7 +333,7 @@ export default class InvestmentsController {
             return response.json({ status: 'fail', data: error.message })
           }
         } else {
-          return response.json({ status: 'fail', data: investment })
+          return response.json({ status: 'fail', data: investment.map((inv) => inv.$original) })
         }
       } else {
         return response
@@ -465,7 +459,7 @@ export default class InvestmentsController {
       id: newInvestmentId,
       email: newInvestmentEmail,
     })
-    return response.status(201).json({ status: 'ok', data: investment })
+    return response.status(201).json({ status: 'ok', data: investment.$original })
   }
 
   // public async rate({ request, response }: HttpContextContract) {
@@ -520,7 +514,9 @@ export default class InvestmentsController {
             // send to user
             await investment[0].save()
             console.log('Update Investment:', investment)
-            return response.status(200).json({ status: 'ok', data: investment })
+            return response
+              .status(200)
+              .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
           }
           return // 422
         } else {
@@ -617,7 +613,7 @@ export default class InvestmentsController {
       // return rate(s)
       return response.status(200).json({
         status: 'ok',
-        data: sortedApprovalRequest,
+        data: sortedApprovalRequest.map((inv) => inv.$original),
       })
     } catch (error) {
       console.log(error)
@@ -667,7 +663,7 @@ export default class InvestmentsController {
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
             status: 'ok',
-            data: investment,
+            data: investment.map((inv) => inv.$original),
           })
         } else {
           let payload = investment[0].$original
@@ -696,7 +692,7 @@ export default class InvestmentsController {
           console.log('Terminated Payout investment data 2:', investment)
           return response.status(200).json({
             status: 'ok',
-            data: investment,
+            data: investment.map((inv) => inv.$original),
           })
         }
       } else {
