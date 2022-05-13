@@ -69,6 +69,7 @@ Route.group(() => {
     Route.delete('admin/investments/rates', 'RatesController.destroy')
     Route.delete('admin/investments/approvals', 'ApprovalsController.destroy')
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
+    Route.delete('investments/:userId', 'InvestmentsController.destroy')
     // Route.delete('admin/investments/rates', 'RatesController.destroy')
     // Route.delete('investments/:id', 'InvestmentsController.destroy')
   })

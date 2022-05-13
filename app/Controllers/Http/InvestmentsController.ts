@@ -168,7 +168,7 @@ export default class InvestmentsController {
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment data matched your query, please try again',
+            message: 'No investment activation approval data matched your query, please try again',
           })
         }
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
@@ -183,29 +183,33 @@ export default class InvestmentsController {
         investment[0].startDate = DateTime.now().toISO()
         let duration = parseInt(investment[0].duration)
         investment[0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 177: ', currentDateMs)
-        console.log('Time investment was started line 178: ', investment[0].startDate)
-        console.log('Time investment payout date line 180: ', investment[0].payoutDate)
+        console.log('The currentDate line 186: ', currentDateMs)
+        console.log('Time investment was started line 187: ', investment[0].startDate)
+        console.log('Time investment payout date line 188: ', investment[0].payoutDate)
         // Save
         investment[0].save()
         // send notification
-        console.log('Updated investment Status line 182: ', investment)
+        console.log('Updated investment Status line 192: ', investment)
       } else if (approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
-          .where('status', 'initiated')
+          .where('status', 'declined')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
+        console.log('The declined investment line 199: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment data matched your query, please try again',
+            message: 'No investment activation decline data matched your query, please try again',
           })
         }
 
         investment[0].status = 'declined'
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
-        console.log('INVESTMENT DATA line 191: ', investment)
+        // Save
+        investment[0].save()
+        // send notification
+        console.log('INVESTMENT DATA line 212: ', investment.map((inv) => inv.$original))
       } else {
         return response.json({ status: 'ok', data: approvalStatus })
       }
@@ -219,7 +223,7 @@ export default class InvestmentsController {
       if (investment.length < 1) {
         return response.json({
           status: 'FAILED',
-          message: 'No investment data matched your query, please try again',
+          message: 'No investment termination data matched your query, please try again',
         })
       }
     } else if (requestType === 'payout investment') {
@@ -233,7 +237,7 @@ export default class InvestmentsController {
       if (investment.length < 1) {
         return response.json({
           status: 'FAILED',
-          message: 'No investment data matched your query, please try again',
+          message: 'No investment payout data matched your query, please try again',
         })
       }
     }
