@@ -140,34 +140,48 @@ export default class InvestmentsController {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
-      approvalStatus = await Approval.query().where('requestType', requestType).where('userId', userId).where('investmentId', investmentId)
+      approvalStatus = await Approval.query()
+        .where('requestType', requestType)
+        .where('userId', userId)
+        .where('investmentId', investmentId)
       // check the approval status
-      console.log('approvalStatus line 145: ', approvalStatus)
+      console.log('approvalStatus line 145: ', approvalStatus[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start investment
-      if (approvalStatus.approvalStatus === 'approved') {
+      if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
           .where('status', 'initiated')
           .where('requestType', requestType)
-          .where('userId', userId).where('investmentId', investmentId)
+          .where('userId', userId)
+          .where('id', investmentId)
         console.log('INVESTMENT DATA line 152: ', investment)
+        investment.approvalStatus = approvalStatus[0].approvalStatus
+        // send investment details to Transaction Service
+        // on success
+
+        // update status investment
+        // update start date
         investment.status = 'active'
-        investment.approvalStatus = approvalStatus.approvalStatus
+        investment.startDate = DateTime.now()
+
+        console.log('Time investment was started line 161: ', investment.startDate)
         // Save
-        investment.save()
+        investment[0].save()
         // send notification
-        console.log('approvalStatus line 145: ', investment)
-      } else if (approvalStatus.approvalStatus === 'declined') {
+        console.log('Updated investment Status line 158: ', investment)
+      } else if (approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'initiated')
-          .where('requestType', requestType).where('userId', userId).where('investmentId', investmentId)
-          investment.status = 'declined'
-        investment.approvalStatus = approvalStatus.approvalStatus
+          .where('requestType', requestType)
+          .where('userId', userId)
+          .where('id', investmentId)
+        investment.status = 'declined'
+        investment.approvalStatus = approvalStatus[0].approvalStatus
         console.log('INVESTMENT DATA line 164: ', investment)
       } else {
-        return response.json({ status: 'ok', data: approvalStatus})
+        return response.json({ status: 'ok', data: approvalStatus })
       }
     } else if (requestType === 'terminate investment') {
-         console.log('INVESTMENT ID', investmentId)
+      console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       investment = await Investment.query()
         .where('status', 'active')
