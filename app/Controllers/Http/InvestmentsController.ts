@@ -196,7 +196,7 @@ export default class InvestmentsController {
         console.log('Time investment was started line 187: ', investment[0].startDate)
         console.log('Time investment payout date line 188: ', investment[0].payoutDate)
         // Save
-        investment[0].save()
+       await investment[0].save()
         // send notification
         console.log('Updated investment Status line 192: ', investment)
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
@@ -215,8 +215,8 @@ export default class InvestmentsController {
 
         investment[0].status = 'declined'
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
-        // Save
-        investment[0].save()
+        // await Save
+        await investment[0].save()
         // send notification
         console.log(
           'INVESTMENT DATA line 212: ',
@@ -305,7 +305,7 @@ export default class InvestmentsController {
           .json({ status: 'fail', message: 'no investment matched your query.' })
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -628,8 +628,8 @@ export default class InvestmentsController {
       }
       // return rate(s)
       return response.status(200).json({
-        status: 'ok',
-        data: sortedApprovalRequest.map((inv) => inv.$original),
+        status: 'OK',
+        data: await sortedApprovalRequest.map((inv) => inv.$original),
       })
     } catch (error) {
       console.log(error)
@@ -686,7 +686,7 @@ export default class InvestmentsController {
           // Date payout was effected
           // @ts-ignore
           investment[0].datePayoutWasDone = new Date().toISOString()
-          investment[0].save()
+          await investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
             status: 'ok',
@@ -732,7 +732,7 @@ export default class InvestmentsController {
           // update datePayoutWasDone
           // @ts-ignore
           // investment[0].datePayoutWasDone = new Date().toISOString()
-          investment[0].save()
+          await investment[0].save()
           console.log('Terminated Payout investment data line 736:', investment)
           return response.status(200).json({
             status: 'ok',

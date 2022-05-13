@@ -81,22 +81,38 @@ export default class ApprovalsController {
         requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       })
       const payload: any = await request.validate({ schema: approvalSchema })
-      const approval = await Approval.create(payload)
-      // @ts-ignore
-      // approval.status = 'active'
-      await approval.save()
-      console.log('The new approval request:', approval)
+      // check if the request is not existing
+      let approval
+      let requestIsExisting = await Approval.query().where({
+        user_id: payload.userId,
+        investment_id: payload.investmentId,
+      })
+      if (requestIsExisting.length < 0){
+        approval = await Approval.create(payload)
+        // @ts-ignore
+        // approval.status = 'active'
+        await approval.save()
+        console.log('The new approval request:', approval)
 
-      // TODO
-      console.log('A New approval request has been Created.')
+        // TODO
+        console.log('A New approval request has been Created.')
 
-      // Save approval new status to Database
-      await approval.save()
-      // Send approval Creation Message to Queue
+        // Save approval new status to Database
+        await approval.save()
+        // Send approval Creation Message to Queue
+        // @ts-ignore
+        Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
+        return response.status(201).json({ status: 'ok', data: approval.$original })
+      } else {
 
-      // @ts-ignore
-      Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-      return response.status(201).json({ status: 'ok', data: approval.$original })
+        approval[0].status = 
+        await approval.save()
+        // @ts-ignore
+        Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
+        return response.status(201).json({ status: 'ok', data: approval.$original })
+      }
+
+
     } catch (error) {
       console.error(error)
       return response.status(404).json({
