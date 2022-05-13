@@ -142,9 +142,9 @@ export default class InvestmentsController {
   }
 
   public async feedbacks({ params, request, response }: HttpContextContract) {
-    console.log('INVESTMENT params: ', params)
+    console.log('INVESTMENT params line 145: ', params)
     const { userId, investmentId, requestType } = request.qs()
-    console.log('INVESTMENT query: ', request.qs())
+    console.log('INVESTMENT query line 147: ', request.qs())
     let investment
     let approvalStatus
     if (requestType === 'start investment') {
@@ -156,7 +156,7 @@ export default class InvestmentsController {
         .where('userId', userId)
         .where('investmentId', investmentId)
       // check the approval status
-      console.log('approvalStatus line 145: ', approvalStatus[0].approvalStatus)
+      console.log('approvalStatus line 159: ', approvalStatus[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
@@ -164,30 +164,33 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('INVESTMENT DATA line 152: ', investment)
-        investment.approvalStatus = approvalStatus[0].approvalStatus
+        console.log('INVESTMENT DATA line 167: ', investment[0].approvalStatus)
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
         // send investment details to Transaction Service
         // on success
 
         // update status investment
         // update start date
-        investment.status = 'active'
-        investment.startDate = DateTime.now()
-
-        console.log('Time investment was started line 161: ', investment.startDate)
+        investment[0].status = 'active'
+        let currentDateMs = DateTime.now().toISO()
+        investment[0].startDate = DateTime.now().toISO()
+        investment[0].payoutDate = DateTime.now().plus({ days: investment[0].duration })
+        console.log('The currentDate line 177: ', currentDateMs)
+        console.log('Time investment was started line 178: ', investment[0].startDate)
+        console.log('Time investment payout date line 180: ', investment[0].payoutDate)
         // Save
         investment[0].save()
         // send notification
-        console.log('Updated investment Status line 158: ', investment)
+        console.log('Updated investment Status line 182: ', investment)
       } else if (approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'initiated')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        investment.status = 'declined'
-        investment.approvalStatus = approvalStatus[0].approvalStatus
-        console.log('INVESTMENT DATA line 164: ', investment)
+        investment[0].status = 'declined'
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        console.log('INVESTMENT DATA line 191: ', investment)
       } else {
         return response.json({ status: 'ok', data: approvalStatus })
       }
@@ -197,7 +200,7 @@ export default class InvestmentsController {
       investment = await Investment.query()
         .where('status', 'active')
         .where('requestType', requestType)
-      console.log('INVESTMENT DATA line 157: ', investment)
+      console.log('INVESTMENT DATA line 201: ', investment)
     } else if (requestType === 'payout investment') {
       console.log('Request type', requestType)
       console.log('INVESTMENT ID', investmentId)
@@ -205,7 +208,7 @@ export default class InvestmentsController {
       investment = await Investment.query()
         .where('status', 'active')
         .where('requestType', requestType)
-      console.log('INVESTMENT DATA line 164: ', investment)
+      console.log('INVESTMENT DATA line 209: ', investment)
     }
     try {
       let testAmount = 505000
@@ -232,7 +235,7 @@ export default class InvestmentsController {
         await investmentRate(testAmount, testDuration, testInvestmentType)
       )
       let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
-      console.log(' Rate return line 191 : ', rate)
+      console.log(' Rate return line 236 : ', rate)
       if (rate === undefined) {
         return response.status(400).json({
           status: 'fail',
@@ -249,7 +252,7 @@ export default class InvestmentsController {
       // .limit()
       if (investment && investment.length > 0) {
         // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA line 208: ', investment)
+        console.log('INVESTMENT DATA line 253: ', investment)
         return response.status(200).json({ status: 'ok', data: investment })
       } else {
         return response
@@ -268,13 +271,14 @@ export default class InvestmentsController {
         id: request.input('investmentId'),
       })
       if (investment.length > 0) {
-        console.log('Investment Selected for Update:', investment)
+        console.log('Investment Selected for Update line 272:', investment[0].startDate)
         let isDueForPayout
-        if(investment[0].startDate !== null) {
-
+        if (investment[0].startDate !== null) {
+          let createdAt = investment[0].createdAt
+          let duration = investment[0].duration
           try {
-            // let isDueForPayout = await dueForPayout(investment[0].createdAt, investment[0].duration)
-            isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
+            isDueForPayout = await dueForPayout(createdAt, duration)
+            // isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
             console.log('Is due for payout status :', isDueForPayout)
             // Restrict update to timed/fixed deposit only
             if (

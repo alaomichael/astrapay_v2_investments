@@ -156,6 +156,7 @@ const dueForPayout = (created_at, duration) => {
     // console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2022-04-29'))
 
     let isDueForPayout
+    console.log('Current Date line 159 utils.ts: ' + created_at)
     let investmentCreationDate = new Date(created_at).getTime()
     let durationToMs = parseInt(duration) * 24 * 60 * 60 * 1000
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
@@ -204,7 +205,7 @@ const dueForPayout = (created_at, duration) => {
   })
 }
 
-dueForPayout('2022-04-29 10:02:07.58+01', '190')
+// dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 const payoutDueDate = (created_at, duration) => {
   return new Promise((resolve, reject) => {
