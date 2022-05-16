@@ -658,6 +658,7 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
+          let approvalStatus = 'pending'
           let approval = await approvalRequest(userId, investmentId, requestType)
           console.log(' Approval request return line 662 : ', approval)
           if (approval === undefined) {

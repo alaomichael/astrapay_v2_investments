@@ -205,7 +205,7 @@ export default class ApprovalsController {
               await investment[0].save()
               let newTotalAmountToPayout = investment[0].totalAmountToPayout
               console.log(
-                'Former Total Amount Due for payout if Matured is: ',
+                'Total Amount Due for payout due to Termination: ',
                 newTotalAmountToPayout
               )
             } else if (

@@ -8,12 +8,12 @@
 const { DateTime } = require('luxon')
 // const {DateTime} = Luxon
 // import Env from '@ioc:Adonis/Core/Env'
-// const Env = require('@ioc:Adonis/Core/Env')
+const Env = require('@ioc:Adonis/Core/Env')
 const axios = require('axios').default
 const JSJoda = require('js-joda')
 const LocalDate = JSJoda.LocalDate
 const Moment = require('moment')
-// const API_URL = Env.get('API_URL')
+const API_URL = Env.get('API_URL')
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -205,9 +205,8 @@ const dueForPayout = (created_at, duration) => {
 
 // dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
-const investmentDuration =
-  // Get numbers of days difference between two dates
-  async function getNumberOfDays(start, end) {
+// Get numbers of days difference between two dates
+const investmentDuration =  async function getNumberOfDays(start, end) {
     const date1 = new Date(start)
     const date2 = new Date(end)
 
