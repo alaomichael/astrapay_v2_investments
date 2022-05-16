@@ -817,7 +817,7 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
-          let approvalStatus = 'pending'
+          // let approvalStatus = 'pending'
           let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
           console.log(' Approval request return line 822 : ', approvalRequestIsDone)
           if (approvalRequestIsDone === undefined) {
@@ -828,28 +828,28 @@ export default class InvestmentsController {
             })
           }
 
-          // TODO 
+          // TODO
           // Move the code below to another function
           // if payout was approved
 
           // send to transaction service
 
-          // if transaction was successfully processed
-          // update Date payout was effected
-          payload.datePayoutWasDone = new Date().toISOString()
-          console.log('Payout investment data 1:', payload)
-          const payout = await Payout.create(payload)
-          // update investment status
-          payout.status = 'payout'
-          await payout.save()
-          console.log('Payout investment data 2:', payout)
-          // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-          investment = await Investment.query().where('id', investmentId)
-          investment[0].status = 'payout'
-          investment[0].approvalStatus = approvalStatus
-          // Date payout was effected
-          // @ts-ignore
-          // investment[0].datePayoutWasDone = new Date().toISOString()
+          // // if transaction was successfully processed
+          // // update Date payout was effected
+          // payload.datePayoutWasDone = new Date().toISOString()
+          // console.log('Payout investment data 1:', payload)
+          // const payout = await Payout.create(payload)
+          // // update investment status
+          // payout.status = 'payout'
+          // await payout.save()
+          // console.log('Payout investment data 2:', payout)
+          // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+          // investment = await Investment.query().where('id', investmentId)
+          // investment[0].status = 'payout'
+          // investment[0].approvalStatus = approvalStatus
+          // // Date payout was effected
+          // // @ts-ignore
+          // // investment[0].datePayoutWasDone = new Date().toISOString()
           await investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
@@ -915,7 +915,145 @@ export default class InvestmentsController {
     }
   }
 
-   public async processPayment({ params, request, response }: HttpContextContract) {
+  public async processPayment({ params, request, response }: HttpContextContract) {
+    try {
+      // @ts-ignore
+      // let id = request.input('userId')
+      let { userId, investmentId } = request.all()
+      console.log(
+        'Params for update line 644: ',
+        +'userId ' + userId + 'investmentId ' + investmentId
+      )
+      // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
+      // let investment = await Investment.query().where('user_id', id).where('id', params.id)
+      let investment = await Investment.query().where('id', investmentId)
+      console.log('Investment Info, line 648: ', investment)
+      if (investment.length > 0) {
+        console.log('investment search data :', investment[0].$original)
+        // @ts-ignore
+        // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
+        // console.log('Is due for payout status :', isDueForPayout)
+
+        // TESTING
+        let startDate = DateTime.now().minus({ days: 5 }).toISO()
+        let duration = 6
+        console.log('Time investment was started line 809: ', startDate)
+        let isDueForPayout = await dueForPayout(startDate, duration)
+        console.log('Is due for payout status line 812:', isDueForPayout)
+
+        if (isDueForPayout) {
+          let payload = investment[0].$original
+          // send to Admin for approval
+          let userId = payload.userId
+          let investmentId = payload.id
+          let requestType = 'payout investment'
+          // let approvalStatus = 'pending'
+          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 822 : ', approvalRequestIsDone)
+          if (approvalRequestIsDone === undefined) {
+            return response.status(400).json({
+              status: 'FAILED',
+              message: 'payout approval request was not successful, please try again.',
+              data: [],
+            })
+          }
+
+          // TODO
+          // Move the code below to another function
+          // if payout was approved
+
+          // send to transaction service
+
+          // // if transaction was successfully processed
+          // // update Date payout was effected
+          // payload.datePayoutWasDone = new Date().toISOString()
+          // console.log('Payout investment data 1:', payload)
+          // const payout = await Payout.create(payload)
+          // // update investment status
+          // payout.status = 'payout'
+          // await payout.save()
+          // console.log('Payout investment data 2:', payout)
+          // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+          // investment = await Investment.query().where('id', investmentId)
+          // investment[0].status = 'payout'
+          // investment[0].approvalStatus = approvalStatus
+          // // Date payout was effected
+          // // @ts-ignore
+          // // investment[0].datePayoutWasDone = new Date().toISOString()
+          await investment[0].save()
+          console.log('Investment data after payout 2:', investment)
+          return response.status(200).json({
+            status: 'OK',
+            data: investment.map((inv) => inv.$original),
+          })
+        } else {
+          let payload = investment[0].$original
+          // send to Admin for approval
+          let userId = payload.userId
+          let investmentId = payload.id
+          let requestType = 'terminate investment'
+          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 702 : ', approvalRequestIsDone)
+          if (approvalRequestIsDone === undefined) {
+            return response.status(400).json({
+              status: 'fail',
+              message: 'termination approval request was not successful, please try again.',
+              data: [],
+            })
+          }
+          // if payout was approved
+
+          // send to transaction service
+
+          // if transaction was successfully processed
+          // update Date payout was effected due to termination
+
+          // TODO
+          // Move th code below to a new function that will check payout approval status and update the transaction
+          // START
+          // payload.datePayoutWasDone = new Date().toISOString()
+          // console.log('Payout investment data 1:', payload)
+          // const payout = await Payout.create(payload)
+          // payout.status = 'terminated'
+          // await payout.save()
+          // console.log('Terminated Payout investment data 1:', payout)
+          //  END
+          // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+          investment = await Investment.query().where('id', investmentId)
+          investment[0].requestType = requestType
+          investment[0].status = 'active'
+          investment[0].approvalStatus = 'pending'
+          // update datePayoutWasDone
+          // @ts-ignore
+          // investment[0].datePayoutWasDone = new Date().toISOString()
+          await investment[0].save()
+          console.log('Terminated Payout investment data line 736:', investment)
+          return response.status(200).json({
+            status: 'OK',
+            data: investment.map((inv) => inv.$original),
+          })
+        }
+      } else {
+        return response.status(404).json({
+          status: 'fail',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+      // Check Rollover Type
+
+      // Check RollOver Target
+
+      // Send Payment Details to Transaction Service
+
+      // Notify
+
+  }
+
+  public async transactionStatus({ params, request, response }: HttpContextContract) {
     // const { investmentId } = request.qs()
     console.log('Rate query: ', request.qs())
     let investment = await Investment.query().where({
@@ -924,14 +1062,24 @@ export default class InvestmentsController {
     })
     console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
-      investment = await Investment.query()
-        .where({
-          id: request.input('investmentId'),
-          user_id: params.userId,
-        })
-        .delete()
-      console.log('Deleted data:', investment)
-      return response.send('Investment Deleted.')
+      investment = await Investment.query().where({
+        id: request.input('investmentId'),
+        user_id: params.userId,
+      })
+
+      // Check for Successful Transactions
+
+      // Update Account status
+
+      // Notify
+
+      // Check RollOver Target
+
+      console.log(
+        'data:',
+        investment.map((inv) => inv.$original)
+      )
+      return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
