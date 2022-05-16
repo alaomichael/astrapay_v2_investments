@@ -4,6 +4,15 @@ import Investment from 'App/Models/Investment'
 import { DateTime } from 'luxon'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
+import {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+  investmentDuration,
+  // @ts-ignore
+} from 'App/Helpers/utils'
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
@@ -176,10 +185,29 @@ export default class ApprovalsController {
               investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = true
               investment[0].isTerminationAuthorized = true
-              // Calcualate the Total Amount to payout by prorata
-              
+              // Calculate the Total Amount to payout by prorata
+              let startDate = investment[0].startDate
+              let currentDate = new Date().toISOString()
+              let daysOfInvestment = await investmentDuration(startDate, currentDate)
+              let amountInvested = investment[0].amount
+              let expectedDuration = investment[0].duration
+              let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
+              // Pro-rata the Interest Due on Investment
+              let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
+              let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
+              let formerTotalAmountToPayout = investment[0].totalAmountToPayout
+              console.log(
+                'Former Total Amount Due for payout if Matured is: ',
+                formerTotalAmountToPayout
+              )
+              investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
               // Save the updated investment
               await investment[0].save()
+              let newTotalAmountToPayout = investment[0].totalAmountToPayout
+              console.log(
+                'Former Total Amount Due for payout if Matured is: ',
+                newTotalAmountToPayout
+              )
             } else if (
               approval[0].requestType === 'payout investment' &&
               approval[0].approvalStatus === 'approved'

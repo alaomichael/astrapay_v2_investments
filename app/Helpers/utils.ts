@@ -3,19 +3,17 @@
 'use strict'
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
-const string = require('@ioc:Adonis/Core/Helpers')
+// const string = require('@ioc:Adonis/Core/Helpers')
 // import { DateTime } from 'luxon'
 const { DateTime } = require('luxon')
 // const {DateTime} = Luxon
 // import Env from '@ioc:Adonis/Core/Env'
-const Env = require('@ioc:Adonis/Core/Env')
+// const Env = require('@ioc:Adonis/Core/Env')
 const axios = require('axios').default
 const JSJoda = require('js-joda')
 const LocalDate = JSJoda.LocalDate
 const Moment = require('moment')
-const API_URL = Env.get('API_URL')
-
-
+// const API_URL = Env.get('API_URL')
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
 // export const TIMEZONE_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss ZZ'
@@ -117,7 +115,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
   })
 }
 
-interestDueOnPayout(150000, 0.1, 180)
+// interestDueOnPayout(150000, 0.1, 180)
 
 // Check Investment due for payout
 // export const dueForPayout =
@@ -206,6 +204,30 @@ const dueForPayout = (created_at, duration) => {
 }
 
 // dueForPayout('2022-04-29 10:02:07.58+01', '190')
+
+const investmentDuration =
+  // Get numbers of days difference between two dates
+  async function getNumberOfDays(start, end) {
+    const date1 = new Date(start)
+    const date2 = new Date(end)
+
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24
+
+    // Calculating the time difference between two dates
+    const diffInTime = (await date2.getTime()) - date1.getTime()
+
+    // Calculating the no. of days between two dates
+    const diffInDays = await Math.round(diffInTime / oneDay)
+    console.log('Duration of the investment is: ', diffInDays)
+    // let currentDate = new Date().toISOString() //.toLocaleString()
+    // console.log('currentDate : ', currentDate)
+
+    return diffInDays
+  }
+
+// let currentDate = new Date().toISOString()
+// investmentDuration('2022-04-30 10:02:07.58+01', currentDate)
 
 const payoutDueDate = (created_at, duration) => {
   return new Promise((resolve, reject) => {
@@ -303,4 +325,11 @@ const approvalRequest = async function (userId, investmentId, requestType) {
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-module.exports = { generateRate, interestDueOnPayout, dueForPayout, payoutDueDate, approvalRequest }
+module.exports = {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+  investmentDuration,
+}
