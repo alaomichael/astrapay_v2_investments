@@ -943,125 +943,112 @@ export default class InvestmentsController {
 let amount = investment[0].amount
  let rolloverTarget = investment[0].rolloverTarget
  let rolloverDone = investment[0].rolloverDone
-
+if (rolloverType === '100') {
+  //  Proceed to payout the Total Amount due on maturity
+  return response.send({ status: 'OK', message: 'No Rollover was set on this investment.' })
+}
   // Check RollOver Target
  if (rolloverDone === rolloverTarget) {
    //  Proceed to payout the Total Amount due on maturity
    return response.send({ status: 'OK', message: 'Rollover target has been reached.' })
  } else {
-   const effectRollover = (amount, rolloverType, rolloverTarget, rolloverDone) => {
+   /**
+    * .enum('rollover_type', ['100' = 'no rollover',
+    *  '101' = 'rollover principal only',
+    * '102' = 'rollover principal with interest',
+    * '103' = 'rollover interest only'])
+    */
+   const effectRollover = (investment, amount, rolloverType, rolloverDone, rolloverTarget) => {
      return new Promise((resolve, reject) => {
-       if (!amount || !rolloverType || !rolloverTarget || !rolloverTarget || amount <= 0)
-         reject(new Error('Incomplete parameters or amount is less than allowed range'))
-       let rate
-       if (parseInt(duration) >= 90 && 180 > parseInt(duration)) {
-         duration = '3 months'
-       } else if (parseInt(duration) >= 180 && 270 > parseInt(duration)) {
-         duration = '6 months'
-       } else if (parseInt(duration) >= 270 && 360 > parseInt(duration)) {
-         duration = '9 months'
-       } else if (parseInt(duration) >= 360 && 450 > parseInt(duration)) {
-         duration = '12 months'
-       } else if (parseInt(duration) >= 450 && 540 > parseInt(duration)) {
-         duration = '1 year and 3 months'
-       } else if (parseInt(duration) >= 540 && 630 > parseInt(duration)) {
-         duration = '1 year and 6 months'
-       } else if (parseInt(duration) >= 630 && 720 > parseInt(duration)) {
-         duration = '1 year and 9 months'
-       } else if (parseInt(duration) >= 720) {
-         duration = '2 years or more'
-       }
+       if (!investment || !amount || !rolloverType || !rolloverDone || rolloverTarget|| rolloverTarget <= 0)
+         reject(
+           new Error(
+             'Incomplete parameters , or no rollover target was set, or is less than allowed range'
+           )
+         )
+       let payload
+       let amountToPayoutNow
+       let amountToBeReinvested
+       switch (rolloverType) {
+         case '101':
+                  amountToBeReinvested = amount
+                  amountToPayoutNow = investment.interestDueOnInvestment
+                  payload.amount = amountToBeReinvested
 
-       switch (duration) {
-         case '3 months':
-           rate = 0.06
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+           console.log(
+             `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+           )
            break
-         case '6 months':
-           rate = 0.07
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         case '102':
+        amountToBeReinvested = amount + investment.interestDueOnInvestment
+        // amountToPayoutNow = investment.interestDueOnInvestment
+        payload.amount = amountToBeReinvested
+
+        console.log(
+          `The Sum Total of the Principal and the interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested`
+        )
            break
-         case '9 months':
-           rate = 0.08
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
-           break
-         case '12 months':
-           rate = 0.09
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
-           break
-         case '1 year and 3 months':
-           rate = 0.1
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
-           break
-         case '1 year and 6 months':
-           rate = 0.11
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
-           break
-         case '1 year and 9 months':
-           rate = 0.12
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
-           break
-         case '2 years or more':
-           rate = 0.13
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+         case '103':
+           amountToBeReinvested =  investment.interestDueOnInvestment
+           amountToPayoutNow = amount
+           payload.amount = amountToBeReinvested
+
+           console.log(
+             `The Interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+           )
            break
          default:
-           rate = 0.05
-           console.log(`RATE for ${investment_type} deposit for ${duration} days is:`, rate)
+console.log('Nothing was done on investment')
            break
        }
-       return resolve(rate)
+       return resolve({ payload, amountToBeReinvested, amountToPayoutNow })
      })
    }
-  }
+   let payload = investment[0].$original
+   // send to Admin for approval
+   let userId = payload.userId
+   let investmentId = payload.id
+   let requestType = 'payout investment'
+   // let approvalStatus = 'pending'
+   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+   console.log(' Approval request return line 822 : ', approvalRequestIsDone)
+   if (approvalRequestIsDone === undefined) {
+     return response.status(400).json({
+       status: 'FAILED',
+       message: 'payout approval request was not successful, please try again.',
+       data: [],
+     })
+   }
 
+   // TODO
+   // Move the code below to another function
+   // if payout was approved
 
-  
-          let payload = investment[0].$original
-          // send to Admin for approval
-          let userId = payload.userId
-          let investmentId = payload.id
-          let requestType = 'payout investment'
-          // let approvalStatus = 'pending'
-          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 822 : ', approvalRequestIsDone)
-          if (approvalRequestIsDone === undefined) {
-            return response.status(400).json({
-              status: 'FAILED',
-              message: 'payout approval request was not successful, please try again.',
-              data: [],
-            })
-          }
+   // send to transaction service
 
-          // TODO
-          // Move the code below to another function
-          // if payout was approved
-
-          // send to transaction service
-
-          // // if transaction was successfully processed
-          // // update Date payout was effected
-          // payload.datePayoutWasDone = new Date().toISOString()
-          // console.log('Payout investment data 1:', payload)
-          // const payout = await Payout.create(payload)
-          // // update investment status
-          // payout.status = 'payout'
-          // await payout.save()
-          // console.log('Payout investment data 2:', payout)
-          // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-          // investment = await Investment.query().where('id', investmentId)
-          // investment[0].status = 'payout'
-          // investment[0].approvalStatus = approvalStatus
-          // // Date payout was effected
-          // // @ts-ignore
-          // // investment[0].datePayoutWasDone = new Date().toISOString()
-          await investment[0].save()
-          console.log('Investment data after payout 2:', investment)
-          return response.status(200).json({
-            status: 'OK',
-            data: investment.map((inv) => inv.$original),
-          })
-        } else {
+   // // if transaction was successfully processed
+   // // update Date payout was effected
+   // payload.datePayoutWasDone = new Date().toISOString()
+   // console.log('Payout investment data 1:', payload)
+   // const payout = await Payout.create(payload)
+   // // update investment status
+   // payout.status = 'payout'
+   // await payout.save()
+   // console.log('Payout investment data 2:', payout)
+   // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+   // investment = await Investment.query().where('id', investmentId)
+   // investment[0].status = 'payout'
+   // investment[0].approvalStatus = approvalStatus
+   // // Date payout was effected
+   // // @ts-ignore
+   // // investment[0].datePayoutWasDone = new Date().toISOString()
+   await investment[0].save()
+   console.log('Investment data after payout 2:', investment)
+   return response.status(200).json({
+     status: 'OK',
+     data: investment.map((inv) => inv.$original),
+   })
+ } }else {
           let payload = investment[0].$original
           // send to Admin for approval
           let userId = payload.userId
