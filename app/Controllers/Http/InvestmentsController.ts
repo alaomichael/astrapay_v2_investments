@@ -200,6 +200,10 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log('Updated investment Status line 201: ', investment)
+        return response.json({
+          status: 'OK',
+          data: investment.map((inv) => inv.$original),
+        })
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'initiated')
@@ -363,6 +367,10 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log('Updated investment Status line 378: ', investment)
+        return response.json({
+          status: 'OK',
+          data: investment.map((inv) => inv.$original),
+        })
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'active')
@@ -386,6 +394,10 @@ export default class InvestmentsController {
           'INVESTMENT DATA line 399: ',
           investment.map((inv) => inv.$original)
         )
+        return response.json({
+          status: 'OK',
+          data: investment.map((inv) => inv.$original),
+        })
       } else {
         return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
       }
@@ -789,8 +801,15 @@ export default class InvestmentsController {
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
-        let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
-        console.log('Is due for payout status :', isDueForPayout)
+        // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
+        // console.log('Is due for payout status :', isDueForPayout)
+
+        // TESTING
+        let startDate = DateTime.now().minus({ days: 5 }).toISO()
+        let duration = 6
+        console.log('Time investment was started line 809: ', startDate)
+        let isDueForPayout = await dueForPayout(startDate, duration)
+        console.log('Is due for payout status line 812:', isDueForPayout)
 
         if (isDueForPayout) {
           let payload = investment[0].$original
@@ -799,15 +818,18 @@ export default class InvestmentsController {
           let investmentId = payload.id
           let requestType = 'payout investment'
           let approvalStatus = 'pending'
-          let approval = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 662 : ', approval)
-          if (approval === undefined) {
+          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 822 : ', approvalRequestIsDone)
+          if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
-              status: 'fail',
+              status: 'FAILED',
               message: 'payout approval request was not successful, please try again.',
               data: [],
             })
           }
+
+          // TODO 
+          // Move the code below to another function
           // if payout was approved
 
           // send to transaction service
@@ -840,9 +862,9 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'terminate investment'
-          let approval = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 702 : ', approval)
-          if (approval === undefined) {
+          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+          console.log(' Approval request return line 702 : ', approvalRequestIsDone)
+          if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
               status: 'fail',
               message: 'termination approval request was not successful, please try again.',
@@ -890,6 +912,28 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+   public async processPayment({ params, request, response }: HttpContextContract) {
+    // const { investmentId } = request.qs()
+    console.log('Rate query: ', request.qs())
+    let investment = await Investment.query().where({
+      id: request.input('investmentId'),
+      user_id: params.userId,
+    })
+    console.log(' QUERY RESULT: ', investment)
+    if (investment.length > 0) {
+      investment = await Investment.query()
+        .where({
+          id: request.input('investmentId'),
+          user_id: params.userId,
+        })
+        .delete()
+      console.log('Deleted data:', investment)
+      return response.send('Investment Deleted.')
+    } else {
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 
