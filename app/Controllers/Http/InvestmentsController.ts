@@ -181,6 +181,7 @@ export default class InvestmentsController {
           })
         }
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // TODO
         // send investment details to Transaction Service
         // on success
 
@@ -247,7 +248,7 @@ export default class InvestmentsController {
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
-          .where('status', 'active')
+          .where('status', 'terminated')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
@@ -259,15 +260,16 @@ export default class InvestmentsController {
           })
         }
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // TODO
         // send investment details to Transaction Service
         // on success
 
         // update status investment
         // update start date
-        // investment[0].status = 'terminated'
+        investment[0].status = 'terminated'
 
-        // let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
+        investment[0].datePayoutWasDone = DateTime.now().toISO()
         // investment[0].startDate = DateTime.now().toISO()
         // let duration = parseInt(investment[0].duration)
         // investment[0].payoutDate = DateTime.now().plus({ days: duration })
@@ -306,24 +308,11 @@ export default class InvestmentsController {
           'INVESTMENT DATA line 312: ',
           investment.map((inv) => inv.$original)
         )
-        return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
+        return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
         return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
       }
     } else if (requestType === 'payout investment') {
-      // console.log('Request type', requestType)
-      // console.log('INVESTMENT ID', investmentId)
-      // console.log('USER ID', userId)
-      // investment = await Investment.query()
-      //   .where('status', 'active')
-      //   .where('requestType', requestType)
-      // console.log('INVESTMENT DATA line 209: ', investment)
-      // if (investment.length < 1) {
-      //   return response.json({
-      //     status: 'FAILED',
-      //     message: 'No investment payout data matched your query, please try again',
-      //   })
-      // }
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
@@ -355,19 +344,20 @@ export default class InvestmentsController {
           })
         }
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // TODO
         // send investment details to Transaction Service
         // on success
 
         // update status investment
         // update start date
         investment[0].status = 'payout'
-        let currentDateMs = DateTime.now().toISO()
+        // let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
-        investment[0].startDate = DateTime.now().toISO()
-        let duration = parseInt(investment[0].duration)
-        investment[0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 372: ', currentDateMs)
-        console.log('Time investment was started line 373: ', investment[0].startDate)
+        // investment[0].startDate = DateTime.now().toISO()
+        // let duration = parseInt(investment[0].duration)
+        investment[0].payoutDate = DateTime.now().toISO() //DateTime.now().plus({ days: duration })
+        // console.log('The currentDate line 372: ', currentDateMs)
+        // console.log('Time investment was started line 373: ', investment[0].startDate)
         console.log('Time investment payout date line 374: ', investment[0].payoutDate)
         // Save
         await investment[0].save()
@@ -397,7 +387,7 @@ export default class InvestmentsController {
           investment.map((inv) => inv.$original)
         )
       } else {
-        return response.json({ status: 'ok', data: approvalStatus.map((inv) => inv.$original) })
+        return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
       }
     }
     // try {
