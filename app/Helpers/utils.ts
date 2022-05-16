@@ -107,15 +107,20 @@ const interestDueOnPayout = (amount, rate, duration) => {
       reject(new Error('Incomplete parameters or amount is less than allowed range'))
     }
     let interestDue
+    let interestDueDaily
     interestDue = amount * rate
+    interestDueDaily = interestDue / duration
     console.log(
       `Interest due for your investment of ${amount} for ${duration} days is ${interestDue}`
+    )
+    console.log(
+      `Interest due daily for your investment of ${amount} for ${duration} days is ${interestDueDaily}`
     )
     return resolve(interestDue)
   })
 }
 
-// interestDueOnPayout(150000, 0.1, 180)
+interestDueOnPayout(150000, 0.05, 180)
 
 // Check Investment due for payout
 // export const dueForPayout =
@@ -206,24 +211,24 @@ const dueForPayout = (created_at, duration) => {
 // dueForPayout('2022-04-29 10:02:07.58+01', '190')
 
 // Get numbers of days difference between two dates
-const investmentDuration =  async function getNumberOfDays(start, end) {
-    const date1 = new Date(start)
-    const date2 = new Date(end)
+const investmentDuration = async function getNumberOfDays(start, end) {
+  const date1 = new Date(start)
+  const date2 = new Date(end)
 
-    // One day in milliseconds
-    const oneDay = 1000 * 60 * 60 * 24
+  // One day in milliseconds
+  const oneDay = 1000 * 60 * 60 * 24
 
-    // Calculating the time difference between two dates
-    const diffInTime = (await date2.getTime()) - date1.getTime()
+  // Calculating the time difference between two dates
+  const diffInTime = (await date2.getTime()) - date1.getTime()
 
-    // Calculating the no. of days between two dates
-    const diffInDays = await Math.round(diffInTime / oneDay)
-    console.log('Duration of the investment is: ', diffInDays)
-    // let currentDate = new Date().toISOString() //.toLocaleString()
-    // console.log('currentDate : ', currentDate)
+  // Calculating the no. of days between two dates
+  const diffInDays = await Math.round(diffInTime / oneDay)
+  console.log('Duration of the investment is: ', diffInDays)
+  // let currentDate = new Date().toISOString() //.toLocaleString()
+  // console.log('currentDate : ', currentDate)
 
-    return diffInDays
-  }
+  return diffInDays
+}
 
 // let currentDate = new Date().toISOString()
 // investmentDuration('2022-04-30 10:02:07.58+01', currentDate)
@@ -263,7 +268,7 @@ const approvalRequest = async function (userId, investmentId, requestType) {
       requestType,
     })
     console.log('The API response for approval request: ', response.data)
-    if (response && response.data.status === 'ok') {
+    if (response && response.data.status === 'OK') {
       console.log('Approval request status is OK')
       return response.data
     } else {

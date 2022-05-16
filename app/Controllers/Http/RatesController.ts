@@ -79,14 +79,14 @@ export default class RatesController {
     }
     if (sortedRates.length < 1) {
       return response.status(200).json({
-        status: 'ok',
+        status: 'OK',
         message: 'no investment rate matched your search',
         data: [],
       })
     }
     // return rate(s)
     return response.status(200).json({
-      status: 'ok',
+      status: 'OK',
       data: sortedRates,
     })
   }
@@ -112,7 +112,7 @@ export default class RatesController {
     const rate = await Rate.create(payload)
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
-    // return response.ok(investment)
+    // return response.OK(investment)
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
 

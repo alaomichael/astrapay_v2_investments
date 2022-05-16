@@ -538,7 +538,7 @@ export default class InvestmentsController {
       }
     }
 
-    console.log(' The Rate return for RATE 2: ', await investmentRate())
+    console.log(' The Rate return for RATE line 541: ', await investmentRate())
     let rate = await investmentRate()
     console.log(' Rate return line 210 : ', rate)
     if (rate === undefined) {
