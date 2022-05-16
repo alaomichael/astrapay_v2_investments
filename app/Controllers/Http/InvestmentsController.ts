@@ -108,7 +108,7 @@ export default class InvestmentsController {
         if (limit) {
           newArray = newArray.slice(0, Number(limit))
         }
-        return response.status(200).json({ status: 'ok', data: newArray })
+        return response.status(200).json({ status: 'OK', data: newArray })
       } else {
         return response.status(200).json({
           status: 'fail',
@@ -132,7 +132,7 @@ export default class InvestmentsController {
         console.log('INVESTMENT DATA: ', investment)
         return response
           .status(200)
-          .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
+          .json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
         return response
           .status(200)
@@ -248,7 +248,7 @@ export default class InvestmentsController {
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
-          .where('status', 'terminated')
+          .where('status', 'active')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
@@ -400,7 +400,7 @@ export default class InvestmentsController {
     //         `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
     //       )
     //       console.log('The API response: ', response.data)
-    //       if (response.data.status === 'ok' && response.data.data.length > 0) {
+    //       if (response.data.status === 'OK' && response.data.data.length > 0) {
     //         return response.data.data[0].interest_rate
     //       } else {
     //         return
@@ -435,7 +435,7 @@ export default class InvestmentsController {
     //     console.log('INVESTMENT DATA line 253: ', investment)
     //     return response
     //       .status(200)
-    //       .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
+    //       .json({ status: 'OK', data: investment.map((inv) => inv.$original) })
     //   } else {
     //     return response
     //       .status(200)
@@ -477,7 +477,7 @@ export default class InvestmentsController {
                 // send to user
                 await investment[0].save()
                 console.log('Update Investment:', investment)
-                return response.json({ status: 'ok', data: investment.map((inv) => inv.$original) })
+                return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
               }
               return // 422
             }
@@ -528,7 +528,7 @@ export default class InvestmentsController {
           `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
         )
         console.log('The API response: ', response.data)
-        if (response.data.status === 'ok' && response.data.data.length > 0) {
+        if (response.data.status === 'OK' && response.data.data.length > 0) {
           return response.data.data[0].interest_rate
         } else {
           return
@@ -552,7 +552,7 @@ export default class InvestmentsController {
     const investment = await Investment.create(payload)
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
-    // return response.ok(investment)
+    // return response.OK(investment)
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
 
@@ -612,7 +612,7 @@ export default class InvestmentsController {
       id: newInvestmentId,
       email: newInvestmentEmail,
     })
-    return response.status(201).json({ status: 'ok', data: investment.$original })
+    return response.status(201).json({ status: 'OK', data: investment.$original })
   }
 
   // public async rate({ request, response }: HttpContextContract) {
@@ -623,7 +623,7 @@ export default class InvestmentsController {
   //   let rate = (await generateRate(amount, duration, investmentType)) * 100
   //   console.log('Investment rate:', rate)
   //   return response.status(200).json({
-  //     status: 'ok',
+  //     status: 'OK',
   //     data: rate,
   //   })
   // }
@@ -669,7 +669,7 @@ export default class InvestmentsController {
             console.log('Update Investment:', investment)
             return response
               .status(200)
-              .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
+              .json({ status: 'OK', data: investment.map((inv) => inv.$original) })
           }
           return // 422
         } else {
@@ -706,7 +706,7 @@ export default class InvestmentsController {
       // if (investment) {
       //   // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
       //   console.log('INVESTMENT DATA: ', investment)
-      //   return response.status(200).json({ status: 'ok', data: investment })
+      //   return response.status(200).json({ status: 'OK', data: investment })
       // }
       let sortedApprovalRequest = investment
       if (userId) {
@@ -758,7 +758,7 @@ export default class InvestmentsController {
       }
       if (sortedApprovalRequest.length < 1) {
         return response.status(200).json({
-          status: 'ok',
+          status: 'OK',
           message: 'no investment approval request matched your search',
           data: [],
         })
@@ -831,7 +831,7 @@ export default class InvestmentsController {
           await investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
-            status: 'ok',
+            status: 'OK',
             data: investment.map((inv) => inv.$original),
           })
         } else {
@@ -877,7 +877,7 @@ export default class InvestmentsController {
           await investment[0].save()
           console.log('Terminated Payout investment data line 736:', investment)
           return response.status(200).json({
-            status: 'ok',
+            status: 'OK',
             data: investment.map((inv) => inv.$original),
           })
         }

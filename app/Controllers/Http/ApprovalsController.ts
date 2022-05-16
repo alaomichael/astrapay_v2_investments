@@ -77,7 +77,7 @@ export default class ApprovalsController {
     }
     // return approval(s)
     return response.status(200).json({
-      status: 'ok',
+      status: 'OK',
       data: sortedApprovals.map((approval) => approval.$original),
     })
   }
@@ -113,7 +113,7 @@ export default class ApprovalsController {
         // Send approval Creation Message to Queue
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-        return response.status(201).json({ status: 'ok', data: approval.$original })
+        return response.status(201).json({ status: 'OK', data: approval.$original })
       } else {
         //  Update approval request
         approval = requestIsExisting
@@ -124,7 +124,7 @@ export default class ApprovalsController {
         await approval[0].save()
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
-        return response.status(201).json({ status: 'ok', data: approval[0].$original })
+        return response.status(201).json({ status: 'Ok', data: approval[0].$original })
       }
     } catch (error) {
       console.error(error)
@@ -256,7 +256,7 @@ export default class ApprovalsController {
             // send to user
             return response
               .status(200)
-              .json({ status: 'ok', data: approval.map((inv) => inv.$original) })
+              .json({ status: 'OK', data: approval.map((inv) => inv.$original) })
           }
           return // 422
         } else {
@@ -289,7 +289,7 @@ export default class ApprovalsController {
         .where({ investment_id: investmentId, user_id: userId, id: approvalId })
         .delete()
       console.log('Deleted data:', approval)
-      return response.status(200).json({ status: 'ok', message: 'Approval Request Deleted.' })
+      return response.status(200).json({ status: 'OK', message: 'Approval Request Deleted.' })
     } else {
       return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
     }
