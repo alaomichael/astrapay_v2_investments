@@ -87,32 +87,36 @@ export default class ApprovalsController {
         user_id: payload.userId,
         investment_id: payload.investmentId,
       })
-      if (requestIsExisting.length < 0){
+
+      console.log('Existing Approval Request details: ', requestIsExisting)
+      if (requestIsExisting.length < 1) {
         approval = await Approval.create(payload)
         // @ts-ignore
         // approval.status = 'active'
-        await approval.save()
+        await approval[0].save()
         console.log('The new approval request:', approval)
 
         // TODO
         console.log('A New approval request has been Created.')
 
         // Save approval new status to Database
-        await approval.save()
+        await approval[0].save()
         // Send approval Creation Message to Queue
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
         return response.status(201).json({ status: 'ok', data: approval.$original })
       } else {
+        //  Update approval request
+        approval = requestIsExisting
+        approval[0].requestType = payload.requestType
+        approval[0].approvalStatus = payload.approvalStatus
+        approval[0].remark = ''
 
-        approval[0].status = 
-        await approval.save()
+        await approval[0].save()
         // @ts-ignore
-        Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-        return response.status(201).json({ status: 'ok', data: approval.$original })
+        Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
+        return response.status(201).json({ status: 'ok', data: approval[0].$original })
       }
-
-
     } catch (error) {
       console.error(error)
       return response.status(404).json({
@@ -172,6 +176,8 @@ export default class ApprovalsController {
               investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = true
               investment[0].isTerminationAuthorized = true
+              // Calcualate the Total Amount to payout by prorata
+              
               // Save the updated investment
               await investment[0].save()
             } else if (

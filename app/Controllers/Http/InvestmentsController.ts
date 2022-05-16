@@ -727,7 +727,7 @@ export default class InvestmentsController {
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
           investment[0].requestType = requestType
-          investment[0].status = 'termination pending approval'
+          investment[0].status = 'active'
           investment[0].approvalStatus = 'pending'
           // update datePayoutWasDone
           // @ts-ignore
