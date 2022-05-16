@@ -192,20 +192,20 @@ export default class InvestmentsController {
         investment[0].startDate = DateTime.now().toISO()
         let duration = parseInt(investment[0].duration)
         investment[0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 186: ', currentDateMs)
-        console.log('Time investment was started line 187: ', investment[0].startDate)
-        console.log('Time investment payout date line 188: ', investment[0].payoutDate)
+        console.log('The currentDate line 195: ', currentDateMs)
+        console.log('Time investment was started line 196: ', investment[0].startDate)
+        console.log('Time investment payout date line 197: ', investment[0].payoutDate)
         // Save
         await investment[0].save()
         // send notification
-        console.log('Updated investment Status line 192: ', investment)
+        console.log('Updated investment Status line 201: ', investment)
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
-          .where('status', 'declined')
+          .where('status', 'initiated')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 199: ', investment)
+        console.log('The declined investment line 208: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -213,31 +213,21 @@ export default class InvestmentsController {
           })
         }
 
-        investment[0].status = 'declined'
+        // investment[0].status = 'declined'
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
         // await Save
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 212: ',
+          'INVESTMENT DATA line 222: ',
           investment.map((inv) => inv.$original)
         )
+
+        return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
-        return response.json({ status: 'ok', data: approvalStatus })
+        return response.json({ status: 'OK', data: approvalStatus })
       }
     } else if (requestType === 'terminate investment') {
-      // console.log('INVESTMENT ID', investmentId)
-      // console.log('USER ID', userId)
-      // investment = await Investment.query()
-      //   .where('status', 'active')
-      //   .where('requestType', requestType)
-      // console.log('INVESTMENT DATA line 201: ', investment)
-      // if (investment.length < 1) {
-      //   return response.json({
-      //     status: 'FAILED',
-      //     message: 'No investment termination data matched your query, please try again',
-      //   })
-      // }
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
@@ -274,26 +264,32 @@ export default class InvestmentsController {
 
         // update status investment
         // update start date
-        investment[0].status = 'terminated'
-        let currentDateMs = DateTime.now().toISO()
+        // investment[0].status = 'terminated'
+
+        // let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
-        investment[0].startDate = DateTime.now().toISO()
-        let duration = parseInt(investment[0].duration)
-        investment[0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 284: ', currentDateMs)
-        console.log('Time investment was started line 285: ', investment[0].startDate)
-        console.log('Time investment payout date line 286: ', investment[0].payoutDate)
+        // investment[0].startDate = DateTime.now().toISO()
+        // let duration = parseInt(investment[0].duration)
+        // investment[0].payoutDate = DateTime.now().plus({ days: duration })
+        // console.log('The currentDate line 284: ', currentDateMs)
+        // console.log('Time investment was started line 285: ', investment[0].startDate)
+        // console.log('Time investment payout date line 286: ', investment[0].payoutDate)
+
         // Save
         await investment[0].save()
         // send notification
         console.log('Updated investment Status line 289: ', investment)
+        return response.json({
+          status: 'OK',
+          data: investment.map((inv) => inv.$original),
+        })
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
         investment = await Investment.query()
           .where('status', 'active')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 297: ', investment)
+        console.log('The declined investment line 296: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -301,7 +297,7 @@ export default class InvestmentsController {
           })
         }
 
-        investment[0].status = 'declined'
+        // investment[0].status = 'declined'
         investment[0].approvalStatus = approvalStatus[0].approvalStatus
         // await Save
         await investment[0].save()
@@ -310,78 +306,154 @@ export default class InvestmentsController {
           'INVESTMENT DATA line 312: ',
           investment.map((inv) => inv.$original)
         )
+        return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
+      } else {
+        return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
+      }
+    } else if (requestType === 'payout investment') {
+      // console.log('Request type', requestType)
+      // console.log('INVESTMENT ID', investmentId)
+      // console.log('USER ID', userId)
+      // investment = await Investment.query()
+      //   .where('status', 'active')
+      //   .where('requestType', requestType)
+      // console.log('INVESTMENT DATA line 209: ', investment)
+      // if (investment.length < 1) {
+      //   return response.json({
+      //     status: 'FAILED',
+      //     message: 'No investment payout data matched your query, please try again',
+      //   })
+      // }
+      console.log('INVESTMENT ID', investmentId)
+      console.log('USER ID', userId)
+      // check the approval for request
+      approvalStatus = await Approval.query()
+        .where('requestType', requestType)
+        .where('userId', userId)
+        .where('investmentId', investmentId)
+      // check the approval status
+      console.log('approvalStatus line 338: ', approvalStatus)
+      if (approvalStatus.length < 1) {
+        return response.json({
+          status: 'FAILED',
+          message: 'No investment payout request data matched your query, please try again',
+        })
+      }
+      console.log('approvalStatus line 345: ', approvalStatus[0].approvalStatus)
+      //  if approved update investment status to active, update startDate,  and start investment
+      if (approvalStatus[0].approvalStatus === 'approved') {
+        investment = await Investment.query()
+          .where('status', 'active')
+          .where('requestType', requestType)
+          .where('userId', userId)
+          .where('id', investmentId)
+        console.log('INVESTMENT DATA line 353: ', investment)
+        if (investment.length < 1) {
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment data matched your query, please try again',
+          })
+        }
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // send investment details to Transaction Service
+        // on success
+
+        // update status investment
+        // update start date
+        investment[0].status = 'payout'
+        let currentDateMs = DateTime.now().toISO()
+        // @ts-ignore
+        investment[0].startDate = DateTime.now().toISO()
+        let duration = parseInt(investment[0].duration)
+        investment[0].payoutDate = DateTime.now().plus({ days: duration })
+        console.log('The currentDate line 372: ', currentDateMs)
+        console.log('Time investment was started line 373: ', investment[0].startDate)
+        console.log('Time investment payout date line 374: ', investment[0].payoutDate)
+        // Save
+        await investment[0].save()
+        // send notification
+        console.log('Updated investment Status line 378: ', investment)
+      } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
+        investment = await Investment.query()
+          .where('status', 'active')
+          .where('requestType', requestType)
+          .where('userId', userId)
+          .where('id', investmentId)
+        console.log('The declined investment line 385: ', investment)
+        if (investment.length < 1) {
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment payout decline data matched your query, please try again',
+          })
+        }
+
+        // investment[0].status = 'declined'
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // await Save
+        await investment[0].save()
+        // send notification
+        console.log(
+          'INVESTMENT DATA line 399: ',
+          investment.map((inv) => inv.$original)
+        )
       } else {
         return response.json({ status: 'ok', data: approvalStatus.map((inv) => inv.$original) })
       }
-    } else if (requestType === 'payout investment') {
-      console.log('Request type', requestType)
-      console.log('INVESTMENT ID', investmentId)
-      console.log('USER ID', userId)
-      investment = await Investment.query()
-        .where('status', 'active')
-        .where('requestType', requestType)
-      console.log('INVESTMENT DATA line 209: ', investment)
-      if (investment.length < 1) {
-        return response.json({
-          status: 'FAILED',
-          message: 'No investment payout data matched your query, please try again',
-        })
-      }
     }
-    try {
-      let testAmount = 505000
-      let testDuration = 180
-      let testInvestmentType = 'fixed'
-      let investmentRate = async function (amount, duration, investmentType) {
-        try {
-          const response = await axios.get(
-            `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
-          )
-          console.log('The API response: ', response.data)
-          if (response.data.status === 'ok' && response.data.data.length > 0) {
-            return response.data.data[0].interest_rate
-          } else {
-            return
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
+    // try {
+    //   let testAmount = 505000
+    //   let testDuration = 180
+    //   let testInvestmentType = 'fixed'
+    //   let investmentRate = async function (amount, duration, investmentType) {
+    //     try {
+    //       const response = await axios.get(
+    //         `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
+    //       )
+    //       console.log('The API response: ', response.data)
+    //       if (response.data.status === 'ok' && response.data.data.length > 0) {
+    //         return response.data.data[0].interest_rate
+    //       } else {
+    //         return
+    //       }
+    //     } catch (error) {
+    //       console.error(error)
+    //     }
+    //   }
 
-      console.log(
-        ' The Rate return for RATE: ',
-        await investmentRate(testAmount, testDuration, testInvestmentType)
-      )
-      let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
-      console.log(' Rate return line 236 : ', rate)
-      if (rate === undefined) {
-        return response.status(400).json({
-          status: 'fail',
-          message: 'no investment rate matched your search, please try again.',
-          data: [],
-        })
-      }
+    //   console.log(
+    //     ' The Rate return for RATE: ',
+    //     await investmentRate(testAmount, testDuration, testInvestmentType)
+    //   )
+    //   let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
+    //   console.log(' Rate return line 236 : ', rate)
+    //   if (rate === undefined) {
+    //     return response.status(400).json({
+    //       status: 'fail',
+    //       message: 'no investment rate matched your search, please try again.',
+    //       data: [],
+    //     })
+    //   }
 
-      // const investment = await Investment.query().where('status', 'initiated') // rate
-      // console.log('INVESTMENT DATA line 169: ', investment)
+    //   // const investment = await Investment.query().where('status', 'initiated') // rate
+    //   // console.log('INVESTMENT DATA line 169: ', investment)
 
-      // const investment = await Investment.query().where('status', 'pending')
-      // .orWhere('id', params.id)
-      // .limit()
-      if (investment && investment.length > 0) {
-        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA line 253: ', investment)
-        return response
-          .status(200)
-          .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
-      } else {
-        return response
-          .status(200)
-          .json({ status: 'fail', message: 'no investment matched your query.' })
-      }
-    } catch (error) {
-      console.error(error)
-    }
+    //   // const investment = await Investment.query().where('status', 'pending')
+    //   // .orWhere('id', params.id)
+    //   // .limit()
+    //   if (investment && investment.length > 0) {
+    //     // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
+    //     console.log('INVESTMENT DATA line 253: ', investment)
+    //     return response
+    //       .status(200)
+    //       .json({ status: 'ok', data: investment.map((inv) => inv.$original) })
+    //   } else {
+    //     return response
+    //       .status(200)
+    //       .json({ status: 'fail', message: 'no investment matched your query.' })
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    // }
   }
 
   public async update({ request, response }: HttpContextContract) {
