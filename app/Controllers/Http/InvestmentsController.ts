@@ -196,7 +196,7 @@ export default class InvestmentsController {
         console.log('Time investment was started line 187: ', investment[0].startDate)
         console.log('Time investment payout date line 188: ', investment[0].payoutDate)
         // Save
-       await investment[0].save()
+        await investment[0].save()
         // send notification
         console.log('Updated investment Status line 192: ', investment)
       } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
@@ -226,17 +226,92 @@ export default class InvestmentsController {
         return response.json({ status: 'ok', data: approvalStatus })
       }
     } else if (requestType === 'terminate investment') {
+      // console.log('INVESTMENT ID', investmentId)
+      // console.log('USER ID', userId)
+      // investment = await Investment.query()
+      //   .where('status', 'active')
+      //   .where('requestType', requestType)
+      // console.log('INVESTMENT DATA line 201: ', investment)
+      // if (investment.length < 1) {
+      //   return response.json({
+      //     status: 'FAILED',
+      //     message: 'No investment termination data matched your query, please try again',
+      //   })
+      // }
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
-      investment = await Investment.query()
-        .where('status', 'active')
+      // check the approval for request
+      approvalStatus = await Approval.query()
         .where('requestType', requestType)
-      console.log('INVESTMENT DATA line 201: ', investment)
-      if (investment.length < 1) {
+        .where('userId', userId)
+        .where('investmentId', investmentId)
+      // check the approval status
+      console.log('approvalStatus line 249: ', approvalStatus)
+      if (approvalStatus.length < 1) {
         return response.json({
           status: 'FAILED',
-          message: 'No investment termination data matched your query, please try again',
+          message: 'No investment approval request data matched your query, please try again',
         })
+      }
+      console.log('approvalStatus line 256: ', approvalStatus[0].approvalStatus)
+      //  if approved update investment status to active, update startDate,  and start investment
+      if (approvalStatus[0].approvalStatus === 'approved') {
+        investment = await Investment.query()
+          .where('status', 'active')
+          .where('requestType', requestType)
+          .where('userId', userId)
+          .where('id', investmentId)
+        console.log('INVESTMENT DATA line 264: ', investment)
+        if (investment.length < 1) {
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment termination approval data matched your query, please try again',
+          })
+        }
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // send investment details to Transaction Service
+        // on success
+
+        // update status investment
+        // update start date
+        investment[0].status = 'terminated'
+        let currentDateMs = DateTime.now().toISO()
+        // @ts-ignore
+        investment[0].startDate = DateTime.now().toISO()
+        let duration = parseInt(investment[0].duration)
+        investment[0].payoutDate = DateTime.now().plus({ days: duration })
+        console.log('The currentDate line 284: ', currentDateMs)
+        console.log('Time investment was started line 285: ', investment[0].startDate)
+        console.log('Time investment payout date line 286: ', investment[0].payoutDate)
+        // Save
+        await investment[0].save()
+        // send notification
+        console.log('Updated investment Status line 289: ', investment)
+      } else if (approvalStatus.length > 0 && approvalStatus[0].approvalStatus === 'declined') {
+        investment = await Investment.query()
+          .where('status', 'active')
+          .where('requestType', requestType)
+          .where('userId', userId)
+          .where('id', investmentId)
+        console.log('The declined investment line 297: ', investment)
+        if (investment.length < 1) {
+          return response.json({
+            status: 'FAILED',
+            message: 'No investment termination decline data matched your query, please try again',
+          })
+        }
+
+        investment[0].status = 'declined'
+        investment[0].approvalStatus = approvalStatus[0].approvalStatus
+        // await Save
+        await investment[0].save()
+        // send notification
+        console.log(
+          'INVESTMENT DATA line 312: ',
+          investment.map((inv) => inv.$original)
+        )
+      } else {
+        return response.json({ status: 'ok', data: approvalStatus.map((inv) => inv.$original) })
       }
     } else if (requestType === 'payout investment') {
       console.log('Request type', requestType)
@@ -641,7 +716,10 @@ export default class InvestmentsController {
       // @ts-ignore
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
-      console.log('Params for update line 644: ', + 'userId ' + userId + 'investmentId ' + investmentId)
+      console.log(
+        'Params for update line 644: ',
+        +'userId ' + userId + 'investmentId ' + investmentId
+      )
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
@@ -684,9 +762,10 @@ export default class InvestmentsController {
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
           investment[0].status = 'payout'
+          investment[0].approvalStatus = approvalStatus
           // Date payout was effected
           // @ts-ignore
-          investment[0].datePayoutWasDone = new Date().toISOString()
+          // investment[0].datePayoutWasDone = new Date().toISOString()
           await investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
@@ -717,14 +796,14 @@ export default class InvestmentsController {
 
           // TODO
           // Move th code below to a new function that will check payout approval status and update the transaction
-// START
+          // START
           // payload.datePayoutWasDone = new Date().toISOString()
           // console.log('Payout investment data 1:', payload)
           // const payout = await Payout.create(payload)
           // payout.status = 'terminated'
           // await payout.save()
           // console.log('Terminated Payout investment data 1:', payout)
-//  END
+          //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
           investment[0].requestType = requestType
