@@ -1386,15 +1386,15 @@ export default class InvestmentsController {
           data: payoutRecord.map((record) => record.$original),
         })
       }
-  investment[0].totalAmountToPayout = amountPaid
-  investment[0].isPayoutSuccessful = isPayoutSuccessful
-  investment[0].approvalStatus = 'approved'
-  investment[0].status = 'paid'
-  // @ts-ignore
-  investment[0].datePayoutWasDone = new Date().toISOString()
+      investment[0].totalAmountToPayout = amountPaid
+      investment[0].isPayoutSuccessful = isPayoutSuccessful
+      investment[0].approvalStatus = 'approved'
+      investment[0].status = 'paid'
+      // @ts-ignore
+      investment[0].datePayoutWasDone = new Date().toISOString()
 
-  // Save the Update
-  await investment[0].save()
+      // Save the Update
+      await investment[0].save()
       let payout = await PayoutRecord.create(payload)
       // update investment status
       // payout.status = 'paid'
