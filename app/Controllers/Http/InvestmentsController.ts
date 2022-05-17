@@ -146,13 +146,13 @@ export default class InvestmentsController {
   }
 
   public async feedbacks({ params, request, response }: HttpContextContract) {
-    console.log('INVESTMENT params line 145: ', params)
+    console.log('INVESTMENT params line 149: ', params)
     const { userId, investmentId, requestType, approvalStatus } = request.qs()
-    console.log('INVESTMENT query line 147: ', request.qs())
+    console.log('INVESTMENT query line 151: ', request.qs())
     let investment = await Investment.all()
     let approvals
-    if (requestType === 'start investment' && userId && investmentId &&  ) {
-    console.log('INVESTMENT ID', investmentId)
+    if (requestType === 'start investment' && userId && investmentId && !approvalStatus) {
+      console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
       approvals = await Approval.query()
@@ -160,22 +160,35 @@ export default class InvestmentsController {
         .where('user_id', userId)
         .where('investment_id', investmentId)
       // check the approval status
-      console.log('approvals line 159: ', approvals)
+      console.log('approvals line 163: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approvals line 160: ', approvals[0].approvalStatus)
+      console.log('approvals line 170: ', approvals[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvals[0].approvalStatus === 'approved') {
         // .where('status', 'initiated')
-        investment = await Investment.query()
-          .where('request_type', requestType)
-          .where('user_id', userId)
-          .where('id', investmentId)
-        console.log('INVESTMENT DATA line 167: ', investment)
+        // investment = await Investment.query()
+        //   .where('requestType', requestType)
+        //   .where('user_id', userId)
+        //   .where('id', investmentId)
+
+        //  investment
+        try {
+          investment = await Investment.query().where({
+            id: investmentId,
+            user_id: userId,
+            request_type: requestType,
+            status: 'initiated',
+          })
+        } catch (error) {
+          console.error(error)
+          return response.json({ status: 'FAILED', message: error.message })
+        }
+        console.log('INVESTMENT DATA line 178: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -207,12 +220,23 @@ export default class InvestmentsController {
           data: investment.map((inv) => inv.$original),
         })
       } else if (approvals.length > 0 && approvals[0].approvalStatus === 'declined') {
-        investment = await Investment.query()
-          .where('status', 'initiated')
-          .where('request_type', requestType)
-          .where('user_id', userId)
-          .where('id', investmentId)
-        console.log('The declined investment line 208: ', investment)
+        // investment = await Investment.query()
+        //   .where('status', 'initiated')
+        //   .where('request_type', requestType)
+        //   .where('user_id', userId)
+        //   .where('id', investmentId)
+         try {
+           investment = await Investment.query().where({
+             id: investmentId,
+             user_id: userId,
+             request_type: requestType,
+             status: 'initiated',
+           })
+         } catch (error) {
+           console.error(error)
+           return response.json({ status: 'FAILED', message: error.message })
+         }
+        console.log('The declined investment line 239: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -226,7 +250,7 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 222: ',
+          'INVESTMENT DATA line 253: ',
           investment.map((inv) => inv.$original)
         )
 
@@ -234,7 +258,7 @@ export default class InvestmentsController {
       } else {
         return response.json({ status: 'OK', data: approvals })
       }
-    } else if (requestType === 'terminate investment'  && userId && investmentId) {
+    } else if (requestType === 'terminate investment' && userId && investmentId && !approvalStatus) {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
@@ -243,14 +267,14 @@ export default class InvestmentsController {
         .where('user_id', userId)
         .where('investment_id', investmentId)
       // check the approval status
-      console.log('approvals line 249: ', approvals)
+      console.log('approvals line 270: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approvals line 256: ', approvals[0].approvalStatus)
+      console.log('approvals line 277: ', approvals[0].approvalStatus)
       //  if approved update investment status to terminated, update startDate,  and start investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
@@ -258,7 +282,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('INVESTMENT DATA line 264: ', investment)
+        console.log('INVESTMENT DATA line 285: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -285,7 +309,7 @@ export default class InvestmentsController {
         // Save
         await investment[0].save()
         // send notification
-        console.log('Updated investment Status line 289: ', investment)
+        console.log('Updated investment Status line 312: ', investment)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -296,7 +320,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 296: ', investment)
+        console.log('The declined investment line 323: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -310,14 +334,14 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 312: ',
+          'INVESTMENT DATA line 337: ',
           investment.map((inv) => inv.$original)
         )
         return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
         return response.json({ status: 'OK', data: approvals.map((inv) => inv.$original) })
       }
-    } else if (requestType === 'payout investment'  && userId && investmentId) {
+    } else if (requestType === 'payout investment' && userId && investmentId && !approvalStatus) {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
@@ -326,7 +350,7 @@ export default class InvestmentsController {
         .where('userId', userId)
         .where('investmentId', investmentId)
       // check the approval status
-      console.log('approvals line 338: ', approvals)
+      console.log('approvals line 353: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
@@ -341,7 +365,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('INVESTMENT DATA line 353: ', investment)
+        console.log('INVESTMENT DATA line 368: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -363,11 +387,11 @@ export default class InvestmentsController {
         investment[0].payoutDate = DateTime.now().toISO() //DateTime.now().plus({ days: duration })
         // console.log('The currentDate line 372: ', currentDateMs)
         // console.log('Time investment was started line 373: ', investment[0].startDate)
-        console.log('Time investment payout date line 374: ', investment[0].payoutDate)
+        console.log('Time investment payout date line 390: ', investment[0].payoutDate)
         // Save
         await investment[0].save()
         // send notification
-        console.log('Updated investment Status line 378: ', investment)
+        console.log('Updated investment Status line 394: ', investment)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -378,7 +402,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 385: ', investment)
+        console.log('The declined investment line 405: ', investment)
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
@@ -392,7 +416,7 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 399: ',
+          'INVESTMENT DATA line 419: ',
           investment.map((inv) => inv.$original)
         )
         return response.json({
@@ -402,7 +426,7 @@ export default class InvestmentsController {
       } else {
         return response.json({ status: 'OK', data: approvals.map((inv) => inv.$original) })
       }
-    } else if (investment.length > 0 ){
+    } else if (investment.length > 0) {
       // check the approval for request
       let approvals = await Approval.all()
       let sortedApproval = approvals
@@ -425,15 +449,15 @@ export default class InvestmentsController {
         })
       }
       //  approvalStatuss
-       if (approvalStatus) {
-         console.log('Request Type', approvalStatus)
-         sortedApproval = sortedApproval.filter((approval) => {
-           return approval.approvalStatus === approvalStatus
-         })
-       }
+      if (approvalStatus) {
+        console.log('Request Type', approvalStatus)
+        sortedApproval = sortedApproval.filter((approval) => {
+          return approval.approvalStatus === approvalStatus
+        })
+      }
 
       // check the approval status
-      console.log('approval line 422: ', sortedApproval)
+      console.log('approval line 460: ', sortedApproval)
       if (sortedApproval.length < 1) {
         return response.json({
           status: 'FAILED',
@@ -443,9 +467,8 @@ export default class InvestmentsController {
       console.log('approval line 443: ', sortedApproval)
 
       return response.json({ status: 'OK', data: sortedApproval.map((inv) => inv.$original) })
-    }
-     else {
-      return response.json({status:'FAILED', message: 'No data matched your feedback query'})
+    } else {
+      return response.json({ status: 'FAILED', message: 'No data matched your feedback query' })
     }
     // try {
     //   let testAmount = 505000
