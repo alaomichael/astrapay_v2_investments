@@ -42,6 +42,7 @@ Route.group(() => {
     Route.post('admin/investments/rates', 'RatesController.store')
     Route.post('admin/investments/approvals', 'ApprovalsController.store')
     Route.post('admin/investments/transactions', 'InvestmentsController.processPayment')
+    Route.post('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
 
     // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')

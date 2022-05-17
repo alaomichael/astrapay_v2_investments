@@ -993,12 +993,6 @@ export default class InvestmentsController {
       }
 
       console.log('Investment Info, line 928: ', investment)
-      // "isPayoutAuthorized": true,
-      //   "isTerminationAuthorized": true,
-      //   "isPayoutSuccessful": false,
-      //   "requestType": "terminate investment",
-      //   "approvalStatus": "approved",
-      //   "status": "terminated",
       if (
         (investment.length > 0 &&
           investment[0].isPayoutAuthorized === true &&
@@ -1266,32 +1260,43 @@ export default class InvestmentsController {
     }
   }
 
-  public async transactionStatus({ params, request, response }: HttpContextContract) {
+  public async transactionStatus({ request, response }: HttpContextContract) {
     // const { investmentId } = request.qs()
     console.log('Rate query: ', request.qs())
+    // @ts-ignore
+    let { userId, investmentId, walletId } = request.all()
     let investment = await Investment.query().where({
-      id: request.input('investmentId'),
-      user_id: params.userId,
+      id: investmentId,
+      user_id: userId,
     })
     console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
       investment = await Investment.query().where({
-        id: request.input('investmentId'),
-        user_id: params.userId,
+        id: investmentId,
+        user_id: userId,
       })
 
       // Check for Successful Transactions
+let transactionStatus
+transactionStatus = 'OK'
+if (transactionStatus !== 'OK'){
+  return response.json({status:'FAILED', message: 'The transaction was not successful.', data: {walletId: 1,
+  walletBalance: 2500,
+receiverDetails: {
+  walletId: 2,
+  phone: 2347056435467
+}}})
+}
+  // Update Account status
+investment[0].totalAmountToPayout = 
+  // Notify
 
-      // Update Account status
+  // Check RollOver Target
 
-      // Notify
-
-      // Check RollOver Target
-
-      console.log(
-        'data:',
-        investment.map((inv) => inv.$original)
-      )
+  console.log(
+    'data:',
+    investment.map((inv) => inv.$original)
+  )
       return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
