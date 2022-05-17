@@ -791,13 +791,12 @@ export default class InvestmentsController {
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 644: ',
-        +'userId ' + userId + 'investmentId ' + investmentId
+        'Params for update line 794: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 648: ', investment)
+      console.log('Investment Info, line 799: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -918,11 +917,10 @@ export default class InvestmentsController {
   public async processPayment({ request, response }: HttpContextContract) {
     try {
       // @ts-ignore
-      // let id = request.input('userId')
-      let { userId, investmentId } = request.all()
+     let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 924: ',
-        +'userId ' + userId + 'investmentId ' + investmentId
+        'Params for update line 924: '
+        + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
       let investment = await Investment.query().where('id', investmentId)
       console.log('Investment Info, line 928: ', investment)
@@ -932,11 +930,8 @@ export default class InvestmentsController {
         // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         // console.log('Is due for payout status :', isDueForPayout)
 
-
-        // Send Payment Details to Transaction Service
-
+let payoutIsApproved = true
         // Notify
-        let payoutIsApproved = true
         if (payoutIsApproved) {
           // Check Rollover Type
  let rolloverType = investment[0].rolloverType
@@ -946,31 +941,34 @@ let amount = investment[0].amount
 if (rolloverType === '100') {
   //  Proceed to payout the Total Amount due on maturity
   let sendPaymentDetails = async function () {
-      try {
-        const response = await axios.get(
-          `${API_URL}/investments/rates?amount=${amount}&duration=${investment[0].duration}&investmentType=${investment[0].investmentType}`
-        )
-        console.log('The API response: ', response.data)
-        if (response.data.status === 'OK' && response.data.data.length > 0) {
-          return response.data.data[0].interest_rate
-        } else {
-          return
-        }
-      } catch (error) {
-        console.error(error)
+    try {
+      const response = await axios.get(
+        `${API_URL}/investments/rates?amount=${amount}&duration=${investment[0].duration}&investmentType=${investment[0].investmentType}`
+      )
+      console.log('The API response: ', response.data)
+      if (response.data.status === 'OK' && response.data.data.length > 0) {
+        return response.data.data[0].interest_rate
+      } else {
+        return
       }
+    } catch (error) {
+      console.error(error)
     }
+  }
 
-    console.log(' The Rate return for RATE line 964: ', await sendPaymentDetails())
-    let rate = await sendPaymentDetails()
-    console.log(' Rate return line 966 : ', rate)
-  return response.send({ status: 'OK', message: 'No Rollover was set on this investment.',data: rate })
-}
-  // Check RollOver Target
- if (rolloverDone === rolloverTarget) {
-   //  Proceed to payout the Total Amount due on maturity
-   return response.send({ status: 'OK', message: 'Rollover target has been reached.' })
- } else {
+  console.log(' The Rate return for RATE line 964: ', await sendPaymentDetails())
+  let rate = await sendPaymentDetails()
+  console.log(' Rate return line 966 : ', rate)
+  // Send Payment Details to Transaction Service
+  let isTransactionSentForProcessing = true
+  return response.send({
+    status: 'OK',
+    message: 'No Rollover was set on this investment.',
+    data: rate,
+    isTransactionInProcess:isTransactionSentForProcessing
+  })
+} else {
+   // Check RollOver Target
    /**
     * .enum('rollover_type', ['100' = 'no rollover',
     *  '101' = 'rollover principal only',
@@ -979,15 +977,20 @@ if (rolloverType === '100') {
     */
    const effectRollover = (investment, amount, rolloverType, rolloverDone, rolloverTarget) => {
      return new Promise((resolve, reject) => {
-       if (!investment || !amount || !rolloverType || !rolloverDone || !rolloverTarget|| rolloverTarget <= 0)
+       if (!investment || !amount || !rolloverType || !rolloverDone || !rolloverTarget|| rolloverTarget < 0)
          reject(
            new Error(
              'Incomplete parameters , or no rollover target was set, or is less than allowed range'
            )
          )
-       let payload
-       let amountToPayoutNow
-       let amountToBeReinvested
+         let payload
+         let amountToPayoutNow
+         let amountToBeReinvested
+         if (rolloverDone === rolloverTarget) {
+           amountToPayoutNow = amount + investment.interestDueOnInvestment
+          //  Proceed to payout the Total Amount due on maturity
+           return response.send({ status: 'OK', message: 'Rollover target has been reached.' })
+         }
        switch (rolloverType) {
          case '101':
                   amountToBeReinvested = amount
@@ -1021,8 +1024,8 @@ if (rolloverType === '100') {
            )
            break
          default:
-console.log('Nothing was done on investment')
-           break
+           console.log('Nothing was done on investment')
+            break
        }
        return resolve({ payload, amountToBeReinvested, amountToPayoutNow, rolloverDone })
      })
