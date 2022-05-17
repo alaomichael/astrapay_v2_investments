@@ -938,6 +938,7 @@ let payoutIsApproved = true
 let amount = investment[0].amount
  let rolloverTarget = investment[0].rolloverTarget
  let rolloverDone = investment[0].rolloverDone
+ let isTransactionSentForProcessing
 if (rolloverType === '100') {
   //  Proceed to payout the Total Amount due on maturity
   let sendPaymentDetails = async function () {
@@ -960,12 +961,22 @@ if (rolloverType === '100') {
   let rate = await sendPaymentDetails()
   console.log(' Rate return line 966 : ', rate)
   // Send Payment Details to Transaction Service
-  let isTransactionSentForProcessing = true
+  // use try catch
+ isTransactionSentForProcessing = true
+ if (isTransactionSentForProcessing === false) {
+   return response.send({
+     status: 'FAILED',
+     message: 'The transaction was not sent successfully.',
+     data: rate,
+     isTransactionInProcess: isTransactionSentForProcessing,
+   })
+ }
   return response.send({
     status: 'OK',
-    message: 'No Rollover was set on this investment.',
+    message:
+      'No Rollover was set on this investment, but the transaction was sent successfully for processing .',
     data: rate,
-    isTransactionInProcess:isTransactionSentForProcessing
+    isTransactionInProcess: isTransactionSentForProcessing,
   })
 } else {
    // Check RollOver Target
@@ -989,7 +1000,11 @@ if (rolloverType === '100') {
          if (rolloverDone === rolloverTarget) {
            amountToPayoutNow = amount + investment.interestDueOnInvestment
           //  Proceed to payout the Total Amount due on maturity
-           return response.send({ status: 'OK', message: 'Rollover target has been reached.' })
+           return response.send({
+             status: 'OK',
+             message: 'Rollover target has been reached.',
+             data: investment[0].$original,
+           })
          }
        switch (rolloverType) {
          case '101':
