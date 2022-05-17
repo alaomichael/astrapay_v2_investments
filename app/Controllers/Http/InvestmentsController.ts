@@ -1362,16 +1362,7 @@ export default class InvestmentsController {
       // get the amount paid and the status
       let amountPaid = 50500
       isPayoutSuccessful = true
-      investment[0].totalAmountToPayout = amountPaid
-      investment[0].isPayoutSuccessful = isPayoutSuccessful
-      investment[0].approvalStatus = 'approved'
-      investment[0].status = 'paid'
-      // @ts-ignore
-      investment[0].datePayoutWasDone = new Date().toISOString()
-      // payload.datePayoutWasDone = new Date().toISOString()
 
-      // Save the Update
-      await investment[0].save()
       // Save the Transaction to
       // payload[0].totalAmountToPayout = 0
       payload.totalAmountPaid = amountPaid
@@ -1380,11 +1371,35 @@ export default class InvestmentsController {
 
       console.log('Payout Payload: ', payload)
 
+      // @ts-ignore
+      // let { userId, investmentId, walletId } = request.all()
+      let payoutRecord = await PayoutRecord.query().where({
+        investment_id: payload.investmentId,
+        user_id: userId,
+        wallet_id: walletId,
+      })
+      console.log(' QUERY RESULT line 1390: ', payoutRecord)
+      if (payoutRecord.length > 0) {
+        return response.json({
+          status: 'OK',
+          message: 'Record already exist in the database.',
+          data: payoutRecord.map((record) => record.$original),
+        })
+      }
+  investment[0].totalAmountToPayout = amountPaid
+  investment[0].isPayoutSuccessful = isPayoutSuccessful
+  investment[0].approvalStatus = 'approved'
+  investment[0].status = 'paid'
+  // @ts-ignore
+  investment[0].datePayoutWasDone = new Date().toISOString()
+
+  // Save the Update
+  await investment[0].save()
       let payout = await PayoutRecord.create(payload)
       // update investment status
       // payout.status = 'paid'
       await payout.save()
-      console.log('Payout investment data line 1376:', payout)
+      console.log('Payout investment data line 1402:', payout)
 
       // Notify
 
