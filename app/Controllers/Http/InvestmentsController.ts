@@ -945,7 +945,26 @@ let amount = investment[0].amount
  let rolloverDone = investment[0].rolloverDone
 if (rolloverType === '100') {
   //  Proceed to payout the Total Amount due on maturity
-  return response.send({ status: 'OK', message: 'No Rollover was set on this investment.' })
+  let sendPaymentDetails = async function () {
+      try {
+        const response = await axios.get(
+          `${API_URL}/investments/rates?amount=${amount}&duration=${investment[0].duration}&investmentType=${investment[0].investmentType}`
+        )
+        console.log('The API response: ', response.data)
+        if (response.data.status === 'OK' && response.data.data.length > 0) {
+          return response.data.data[0].interest_rate
+        } else {
+          return
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    console.log(' The Rate return for RATE line 964: ', await sendPaymentDetails())
+    let rate = await sendPaymentDetails()
+    console.log(' Rate return line 966 : ', rate)
+  return response.send({ status: 'OK', message: 'No Rollover was set on this investment.',data: rate })
 }
   // Check RollOver Target
  if (rolloverDone === rolloverTarget) {
@@ -960,7 +979,7 @@ if (rolloverType === '100') {
     */
    const effectRollover = (investment, amount, rolloverType, rolloverDone, rolloverTarget) => {
      return new Promise((resolve, reject) => {
-       if (!investment || !amount || !rolloverType || !rolloverDone || rolloverTarget|| rolloverTarget <= 0)
+       if (!investment || !amount || !rolloverType || !rolloverDone || !rolloverTarget|| rolloverTarget <= 0)
          reject(
            new Error(
              'Incomplete parameters , or no rollover target was set, or is less than allowed range'
@@ -974,6 +993,8 @@ if (rolloverType === '100') {
                   amountToBeReinvested = amount
                   amountToPayoutNow = investment.interestDueOnInvestment
                   payload.amount = amountToBeReinvested
+                  rolloverDone = rolloverDone + 1
+
 
            console.log(
              `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
@@ -983,6 +1004,7 @@ if (rolloverType === '100') {
         amountToBeReinvested = amount + investment.interestDueOnInvestment
         // amountToPayoutNow = investment.interestDueOnInvestment
         payload.amount = amountToBeReinvested
+        rolloverDone = rolloverDone + 1
 
         console.log(
           `The Sum Total of the Principal and the interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested`
@@ -992,6 +1014,7 @@ if (rolloverType === '100') {
            amountToBeReinvested =  investment.interestDueOnInvestment
            amountToPayoutNow = amount
            payload.amount = amountToBeReinvested
+           rolloverDone = rolloverDone + 1
 
            console.log(
              `The Interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment.currencyCode} ${amountToPayoutNow} was paid`
@@ -1001,24 +1024,27 @@ if (rolloverType === '100') {
 console.log('Nothing was done on investment')
            break
        }
-       return resolve({ payload, amountToBeReinvested, amountToPayoutNow })
+       return resolve({ payload, amountToBeReinvested, amountToPayoutNow, rolloverDone })
      })
    }
-   let payload = investment[0].$original
-   // send to Admin for approval
-   let userId = payload.userId
-   let investmentId = payload.id
-   let requestType = 'payout investment'
-   // let approvalStatus = 'pending'
-   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-   console.log(' Approval request return line 822 : ', approvalRequestIsDone)
-   if (approvalRequestIsDone === undefined) {
-     return response.status(400).json({
-       status: 'FAILED',
-       message: 'payout approval request was not successful, please try again.',
-       data: [],
-     })
-   }
+
+   let testingRolloverImplementation = await effectRollover(investment, amount, rolloverType, rolloverDone, rolloverTarget)
+console.log('testing Rollover Implementation line 1013', testingRolloverImplementation)
+  //  let payload = investment[0].$original
+  //  // send to Admin for approval
+  //  let userId = payload.userId
+  //  let investmentId = payload.id
+  //  let requestType = 'payout investment'
+  //  // let approvalStatus = 'pending'
+  //  let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+  //  console.log(' Approval request return line 1021 : ', approvalRequestIsDone)
+  //  if (approvalRequestIsDone === undefined) {
+  //    return response.status(400).json({
+  //      status: 'FAILED',
+  //      message: 'payout approval request was not successful, please try again.',
+  //      data: [],
+  //    })
+  //  }
 
    // TODO
    // Move the code below to another function
