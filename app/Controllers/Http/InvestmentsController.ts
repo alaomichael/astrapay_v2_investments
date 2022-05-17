@@ -225,17 +225,17 @@ export default class InvestmentsController {
         //   .where('request_type', requestType)
         //   .where('user_id', userId)
         //   .where('id', investmentId)
-         try {
-           investment = await Investment.query().where({
-             id: investmentId,
-             user_id: userId,
-             request_type: requestType,
-             status: 'initiated',
-           })
-         } catch (error) {
-           console.error(error)
-           return response.json({ status: 'FAILED', message: error.message })
-         }
+        try {
+          investment = await Investment.query().where({
+            id: investmentId,
+            user_id: userId,
+            request_type: requestType,
+            status: 'initiated',
+          })
+        } catch (error) {
+          console.error(error)
+          return response.json({ status: 'FAILED', message: error.message })
+        }
         console.log('The declined investment line 239: ', investment)
         if (investment.length < 1) {
           return response.json({
@@ -258,7 +258,12 @@ export default class InvestmentsController {
       } else {
         return response.json({ status: 'OK', data: approvals })
       }
-    } else if (requestType === 'terminate investment' && userId && investmentId && !approvalStatus) {
+    } else if (
+      requestType === 'terminate investment' &&
+      userId &&
+      investmentId &&
+      !approvalStatus
+    ) {
       console.log('INVESTMENT ID', investmentId)
       console.log('USER ID', userId)
       // check the approval for request
@@ -1277,26 +1282,80 @@ export default class InvestmentsController {
       })
 
       // Check for Successful Transactions
-let transactionStatus
-transactionStatus = 'OK'
-if (transactionStatus !== 'OK'){
-  return response.json({status:'FAILED', message: 'The transaction was not successful.', data: {walletId: 1,
-  walletBalance: 2500,
-receiverDetails: {
-  walletId: 2,
-  phone: 2347056435467
-}}})
-}
-  // Update Account status
-investment[0].totalAmountToPayout = 
-  // Notify
+      let transactionStatus
+      // get update from the endpoint with axios
+      transactionStatus = 'OK'
+      if (transactionStatus !== 'OK') {
+        return response.json({
+          status: 'FAILED',
+          message: 'The transaction was not successful.',
+          data: {
+            walletId: 1,
+            walletBalance: 2500,
+            receiverDetails: {
+              walletId: 2,
+              phone: 2347056435467,
+            },
+          },
+        })
+      }
+      // Update Account status
+      let amountPaid = 50500
+      isPayoutSuccessful = true
+      investment[0].totalAmountToPayout = amountPaid
+      investment[0].isPayoutSuccessful = isPayoutSuccessful
+      investment[0].status = 'paid'
+      // @ts-ignore
+      investment[0].datePayoutWasDone = new Date().toISOString()
 
-  // Check RollOver Target
+      // Save the Update
+      await investment[0].save()
+      // Save the Transaction to
 
-  console.log(
-    'data:',
-    investment.map((inv) => inv.$original)
-  )
+      let { id,
+           userId,
+            walletId,
+            amount,duration,rolloverType,
+            rolloverTarget,
+            rolloverDone,
+            investmentType,
+            tagName,
+            currencyCode,
+            walletHolderDetails,
+            long,
+            lat,
+            interestRate,
+            interestDueOnInvestment,
+            totalAmountToPayout,
+            createdAt,
+            startDate,
+            payoutDate,
+            isPayoutAuthorized,
+            isTerminationAuthorized,
+            isPayoutSuccessful,
+            requestType,
+            approvalStatus,
+            status,
+            datePayoutWasDone,
+            } = investment[0]
+      let payload = investment
+      payload[0].totalAmountToPayout = 0
+      // payload[0].totalAmountPaid = amountPaid
+
+      const payout = await PayoutRecord.create(payload)
+      // update investment status
+      payout.status = 'payout'
+      await payout.save()
+      console.log('Payout investment data 2:', payout)
+
+      // Notify
+
+      // Check RollOver Target
+
+      console.log(
+        'data:',
+        investment.map((inv) => inv.$original)
+      )
       return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
