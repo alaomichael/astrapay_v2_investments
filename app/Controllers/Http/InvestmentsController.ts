@@ -251,7 +251,7 @@ export default class InvestmentsController {
         })
       }
       console.log('approvalStatus line 256: ', approvalStatus[0].approvalStatus)
-      //  if approved update investment status to active, update startDate,  and start investment
+      //  if approved update investment status to terminated, update startDate,  and start investment
       if (approvalStatus[0].approvalStatus === 'approved') {
         investment = await Investment.query()
           .where('status', 'active')
@@ -271,11 +271,10 @@ export default class InvestmentsController {
         // on success
 
         // update status investment
-        // update start date
         investment[0].status = 'terminated'
 
         // @ts-ignore
-        investment[0].datePayoutWasDone = DateTime.now().toISO()
+        // investment[0].datePayoutWasDone = DateTime.now().toISO()
         // investment[0].startDate = DateTime.now().toISO()
         // let duration = parseInt(investment[0].duration)
         // investment[0].payoutDate = DateTime.now().plus({ days: duration })
@@ -403,6 +402,11 @@ export default class InvestmentsController {
       } else {
         return response.json({ status: 'OK', data: approvalStatus.map((inv) => inv.$original) })
       }
+    } else if (investment.length > 0){
+      return response.json({status: 'OK', data: investment.map((inv)=> inv.$original)})
+    }
+     else {
+      return response.json({status:'FAILED', message: 'No data matched your feedback query'})
     }
     // try {
     //   let testAmount = 505000
