@@ -1276,10 +1276,7 @@ export default class InvestmentsController {
     })
     console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
-      investment = await Investment.query().where({
-        id: investmentId,
-        user_id: userId,
-      })
+      // investment = await Investment.query().where({id: investmentId,user_id: userId,})
 
       // Check for Successful Transactions
       let transactionStatus
@@ -1300,53 +1297,88 @@ export default class InvestmentsController {
         })
       }
       // Update Account status
+
+      let {
+        id,
+        userId,
+        walletId,
+        amount,
+        duration,
+        rolloverType,
+        rolloverTarget,
+        rolloverDone,
+        investmentType,
+        tagName,
+        currencyCode,
+        walletHolderDetails,
+        long,
+        lat,
+        interestRate,
+        interestDueOnInvestment,
+        totalAmountToPayout,
+        createdAt,
+        startDate,
+        payoutDate,
+        isPayoutAuthorized,
+        isTerminationAuthorized,
+        isPayoutSuccessful,
+        requestType,
+        approvalStatus,
+        status,
+        datePayoutWasDone,
+      } = investment[0]
+
+      console.log('Initial status line 1331: ', status)
+      console.log('Initial datePayoutWasDone line 1332: ', datePayoutWasDone)
+      let payload = {
+        investmentId: id,
+        userId,
+        walletId,
+        amount,
+        duration,
+        rolloverType,
+        rolloverTarget,
+        rolloverDone,
+        investmentType,
+        tagName,
+        currencyCode,
+        walletHolderDetails,
+        long,
+        lat,
+        interestRate,
+        interestDueOnInvestment,
+        totalAmountPaid: totalAmountToPayout,
+        createdAt,
+        startDate,
+        payoutDate,
+        isPayoutAuthorized,
+        isTerminationAuthorized,
+        isPayoutSuccessful,
+        requestType,
+        approvalStatus,
+      }
+
       let amountPaid = 50500
       isPayoutSuccessful = true
       investment[0].totalAmountToPayout = amountPaid
       investment[0].isPayoutSuccessful = isPayoutSuccessful
       investment[0].status = 'paid'
       // @ts-ignore
-      investment[0].datePayoutWasDone = new Date().toISOString()
+      // payload.datePayoutWasDone = new Date().toISOString()
 
       // Save the Update
       await investment[0].save()
       // Save the Transaction to
+      // payload[0].totalAmountToPayout = 0
+      payload.totalAmountPaid = amountPaid
 
-      let { id,
-           userId,
-            walletId,
-            amount,duration,rolloverType,
-            rolloverTarget,
-            rolloverDone,
-            investmentType,
-            tagName,
-            currencyCode,
-            walletHolderDetails,
-            long,
-            lat,
-            interestRate,
-            interestDueOnInvestment,
-            totalAmountToPayout,
-            createdAt,
-            startDate,
-            payoutDate,
-            isPayoutAuthorized,
-            isTerminationAuthorized,
-            isPayoutSuccessful,
-            requestType,
-            approvalStatus,
-            status,
-            datePayoutWasDone,
-            } = investment[0]
-      let payload = investment
-      payload[0].totalAmountToPayout = 0
-      // payload[0].totalAmountPaid = amountPaid
+      console.log('Payout Payload: ', payload)
 
       const payout = await PayoutRecord.create(payload)
       // update investment status
-      payout.status = 'payout'
+      payout.status = 'paid'
       await payout.save()
-      console.log('Payout investment data 2:', payout)
+      console.log('Payout investment data line 1376:', payout)
 
       // Notify
 
