@@ -280,6 +280,27 @@ const approvalRequest = async function (userId, investmentId, requestType) {
   }
 }
 
+const sendPaymentDetails = async function (amount, duration, investmentType) {
+  try {
+    const response = await axios.get(
+      `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
+    )
+    console.log('The API response: ', response.data)
+    if (response.data.status === 'OK' && response.data.data.length > 0) {
+      return response.data.data[0].interest_rate
+    } else {
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+console.log(
+  ' The Rate return for RATE utils.ts line 299: ',
+  sendPaymentDetails(12000, 180, 'fixed')
+)
+
 /**
  * An utility function which returns a random number
  * @param {number} min Minimum value
@@ -336,4 +357,5 @@ module.exports = {
   payoutDueDate,
   approvalRequest,
   investmentDuration,
+  sendPaymentDetails,
 }

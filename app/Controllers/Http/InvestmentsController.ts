@@ -2,6 +2,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Investment from 'App/Models/Investment'
 import Payout from 'App/Models/Payout'
+import PayoutRecord from 'App/Models/PayoutRecord'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
@@ -16,6 +17,7 @@ import {
   dueForPayout,
   payoutDueDate,
   approvalRequest,
+  sendPaymentDetails,
   // @ts-ignore
 } from 'App/Helpers/utils'
 
@@ -715,11 +717,6 @@ export default class InvestmentsController {
     try {
       const investment = await Investment.all()
       // .limit()
-      // if (investment) {
-      //   // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-      //   console.log('INVESTMENT DATA: ', investment)
-      //   return response.status(200).json({ status: 'OK', data: investment })
-      // }
       let sortedApprovalRequest = investment
       if (userId) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
@@ -917,182 +914,234 @@ export default class InvestmentsController {
   public async processPayment({ request, response }: HttpContextContract) {
     try {
       // @ts-ignore
-     let { userId, investmentId } = request.all()
+      let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 924: '
-        + ' userId: ' + userId + ', investmentId: ' + investmentId
+        'Params for update line 924: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
-      let investment = await Investment.query().where('id', investmentId)
+      let investment
+      try {
+        investment = await Investment.query().where({ id: investmentId, user_id: userId })
+      } catch (error) {
+        console.error(error)
+        return response.json({ status: 'FAILED', message: error.message })
+      }
+
       console.log('Investment Info, line 928: ', investment)
-      if (investment.length > 0) {
+      // "isPayoutAuthorized": true,
+      //   "isTerminationAuthorized": true,
+      //   "isPayoutSuccessful": false,
+      //   "requestType": "terminate investment",
+      //   "approvalStatus": "approved",
+      //   "status": "terminated",
+      if (
+        (investment.length > 0 &&
+          investment[0].isPayoutAuthorized === true &&
+          investment[0].isTerminationAuthorized === true &&
+          investment[0].requestType === 'payout investment' &&
+          investment[0].approvalStatus === 'approved' &&
+          investment[0].status === 'payout') ||
+        (investment.length > 0 &&
+          investment[0].isPayoutAuthorized === true &&
+          investment[0].isTerminationAuthorized === false &&
+          investment[0].requestType === 'payout investment' &&
+          investment[0].approvalStatus === 'approved' &&
+          investment[0].status === 'payout') ||
+        (investment.length > 0 &&
+          investment[0].isPayoutAuthorized === false &&
+          investment[0].isTerminationAuthorized === true &&
+          investment[0].requestType === 'terminate investment' &&
+          investment[0].approvalStatus === 'approved' &&
+          investment[0].status === 'terminated') ||
+        (investment.length > 0 &&
+          investment[0].isPayoutAuthorized === true &&
+          investment[0].isTerminationAuthorized === true &&
+          investment[0].requestType === 'terminate investment' &&
+          investment[0].approvalStatus === 'approved' &&
+          investment[0].status === 'terminated')
+      ) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
         // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         // console.log('Is due for payout status :', isDueForPayout)
 
-let payoutIsApproved = true
+        // let payoutIsApproved = true
         // Notify
-        if (payoutIsApproved) {
+        if (
+          investment[0].isPayoutAuthorized === true ||
+          investment[0].isTerminationAuthorized === true
+        ) {
           // Check Rollover Type
- let rolloverType = investment[0].rolloverType
-let amount = investment[0].amount
- let rolloverTarget = investment[0].rolloverTarget
- let rolloverDone = investment[0].rolloverDone
- let isTransactionSentForProcessing
-if (rolloverType === '100') {
-  //  Proceed to payout the Total Amount due on maturity
-  let sendPaymentDetails = async function () {
-    try {
-      const response = await axios.get(
-        `${API_URL}/investments/rates?amount=${amount}&duration=${investment[0].duration}&investmentType=${investment[0].investmentType}`
-      )
-      console.log('The API response: ', response.data)
-      if (response.data.status === 'OK' && response.data.data.length > 0) {
-        return response.data.data[0].interest_rate
-      } else {
-        return
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+          let rolloverType = investment[0].rolloverType
+          let amount = investment[0].amount
+          let duration = investment[0].duration
+          let investmentType = investment[0].investmentType
+          let rolloverTarget = investment[0].rolloverTarget
+          let rolloverDone = investment[0].rolloverDone
+          let isTransactionSentForProcessing
+          if (rolloverType === '100') {
+            //  Proceed to payout the Total Amount due on maturity
+            // Send Payment Details to Transaction Service
+            // use try catch
+            try {
+              let rate = await sendPaymentDetails(amount, duration, investmentType)
+              console.log(' Rate return line 956 : ', rate)
+            } catch (error) {
+              console.error(error)
+              return response.send({
+                status: 'FAILED',
+                message: 'The transaction was not sent successfully.',
+                error: error.message,
+              })
+            }
+            isTransactionSentForProcessing = true
+            if (isTransactionSentForProcessing === false) {
+              return response.send({
+                status: 'FAILED',
+                message: 'The transaction was not sent successfully.',
+                isTransactionInProcess: isTransactionSentForProcessing,
+              })
+            }
+            return response.send({
+              status: 'OK',
+              message:
+                'No Rollover was set on this investment, but the transaction was sent successfully for processing .',
+              isTransactionInProcess: isTransactionSentForProcessing,
+              data: investment[0].$original,
+            })
+          } else {
+            // Check RollOver Target
+            /**
+             * .enum('rollover_type', ['100' = 'no rollover',
+             *  '101' = 'rollover principal only',
+             * '102' = 'rollover principal with interest',
+             * '103' = 'rollover interest only'])
+             */
+            const effectRollover = (
+              investment,
+              amount,
+              rolloverType,
+              rolloverDone,
+              rolloverTarget
+            ) => {
+              return new Promise((resolve, reject) => {
+                if (
+                  !investment ||
+                  !amount ||
+                  !rolloverType ||
+                  !rolloverDone ||
+                  !rolloverTarget ||
+                  rolloverTarget < 0
+                )
+                  reject(
+                    new Error(
+                      'Incomplete parameters , or no rollover target was set, or is less than allowed range'
+                    )
+                  )
+                let payload
+                let amountToPayoutNow
+                let amountToBeReinvested
+                if (rolloverDone === rolloverTarget) {
+                  amountToPayoutNow = amount + investment.interestDueOnInvestment
+                  //  Proceed to payout the Total Amount due on maturity
+                  return response.send({
+                    status: 'OK',
+                    message: 'Rollover target has been reached.',
+                    data: investment[0].$original,
+                  })
+                }
+                switch (rolloverType) {
+                  case '101':
+                    amountToBeReinvested = amount
+                    amountToPayoutNow = investment.interestDueOnInvestment
+                    payload.amount = amountToBeReinvested
+                    rolloverDone = rolloverDone + 1
 
-  console.log(' The Rate return for RATE line 964: ', await sendPaymentDetails())
-  let rate = await sendPaymentDetails()
-  console.log(' Rate return line 966 : ', rate)
-  // Send Payment Details to Transaction Service
-  // use try catch
- isTransactionSentForProcessing = true
- if (isTransactionSentForProcessing === false) {
-   return response.send({
-     status: 'FAILED',
-     message: 'The transaction was not sent successfully.',
-     data: rate,
-     isTransactionInProcess: isTransactionSentForProcessing,
-   })
- }
-  return response.send({
-    status: 'OK',
-    message:
-      'No Rollover was set on this investment, but the transaction was sent successfully for processing .',
-    data: rate,
-    isTransactionInProcess: isTransactionSentForProcessing,
-  })
-} else {
-   // Check RollOver Target
-   /**
-    * .enum('rollover_type', ['100' = 'no rollover',
-    *  '101' = 'rollover principal only',
-    * '102' = 'rollover principal with interest',
-    * '103' = 'rollover interest only'])
-    */
-   const effectRollover = (investment, amount, rolloverType, rolloverDone, rolloverTarget) => {
-     return new Promise((resolve, reject) => {
-       if (!investment || !amount || !rolloverType || !rolloverDone || !rolloverTarget|| rolloverTarget < 0)
-         reject(
-           new Error(
-             'Incomplete parameters , or no rollover target was set, or is less than allowed range'
-           )
-         )
-         let payload
-         let amountToPayoutNow
-         let amountToBeReinvested
-         if (rolloverDone === rolloverTarget) {
-           amountToPayoutNow = amount + investment.interestDueOnInvestment
-          //  Proceed to payout the Total Amount due on maturity
-           return response.send({
-             status: 'OK',
-             message: 'Rollover target has been reached.',
-             data: investment[0].$original,
-           })
-         }
-       switch (rolloverType) {
-         case '101':
-                  amountToBeReinvested = amount
-                  amountToPayoutNow = investment.interestDueOnInvestment
-                  payload.amount = amountToBeReinvested
-                  rolloverDone = rolloverDone + 1
+                    console.log(
+                      `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+                    )
+                    break
+                  case '102':
+                    amountToBeReinvested = amount + investment.interestDueOnInvestment
+                    // amountToPayoutNow = investment.interestDueOnInvestment
+                    payload.amount = amountToBeReinvested
+                    rolloverDone = rolloverDone + 1
 
+                    console.log(
+                      `The Sum Total of the Principal and the interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested`
+                    )
+                    break
+                  case '103':
+                    amountToBeReinvested = investment.interestDueOnInvestment
+                    amountToPayoutNow = amount
+                    payload.amount = amountToBeReinvested
+                    rolloverDone = rolloverDone + 1
 
-           console.log(
-             `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
-           )
-           break
-         case '102':
-        amountToBeReinvested = amount + investment.interestDueOnInvestment
-        // amountToPayoutNow = investment.interestDueOnInvestment
-        payload.amount = amountToBeReinvested
-        rolloverDone = rolloverDone + 1
+                    console.log(
+                      `The Interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+                    )
+                    break
+                  default:
+                    console.log('Nothing was done on investment')
+                    break
+                }
+                return resolve({ payload, amountToBeReinvested, amountToPayoutNow, rolloverDone })
+              })
+            }
 
-        console.log(
-          `The Sum Total of the Principal and the interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested`
-        )
-           break
-         case '103':
-           amountToBeReinvested =  investment.interestDueOnInvestment
-           amountToPayoutNow = amount
-           payload.amount = amountToBeReinvested
-           rolloverDone = rolloverDone + 1
+            let testingRolloverImplementation = await effectRollover(
+              investment,
+              amount,
+              rolloverType,
+              rolloverDone,
+              rolloverTarget
+            )
+            console.log('testing Rollover Implementation line 1013', testingRolloverImplementation)
+            //  let payload = investment[0].$original
+            //  // send to Admin for approval
+            //  let userId = payload.userId
+            //  let investmentId = payload.id
+            //  let requestType = 'payout investment'
+            //  // let approvalStatus = 'pending'
+            //  let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+            //  console.log(' Approval request return line 1021 : ', approvalRequestIsDone)
+            //  if (approvalRequestIsDone === undefined) {
+            //    return response.status(400).json({
+            //      status: 'FAILED',
+            //      message: 'payout approval request was not successful, please try again.',
+            //      data: [],
+            //    })
+            //  }
 
-           console.log(
-             `The Interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment.currencyCode} ${amountToPayoutNow} was paid`
-           )
-           break
-         default:
-           console.log('Nothing was done on investment')
-            break
-       }
-       return resolve({ payload, amountToBeReinvested, amountToPayoutNow, rolloverDone })
-     })
-   }
+            // TODO
+            // Move the code below to another function
+            // if payout was approved
 
-   let testingRolloverImplementation = await effectRollover(investment, amount, rolloverType, rolloverDone, rolloverTarget)
-console.log('testing Rollover Implementation line 1013', testingRolloverImplementation)
-  //  let payload = investment[0].$original
-  //  // send to Admin for approval
-  //  let userId = payload.userId
-  //  let investmentId = payload.id
-  //  let requestType = 'payout investment'
-  //  // let approvalStatus = 'pending'
-  //  let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-  //  console.log(' Approval request return line 1021 : ', approvalRequestIsDone)
-  //  if (approvalRequestIsDone === undefined) {
-  //    return response.status(400).json({
-  //      status: 'FAILED',
-  //      message: 'payout approval request was not successful, please try again.',
-  //      data: [],
-  //    })
-  //  }
+            // send to transaction service
 
-   // TODO
-   // Move the code below to another function
-   // if payout was approved
-
-   // send to transaction service
-
-   // // if transaction was successfully processed
-   // // update Date payout was effected
-   // payload.datePayoutWasDone = new Date().toISOString()
-   // console.log('Payout investment data 1:', payload)
-   // const payout = await Payout.create(payload)
-   // // update investment status
-   // payout.status = 'payout'
-   // await payout.save()
-   // console.log('Payout investment data 2:', payout)
-   // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-   // investment = await Investment.query().where('id', investmentId)
-   // investment[0].status = 'payout'
-   // investment[0].approvalStatus = approvalStatus
-   // // Date payout was effected
-   // // @ts-ignore
-   // // investment[0].datePayoutWasDone = new Date().toISOString()
-   await investment[0].save()
-   console.log('Investment data after payout 2:', investment)
-   return response.status(200).json({
-     status: 'OK',
-     data: investment.map((inv) => inv.$original),
-   })
- } }else {
+            // // if transaction was successfully processed
+            // // update Date payout was effected
+            // payload.datePayoutWasDone = new Date().toISOString()
+            // console.log('Payout investment data 1:', payload)
+            // const payout = await Payout.create(payload)
+            // // update investment status
+            // payout.status = 'payout'
+            // await payout.save()
+            // console.log('Payout investment data 2:', payout)
+            // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+            // investment = await Investment.query().where('id', investmentId)
+            // investment[0].status = 'payout'
+            // investment[0].approvalStatus = approvalStatus
+            // // Date payout was effected
+            // // @ts-ignore
+            // // investment[0].datePayoutWasDone = new Date().toISOString()
+            await investment[0].save()
+            console.log('Investment data after payout 2:', investment)
+            return response.status(200).json({
+              status: 'OK',
+              data: investment.map((inv) => inv.$original),
+            })
+          }
+        } else {
           let payload = investment[0].$original
           // send to Admin for approval
           let userId = payload.userId
