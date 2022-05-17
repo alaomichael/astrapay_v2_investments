@@ -42,7 +42,6 @@ Route.group(() => {
     Route.post('admin/investments/rates', 'RatesController.store')
     Route.post('admin/investments/approvals', 'ApprovalsController.store')
     Route.post('admin/investments/transactions', 'InvestmentsController.processPayment')
-    Route.post('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
 
     // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')
@@ -54,6 +53,7 @@ Route.group(() => {
     Route.get('investments/payouts', 'PayoutsController.index')
     Route.get('admin/investments/payouts', 'InvestmentsController.showPayouts')
     Route.get('admin/investments/feedbacks', 'InvestmentsController.feedbacks')
+    Route.get('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
     Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/:userId', 'InvestmentsController.show')
     // Route.get('investments/rates', 'InvestmentsController.rate')

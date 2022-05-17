@@ -1273,6 +1273,7 @@ export default class InvestmentsController {
     let investment = await Investment.query().where({
       id: investmentId,
       user_id: userId,
+      wallet_id: walletId,
     })
     console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
@@ -1356,14 +1357,17 @@ export default class InvestmentsController {
         isPayoutSuccessful,
         requestType,
         approvalStatus,
+        status,
       }
-
+      // get the amount paid and the status
       let amountPaid = 50500
       isPayoutSuccessful = true
       investment[0].totalAmountToPayout = amountPaid
       investment[0].isPayoutSuccessful = isPayoutSuccessful
+      investment[0].approvalStatus = 'approved'
       investment[0].status = 'paid'
       // @ts-ignore
+      investment[0].datePayoutWasDone = new Date().toISOString()
       // payload.datePayoutWasDone = new Date().toISOString()
 
       // Save the Update
@@ -1371,12 +1375,14 @@ export default class InvestmentsController {
       // Save the Transaction to
       // payload[0].totalAmountToPayout = 0
       payload.totalAmountPaid = amountPaid
+      payload.approvalStatus = 'approved'
+      payload.status = 'paid'
 
       console.log('Payout Payload: ', payload)
 
-      const payout = await PayoutRecord.create(payload)
+      let payout = await PayoutRecord.create(payload)
       // update investment status
-      payout.status = 'paid'
+      // payout.status = 'paid'
       await payout.save()
       console.log('Payout investment data line 1376:', payout)
 
@@ -1388,7 +1394,8 @@ export default class InvestmentsController {
         'data:',
         investment.map((inv) => inv.$original)
       )
-      return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
+
+      return response.json({ status: 'OK', data: payout.$original })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
