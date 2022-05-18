@@ -24,12 +24,13 @@ export default class Payouts extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()
       table.integer('user_id').unsigned().notNullable().index()
+      table.integer('investment_id').unsigned().notNullable().index()
       table.integer('wallet_id').unsigned().nullable().index()
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
-       table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
-       table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
+      table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
+      table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
       table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
 
       table.string('tag_name', 255).notNullable()
@@ -61,6 +62,7 @@ export default class Payouts extends BaseSchema {
         [
           'id',
           'user_id',
+          'investment_id',
           'wallet_id',
           'amount',
           'duration',

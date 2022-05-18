@@ -10,11 +10,17 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 // @ts-ignore
-import {generateRate,interestDueOnPayout,dueForPayout,payoutDueDate, approvalRequest,} from 'App/Helpers/utils'
+import {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+} from 'App/Helpers/utils'
 export default class PayoutsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PAYOUT params: ', params)
-    const { search, limit, userId, investmentId, requestType} = request.qs()
+    const { search, limit, userId, investmentId, requestType } = request.qs()
     console.log('PAYOUT query: ', request.qs())
     const countPayouts = await Payout.query().where('status', 'payout').getCount()
     console.log('PAYOUT Investment count: ', countPayouts)
@@ -32,24 +38,24 @@ export default class PayoutsController {
         return payout.walletHolderDetails.lastName!.startsWith(search)
       })
     }
-     if (userId) {
-       sortedPayouts = sortedPayouts.filter((payout) => {
-         // @ts-ignore
-          return payout.userId === parseInt(userId)
-       })
-     }
-      if (investmentId) {
-        sortedPayouts = sortedPayouts.filter((payout) => {
-          // @ts-ignore
-          return payout.investmentId === parseInt(investmentId)
-        })
-      }
-      if (requestType) {
-        sortedPayouts = sortedPayouts.filter((payout) => {
-          // @ts-ignore
-          return payout.requestType === requestType
-        })
-      }
+    if (userId) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.userId === parseInt(userId)
+      })
+    }
+    if (investmentId) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.investmentId === parseInt(investmentId)
+      })
+    }
+    if (requestType) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.requestType === requestType
+      })
+    }
     if (limit) {
       sortedPayouts = sortedPayouts.slice(0, Number(limit))
     }
@@ -60,13 +66,13 @@ export default class PayoutsController {
         data: [],
       })
     }
-    // return investment
+    // return payouts
+    // sortedPayouts.map((payout)=> {payout.$original}),
     return response.status(200).json({
       status: 'OK',
-      data: sortedPayouts.map((payout)=> {payout.$original}),
+      data: sortedPayouts.map((payout) =>payout.$original),
     })
   }
-
 
   public async payout({ request, response }: HttpContextContract) {
     try {
@@ -122,7 +128,9 @@ export default class PayoutsController {
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
             status: 'OK',
-            data: investment.map((inv)=> {inv.$original}),
+            data: investment.map((inv) => {
+              inv.$original
+            }),
           })
         } else {
           let payload = investment[0].$original
@@ -145,7 +153,9 @@ export default class PayoutsController {
           console.log('Terminated Payout investment data 2:', investment)
           return response.status(200).json({
             status: 'OK',
-            data: investment.map((inv)=> {inv.$original}),
+            data: investment.map((inv) => {
+              inv.$original
+            }),
           })
         }
       } else {
