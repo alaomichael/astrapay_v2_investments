@@ -18,6 +18,7 @@ import {
   payoutDueDate,
   approvalRequest,
   sendPaymentDetails,
+  investmentRate,
   // @ts-ignore
 } from 'App/Helpers/utils'
 
@@ -334,7 +335,7 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment termination approval data matched your query, please try again',
+            message: 'No investment termination approval data matched your query,or the feedback has been applied,or please try again',
           })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
@@ -343,6 +344,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         // on success
 
         // update status investment
+        investment[0].isPayoutAuthorized= true
+        investment[0].isTerminationAuthorized=true
         investment[0].status = 'terminated'
 
         // @ts-ignore
@@ -372,7 +375,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment termination decline data matched your query, please try again',
+            message:
+              'No investment termination decline data matched your query,or the feedback has been applied,or please try again',
           })
         }
 
@@ -417,7 +421,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment data matched your query, please try again',
+            message:
+              'No investment data matched your query,or the feedback has been applied,or please try again',
           })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
@@ -427,6 +432,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
 
         // update status investment
         // update start date
+                investment[0].isPayoutAuthorized = true
+                investment[0].isTerminationAuthorized = true
         investment[0].status = 'payout'
         // let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
@@ -454,7 +461,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         if (investment.length < 1) {
           return response.json({
             status: 'FAILED',
-            message: 'No investment payout decline data matched your query, please try again',
+            message:
+              'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
           })
         }
 
@@ -650,21 +658,24 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
     })
     const payload: any = await request.validate({ schema: investmentSchema })
     console.log('Payload  :', payload)
-    let investmentRate = async function () {
-      try {
-        const response = await axios.get(
-          `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
-        )
-        console.log('The API response: ', response.data)
-        if (response.data.status === 'OK' && response.data.data.length > 0) {
-          return response.data.data[0].interest_rate
-        } else {
-          return
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    let payloadAmount = payload.amount
+    let payloadAmount = payload.amount
+    let payloadAmount = payload.amount
+    // let investmentRate = async function () {
+    //   try {
+    //     const response = await axios.get(
+    //       `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
+    //     )
+    //     console.log('The API response: ', response.data)
+    //     if (response.data.status === 'OK' && response.data.data.length > 0) {
+    //       return response.data.data[0].interest_rate
+    //     } else {
+    //       return
+    //     }
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // }
 
     console.log(' The Rate return for RATE line 541: ', await investmentRate())
     let rate = await investmentRate()
@@ -889,12 +900,11 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 892: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+        'Params for update line 899: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
-      // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 897: ', investment)
+      console.log('Investment Info, line 904: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -903,10 +913,10 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
 
         // TESTING
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
-        let duration = 6
-        console.log('Time investment was started line 907: ', startDate)
+        let duration = 5
+        console.log('Time investment was started line 914: ', startDate)
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 909:', isDueForPayout)
+        console.log('Is due for payout status line 916:', isDueForPayout)
 
         if (isDueForPayout) {
           let payload = investment[0].$original
@@ -914,9 +924,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
-          // let approvalStatus = 'pending'
           let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 919 : ', approvalRequestIsDone)
+          console.log(' Approval request return line 926 : ', approvalRequestIsDone)
           if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
               status: 'FAILED',
@@ -925,28 +934,18 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
             })
           }
 
-          // TODO
-          // Move the code below to another function
-          // if payout was approved
+            // if payout was approved
+            console.log('Payout investment data 1:', payload)
+            const payout = await Payout.create(payload)
+            payout.status = 'matured'
+            await payout.save()
+            console.log('Matured Payout investment data line 942:', payout)
+            //  END
+            investment = await Investment.query().where('id', investmentId)
+            investment[0].requestType = requestType
+            investment[0].status = 'active'
+            investment[0].approvalStatus = 'pending'
 
-          // send to transaction service
-
-          // // if transaction was successfully processed
-          // // update Date payout was effected
-          // payload.datePayoutWasDone = new Date().toISOString()
-          // console.log('Payout investment data 1:', payload)
-          // const payout = await Payout.create(payload)
-          // // update investment status
-          // payout.status = 'payout'
-          // await payout.save()
-          // console.log('Payout investment data 2:', payout)
-          // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
-          // investment = await Investment.query().where('id', investmentId)
-          // investment[0].status = 'payout'
-          // investment[0].approvalStatus = approvalStatus
-          // // Date payout was effected
-          // // @ts-ignore
-          // // investment[0].datePayoutWasDone = new Date().toISOString()
           await investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
@@ -979,11 +978,11 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
           // Move th code below to a new function that will check payout approval status and update the transaction
           // START
           // payload.datePayoutWasDone = new Date().toISOString()
-          // console.log('Payout investment data 1:', payload)
-          // const payout = await Payout.create(payload)
-          // payout.status = 'terminated'
-          // await payout.save()
-          // console.log('Terminated Payout investment data 1:', payout)
+          console.log('Payout investment data 1:', payload)
+          const payout = await Payout.create(payload)
+          payout.status = 'terminated'
+          await payout.save()
+          console.log('Terminated Payout investment data line 993:', payout)
           //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)

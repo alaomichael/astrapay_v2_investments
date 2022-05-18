@@ -300,6 +300,22 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
 //   ' The Rate return for RATE utils.ts line 299: ',
 //   sendPaymentDetails(12000, 180, 'fixed')
 // )
+  const investmentRate = async function () {
+    try {
+      const response = await axios.get(
+        `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
+      )
+      console.log('The API response: ', response.data)
+      if (response.data.status === 'OK' && response.data.data.length > 0) {
+        return response.data.data[0].interest_rate
+      } else {
+        return
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 
 /**
  * An utility function which returns a random number
@@ -358,4 +374,5 @@ module.exports = {
   approvalRequest,
   investmentDuration,
   sendPaymentDetails,
+  investmentRate,
 }
