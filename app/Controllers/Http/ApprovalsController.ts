@@ -104,8 +104,6 @@ export default class ApprovalsController {
         // approval.status = 'active'
         await approval[0].save()
         console.log('The new approval request:', approval)
-
-        // TODO
         console.log('A New approval request has been Created.')
 
         // Save approval new status to Database
@@ -117,14 +115,18 @@ export default class ApprovalsController {
       } else {
         //  Update approval request
         approval = requestIsExisting
+        if (approval[0].requestType === payload.requestType) {
+          console.log('No update was made, because the request is similar to the current one.')
+          return response.status(201).json({ status: 'OK', data: approval[0].$original })
+        }
         approval[0].requestType = payload.requestType
-        approval[0].approvalStatus = payload.approvalStatus
+        approval[0].approvalStatus = 'pending' //payload.approvalStatus
         approval[0].remark = ''
 
         await approval[0].save()
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
-        return response.status(201).json({ status: 'Ok', data: approval[0].$original })
+        return response.status(201).json({ status: 'OK', data: approval[0].$original })
       }
     } catch (error) {
       console.error(error)
@@ -192,22 +194,24 @@ export default class ApprovalsController {
               let amountInvested = investment[0].amount
               let expectedDuration = investment[0].duration
               let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
-              // Pro-rata the Interest Due on Investment
-              let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
-              let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
-              let formerTotalAmountToPayout = investment[0].totalAmountToPayout
-              console.log(
-                'Former Total Amount Due for payout if Matured is: ',
-                formerTotalAmountToPayout
-              )
-              investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
-              // Save the updated investment
-              await investment[0].save()
-              let newTotalAmountToPayout = investment[0].totalAmountToPayout
-              console.log(
-                'Total Amount Due for payout due to Termination: ',
-                newTotalAmountToPayout
-              )
+              if (expectedDuration > daysOfInvestment) {
+                // Pro-rata the Interest Due on Investment
+                let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
+                let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
+                let formerTotalAmountToPayout = investment[0].totalAmountToPayout
+                console.log(
+                  'Former Total Amount Due for payout if Matured is: ',
+                  formerTotalAmountToPayout
+                )
+                investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
+                // Save the updated investment
+                await investment[0].save()
+                let newTotalAmountToPayout = investment[0].totalAmountToPayout
+                console.log(
+                  'Total Amount Due for payout due to Termination: ',
+                  newTotalAmountToPayout
+                )
+              }
             } else if (
               approval[0].requestType === 'payout investment' &&
               approval[0].approvalStatus === 'approved'

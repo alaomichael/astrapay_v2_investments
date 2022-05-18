@@ -120,7 +120,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
   })
 }
 
-interestDueOnPayout(150000, 0.05, 180)
+// interestDueOnPayout(150000, 0.05, 180)
 
 // Check Investment due for payout
 // export const dueForPayout =
