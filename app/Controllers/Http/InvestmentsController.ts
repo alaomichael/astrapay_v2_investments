@@ -243,7 +243,7 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         // send investment details to Transaction Service
         // on success
 
-        // update status investment
+        // update status of investment
         // update start date
         investment[0].status = 'active'
         let currentDateMs = DateTime.now().toISO()
@@ -743,19 +743,6 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
     return response.status(201).json({ status: 'OK', data: investment.$original })
   }
 
-  // public async rate({ request, response }: HttpContextContract) {
-  // let amount = request.input('amount')
-  // let duration = request.input('duration')
-  //   const { amount, duration, investmentType } = request.qs()
-  //   console.log('INVESTMENT RATE query: ', request.qs())
-  //   let rate = (await generateRate(amount, duration, investmentType)) * 100
-  //   console.log('Investment rate:', rate)
-  //   return response.status(200).json({
-  //     status: 'OK',
-  //     data: rate,
-  //   })
-  // }
-
   public async approve({ request, response }: HttpContextContract) {
     try {
       // let investment = await Investment.query().where({
@@ -902,12 +889,12 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 794: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+        'Params for update line 892: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
       // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 799: ', investment)
+      console.log('Investment Info, line 897: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -917,9 +904,9 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
         // TESTING
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
         let duration = 6
-        console.log('Time investment was started line 809: ', startDate)
+        console.log('Time investment was started line 907: ', startDate)
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 812:', isDueForPayout)
+        console.log('Is due for payout status line 909:', isDueForPayout)
 
         if (isDueForPayout) {
           let payload = investment[0].$original
@@ -929,7 +916,7 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
           let requestType = 'payout investment'
           // let approvalStatus = 'pending'
           let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 822 : ', approvalRequestIsDone)
+          console.log(' Approval request return line 919 : ', approvalRequestIsDone)
           if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
               status: 'FAILED',

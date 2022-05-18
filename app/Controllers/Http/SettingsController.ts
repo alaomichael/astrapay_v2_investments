@@ -5,91 +5,90 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 
 export default class SettingsController {
-    public async index({ params, request, response }: HttpContextContract) {
-      console.log('setting params: ', params)
-      const {
-        duration,
-        limit,
-        amount,
-        investmentType,
-        rolloverCode,
-        status,
-        productName,
-        interestRate,
-      } = request.qs()
-      console.log('setting query: ', request.qs())
-      const countActiveSetting = await Setting.query().where('status', 'active').getCount()
-      console.log('setting Investment count: ', countActiveSetting)
+  public async index({ params, request, response }: HttpContextContract) {
+    console.log('setting params: ', params)
+    const {
+      duration,
+      limit,
+      amount,
+      investmentType,
+      rolloverCode,
+      status,
+      productName,
+      interestRate,
+    } = request.qs()
+    console.log('setting query: ', request.qs())
+    const countActiveSetting = await Setting.query().where('status', 'active').getCount()
+    console.log('setting Investment count: ', countActiveSetting)
 
-      // const setting = await Setting.query().offset(0).limit(1)
-      const setting = await Setting.all()
-      let sortedSettings = setting
-      if (amount) {
+    // const setting = await Setting.query().offset(0).limit(1)
+    const setting = await Setting.all()
+    let sortedSettings = setting
+    if (amount) {
+      // @ts-ignore
+      sortedSettings = await Setting.query()
+        .where('lowest_amount', '<=', amount)
+        .andWhere('highest_amount', '>=', amount)
+    }
+
+    if (duration) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        console.log(' setting Duration:', setting.duration)
+        console.log(' Query Duration:', duration)
         // @ts-ignore
-        sortedSettings = await Setting
-          .query()
-          .where('lowest_amount', '<=', amount)
-          .andWhere('highest_amount', '>=', amount)
-      }
-
-      if (duration) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          console.log(' setting Duration:', setting.duration)
-          console.log(' Query Duration:', duration)
-          // @ts-ignore
-          return setting.duration === duration
-        })
-      }
-
-      if (investmentType) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          // @ts-ignore
-          return setting.investmentType!.includes(investmentType)
-        })
-      }
-
-      if (rolloverCode) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          // @ts-ignore
-          return setting.rolloverCode!.includes(rolloverCode)
-        })
-      }
-
-      if (productName) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          // @ts-ignore
-          return setting.productName!.includes(productName)
-        })
-      }
-      if (status) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          // @ts-ignore
-          return setting.status === `${status}`
-        })
-      }
-
-      if (interestRate) {
-        sortedSettings = sortedSettings.filter((setting) => {
-          // @ts-ignore
-          return setting.interestRate === parseInt(interestRate)
-        })
-      }
-      if (limit) {
-        sortedSettings = sortedSettings.slice(0, Number(limit))
-      }
-      if (sortedSettings.length < 1) {
-        return response.status(200).json({
-          status: 'OK',
-          message: 'no investment setting matched your search',
-          data: [],
-        })
-      }
-      // return setting(s)
-      return response.status(200).json({
-        status: 'OK',
-        data: sortedSettings,
+        return setting.duration === duration
       })
     }
+
+    if (investmentType) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.investmentType!.includes(investmentType)
+      })
+    }
+
+    if (rolloverCode) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.rolloverCode!.includes(rolloverCode)
+      })
+    }
+
+    if (productName) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.productName!.includes(productName)
+      })
+    }
+    if (status) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.status === `${status}`
+      })
+    }
+
+    if (interestRate) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.interestRate === parseInt(interestRate)
+      })
+    }
+    if (limit) {
+      sortedSettings = sortedSettings.slice(0, Number(limit))
+    }
+    if (sortedSettings.length < 1) {
+      return response.status(200).json({
+        status: 'OK',
+        message: 'no investment setting matched your search',
+        data: [],
+      })
+    }
+    // return setting(s)
+    return response.status(200).json({
+      status: 'OK',
+      data: sortedSettings,
+    })
+  }
 
   public async store({ request }: HttpContextContract) {
     // const user = await auth.authenticate()
@@ -160,7 +159,9 @@ export default class SettingsController {
           setting[0].interestRate = request.input('interestRate')
             ? request.input('interestRate')
             : setting[0].interestRate
-          setting[0].tagName = request.input('tagName') ? request.input('tagName') : setting[0].tagName
+          setting[0].tagName = request.input('tagName')
+            ? request.input('tagName')
+            : setting[0].tagName
           setting[0].additionalDetails = request.input('additionalDetails')
             ? request.input('additionalDetails')
             : setting[0].additionalDetails
@@ -216,5 +217,4 @@ export default class SettingsController {
       return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
     }
   }
-
 }

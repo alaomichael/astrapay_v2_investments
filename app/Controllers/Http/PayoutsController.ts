@@ -116,6 +116,7 @@ export default class PayoutsController {
           // console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
           payout.status = 'payout'
+          payout.investmentId = investment[0].id
           await payout.save()
           console.log('Payout investment data 2:', payout)
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
@@ -142,6 +143,7 @@ export default class PayoutsController {
           console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
           payout.status = 'terminated'
+          payout.investmentId = investment[0].id
           await payout.save()
           console.log('Terminated Payout investment data 1:', payout)
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
