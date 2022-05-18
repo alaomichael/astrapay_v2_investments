@@ -980,10 +980,23 @@ export default class InvestmentsController {
 
           // if payout was approved
           console.log('Payout investment data 1:', payload)
-          const payout = await Payout.create(payload)
-          payout.status = 'matured'
-          await payout.save()
-          console.log('Matured Payout investment data line 980:', payout)
+          payload.investmentId = investmentId
+          payload.requestType = requestType
+          // check if payout request is existing
+          let payoutRequestIsExisting = await Payout.query().where({
+            investment_id: investmentId,
+            user_id: userId,
+          })
+          console.log(
+            'Investment payout Request Is Existing data line 988:',
+            payoutRequestIsExisting
+          )
+          if (payoutRequestIsExisting.length < 1) {
+            const payout = await Payout.create(payload)
+            payout.status = 'matured'
+            await payout.save()
+            console.log('Matured Payout investment data line 995:', payout)
+          }
           //  END
           investment = await Investment.query().where('id', investmentId)
           investment[0].requestType = requestType
@@ -991,12 +1004,13 @@ export default class InvestmentsController {
           investment[0].approvalStatus = 'pending'
 
           await investment[0].save()
-          console.log('Investment data after payout 2:', investment)
+          console.log('Investment data after payout request 2:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment.map((inv) => inv.$original),
           })
         } else {
+          // if the investment has not matured, i.e terminated
           let payload = investment[0].$original
           // send to Admin for approval
           let userId = payload.userId
@@ -1022,11 +1036,22 @@ export default class InvestmentsController {
           // Move th code below to a new function that will check payout approval status and update the transaction
           // START
           // payload.datePayoutWasDone = new Date().toISOString()
+ payload.investmentId = investmentId
+ payload.requestType = requestType
+ // check if payout request is existing
+ let payoutRequestIsExisting = await Payout.query().where({
+   investment_id: investmentId,
+   user_id: userId,
+ })
+ console.log('Investment payout Request Is Existing data line 1046:', payoutRequestIsExisting)
+ if (payoutRequestIsExisting.length < 1) {
           console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
           payout.status = 'terminated'
           await payout.save()
-          console.log('Terminated Payout investment data line 1023:', payout)
+          console.log('Terminated Payout investment data line 1052:', payout)
+ }
+
           //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
@@ -1315,14 +1340,14 @@ export default class InvestmentsController {
                     amountToPayoutNow = investment.interestDueOnInvestment
                     payload.amount = amountToBeReinvested
                     rolloverDone = rolloverDone + 1
- investment[0].rolloverTarget = rolloverTarget
-investment[0].rolloverDone = rolloverDone
-createInvestment(
-  amountToBeReinvested,
-  payloadDuration,
-  payloadInvestmentType,
-  investmentData
-)
+                    investment[0].rolloverTarget = rolloverTarget
+                    investment[0].rolloverDone = rolloverDone
+                    createInvestment(
+                      amountToBeReinvested,
+                      payloadDuration,
+                      payloadInvestmentType,
+                      investmentData
+                    )
 
                     console.log(
                       `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
