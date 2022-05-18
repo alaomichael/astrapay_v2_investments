@@ -14,7 +14,7 @@ import {generateRate,interestDueOnPayout,dueForPayout,payoutDueDate, approvalReq
 export default class PayoutsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PAYOUT params: ', params)
-    const { search, limit } = request.qs()
+    const { search, limit, userId, investmentId, requestType} = request.qs()
     console.log('PAYOUT query: ', request.qs())
     const countPayouts = await Payout.query().where('status', 'payout').getCount()
     console.log('PAYOUT Investment count: ', countPayouts)
@@ -23,14 +23,33 @@ export default class PayoutsController {
     // const payout = await Investment.query().offset(0).limit(1)
     const payout = await Payout.all()
     let sortedPayouts = payout
+    console.log('PAYOUT Investment line 26: ', payout)
     if (search) {
       sortedPayouts = sortedPayouts.filter((payout) => {
         // @ts-ignore
-        // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        // console.log(' Sorted :', payout.walletHolderDetails.lastName!.includes(search))
         // @ts-ignore
         return payout.walletHolderDetails.lastName!.startsWith(search)
       })
     }
+     if (userId) {
+       sortedPayouts = sortedPayouts.filter((payout) => {
+         // @ts-ignore
+          return payout.userId === parseInt(userId)
+       })
+     }
+      if (investmentId) {
+        sortedPayouts = sortedPayouts.filter((payout) => {
+          // @ts-ignore
+          return payout.investmentId === parseInt(investmentId)
+        })
+      }
+      if (requestType) {
+        sortedPayouts = sortedPayouts.filter((payout) => {
+          // @ts-ignore
+          return payout.requestType === requestType
+        })
+      }
     if (limit) {
       sortedPayouts = sortedPayouts.slice(0, Number(limit))
     }
@@ -87,8 +106,8 @@ export default class PayoutsController {
           // stop investment
 
           // Date payout was effected
-          payload.datePayoutWasDone = new Date().toISOString()
-          console.log('Payout investment data 1:', payload)
+          // payload.datePayoutWasDone = new Date().toISOString()
+          // console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
           payout.status = 'payout'
           await payout.save()
@@ -98,7 +117,7 @@ export default class PayoutsController {
           investment[0].status = 'payout'
           // Date payout was effected
           // @ts-ignore
-          investment[0].datePayoutWasDone = new Date().toISOString()
+          // investment[0].datePayoutWasDone = new Date().toISOString()
           investment[0].save()
           console.log('Investment data after payout 2:', investment)
           return response.status(200).json({
@@ -111,7 +130,7 @@ export default class PayoutsController {
           // If termination was approved then proceed
 
           // Date payout was effected due to termination
-          payload.datePayoutWasDone = new Date().toISOString()
+          // payload.datePayoutWasDone = new Date().toISOString()
           console.log('Payout investment data 1:', payload)
           const payout = await Payout.create(payload)
           payout.status = 'terminated'
@@ -121,7 +140,7 @@ export default class PayoutsController {
           investment = await Investment.query().where('id', investmentId)
           investment[0].status = 'terminated'
           // @ts-ignore
-          investment[0].datePayoutWasDone = new Date().toISOString()
+          // investment[0].datePayoutWasDone = new Date().toISOString()
           investment[0].save()
           console.log('Terminated Payout investment data 2:', investment)
           return response.status(200).json({
