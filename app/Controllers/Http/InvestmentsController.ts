@@ -938,11 +938,11 @@ payloadInvestmentType))
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 899: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+        'Params for update line 941: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 904: ', investment)
+      console.log('Investment Info, line 945: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -951,10 +951,10 @@ payloadInvestmentType))
 
         // TESTING
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
-        let duration = 5
-        console.log('Time investment was started line 914: ', startDate)
+        let duration = 4
+        console.log('Time investment was started line 955: ', startDate)
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 916:', isDueForPayout)
+        console.log('Is due for payout status line 957:', isDueForPayout)
 
         if (isDueForPayout) {
           let payload = investment[0].$original
@@ -963,7 +963,7 @@ payloadInvestmentType))
           let investmentId = payload.id
           let requestType = 'payout investment'
           let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 926 : ', approvalRequestIsDone)
+          console.log(' Approval request return line 966 : ', approvalRequestIsDone)
           if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
               status: 'FAILED',
@@ -977,7 +977,7 @@ payloadInvestmentType))
             const payout = await Payout.create(payload)
             payout.status = 'matured'
             await payout.save()
-            console.log('Matured Payout investment data line 942:', payout)
+            console.log('Matured Payout investment data line 980:', payout)
             //  END
             investment = await Investment.query().where('id', investmentId)
             investment[0].requestType = requestType
@@ -997,7 +997,7 @@ payloadInvestmentType))
           let investmentId = payload.id
           let requestType = 'terminate investment'
           let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 702 : ', approvalRequestIsDone)
+          console.log(' Approval request return line 1000 : ', approvalRequestIsDone)
           if (approvalRequestIsDone === undefined) {
             return response.status(400).json({
               status: 'fail',
@@ -1020,7 +1020,7 @@ payloadInvestmentType))
           const payout = await Payout.create(payload)
           payout.status = 'terminated'
           await payout.save()
-          console.log('Terminated Payout investment data line 993:', payout)
+          console.log('Terminated Payout investment data line 1023:', payout)
           //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
@@ -1031,7 +1031,7 @@ payloadInvestmentType))
           // @ts-ignore
           // investment[0].datePayoutWasDone = new Date().toISOString()
           await investment[0].save()
-          console.log('Terminated Payout investment data line 736:', investment)
+          console.log('Terminated Payout investment data line 1034:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment.map((inv) => inv.$original),
