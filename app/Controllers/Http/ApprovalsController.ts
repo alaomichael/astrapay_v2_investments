@@ -102,12 +102,12 @@ export default class ApprovalsController {
         approval = await Approval.create(payload)
         // @ts-ignore
         // approval.status = 'active'
-        await approval[0].save()
+        await approval.save()
         console.log('The new approval request:', approval)
         console.log('A New approval request has been Created.')
 
         // Save approval new status to Database
-        await approval[0].save()
+        await approval.save()
         // Send approval Creation Message to Queue
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval.requestType })

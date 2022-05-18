@@ -300,10 +300,10 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
 //   ' The Rate return for RATE utils.ts line 299: ',
 //   sendPaymentDetails(12000, 180, 'fixed')
 // )
-  const investmentRate = async function () {
+  const investmentRate = async function (payloadAmount, payloadDuration, payloadInvestmentType) {
     try {
       const response = await axios.get(
-        `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
+        `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
       )
       console.log('The API response: ', response.data)
       if (response.data.status === 'OK' && response.data.data.length > 0) {

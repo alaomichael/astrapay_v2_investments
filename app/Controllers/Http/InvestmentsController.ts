@@ -681,7 +681,7 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
 payloadDuration,
 payloadInvestmentType))
     let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-    console.log(' Rate return line 210 : ', rate)
+    console.log(' Rate return line 684 : ', rate)
     if (rate === undefined) {
       return response.status(400).json({
         status: 'fail',
