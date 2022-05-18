@@ -1180,6 +1180,13 @@ export default class InvestmentsController {
              * '102' = 'rollover principal with interest',
              * '103' = 'rollover interest only'])
              */
+
+            console.log( 'Data for line 1184: ',rolloverType,
+amount,
+duration,
+investmentType,
+rolloverTarget,
+rolloverDone )
             const effectRollover = (
               investment,
               amount,
@@ -1189,20 +1196,22 @@ export default class InvestmentsController {
             ) => {
               return new Promise((resolve, reject) => {
                 console.log('Datas line 1191 : ',investment, amount, rolloverType, rolloverDone, rolloverTarget)
-                if (
-                  !investment ||
-                  !amount ||
-                  !rolloverType ||
-                  !rolloverDone ||
-                  !rolloverTarget ||
-                  rolloverTarget < 0
-                )
-                  reject(
-                    new Error(
-                      'Incomplete parameters , or no rollover target was set, or is less than allowed range'
-                    )
-                  )
-                let payload
+                // if (
+                //   investment ||
+                //   amount ||
+                //   rolloverType ||
+                //   rolloverDone ||
+                //   rolloverTarget ||
+                //   rolloverTarget < 0
+                // ){
+
+                //   reject(
+                //     new Error(
+                //       'Incomplete parameters , or no rollover target was set, or is less than allowed range'
+                //     )
+                //   )
+                // }
+                let payload = investment
                 let amountToPayoutNow
                 let amountToBeReinvested
                 if (rolloverDone === rolloverTarget) {
@@ -1215,10 +1224,10 @@ export default class InvestmentsController {
                   })
                 }
 
-                console.log('Payload  :', payload)
+                // console.log('Payload  :', payload)
                 let investmentData = investment
                 let payloadAmount //= payload.amount
-                let payloadDuration //= payload.duration
+                let payloadDuration = investmentData.duration //= payload.duration
                 let payloadInvestmentType // = payload.investmentType
                 // let investmentRate = async function () {
                 //   try {
@@ -1337,9 +1346,9 @@ export default class InvestmentsController {
                 switch (rolloverType) {
                   case '101':
                     amountToBeReinvested = amount
-                    payloadDuration = investment.duration
-                    payloadInvestmentType = investment.investmentType
-                    amountToPayoutNow = investment.interestDueOnInvestment
+                    payloadDuration = investment[0].duration
+                    payloadInvestmentType = investment[0].investmentType
+                    amountToPayoutNow = investment[0].interestDueOnInvestment
                     payload.amount = amountToBeReinvested
                     rolloverDone = rolloverDone + 1
                     investment[0].rolloverTarget = rolloverTarget
@@ -1352,11 +1361,11 @@ export default class InvestmentsController {
                     )
 
                     console.log(
-                      `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+                      `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment[0].currencyCode} ${amountToPayoutNow} was paid`
                     )
                     break
                   case '102':
-                    amountToBeReinvested = amount + investment.interestDueOnInvestment
+                    amountToBeReinvested = amount + investment[0].interestDueOnInvestment
                     // amountToPayoutNow = investment.interestDueOnInvestment
                     payload.amount = amountToBeReinvested
                     rolloverDone = rolloverDone + 1
@@ -1368,11 +1377,11 @@ export default class InvestmentsController {
                     )
 
                     console.log(
-                      `The Sum Total of the Principal and the interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested`
+                      `The Sum Total of the Principal and the interest of ${investment[0].currencyCode} ${amountToBeReinvested} was Reinvested`
                     )
                     break
                   case '103':
-                    amountToBeReinvested = investment.interestDueOnInvestment
+                    amountToBeReinvested = investment[0].interestDueOnInvestment
                     amountToPayoutNow = amount
                     payload.amount = amountToBeReinvested
                     rolloverDone = rolloverDone + 1
@@ -1384,7 +1393,7 @@ export default class InvestmentsController {
                     )
 
                     console.log(
-                      `The Interest of ${investment.currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment.currencyCode} ${amountToPayoutNow} was paid`
+                      `The Interest of ${investment[0].currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment[0].currencyCode} ${amountToPayoutNow} was paid`
                     )
                     break
                   default:
@@ -1402,7 +1411,7 @@ export default class InvestmentsController {
               rolloverDone,
               rolloverTarget
             )
-            console.log('testing Rollover Implementation line 1013', testingRolloverImplementation)
+            console.log('testing Rollover Implementation line 1414', testingRolloverImplementation)
             //  let payload = investment[0].$original
             //  // send to Admin for approval
             //  let userId = payload.userId
