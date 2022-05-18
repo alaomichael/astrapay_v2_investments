@@ -9,13 +9,13 @@ import Env from '@ioc:Adonis/Core/Env'
 const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
-// @ts-ignore
 import {
   generateRate,
   interestDueOnPayout,
   dueForPayout,
   payoutDueDate,
   approvalRequest,
+  // @ts-ignore
 } from 'App/Helpers/utils'
 export default class PayoutsController {
   public async index({ params, request, response }: HttpContextContract) {

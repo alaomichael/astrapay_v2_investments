@@ -123,27 +123,70 @@ export default class InvestmentsController {
     }
   }
 
-  public async showPayouts({ params, response }: HttpContextContract) {
+  public async showPayouts({ params,request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     try {
-      const investment = await Investment.query().where('status', 'payout')
-      // .orWhere('id', params.id)
-      // .limit()
-      if (investment && investment.length > 0) {
-        // console.log('INVESTMENT: ',investment.map((inv) => inv.$extras))
-        console.log('INVESTMENT DATA: ', investment)
-        return response
-          .status(200)
-          .json({ status: 'OK', data: investment.map((inv) => inv.$original) })
-      } else {
-        return response
-          .status(200)
-          .json({ status: 'fail', message: 'no investment has been paid out yet.' })
-      }
+    //   const investment = await Investment.query().where('status', 'payout')
+    // .orWhere('id', params.id)
+    // .limit()
+const { search, limit, userId, investmentId, requestType, walletId } = request.qs()
+    console.log('PAYOUT query: ', request.qs())
+    const payout = await Payout.all()
+    let sortedPayouts = payout
+    console.log('PAYOUT Investment line 150: ', payout)
+    if (search) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        // console.log(' Sorted :', payout.walletHolderDetails.lastName!.includes(search))
+        // @ts-ignore
+        return payout.walletHolderDetails.lastName!.startsWith(search)
+      })
+    }
+    if (userId) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.userId === parseInt(userId)
+      })
+    }
+    if (investmentId) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.investmentId === parseInt(investmentId)
+      })
+    }
+     if (walletId) {
+       sortedPayouts = sortedPayouts.filter((payout) => {
+         // @ts-ignore
+         return payout.walletId === parseInt(walletId)
+       })
+     }
+    if (requestType) {
+      sortedPayouts = sortedPayouts.filter((payout) => {
+        // @ts-ignore
+        return payout.requestType === requestType
+      })
+    }
+    if (limit) {
+      sortedPayouts = sortedPayouts.slice(0, Number(limit))
+    }
+    if (sortedPayouts.length < 1) {
+      return response.status(200).json({
+        status: 'FAILED',
+        message: 'no investment payout matched your search',
+        data: [],
+      })
+    }
+    // return payouts
+    // sortedPayouts.map((payout)=> {payout.$original}),
+    return response.status(200).json({
+      status: 'OK',
+      data: sortedPayouts.map((payout) => payout.$original),
+    })
+
     } catch (error) {
       console.log(error)
     }
-  }
+      }
 
   public async feedbacks({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params line 149: ', params)

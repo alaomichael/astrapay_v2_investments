@@ -3,7 +3,7 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class Settings extends BaseSchema {
   protected tableName = 'settings'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').index().unique().notNullable()
       table.integer('funding_wallet_id').unsigned().notNullable().index()
@@ -34,26 +34,14 @@ export default class Settings extends BaseSchema {
           'is_investment_automated',
           'is_termination_automated',
           'investment_type',
-          'wallet_holder_details',
-          'long',
-          'lat',
-          'start_date',
-          'payout_date',
-          'total_amount_to_payout',
-          'is_payout_authorized',
-          'is_termination_authorized',
-          'is_payout_successful',
-          'request_type',
-          'approval_status',
-          'status',
-          'date_payout_was_done',
+          'currency_code',
         ],
         'setting_full_index'
       )
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

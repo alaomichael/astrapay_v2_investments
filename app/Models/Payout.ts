@@ -18,7 +18,7 @@ export default class Payout extends BaseModel {
 
   @column()
   public walletId: number
-  
+
   @column()
   public investmentId: number
 
