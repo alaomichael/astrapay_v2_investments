@@ -152,12 +152,12 @@ export default class ApprovalsController {
         user_id: userId,
       })
       if (approval.length < 1 || investment === undefined) {
-        return response.status(404).json({ status: 'fail', message: 'Not Found' })
+        return response.status(404).json({ status: 'FAILED', message: 'Not Found,try again.' })
       }
       console.log(' QUERY RESULT for investment: ', investment[0].$original)
 
       if (approval.length > 0) {
-        console.log('Investment approval Selected for Update:', approval)
+        console.log('Investment approval Selected for Update line 160:', approval)
         if (approval) {
           approval[0].approvalStatus = request.input('approvalStatus')
             ? request.input('approvalStatus')
@@ -168,7 +168,7 @@ export default class ApprovalsController {
           if (approval) {
             let newStatus
             await approval[0].save()
-            console.log('Update Approval Request:', approval)
+            console.log('Update Approval Request line 171:', approval)
             if (
               approval[0].requestType === 'start investment' &&
               approval[0].approvalStatus === 'approved'
@@ -187,20 +187,20 @@ export default class ApprovalsController {
               investment[0].approvalStatus = approval[0].approvalStatus
               investment[0].isPayoutAuthorized = true
               investment[0].isTerminationAuthorized = true
-              // Calculate the Total Amount to payout by prorata
+              // Calculate the Total Amount to payout by pro-rata
               let startDate = investment[0].startDate
               let currentDate = new Date().toISOString()
               let daysOfInvestment = await investmentDuration(startDate, currentDate)
-              let amountInvested = investment[0].amount
               let expectedDuration = investment[0].duration
               let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
+              let amountInvested = investment[0].amount
               if (expectedDuration > daysOfInvestment) {
                 // Pro-rata the Interest Due on Investment
                 let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
                 let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
                 let formerTotalAmountToPayout = investment[0].totalAmountToPayout
                 console.log(
-                  'Former Total Amount Due for payout if Matured is: ',
+                  'Former Total Amount Due for payout if Matured is, line 203: ',
                   formerTotalAmountToPayout
                 )
                 investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
@@ -208,7 +208,7 @@ export default class ApprovalsController {
                 await investment[0].save()
                 let newTotalAmountToPayout = investment[0].totalAmountToPayout
                 console.log(
-                  'Total Amount Due for payout due to Termination: ',
+                  'Total Amount Due for payout due to Termination, line 211: ',
                   newTotalAmountToPayout
                 )
               }
@@ -256,7 +256,7 @@ export default class ApprovalsController {
               await investment[0].save()
             }
             // Update Investment data
-            console.log(' Updated investment line 196: ', investment[0].$original)
+            console.log(' Updated investment line 259: ', investment[0].$original)
             // send to user
             return response
               .status(200)

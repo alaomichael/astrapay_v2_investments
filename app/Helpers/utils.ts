@@ -296,10 +296,10 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
   }
 }
 
-console.log(
-  ' The Rate return for RATE utils.ts line 299: ',
-  sendPaymentDetails(12000, 180, 'fixed')
-)
+// console.log(
+//   ' The Rate return for RATE utils.ts line 299: ',
+//   sendPaymentDetails(12000, 180, 'fixed')
+// )
 
 /**
  * An utility function which returns a random number
