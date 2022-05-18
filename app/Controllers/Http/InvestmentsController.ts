@@ -1134,7 +1134,6 @@ export default class InvestmentsController {
           investment[0].isTerminationAuthorized === true
         ) {
           // Check Rollover Type
-          let investment = investment[0]
           let rolloverType = investment[0].rolloverType
           let amount = investment[0].amount
           let duration = investment[0].duration
@@ -1189,6 +1188,7 @@ export default class InvestmentsController {
               rolloverTarget
             ) => {
               return new Promise((resolve, reject) => {
+                console.log('Datas line 1191 : ',investment, amount, rolloverType, rolloverDone, rolloverTarget)
                 if (
                   !investment ||
                   !amount ||
