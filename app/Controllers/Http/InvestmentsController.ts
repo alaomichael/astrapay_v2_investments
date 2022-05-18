@@ -1134,6 +1134,7 @@ export default class InvestmentsController {
           investment[0].isTerminationAuthorized === true
         ) {
           // Check Rollover Type
+          let investment = investment[0]
           let rolloverType = investment[0].rolloverType
           let amount = investment[0].amount
           let duration = investment[0].duration
@@ -1172,6 +1173,7 @@ export default class InvestmentsController {
               data: investment[0].$original,
             })
           } else {
+            // If the investment has rollover
             // Check RollOver Target
             /**
              * .enum('rollover_type', ['100' = 'no rollover',
@@ -1599,13 +1601,13 @@ export default class InvestmentsController {
         approvalStatus,
         status,
       }
-      // get the amount paid and the status
-      let amountPaid = 50500
+      // get the amount paid and the status of the transaction
+      // let amountPaid = 50500
       isPayoutSuccessful = true
 
       // Save the Transaction to
       // payload[0].totalAmountToPayout = 0
-      payload.totalAmountPaid = amountPaid
+      // payload.totalAmountPaid = amountPaid
       payload.approvalStatus = 'approved'
       payload.status = 'paid'
 
@@ -1618,7 +1620,7 @@ export default class InvestmentsController {
         user_id: userId,
         wallet_id: walletId,
       })
-      console.log(' QUERY RESULT line 1390: ', payoutRecord)
+      console.log(' QUERY RESULT line 1621: ', payoutRecord)
       if (payoutRecord.length > 0) {
         return response.json({
           status: 'OK',
@@ -1626,7 +1628,7 @@ export default class InvestmentsController {
           data: payoutRecord.map((record) => record.$original),
         })
       }
-      investment[0].totalAmountToPayout = amountPaid
+      // investment[0].totalAmountToPayout = amountPaid
       investment[0].isPayoutSuccessful = isPayoutSuccessful
       investment[0].approvalStatus = 'approved'
       investment[0].status = 'paid'
@@ -1639,7 +1641,7 @@ export default class InvestmentsController {
       // update investment status
       // payout.status = 'paid'
       await payout.save()
-      console.log('Payout investment data line 1402:', payout)
+      console.log('Payout investment data line 1642:', payout)
 
       // Notify
 
