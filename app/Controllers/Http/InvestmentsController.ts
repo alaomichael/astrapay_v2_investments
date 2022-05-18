@@ -659,8 +659,8 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
     const payload: any = await request.validate({ schema: investmentSchema })
     console.log('Payload  :', payload)
     let payloadAmount = payload.amount
-    let payloadAmount = payload.amount
-    let payloadAmount = payload.amount
+    let payloadDuration = payload.duration
+    let payloadInvestmentType = payload.investmentType
     // let investmentRate = async function () {
     //   try {
     //     const response = await axios.get(
@@ -677,8 +677,10 @@ const { search, limit, userId, investmentId, requestType, walletId } = request.q
     //   }
     // }
 
-    console.log(' The Rate return for RATE line 541: ', await investmentRate())
-    let rate = await investmentRate()
+    console.log(' The Rate return for RATE line 541: ', await investmentRate(payloadAmount,
+payloadDuration,
+payloadInvestmentType))
+    let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
     console.log(' Rate return line 210 : ', rate)
     if (rate === undefined) {
       return response.status(400).json({
