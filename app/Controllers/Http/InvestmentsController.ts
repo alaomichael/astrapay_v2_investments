@@ -239,10 +239,22 @@ export default class InvestmentsController {
         }
         console.log('INVESTMENT DATA line 178: ', investment)
         if (investment.length < 1) {
-          return response.json({
-            status: 'FAILED',
-            message: 'No investment activation approval data matched your query, please try again',
-          })
+          // return response.json({
+          //   status: 'FAILED',
+          //   message: 'No investment activation approval data matched your query, please try again',
+          // })
+            investment = await Investment.query()
+              // .where('status', 'active')
+              .where('requestType', requestType)
+              .where('userId', userId)
+              .where('id', investmentId)
+            return response.json({
+              status: 'OK',
+              message:
+                'No investment activation approval data matched your query, please try again',
+              approvaldata: approvals.map((approval) => approval.$original),
+              investmentdata: investment.map((investment) => investment.$original),
+            })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
         // TODO
@@ -287,10 +299,22 @@ export default class InvestmentsController {
         }
         console.log('The declined investment line 239: ', investment)
         if (investment.length < 1) {
+          // return response.json({
+          //   status: 'FAILED',
+          //   message: 'No investment activation decline data matched your query, please try again',
+          // })
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
           return response.json({
-            status: 'FAILED',
+            status: 'OK',
             message: 'No investment activation decline data matched your query, please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
           })
+
         }
 
         // investment[0].status = 'declined'
@@ -339,10 +363,22 @@ export default class InvestmentsController {
           .where('id', investmentId)
         console.log('INVESTMENT DATA line 285: ', investment)
         if (investment.length < 1) {
+          // return response.json({
+          //   status: 'FAILED',
+          //   message:
+          //     'No investment termination approval data matched your query,or the feedback has been applied,or please try again',
+          // })
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
           return response.json({
-            status: 'FAILED',
+            status: 'OK',
             message:
               'No investment termination approval data matched your query,or the feedback has been applied,or please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
           })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
@@ -380,10 +416,22 @@ export default class InvestmentsController {
           .where('id', investmentId)
         console.log('The declined investment line 323: ', investment)
         if (investment.length < 1) {
+          // return response.json({
+          //   status: 'FAILED',
+          //   message:
+          //     'No investment termination decline data matched your query,or the feedback has been applied,or please try again',
+          // })
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
           return response.json({
-            status: 'FAILED',
+            status: 'OK',
             message:
               'No investment termination decline data matched your query,or the feedback has been applied,or please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
           })
         }
 
@@ -432,10 +480,17 @@ export default class InvestmentsController {
           .where('id', investmentId)
         console.log('INVESTMENT DATA line 368: ', investment)
         if (investment.length < 1) {
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
           return response.json({
-            status: 'FAILED',
+            status: 'OK',
             message:
               'No investment data matched your query,or the feedback has been applied,or please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
           })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
@@ -472,11 +527,23 @@ export default class InvestmentsController {
           .where('id', investmentId)
         console.log('The declined investment line 405: ', investment)
         if (investment.length < 1) {
-          return response.json({
-            status: 'FAILED',
-            message:
-              'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
-          })
+          // return response.json({
+          //   status: 'FAILED',
+          //   message:
+          //     'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
+          // })
+  investment = await Investment.query()
+    // .where('status', 'active')
+    .where('requestType', requestType)
+    .where('userId', userId)
+    .where('id', investmentId)
+  return response.json({
+    status: 'OK',
+    message:
+      'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
+    approvaldata: approvals.map((approval) => approval.$original),
+    investmentdata: investment.map((investment) => investment.$original),
+  })
         }
 
         // investment[0].status = 'declined'
@@ -1160,7 +1227,7 @@ export default class InvestmentsController {
               // use try catch
               try {
                 let rate = await sendPaymentDetails(amount, duration, investmentType)
-                console.log(' Rate return line 956 : ', rate)
+                console.log(' Rate return line 1230 : ', rate)
               } catch (error) {
                 console.error(error)
                 return response.send({
@@ -1195,7 +1262,7 @@ export default class InvestmentsController {
                */
 
               console.log(
-                'Data for line 1184: ',
+                'Data for line 1265: ',
                 rolloverType,
                 amount,
                 duration,
@@ -1212,7 +1279,7 @@ export default class InvestmentsController {
               ) => {
                 return new Promise(async (resolve, reject) => {
                   console.log(
-                    'Datas line 1191 : ',
+                    'Datas line 1282 : ',
                     investment,
                     amount,
                     rolloverType,
@@ -1241,7 +1308,7 @@ export default class InvestmentsController {
                     //  Proceed to payout the Total Amount due on maturity
                     try {
                       let rate = await sendPaymentDetails(amount, duration, investmentType)
-                      console.log(' Rate return line 956 : ', rate)
+                      console.log(' Rate return line 1311 : ', rate)
                     } catch (error) {
                       console.error(error)
                       return response.send({
@@ -1261,11 +1328,12 @@ export default class InvestmentsController {
 
                     return response.send({
                       status: 'OK',
-                      message: 'Rollover target has been reached.',
+                      message:
+                        'Rollover target has been reached, and payout of the sum total of your principal and interest has been initiated.',
                       data: investment[0].$original,
                     })
                   }
-
+                  // if rolloverDone < rolloverTarge
                   // console.log('Payload  :', payload)
                   let investmentData = investment
                   let payloadAmount //= payload.amount
@@ -1286,6 +1354,8 @@ export default class InvestmentsController {
                   //     console.error(error)
                   //   }
                   // }
+
+                  // A function for creating new investment
                   const createInvestment = async (
                     payloadAmount,
                     payloadDuration,
@@ -1301,18 +1371,22 @@ export default class InvestmentsController {
                     )
 
                     console.log(
-                       ' The Rate return for RATE line 541: ',
-                       await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-                     )
-                     let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-                     console.log(' Rate return line 1308 : ', rate)
-                     if (rate === undefined) {
-                       return response.status(400).json({
-                         status: 'fail',
-                         message: 'no investment rate matched your search, please try again.',
-                         data: [],
-                       })
-                     }
+                      ' The Rate return for RATE line 541: ',
+                      await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+                    )
+                    let rate = await investmentRate(
+                      payloadAmount,
+                      payloadDuration,
+                      payloadInvestmentType
+                    )
+                    console.log(' Rate return line 1308 : ', rate)
+                    if (rate === undefined) {
+                      return response.status(400).json({
+                        status: 'fail',
+                        message: 'no investment rate matched your search, please try again.',
+                        data: [],
+                      })
+                    }
                     //  const investment = await Investment.create(payload)
                     //  // const newInvestment = request.all() as Partial<Investment>
                     //  // const investment = await Investment.create(newInvestment)
