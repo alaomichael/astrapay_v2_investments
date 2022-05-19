@@ -243,18 +243,17 @@ export default class InvestmentsController {
           //   status: 'FAILED',
           //   message: 'No investment activation approval data matched your query, please try again',
           // })
-            investment = await Investment.query()
-              // .where('status', 'active')
-              .where('requestType', requestType)
-              .where('userId', userId)
-              .where('id', investmentId)
-            return response.json({
-              status: 'OK',
-              message:
-                'No investment activation approval data matched your query, please try again',
-              approvaldata: approvals.map((approval) => approval.$original),
-              investmentdata: investment.map((investment) => investment.$original),
-            })
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
+          return response.json({
+            status: 'OK',
+            message: 'No investment activation approval data matched your query, please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
+          })
         }
         investment[0].approvalStatus = approvals[0].approvalStatus
         // TODO
@@ -314,7 +313,6 @@ export default class InvestmentsController {
             approvaldata: approvals.map((approval) => approval.$original),
             investmentdata: investment.map((investment) => investment.$original),
           })
-
         }
 
         // investment[0].status = 'declined'
@@ -532,18 +530,18 @@ export default class InvestmentsController {
           //   message:
           //     'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
           // })
-  investment = await Investment.query()
-    // .where('status', 'active')
-    .where('requestType', requestType)
-    .where('userId', userId)
-    .where('id', investmentId)
-  return response.json({
-    status: 'OK',
-    message:
-      'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
-    approvaldata: approvals.map((approval) => approval.$original),
-    investmentdata: investment.map((investment) => investment.$original),
-  })
+          investment = await Investment.query()
+            // .where('status', 'active')
+            .where('requestType', requestType)
+            .where('userId', userId)
+            .where('id', investmentId)
+          return response.json({
+            status: 'OK',
+            message:
+              'No investment payout decline data matched your query, or the feedback has been applied, or please try again',
+            approvaldata: approvals.map((approval) => approval.$original),
+            investmentdata: investment.map((investment) => investment.$original),
+          })
         }
 
         // investment[0].status = 'declined'
@@ -1293,10 +1291,7 @@ export default class InvestmentsController {
                   // !rolloverType ||
                   // !rolloverDone ||
                   // !rolloverTarget ||
-                  if (
-                    !investmentData ||
-                    rolloverTarget < 0
-                  ) {
+                  if (!investmentData || rolloverTarget < 0) {
                     reject(
                       new Error(
                         'Incomplete parameters , or no rollover target was set, or is less than allowed range'
@@ -1336,8 +1331,9 @@ export default class InvestmentsController {
                     })
                   }
                   // if rolloverDone < rolloverTarge
-                  // console.log('Payload  :', payload)
-                 investmentData = investment[0]
+                  investmentData = investment[0]
+                  let payload = investmentData
+                  console.log('Payload line 1336 :', payload)
                   let payloadAmount //= payload.amount
                   let payloadDuration = investmentData.duration //= payload.duration
                   let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
@@ -1389,32 +1385,25 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
-let payload = investmentData
-console.log('PAYLOAD line 1391:', payload.interestRate)
+                    let payload = investmentData
+                    console.log('PAYLOAD line 1391:', payload.interestRate)
 
-                    //  const investment = await Investment.create(payload)
-                    //  // const newInvestment = request.all() as Partial<Investment>
-                    //  // const investment = await Investment.create(newInvestment)
-                    //  // return response.OK(investment)
-                    //  // The code below only work when there is auth
-                    //  // await user.related('investments').save(investment)
+                     const investment = await Investment.create(payload)
 
-                    //  // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
+                     investment.interestRate = rate
 
-                    //  investment.interestRate = rate
+                     // When the Invest has been approved and activated
+                     let amount = investment.amount
+                     let investmentDuration = investment.duration
+                     let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
+                     investment.interestDueOnInvestment = amountDueOnPayout
+                     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
-                    //  // When the Invest has been approved and activated
-                    //  let amount = investment.amount
-                    //  let investmentDuration = investment.duration
-                    //  let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
-                    //  investment.interestDueOnInvestment = amountDueOnPayout
-                    //  investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-
-                    //  // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
-                    //  // @ts-ignore
-                    //  investment.walletId = investment.walletHolderDetails.investorFundingWalletId
-                    //  await investment.save()
-                    //  console.log('The new investment:', investment)
+                     // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
+                     // @ts-ignore
+                     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+                     await investment.save()
+                     console.log('The new investment:', investment)
 
                     //  // TODO
                     //  // Send Investment Payload To Transaction Service
@@ -1470,10 +1459,12 @@ console.log('PAYLOAD line 1391:', payload.interestRate)
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       amountToPayoutNow = investment[0].interestDueOnInvestment
-                      payload.amount = amountToBeReinvested
+                      investment[0].amount = amountToBeReinvested
                       rolloverDone = rolloverDone + 1
                       investment[0].rolloverTarget = rolloverTarget
                       investment[0].rolloverDone = rolloverDone
+                      await investment[0].save()
+                      investmentData = investment[0]
                       createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
@@ -1482,14 +1473,20 @@ console.log('PAYLOAD line 1391:', payload.interestRate)
                       )
 
                       console.log(
-                        `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
+                        `Principal of ${currencyCode} ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
                       )
                       break
                     case '102':
                       amountToBeReinvested = amount + investment[0].interestDueOnInvestment
-                      // amountToPayoutNow = investment.interestDueOnInvestment
-                      payload.amount = amountToBeReinvested
+                      payloadDuration = investment[0].duration
+                      payloadInvestmentType = investment[0].investmentType
+                      investment[0].amount = amountToBeReinvested
                       rolloverDone = rolloverDone + 1
+                      investment[0].rolloverTarget = rolloverTarget
+                      investment[0].rolloverDone = rolloverDone
+                      await investment[0].save()
+                      investmentData = investment[0]
+
                       createInvestment(
                         payloadAmount,
                         payloadDuration,
@@ -1504,8 +1501,14 @@ console.log('PAYLOAD line 1391:', payload.interestRate)
                     case '103':
                       amountToBeReinvested = investment[0].interestDueOnInvestment
                       amountToPayoutNow = amount
-                      payload.amount = amountToBeReinvested
+                      payloadDuration = investment[0].duration
+                      payloadInvestmentType = investment[0].investmentType
+                      investment[0].amount = amountToBeReinvested
                       rolloverDone = rolloverDone + 1
+                      investment[0].rolloverTarget = rolloverTarget
+                      investment[0].rolloverDone = rolloverDone
+                      await investment[0].save()
+                      investmentData = investment[0]
                       createInvestment(
                         payloadAmount,
                         payloadDuration,
