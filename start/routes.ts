@@ -52,6 +52,7 @@ Route.group(() => {
     // Route.get('investments/payouts', 'InvestmentsController.showPayouts')
     Route.get('investments/payouts', 'PayoutsController.index')
     Route.get('admin/investments/payouts', 'InvestmentsController.showPayouts')
+    Route.get('admin/investments/payoutrecords', 'PayoutRecordsController.index')
     Route.get('admin/investments/feedbacks', 'InvestmentsController.feedbacks')
     Route.get('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
     Route.get('admin/investments/:userId', 'InvestmentsController.show')
