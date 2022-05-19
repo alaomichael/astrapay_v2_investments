@@ -1165,6 +1165,7 @@ export default class InvestmentsController {
         return response.json({ status: 'FAILED', message: error.message })
       }
       if (investment.length > 0) {
+        let investmentData = investment[0]
         let rolloverType = investment[0].rolloverType
         let amount = investment[0].amount
         let duration = investment[0].duration
@@ -1270,8 +1271,9 @@ export default class InvestmentsController {
                 rolloverTarget,
                 rolloverDone
               )
+              //  function for effecting the set rollover
               const effectRollover = async (
-                investment,
+                investmentData,
                 amount,
                 rolloverType,
                 rolloverDone,
@@ -1280,14 +1282,14 @@ export default class InvestmentsController {
                 return new Promise(async (resolve, reject) => {
                   console.log(
                     'Datas line 1282 : ',
-                    investment,
+                    investmentData,
                     amount,
                     rolloverType,
                     rolloverDone,
                     rolloverTarget
                   )
                   if (
-                    !investment ||
+                    !investmentData ||
                     !amount ||
                     !rolloverType ||
                     !rolloverDone ||
@@ -1300,11 +1302,11 @@ export default class InvestmentsController {
                       )
                     )
                   }
-                  let payload = investment
+                  let payload = investmentData
                   let amountToPayoutNow
                   let amountToBeReinvested
                   if (rolloverDone === rolloverTarget) {
-                    amountToPayoutNow = amount + investment[0].interestDueOnInvestment
+                    amountToPayoutNow = amount + payload.interestDueOnInvestment
                     //  Proceed to payout the Total Amount due on maturity
                     try {
                       let rate = await sendPaymentDetails(amount, duration, investmentType)
@@ -1335,7 +1337,7 @@ export default class InvestmentsController {
                   }
                   // if rolloverDone < rolloverTarge
                   // console.log('Payload  :', payload)
-                  let investmentData = investment
+                  let investmentData = investment[0]
                   let payloadAmount //= payload.amount
                   let payloadDuration = investmentData.duration //= payload.duration
                   let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
@@ -1362,16 +1364,16 @@ export default class InvestmentsController {
                     payloadInvestmentType,
                     investmentData
                   ) => {
-                    console.log('Investment data line 1206: ', investmentData)
-                    console.log('Investment payloadAmount data line 1207: ', payloadAmount)
-                    console.log('Investment payloadDuration data line 1208: ', payloadDuration)
+                    console.log('Investment data line 1365: ', investmentData)
+                    console.log('Investment payloadAmount data line 1366: ', payloadAmount)
+                    console.log('Investment payloadDuration data line 1367: ', payloadDuration)
                     console.log(
-                      'Investment payloadInvestmentType data line 1209: ',
+                      'Investment payloadInvestmentType data line 1369: ',
                       payloadInvestmentType
                     )
 
                     console.log(
-                      ' The Rate return for RATE line 541: ',
+                      ' The Rate return for RATE line 1374: ',
                       await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
                     )
                     let rate = await investmentRate(
@@ -1379,7 +1381,7 @@ export default class InvestmentsController {
                       payloadDuration,
                       payloadInvestmentType
                     )
-                    console.log(' Rate return line 1308 : ', rate)
+                    console.log(' Rate return line 1382 : ', rate)
                     if (rate === undefined) {
                       return response.status(400).json({
                         status: 'fail',
@@ -1387,6 +1389,9 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
+let payload = investmentData
+console.log('PAYLOAD line 1391:', payload.interestRate)
+
                     //  const investment = await Investment.create(payload)
                     //  // const newInvestment = request.all() as Partial<Investment>
                     //  // const investment = await Investment.create(newInvestment)
@@ -1521,7 +1526,7 @@ export default class InvestmentsController {
               }
 
               let testingRolloverImplementation = await effectRollover(
-                investment,
+                investmentData,
                 amount,
                 rolloverType,
                 rolloverDone,
