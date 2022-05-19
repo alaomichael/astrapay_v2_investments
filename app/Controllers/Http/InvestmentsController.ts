@@ -1271,6 +1271,7 @@ export default class InvestmentsController {
                 rolloverTarget,
                 rolloverDone
               )
+              // let payload = investmentData
               //  function for effecting the set rollover
               const effectRollover = async (
                 investmentData,
@@ -1288,12 +1289,12 @@ export default class InvestmentsController {
                     rolloverDone,
                     rolloverTarget
                   )
+                  // !amount ||
+                  // !rolloverType ||
+                  // !rolloverDone ||
+                  // !rolloverTarget ||
                   if (
                     !investmentData ||
-                    !amount ||
-                    !rolloverType ||
-                    !rolloverDone ||
-                    !rolloverTarget ||
                     rolloverTarget < 0
                   ) {
                     reject(
@@ -1302,11 +1303,10 @@ export default class InvestmentsController {
                       )
                     )
                   }
-                  let payload = investmentData
                   let amountToPayoutNow
                   let amountToBeReinvested
                   if (rolloverDone === rolloverTarget) {
-                    amountToPayoutNow = amount + payload.interestDueOnInvestment
+                    amountToPayoutNow = amount + investmentData.interestDueOnInvestment
                     //  Proceed to payout the Total Amount due on maturity
                     try {
                       let rate = await sendPaymentDetails(amount, duration, investmentType)
@@ -1337,7 +1337,7 @@ export default class InvestmentsController {
                   }
                   // if rolloverDone < rolloverTarge
                   // console.log('Payload  :', payload)
-                  let investmentData = investment[0]
+                 investmentData = investment[0]
                   let payloadAmount //= payload.amount
                   let payloadDuration = investmentData.duration //= payload.duration
                   let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
