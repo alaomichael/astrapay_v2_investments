@@ -1334,7 +1334,7 @@ export default class InvestmentsController {
                   investmentData = investment[0]
                   let payload = investmentData
                   console.log('Payload line 1336 :', payload)
-                  let payloadAmount //= payload.amount
+                  // let payloadAmount //= payload.amount
                   let payloadDuration = investmentData.duration //= payload.duration
                   let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
                   // let investmentRate = async function () {
@@ -1386,27 +1386,31 @@ export default class InvestmentsController {
                       })
                     }
                     let payload = investmentData
-                    console.log('PAYLOAD line 1391:', payload.interestRate)
+                    payload.interestRate = rate
+                    payload.isPayoutAuthorized = false
+                    payload.isTerminationAuthorized = false
+                    payload.isPayoutSuccessful = false
+                    console.log('PAYLOAD line 1393 :', payload)
+                    const investment = await Investment.create(payload)
 
-                     const investment = await Investment.create(payload)
+                    investment.interestRate = rate
 
-                     investment.interestRate = rate
+                    // When the Invest has been approved and activated
 
-                     // When the Invest has been approved and activated
-                     let amount = investment.amount
-                     let investmentDuration = investment.duration
-                     let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
-                     investment.interestDueOnInvestment = amountDueOnPayout
-                     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+                    //  let amount = investment.amount
+                    //  let investmentDuration = investment.duration
+                    //  let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
+                    //  investment.interestDueOnInvestment = amountDueOnPayout
+                    //  investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
-                     // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
-                     // @ts-ignore
-                     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
-                     await investment.save()
-                     console.log('The new investment:', investment)
+                    //  investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
+                    //  // @ts-ignore
+                    //  investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+                    //  await investment.save()
+                    console.log('The new investment:', investment)
 
-                    //  // TODO
-                    //  // Send Investment Payload To Transaction Service
+                    // TODO
+                    // Send Investment Payload To Transaction Service
 
                     //  // UPDATE Investment Status based on the response from Transaction Service
                     //  let duration = Number(investment.duration)
@@ -1415,36 +1419,37 @@ export default class InvestmentsController {
                     //  console.log('updated CreatedAt Time : ' + updatedCreatedAt)
                     //  console.log('Updated Payout Date: ' + updatedPayoutDate)
                     //  // Save Investment new status to Database
-                    //  await investment.save()
-                    //  // Send Investment Initiation Message to Queue
+                    await investment.save()
+                    // Send Investment Initiation Message to Queue
 
-                    //  // Send Approval Request to Admin
-                    //  let userId = investment.userId
-                    //  let investmentId = investment.id
-                    //  let requestType = 'start investment'
-                    //  let approval = await approvalRequest(userId, investmentId, requestType)
-                    //  console.log(' Approval request return line 280 : ', approval)
-                    //  if (approval === undefined) {
-                    //    return response.status(400).json({
-                    //      status: 'fail',
-                    //      message: 'investment approval request was not successful, please try again.',
-                    //      data: [],
-                    //    })
-                    //  }
+                    // Send Approval Request to Admin
+                    let userId = investment.userId
+                    let investmentId = investment.id
+                    let requestType = 'start investment'
+                    let approval = await approvalRequest(userId, investmentId, requestType)
+                    console.log(' Approval request return line 1426 : ', approval)
+                    if (approval === undefined) {
+                      return response.status(400).json({
+                        status: 'fail',
+                        message:
+                          'investment approval request was not successful, please try again.',
+                        data: [],
+                      })
+                    }
 
                     //  // Testing
                     //  // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
                     //  // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
                     //  // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
                     //  // console.log('Testing Payout Date: ' + testingPayoutDate)
-                    //  let newInvestmentId = investment.id
-                    //  // @ts-ignore
-                    //  let newInvestmentEmail = investment.walletHolderDetails.email
-                    //  Event.emit('new:investment', {
-                    //    id: newInvestmentId,
-                    //    email: newInvestmentEmail,
-                    //  })
-                    //  return response.status(201).json({ status: 'OK', data: investment.$original })
+                    let newInvestmentId = investment.id
+                    // @ts-ignore
+                    let newInvestmentEmail = investment.walletHolderDetails.email
+                    Event.emit('new:investment', {
+                      id: newInvestmentId,
+                      email: newInvestmentEmail,
+                    })
+                    return response.status(201).json({ status: 'OK', data: investment.$original })
                   }
 
                   //  createInvestment(payloadAmount,
@@ -1465,6 +1470,9 @@ export default class InvestmentsController {
                       investment[0].rolloverDone = rolloverDone
                       await investment[0].save()
                       investmentData = investment[0]
+                      // send payment details to transction service
+
+                      // initiate a new investment
                       createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
@@ -1486,9 +1494,11 @@ export default class InvestmentsController {
                       investment[0].rolloverDone = rolloverDone
                       await investment[0].save()
                       investmentData = investment[0]
+                      // send payment details to transction service
 
+                      // initiate a new investment
                       createInvestment(
-                        payloadAmount,
+                        amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
@@ -1509,8 +1519,11 @@ export default class InvestmentsController {
                       investment[0].rolloverDone = rolloverDone
                       await investment[0].save()
                       investmentData = investment[0]
+                      // send payment details to transction service
+
+                      // initiate a new investment
                       createInvestment(
-                        payloadAmount,
+                        amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
@@ -1585,7 +1598,7 @@ export default class InvestmentsController {
             let investmentId = payload.id
             let requestType = 'terminate investment'
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 702 : ', approvalRequestIsDone)
+            console.log(' Approval request return line 1598 : ', approvalRequestIsDone)
             if (approvalRequestIsDone === undefined) {
               return response.status(400).json({
                 status: 'fail',
@@ -1599,7 +1612,7 @@ export default class InvestmentsController {
             //  Proceed to payout the Total Amount due on maturity
             try {
               let rate = await sendPaymentDetails(amount, duration, investmentType)
-              console.log(' Rate return line 956 : ', rate)
+              console.log(' Rate return line 1612 : ', rate)
             } catch (error) {
               console.error(error)
               return response.send({
@@ -1639,7 +1652,7 @@ export default class InvestmentsController {
             // @ts-ignore
             // investment[0].datePayoutWasDone = new Date().toISOString()
             await investment[0].save()
-            console.log('Terminated Payout investment data line 736:', investment)
+            console.log('Terminated Payout investment data line 1652:', investment)
             return response.status(200).json({
               status: 'OK',
               data: investment.map((inv) => inv.$original),
