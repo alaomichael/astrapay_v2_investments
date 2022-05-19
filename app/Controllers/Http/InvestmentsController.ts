@@ -505,7 +505,9 @@ export default class InvestmentsController {
         // @ts-ignore
         // investment[0].startDate = DateTime.now().toISO()
         // let duration = parseInt(investment[0].duration)
-        investment[0].payoutDate = DateTime.now().toISO() //DateTime.now().plus({ days: duration })
+
+        // investment[0].payoutDate = DateTime.now().toISO() //DateTime.now().plus({ days: duration })
+
         // console.log('The currentDate line 372: ', currentDateMs)
         // console.log('Time investment was started line 373: ', investment[0].startDate)
         console.log('Time investment payout date line 390: ', investment[0].payoutDate)
@@ -1042,8 +1044,6 @@ export default class InvestmentsController {
               data: [],
             })
           }
-
-          // if payout was approved
           console.log('Payout investment data 1:', payload)
           payload.investmentId = investmentId
           payload.requestType = requestType
@@ -1062,7 +1062,6 @@ export default class InvestmentsController {
             await payout.save()
             console.log('Matured Payout investment data line 995:', payout)
           }
-          //  END
           investment = await Investment.query().where('id', investmentId)
           investment[0].requestType = requestType
           investment[0].status = 'active'
@@ -1090,17 +1089,7 @@ export default class InvestmentsController {
               data: [],
             })
           }
-          // if payout was approved
 
-          // send to transaction service
-
-          // if transaction was successfully processed
-          // update Date payout was effected due to termination
-
-          // TODO
-          // Move th code below to a new function that will check payout approval status and update the transaction
-          // START
-          // payload.datePayoutWasDone = new Date().toISOString()
           payload.investmentId = investmentId
           payload.requestType = requestType
           // check if payout request is existing
@@ -1119,16 +1108,10 @@ export default class InvestmentsController {
             await payout.save()
             console.log('Terminated Payout investment data line 1052:', payout)
           }
-
-          //  END
-          // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
           investment = await Investment.query().where('id', investmentId)
           investment[0].requestType = requestType
           investment[0].status = 'active'
           investment[0].approvalStatus = 'pending'
-          // update datePayoutWasDone
-          // @ts-ignore
-          // investment[0].datePayoutWasDone = new Date().toISOString()
           await investment[0].save()
           console.log('Terminated Payout investment data line 1034:', investment)
           return response.status(200).json({
@@ -1390,6 +1373,8 @@ export default class InvestmentsController {
                     payload.isPayoutAuthorized = false
                     payload.isTerminationAuthorized = false
                     payload.isPayoutSuccessful = false
+                    payload.startDate = null
+                    payload.createdAt = null
                     console.log('PAYLOAD line 1393 :', payload)
                     const investment = await Investment.create(payload)
 
@@ -1407,7 +1392,7 @@ export default class InvestmentsController {
                     //  // @ts-ignore
                     //  investment.walletId = investment.walletHolderDetails.investorFundingWalletId
                     //  await investment.save()
-                    console.log('The new investment:', investment)
+                    console.log('The new investment line 1410:', investment)
 
                     // TODO
                     // Send Investment Payload To Transaction Service
@@ -1460,11 +1445,13 @@ export default class InvestmentsController {
 
                   switch (rolloverType) {
                     case '101':
+                      //'101' = 'rollover principal only',
                       amountToBeReinvested = amount
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       amountToPayoutNow = investment[0].interestDueOnInvestment
                       investment[0].amount = amountToBeReinvested
+                      investment[0].totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
                       investment[0].rolloverTarget = rolloverTarget
                       investment[0].rolloverDone = rolloverDone
@@ -1485,10 +1472,12 @@ export default class InvestmentsController {
                       )
                       break
                     case '102':
+                      // '102' = 'rollover principal plus interest',
                       amountToBeReinvested = amount + investment[0].interestDueOnInvestment
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       investment[0].amount = amountToBeReinvested
+                      investment[0].totalAmountToPayout = 0
                       rolloverDone = rolloverDone + 1
                       investment[0].rolloverTarget = rolloverTarget
                       investment[0].rolloverDone = rolloverDone
@@ -1509,11 +1498,13 @@ export default class InvestmentsController {
                       )
                       break
                     case '103':
+                      // '103' = 'rollover interest only'
                       amountToBeReinvested = investment[0].interestDueOnInvestment
                       amountToPayoutNow = amount
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       investment[0].amount = amountToBeReinvested
+                      investment[0].totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
                       investment[0].rolloverTarget = rolloverTarget
                       investment[0].rolloverDone = rolloverDone
@@ -1735,8 +1726,8 @@ export default class InvestmentsController {
         datePayoutWasDone,
       } = investment[0]
 
-      console.log('Initial status line 1331: ', status)
-      console.log('Initial datePayoutWasDone line 1332: ', datePayoutWasDone)
+      console.log('Initial status line 1738: ', status)
+      console.log('Initial datePayoutWasDone line 1739: ', datePayoutWasDone)
       let payload = {
         investmentId: id,
         userId,
@@ -1774,6 +1765,9 @@ export default class InvestmentsController {
       // payload.totalAmountPaid = amountPaid
       payload.approvalStatus = 'approved'
       payload.status = 'paid'
+      payload.isPayoutSuccessful = isPayoutSuccessful
+      // @ts-ignore
+      // payload.datePayoutWasDone = new Date().toISOString()
 
       console.log('Payout Payload: ', payload)
 
@@ -1784,7 +1778,7 @@ export default class InvestmentsController {
         user_id: userId,
         wallet_id: walletId,
       })
-      console.log(' QUERY RESULT line 1621: ', payoutRecord)
+      console.log(' QUERY RESULT line 1787: ', payoutRecord)
       if (payoutRecord.length > 0) {
         return response.json({
           status: 'OK',
@@ -1805,7 +1799,7 @@ export default class InvestmentsController {
       // update investment status
       // payout.status = 'paid'
       await payout.save()
-      console.log('Payout investment data line 1642:', payout)
+      console.log('Payout investment data line 1808:', payout)
 
       // Notify
 
