@@ -1382,8 +1382,8 @@ export default class InvestmentsController {
                     payload.isPayoutAuthorized = false
                     payload.isTerminationAuthorized = false
                     payload.isPayoutSuccessful = false
-                    payload.startDate = null
-                    payload.createdAt = null
+                    // payload.startDate = null
+                    // payload.createdAt = null
                     console.log('PAYLOAD line 1393 :', payload)
                     const investment = await Investment.create(payload)
 
