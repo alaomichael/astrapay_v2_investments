@@ -1036,21 +1036,24 @@ export default class InvestmentsController {
           // Move th code below to a new function that will check payout approval status and update the transaction
           // START
           // payload.datePayoutWasDone = new Date().toISOString()
- payload.investmentId = investmentId
- payload.requestType = requestType
- // check if payout request is existing
- let payoutRequestIsExisting = await Payout.query().where({
-   investment_id: investmentId,
-   user_id: userId,
- })
- console.log('Investment payout Request Is Existing data line 1046:', payoutRequestIsExisting)
- if (payoutRequestIsExisting.length < 1) {
-          console.log('Payout investment data 1:', payload)
-          const payout = await Payout.create(payload)
-          payout.status = 'terminated'
-          await payout.save()
-          console.log('Terminated Payout investment data line 1052:', payout)
- }
+          payload.investmentId = investmentId
+          payload.requestType = requestType
+          // check if payout request is existing
+          let payoutRequestIsExisting = await Payout.query().where({
+            investment_id: investmentId,
+            user_id: userId,
+          })
+          console.log(
+            'Investment payout Request Is Existing data line 1046:',
+            payoutRequestIsExisting
+          )
+          if (payoutRequestIsExisting.length < 1) {
+            console.log('Payout investment data 1:', payload)
+            const payout = await Payout.create(payload)
+            payout.status = 'terminated'
+            await payout.save()
+            console.log('Terminated Payout investment data line 1052:', payout)
+          }
 
           //  END
           // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
@@ -1134,13 +1137,14 @@ export default class InvestmentsController {
           investment[0].isTerminationAuthorized === true
         ) {
           // Check Rollover Type
-          let rolloverType = investment[0].rolloverType
-          let amount = investment[0].amount
-          let duration = investment[0].duration
-          let investmentType = investment[0].investmentType
-          let rolloverTarget = investment[0].rolloverTarget
-          let rolloverDone = investment[0].rolloverDone
-          let isTransactionSentForProcessing
+          // let rolloverType = investment[0].rolloverType
+          // let amount = investment[0].amount
+          // let duration = investment[0].duration
+          // let investmentType = investment[0].investmentType
+          // let rolloverTarget = investment[0].rolloverTarget
+          // let rolloverDone = investment[0].rolloverDone
+          // let currencyCode = investment[0].currencyCode
+          // let isTransactionSentForProcessing
           if (rolloverType === '100') {
             //  Proceed to payout the Total Amount due on maturity
             // Send Payment Details to Transaction Service
@@ -1181,42 +1185,71 @@ export default class InvestmentsController {
              * '103' = 'rollover interest only'])
              */
 
-            console.log( 'Data for line 1184: ',rolloverType,
-amount,
-duration,
-investmentType,
-rolloverTarget,
-rolloverDone )
-            const effectRollover = (
+            console.log(
+              'Data for line 1184: ',
+              rolloverType,
+              amount,
+              duration,
+              investmentType,
+              rolloverTarget,
+              rolloverDone
+            )
+            const effectRollover = async (
               investment,
               amount,
               rolloverType,
               rolloverDone,
               rolloverTarget
             ) => {
-              return new Promise((resolve, reject) => {
-                console.log('Datas line 1191 : ',investment, amount, rolloverType, rolloverDone, rolloverTarget)
-                // if (
-                //   investment ||
-                //   amount ||
-                //   rolloverType ||
-                //   rolloverDone ||
-                //   rolloverTarget ||
-                //   rolloverTarget < 0
-                // ){
-
-                //   reject(
-                //     new Error(
-                //       'Incomplete parameters , or no rollover target was set, or is less than allowed range'
-                //     )
-                //   )
-                // }
+              return new Promise(async (resolve, reject) => {
+                console.log(
+                  'Datas line 1191 : ',
+                  investment,
+                  amount,
+                  rolloverType,
+                  rolloverDone,
+                  rolloverTarget
+                )
+                if (
+                  !investment ||
+                  !amount ||
+                  !rolloverType ||
+                  !rolloverDone ||
+                  !rolloverTarget ||
+                  rolloverTarget < 0
+                ) {
+                  reject(
+                    new Error(
+                      'Incomplete parameters , or no rollover target was set, or is less than allowed range'
+                    )
+                  )
+                }
                 let payload = investment
                 let amountToPayoutNow
                 let amountToBeReinvested
                 if (rolloverDone === rolloverTarget) {
-                  amountToPayoutNow = amount + investment.interestDueOnInvestment
+                  amountToPayoutNow = amount + investment[0].interestDueOnInvestment
                   //  Proceed to payout the Total Amount due on maturity
+                    try {
+                      let rate = await sendPaymentDetails(amount, duration, investmentType)
+                      console.log(' Rate return line 956 : ', rate)
+                    } catch (error) {
+                      console.error(error)
+                      return response.send({
+                        status: 'FAILED',
+                        message: 'The transaction was not sent successfully.',
+                        error: error.message,
+                      })
+                    }
+                    isTransactionSentForProcessing = true
+                    if (isTransactionSentForProcessing === false) {
+                      return response.send({
+                        status: 'FAILED',
+                        message: 'The transaction was not sent successfully.',
+                        isTransactionInProcess: isTransactionSentForProcessing,
+                      })
+                    }
+
                   return response.send({
                     status: 'OK',
                     message: 'Rollover target has been reached.',
@@ -1228,7 +1261,7 @@ rolloverDone )
                 let investmentData = investment
                 let payloadAmount //= payload.amount
                 let payloadDuration = investmentData.duration //= payload.duration
-                let payloadInvestmentType // = payload.investmentType
+                let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
                 // let investmentRate = async function () {
                 //   try {
                 //     const response = await axios.get(
@@ -1361,7 +1394,7 @@ rolloverDone )
                     )
 
                     console.log(
-                      `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${investment[0].currencyCode} ${amountToPayoutNow} was paid`
+                      `Principal of ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
                     )
                     break
                   case '102':
@@ -1377,7 +1410,7 @@ rolloverDone )
                     )
 
                     console.log(
-                      `The Sum Total of the Principal and the interest of ${investment[0].currencyCode} ${amountToBeReinvested} was Reinvested`
+                      `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
                     )
                     break
                   case '103':
@@ -1393,7 +1426,7 @@ rolloverDone )
                     )
 
                     console.log(
-                      `The Interest of ${investment[0].currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${investment[0].currencyCode} ${amountToPayoutNow} was paid`
+                      `The Interest of ${currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${currencyCode} ${amountToPayoutNow} was paid`
                     )
                     break
                   default:
@@ -1435,19 +1468,12 @@ rolloverDone )
             // send to transaction service
 
             // // if transaction was successfully processed
-            // // update Date payout was effected
-            // payload.datePayoutWasDone = new Date().toISOString()
-            // console.log('Payout investment data 1:', payload)
-            // const payout = await Payout.create(payload)
-            // // update investment status
-            // payout.status = 'payout'
-            // await payout.save()
-            // console.log('Payout investment data 2:', payout)
-            // // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
+            // // update Date
+
             // investment = await Investment.query().where('id', investmentId)
             // investment[0].status = 'payout'
             // investment[0].approvalStatus = approvalStatus
-            // // Date payout was effected
+            // // Date investment was effected
             // // @ts-ignore
             // // investment[0].datePayoutWasDone = new Date().toISOString()
             await investment[0].save()
@@ -1458,6 +1484,7 @@ rolloverDone )
             })
           }
         } else {
+          // if the investment is terminated
           let payload = investment[0].$original
           // send to Admin for approval
           let userId = payload.userId
@@ -1475,6 +1502,26 @@ rolloverDone )
           // if payout was approved
 
           // send to transaction service
+          //  Proceed to payout the Total Amount due on maturity
+          try {
+            let rate = await sendPaymentDetails(amount, duration, investmentType)
+            console.log(' Rate return line 956 : ', rate)
+          } catch (error) {
+            console.error(error)
+            return response.send({
+              status: 'FAILED',
+              message: 'The transaction was not sent successfully.',
+              error: error.message,
+            })
+          }
+          isTransactionSentForProcessing = true
+          if (isTransactionSentForProcessing === false) {
+            return response.send({
+              status: 'FAILED',
+              message: 'The transaction was not sent successfully.',
+              isTransactionInProcess: isTransactionSentForProcessing,
+            })
+          }
 
           // if transaction was successfully processed
           // update Date payout was effected due to termination
