@@ -1056,7 +1056,12 @@ export default class InvestmentsController {
             'Investment payout Request Is Existing data line 988:',
             payoutRequestIsExisting
           )
-          if (payoutRequestIsExisting.length < 1) {
+            console.log('Investment payload data line 1059:', payload)
+          if (
+            payoutRequestIsExisting.length < 1 &&
+            investment[0].requestType !== 'start investment' &&
+            investment[0].approvalStatus !== 'pending'
+          ) {
             const payout = await Payout.create(payload)
             payout.status = 'matured'
             await payout.save()
@@ -1101,7 +1106,11 @@ export default class InvestmentsController {
             'Investment payout Request Is Existing data line 1046:',
             payoutRequestIsExisting
           )
-          if (payoutRequestIsExisting.length < 1) {
+          if (
+            payoutRequestIsExisting.length < 1 &&
+            investment[0].requestType !== 'start investment' &&
+            investment[0].approvalStatus !== 'pending'
+          ) {
             console.log('Payout investment data 1:', payload)
             const payout = await Payout.create(payload)
             payout.status = 'terminated'
@@ -1183,7 +1192,7 @@ export default class InvestmentsController {
             investment[0].approvalStatus === 'approved' &&
             investment[0].status === 'terminated')
         ) {
-          console.log('investment search data :', investment[0].$original)
+          console.log('investment search data line 1186 :', investment[0].$original)
           // @ts-ignore
           // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
           // console.log('Is due for payout status :', isDueForPayout)
@@ -1651,9 +1660,12 @@ export default class InvestmentsController {
           }
         } else {
           return response.status(404).json({
-            status: 'fail',
-            message: 'no investment matched your search',
-            data: [],
+            status: 'FAILED',
+            message: 'no investment matched your search, or payment has been processed.',
+            data: {
+              paymentStatus: investment.map((inv) => inv.$original.status),
+              amountPaid: investment.map((inv) => inv.$original.totalAmountToPayout),
+            },
           })
         }
       }
