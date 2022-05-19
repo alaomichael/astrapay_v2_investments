@@ -1056,7 +1056,7 @@ export default class InvestmentsController {
             'Investment payout Request Is Existing data line 988:',
             payoutRequestIsExisting
           )
-            console.log('Investment payload data line 1059:', payload)
+          console.log('Investment payload data line 1059:', payload)
           if (
             payoutRequestIsExisting.length < 1 &&
             investment[0].requestType !== 'start investment' &&
@@ -1789,6 +1789,8 @@ export default class InvestmentsController {
         investment_id: payload.investmentId,
         user_id: userId,
         wallet_id: walletId,
+        rollover_target: payload.rolloverTarget,
+        rollover_done: payload.rolloverDone,
       })
       console.log(' QUERY RESULT line 1787: ', payoutRecord)
       if (payoutRecord.length > 0) {
@@ -1803,7 +1805,7 @@ export default class InvestmentsController {
       investment[0].approvalStatus = 'approved'
       investment[0].status = 'paid'
       // @ts-ignore
-      investment[0].datePayoutWasDone = new Date().toISOString()
+      // investment[0].datePayoutWasDone = new Date().toISOString()
 
       // Save the Update
       await investment[0].save()
@@ -1811,7 +1813,10 @@ export default class InvestmentsController {
       // update investment status
       // payout.status = 'paid'
       await payout.save()
+
       console.log('Payout investment data line 1808:', payout)
+      // @ts-ignore
+      investment[0].datePayoutWasDone = payout.createdAt
 
       // Notify
 
@@ -1821,7 +1826,7 @@ export default class InvestmentsController {
         'data:',
         investment.map((inv) => inv.$original)
       )
-
+      await investment[0].save()
       return response.json({ status: 'OK', data: payout.$original })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
