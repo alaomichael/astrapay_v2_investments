@@ -10,21 +10,21 @@ const axios = require('axios').default
 
 const API_URL = Env.get('API_URL')
 import {
-    generateRate,
-    interestDueOnPayout,
-    dueForPayout,
-    payoutDueDate,
-    approvalRequest,
-    // @ts-ignore
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+  // @ts-ignore
 } from 'App/Helpers/utils'
 export default class PayoutRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PayoutRecord params: ', params)
     const { search, limit } = request.qs()
     console.log('PayoutRecord query: ', request.qs())
-    const countPayouts = await PayoutRecord.query().where('status', 'payout').getCount()
+    const countPayouts = await PayoutRecord.query().where('status', 'paid').getCount()
     console.log('PayoutRecord Investment count: ', countPayouts)
-    const countTerminated = await PayoutRecord.query().where('status', 'terminated').getCount()
+    const countTerminated = await PayoutRecord.query().where('request_type', 'terminate investment').getCount()
     console.log('Terminated Investment count: ', countTerminated)
     // const PayoutRecord = await Investment.query().offset(0).limit(1)
     const payoutRecord = await PayoutRecord.all()
@@ -51,7 +51,7 @@ export default class PayoutRecordsController {
     return response.status(200).json({
       status: 'OK',
       data: sortedPayouts.map((payoutRecord) => {
-        payoutRecord.$original
+        return payoutRecord.$original
       }),
     })
   }
