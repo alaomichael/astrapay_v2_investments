@@ -1061,7 +1061,8 @@ export default class InvestmentsController {
           if (
             payoutRequestIsExisting.length < 1 &&
             investment[0].requestType !== 'start investment' &&
-            investment[0].approvalStatus !== 'pending'
+            investment[0].approvalStatus !== 'pending' &&
+            investment[0].status !== 'initiated'
           ) {
             const payout = await Payout.create(payload)
             payout.status = 'matured'
@@ -1110,7 +1111,8 @@ export default class InvestmentsController {
           if (
             payoutRequestIsExisting.length < 1 &&
             investment[0].requestType !== 'start investment' &&
-            investment[0].approvalStatus !== 'pending'
+            investment[0].approvalStatus !== 'pending' &&
+            investment[0].status !== 'initiated'
           ) {
             console.log('Payout investment data 1:', payload)
             const payout = await Payout.create(payload)
@@ -1228,6 +1230,8 @@ export default class InvestmentsController {
                   error: error.message,
                 })
               }
+              // TODO
+              // Update with the appropriate endpoint and data
               isTransactionSentForProcessing = true
               if (isTransactionSentForProcessing === false) {
                 return response.send({
@@ -1387,7 +1391,7 @@ export default class InvestmentsController {
                       amount,
                       rolloverType,
                       rolloverTarget,
-rolloverDone,
+                      rolloverDone,
                       investmentType,
                       duration,
                       userId,

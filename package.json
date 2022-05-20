@@ -73,6 +73,7 @@
     "map-anything": "^2.0.2",
     "mapper-utils": "^0.0.1",
     "moment": "^2.29.3",
+    "node-cron": "^3.0.0",
     "objection": "^3.0.1",
     "pg": "^8.7.3",
     "phc-argon2": "^1.1.3",
