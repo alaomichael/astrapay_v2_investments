@@ -1083,8 +1083,10 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             investment[0].approvalStatus = 'approved'
             investment[0].status = 'active'
-            // Save
-            await investment[0].save()
+             investment[0].isPayoutAuthorized = true
+               investment[0].isTerminationAuthorized = true
+               // Save
+               (await investment[0].save())
             // Send notification
             console.log('Updated investment Status line 1088: ', investment)
           }
@@ -1145,10 +1147,14 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             investment[0].status = 'active'
             investment[0].approvalStatus = 'pending'
+            // Save
+            await investment[0].save()
           } else if (approvalIsAutomated === true) {
             investment[0].requestType = requestType
             investment[0].status = 'terminated'
             investment[0].approvalStatus = 'approved'
+            // Save
+            await investment[0].save()
           }
 
           payload.investmentId = investmentId
