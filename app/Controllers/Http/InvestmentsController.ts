@@ -891,7 +891,6 @@ export default class InvestmentsController {
     return response.status(201).json({ status: 'OK', data: investment.$original })
   }
 
-
   public async approve({ request, response }: HttpContextContract) {
     try {
       // let investment = await Investment.query().where({
@@ -1619,6 +1618,10 @@ export default class InvestmentsController {
                     )
 
                     await investment.save()
+                    let newInvestmentId = investment.id
+                    // @ts-ignore
+                    let newInvestmentEmail = investment.walletHolderDetails.email
+
                     // Send Investment Initiation Message to Queue
 
                     // check if Approval is set to Auto, from Setting Controller
@@ -1639,28 +1642,35 @@ export default class InvestmentsController {
                           data: [],
                         })
                       }
-                    } else if (approvalIsAutomated === true) {
-                     // Send Investment Payload To Transaction Service
-      let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
-      console.log(' Feedback from Transaction service: ', sendToTransactionService)
-      if (sendToTransactionService === 'Ok') {
-        // Activate the investment
-        investment.requestType = requestType
-        investment.status = 'active'
-        investment.approvalStatus = 'approved'
-        investment.startDate = DateTime.now() //.toISODate()
-        investment.payoutDate = DateTime.now().plus({ days: parseInt(investmentDuration) })
-        await investment.save()
-                    }
 
-                    let newInvestmentId = investment.id
-                    // @ts-ignore
-                    let newInvestmentEmail = investment.walletHolderDetails.email
-                    // Send to Notification Service
-                    Event.emit('new:investment', {
-                      id: newInvestmentId,
-                      email: newInvestmentEmail,
-                    })
+                      // Send to Notification Service
+                      // New investment initiated
+                      Event.emit('new:investment', {
+                        id: newInvestmentId,
+                        email: newInvestmentEmail,
+                      })
+                    } else if (approvalIsAutomated === true) {
+                      // Send Investment Payload To Transaction Service
+                      let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+                      console.log(' Feedback from Transaction service: ', sendToTransactionService)
+                      if (sendToTransactionService === 'Ok') {
+                        // Activate the investment
+                        investment.requestType = requestType
+                        investment.status = 'active'
+                        investment.approvalStatus = 'approved'
+                        investment.startDate = DateTime.now() //.toISODate()
+                        investment.payoutDate = DateTime.now().plus({
+                          days: parseInt(investmentDuration),
+                        })
+                        await investment.save()
+                        // Send to Notification Service
+                        // New Investment Initiated and Activated
+                        Event.emit('new:investment', {
+                          id: newInvestmentId,
+                          email: newInvestmentEmail,
+                        })
+                      }
+                    }
                     return response.status(201).json({ status: 'OK', data: investment.$original })
 
                     // END
