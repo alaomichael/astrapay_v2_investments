@@ -1231,7 +1231,7 @@ export default class InvestmentsController {
         let isTransactionSentForProcessing
         let payload
         let payout
-        console.log('Investment Info, line 928: ', investment)
+        console.log('Investment Info, line 1234: ', investment)
         if (
           (investment.length > 0 &&
             investment[0].isPayoutAuthorized === true &&
@@ -1324,7 +1324,7 @@ export default class InvestmentsController {
                 // TODO
                 // Update with the real transaction service endpoint and payload
                 let rate = await sendPaymentDetails(amount, duration, investmentType)
-                console.log(' Rate return line 1326 : ', rate)
+                console.log(' Rate return line 1327 : ', rate)
               } catch (error) {
                 console.error(error)
                 return response.send({
@@ -1361,7 +1361,7 @@ export default class InvestmentsController {
                */
 
               console.log(
-                'Data for line 1363: ',
+                'Data for line 1364: ',
                 rolloverType,
                 amount,
                 duration,
@@ -1381,7 +1381,7 @@ export default class InvestmentsController {
               ) => {
                 return new Promise(async (resolve, reject) => {
                   console.log(
-                    'Datas line 1282 : ',
+                    'Datas line 1384 : ',
                     investmentData,
                     amount,
                     rolloverType,
