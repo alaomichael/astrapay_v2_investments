@@ -6,16 +6,16 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
-import { string } from '@ioc:Adonis/Core/Helpers'
-import Env from '@ioc:Adonis/Core/Env'
-const axios = require('axios').default
+// import { string } from '@ioc:Adonis/Core/Helpers'
+// import Env from '@ioc:Adonis/Core/Env'
+// const axios = require('axios').default
 
-const API_URL = Env.get('API_URL')
+// const API_URL = Env.get('API_URL')
 import {
-  generateRate,
+  // generateRate,
   interestDueOnPayout,
   dueForPayout,
-  payoutDueDate,
+  // payoutDueDate,
   approvalRequest,
   sendPaymentDetails,
   investmentRate,
@@ -742,7 +742,7 @@ export default class InvestmentsController {
     }
     // return // 401
   }
-
+  
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
@@ -890,6 +890,7 @@ export default class InvestmentsController {
     })
     return response.status(201).json({ status: 'OK', data: investment.$original })
   }
+
 
   public async approve({ request, response }: HttpContextContract) {
     try {
@@ -1413,81 +1414,85 @@ export default class InvestmentsController {
                     // let requestType = 'payout investment'
                     // let approvalIsAutomated = false
                     // if (approvalIsAutomated === false) {
-                      // Send Approval Request to Admin
-                      // let approval = await approvalRequest(userId, investmentId, requestType)
-                      // console.log(' Approval request return line 1417 : ', approval)
-                      // if (approval === undefined) {
-                      //   return response.status(400).json({
-                      //     status: 'fail',
-                      //     message:
-                      //       'investment approval request was not successful, please try again.',
-                      //     data: [],
-                      //   })
-                      // }
+                    // Send Approval Request to Admin
+                    // let approval = await approvalRequest(userId, investmentId, requestType)
+                    // console.log(' Approval request return line 1417 : ', approval)
+                    // if (approval === undefined) {
+                    //   return response.status(400).json({
+                    //     status: 'fail',
+                    //     message:
+                    //       'investment approval request was not successful, please try again.',
+                    //     data: [],
+                    //   })
+                    // }
                     // } else if (approvalIsAutomated === true) {
-                      // investment.status = 'approved'
-                      // investment.requestType = requestType
-                      // investment.approvalStatus = 'approved'
-                      // investment.isPayoutAuthorized = true
-                      // investment.isTerminationAuthorized = true
-                      // await investment.save()
+                    // investment.status = 'approved'
+                    // investment.requestType = requestType
+                    // investment.approvalStatus = 'approved'
+                    // investment.isPayoutAuthorized = true
+                    // investment.isTerminationAuthorized = true
+                    // await investment.save()
 
-                      //  Proceed to payout the Total Amount due on maturity
-                      // Save the payment data in payout table
-                      // console.log('Payout investment data line 1349:', payload)
-                      // payout = await Payout.create(payload)
-                      // payout.status = 'matured'
-                      // await payout.save()
-                      // console.log('Matured Payout investment data line 1353:', payout)
-                      payload = investmentData
-                      console.log('Payout investment data line 1442:', payload)
-                      // check if payout request is existing
-                      let payoutRequestIsExisting = await Payout.query().where({
-                        investment_id: investmentId,
-                        user_id: userId,
+                    //  Proceed to payout the Total Amount due on maturity
+                    // Save the payment data in payout table
+                    // console.log('Payout investment data line 1349:', payload)
+                    // payout = await Payout.create(payload)
+                    // payout.status = 'matured'
+                    // await payout.save()
+                    // console.log('Matured Payout investment data line 1353:', payout)
+                    payload = investmentData
+                    console.log('Payout investment data line 1442:', payload)
+                    // check if payout request is existing
+                    let payoutRequestIsExisting = await Payout.query().where({
+                      investment_id: investmentId,
+                      user_id: userId,
+                    })
+                    console.log(
+                      'Investment payout Request Is Existing data line 1449:',
+                      payoutRequestIsExisting
+                    )
+                    if (
+                      payoutRequestIsExisting.length < 1 &&
+                      investment[0].requestType !== 'start investment' &&
+                      investment[0].approvalStatus !== 'pending' &&
+                      investment[0].status !== 'initiated'
+                    ) {
+                      console.log('Payout investment data line 1458:', payload)
+                      payout = await Payout.create(payload)
+                      payout.status = 'matured'
+                      await payout.save()
+                      console.log('Matured Payout investment data line 1462:', payout)
+                    } else {
+                      payoutRequestIsExisting[0].requestType = investment[0].requestType
+                      payoutRequestIsExisting[0].status = 'matured'
+                      investment[0].status = 'matured'
+                      //  Save
+                      await payoutRequestIsExisting[0].save()
+                      await investment[0].save()
+                    }
+
+                    try {
+                      // TODO
+                      // Send Payment details to Transaction Service
+                      // Update with the real transaction service endpoint and payload
+                      let rate = await sendPaymentDetails(amount, duration, investmentType)
+                      console.log(' Rate return line 1469 : ', rate)
+                    } catch (error) {
+                      console.error(error)
+                      return response.send({
+                        status: 'FAILED',
+                        message: 'The transaction was not sent successfully.',
+                        error: error.message,
                       })
-                      console.log(
-                        'Investment payout Request Is Existing data line 1449:',
-                        payoutRequestIsExisting
-                      )
-                      if (
-                        payoutRequestIsExisting.length < 1 &&
-                        investment[0].requestType !== 'start investment' &&
-                        investment[0].approvalStatus !== 'pending' &&
-                        investment[0].status !== 'initiated'
-                      ) {
-                        console.log('Payout investment data line 1458:', payload)
-                        payout = await Payout.create(payload)
-                        payout.status = 'matured'
-                        await payout.save()
-                        console.log('Matured Payout investment data line 1462:', payout)
-                      } else {
-payoutRequestIsExisting[0].requestType = investment[0].requestType
-payoutRequestIsExisting[0].status= 'matured'
- investment[0].status = 'matured'
-                      }
-
-                      try {
-                        // TODO
-                        // Update with the real transaction service endpoint and payload
-                        let rate = await sendPaymentDetails(amount, duration, investmentType)
-                        console.log(' Rate return line 1469 : ', rate)
-                      } catch (error) {
-                        console.error(error)
-                        return response.send({
-                          status: 'FAILED',
-                          message: 'The transaction was not sent successfully.',
-                          error: error.message,
-                        })
-                      }
-                      isTransactionSentForProcessing = true
-                      if (isTransactionSentForProcessing === false) {
-                        return response.send({
-                          status: 'FAILED',
-                          message: 'The transaction was not sent successfully.',
-                          isTransactionInProcess: isTransactionSentForProcessing,
-                        })
-                      }
+                    }
+                    isTransactionSentForProcessing = true
+                    if (isTransactionSentForProcessing === false) {
+                      return response.send({
+                        status: 'FAILED',
+                        message: 'The transaction was not sent successfully.',
+                        isTransactionInProcess: isTransactionSentForProcessing,
+                      })
+                    }
                     //}
 
                     return response.send({
@@ -1803,63 +1808,63 @@ payoutRequestIsExisting[0].status= 'matured'
                   data: [],
                 })
               }
-               console.log('Payout investment data 1:', payload)
-               const payout = await Payout.create(payload)
-               payout.status = 'terminated'
-               await payout.save()
-               console.log('Terminated Payout investment data 1:', payout)
-               //  END
-               investment = await Investment.query().where('id', investmentId)
-               investment[0].requestType = requestType
-               investment[0].status = 'active'
-               investment[0].approvalStatus = 'pending'
-               await investment[0].save()
+              console.log('Payout investment data 1:', payload)
+              const payout = await Payout.create(payload)
+              payout.status = 'terminated'
+              await payout.save()
+              console.log('Terminated Payout investment data 1:', payout)
+              //  END
+              investment = await Investment.query().where('id', investmentId)
+              investment[0].requestType = requestType
+              investment[0].status = 'active'
+              investment[0].approvalStatus = 'pending'
+              await investment[0].save()
             } else if (approvalForTerminationIsAutomated === true) {
-                 // if payout was approved
-            // send to transaction service
-            //  Proceed to payout the Total Amount due on maturity
-            try {
-              let rate = await sendPaymentDetails(amount, duration, investmentType)
-              console.log(' Rate return line 1808 : ', rate)
-            } catch (error) {
-              console.error(error)
-              return response.send({
-                status: 'FAILED',
-                message: 'The transaction was not sent successfully.',
-                error: error.message,
-              })
-            }
-            isTransactionSentForProcessing = true
-            if (isTransactionSentForProcessing === false) {
-              return response.send({
-                status: 'FAILED',
-                message: 'The transaction was not sent successfully.',
-                isTransactionInProcess: isTransactionSentForProcessing,
-              })
-            }
+              // if payout was approved
+              // send to transaction service
+              //  Proceed to payout the Total Amount due on maturity
+              try {
+                let rate = await sendPaymentDetails(amount, duration, investmentType)
+                console.log(' Rate return line 1808 : ', rate)
+              } catch (error) {
+                console.error(error)
+                return response.send({
+                  status: 'FAILED',
+                  message: 'The transaction was not sent successfully.',
+                  error: error.message,
+                })
+              }
+              isTransactionSentForProcessing = true
+              if (isTransactionSentForProcessing === false) {
+                return response.send({
+                  status: 'FAILED',
+                  message: 'The transaction was not sent successfully.',
+                  isTransactionInProcess: isTransactionSentForProcessing,
+                })
+              }
 
-            // if transaction was successfully processed
-            // update Date payout was effected due to termination
+              // if transaction was successfully processed
+              // update Date payout was effected due to termination
 
-            // TODO
-            // Move the code below to a new function that will check payout approval status and update the transaction
-            // START
-            // payload.datePayoutWasDone = new Date().toISOString()
-            console.log('Payout investment data 1:', payload)
-            const payout = await Payout.create(payload)
-            payout.status = 'terminated'
-            await payout.save()
-            console.log('Terminated Payout investment data 1:', payout)
-            //  END
-            investment = await Investment.query().where('id', investmentId)
-            investment[0].requestType = requestType
-            investment[0].status = 'active'
-            investment[0].approvalStatus = 'pending'
-            await investment[0].save()
-            // update datePayoutWasDone
-            // @ts-ignore
-            // investment[0].datePayoutWasDone = new Date().toISOString()
-          }
+              // TODO
+              // Move the code below to a new function that will check payout approval status and update the transaction
+              // START
+              // payload.datePayoutWasDone = new Date().toISOString()
+              console.log('Payout investment data 1:', payload)
+              const payout = await Payout.create(payload)
+              payout.status = 'terminated'
+              await payout.save()
+              console.log('Terminated Payout investment data 1:', payout)
+              //  END
+              investment = await Investment.query().where('id', investmentId)
+              investment[0].requestType = requestType
+              investment[0].status = 'active'
+              investment[0].approvalStatus = 'pending'
+              await investment[0].save()
+              // update datePayoutWasDone
+              // @ts-ignore
+              // investment[0].datePayoutWasDone = new Date().toISOString()
+            }
             await investment[0].save()
             console.log('Terminated Payout investment data line 1847:', investment)
             return response.status(200).json({
