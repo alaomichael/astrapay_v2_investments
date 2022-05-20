@@ -1410,27 +1410,27 @@ export default class InvestmentsController {
                     // check if Approval is set to Auto, from Setting Controller
                     userId = investment.userId
                     let investmentId = investment.id
-                    let requestType = 'payout investment'
-                    let approvalIsAutomated = false
-                    if (approvalIsAutomated === false) {
+                    // let requestType = 'payout investment'
+                    // let approvalIsAutomated = false
+                    // if (approvalIsAutomated === false) {
                       // Send Approval Request to Admin
-                      let approval = await approvalRequest(userId, investmentId, requestType)
-                      console.log(' Approval request return line 1417 : ', approval)
-                      if (approval === undefined) {
-                        return response.status(400).json({
-                          status: 'fail',
-                          message:
-                            'investment approval request was not successful, please try again.',
-                          data: [],
-                        })
-                      }
-                    } else if (approvalIsAutomated === true) {
-                      investment.status = 'approved'
-                      investment.requestType = requestType
-                      investment.approvalStatus = 'approved'
-                      investment.isPayoutAuthorized = true
-                      investment.isTerminationAuthorized = true
-                      await investment.save()
+                      // let approval = await approvalRequest(userId, investmentId, requestType)
+                      // console.log(' Approval request return line 1417 : ', approval)
+                      // if (approval === undefined) {
+                      //   return response.status(400).json({
+                      //     status: 'fail',
+                      //     message:
+                      //       'investment approval request was not successful, please try again.',
+                      //     data: [],
+                      //   })
+                      // }
+                    // } else if (approvalIsAutomated === true) {
+                      // investment.status = 'approved'
+                      // investment.requestType = requestType
+                      // investment.approvalStatus = 'approved'
+                      // investment.isPayoutAuthorized = true
+                      // investment.isTerminationAuthorized = true
+                      // await investment.save()
 
                       //  Proceed to payout the Total Amount due on maturity
                       // Save the payment data in payout table
@@ -1461,6 +1461,10 @@ export default class InvestmentsController {
                         payout.status = 'matured'
                         await payout.save()
                         console.log('Matured Payout investment data line 1462:', payout)
+                      } else {
+payoutRequestIsExisting[0].requestType = investment[0].requestType
+payoutRequestIsExisting[0].status= 'matured'
+ investment[0].status = 'matured'
                       }
 
                       try {
@@ -1484,7 +1488,7 @@ export default class InvestmentsController {
                           isTransactionInProcess: isTransactionSentForProcessing,
                         })
                       }
-                    }
+                    //}
 
                     return response.send({
                       status: 'OK',
@@ -1756,7 +1760,7 @@ export default class InvestmentsController {
                       )
                       break
                     default:
-                      console.log('Nothing was done on investment')
+                      console.log('Nothing was done on this investment')
                       break
                   }
                   return resolve({ payload, amountToBeReinvested, amountToPayoutNow, rolloverDone })
