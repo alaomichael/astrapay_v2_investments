@@ -1082,11 +1082,11 @@ export default class InvestmentsController {
             // update status of investment
             investment[0].requestType = requestType
             investment[0].approvalStatus = 'approved'
-            investment[0].status = 'active'
-             investment[0].isPayoutAuthorized = true
-               investment[0].isTerminationAuthorized = true
-               // Save
-               (await investment[0].save())
+            investment[0].status = 'matured'
+            investment[0].isPayoutAuthorized = true
+            investment[0].isTerminationAuthorized = true
+            // Save
+            await investment[0].save()
             // Send notification
             console.log('Updated investment Status line 1088: ', investment)
           }
@@ -1153,6 +1153,8 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             investment[0].status = 'terminated'
             investment[0].approvalStatus = 'approved'
+            investment[0].isPayoutAuthorized = true
+            investment[0].isTerminationAuthorized = true
             // Save
             await investment[0].save()
           }
@@ -1236,13 +1238,13 @@ export default class InvestmentsController {
             investment[0].isTerminationAuthorized === true &&
             investment[0].requestType === 'payout investment' &&
             investment[0].approvalStatus === 'approved' &&
-            investment[0].status === 'payout') ||
+            investment[0].status === 'matured') ||
           (investment.length > 0 &&
             investment[0].isPayoutAuthorized === true &&
             investment[0].isTerminationAuthorized === false &&
             investment[0].requestType === 'payout investment' &&
             investment[0].approvalStatus === 'approved' &&
-            investment[0].status === 'payout') ||
+            investment[0].status === 'matured') ||
           (investment.length > 0 &&
             investment[0].isPayoutAuthorized === false &&
             investment[0].isTerminationAuthorized === true &&
@@ -1280,10 +1282,32 @@ export default class InvestmentsController {
               // Save the payment data in payout table
               payload = investmentData
               console.log('Payout investment data line 1231:', payload)
-              payout = await Payout.create(payload)
-              payout.status = 'matured'
-              await payout.save()
-              console.log('Matured Payout investment data line 1235:', payout)
+              // payout = await Payout.create(payload)
+              // payout.status = 'matured'
+              // await payout.save()
+              // console.log('Matured Payout investment data line 1235:', payout)
+
+              // check if payout request is existing
+              let payoutRequestIsExisting = await Payout.query().where({
+                investment_id: investmentId,
+                user_id: userId,
+              })
+              console.log(
+                'Investment payout Request Is Existing data line 1161:',
+                payoutRequestIsExisting
+              )
+              if (
+                payoutRequestIsExisting.length < 1 &&
+                investment[0].requestType !== 'start investment' &&
+                investment[0].approvalStatus !== 'pending' &&
+                investment[0].status !== 'initiated'
+              ) {
+                console.log('Payout investment data line 1305:', payload)
+                payout = await Payout.create(payload)
+                payout.status = 'matured'
+                await payout.save()
+                console.log('Matured Payout investment data line 1309:', payout)
+              }
 
               //  Proceed to payout the Total Amount due on maturity
               // Send Payment Details to Transaction Service
@@ -1376,12 +1400,12 @@ export default class InvestmentsController {
                     // Send Investment Initiation Message to Queue
 
                     // check if Approval is set to Auto, from Setting Controller
+                    userId = investment.userId
+                    let investmentId = investment.id
+                    let requestType = 'payout investment'
                     let approvalIsAutomated = false
                     if (approvalIsAutomated === false) {
                       // Send Approval Request to Admin
-                      userId = investment.userId
-                      let investmentId = investment.id
-                      let requestType = 'payout investment'
                       let approval = await approvalRequest(userId, investmentId, requestType)
                       console.log(' Approval request return line 1332 : ', approval)
                       if (approval === undefined) {
@@ -1392,20 +1416,51 @@ export default class InvestmentsController {
                           data: [],
                         })
                       }
+                    } else if (approvalIsAutomated === true){
+                      investment.status = 'approved'
+                      investment.requestType = requestType
+                      investment.approvalStatus = 'approved'
+                      investment.isPayoutAuthorized = true
+                      investment.isTerminationAuthorized = true
+                      await investment[0].save()
                     }
 
                     //  Proceed to payout the Total Amount due on maturity
                     // Save the payment data in payout table
-                    console.log('Payout investment data line 1349:', payload)
-                    payout = await Payout.create(payload)
-                    payout.status = 'matured'
-                    await payout.save()
-                    console.log('Matured Payout investment data line 1353:', payout)
+                    // console.log('Payout investment data line 1349:', payload)
+                    // payout = await Payout.create(payload)
+                    // payout.status = 'matured'
+                    // await payout.save()
+                    // console.log('Matured Payout investment data line 1353:', payout)
+                    payload = investmentData
+                    console.log('Payout investment data line 1429:', payload)
+                    // check if payout request is existing
+                    let payoutRequestIsExisting = await Payout.query().where({
+                      investment_id: investmentId,
+                      user_id: userId,
+                    })
+                    console.log(
+                      'Investment payout Request Is Existing data line 1436:',
+                      payoutRequestIsExisting
+                    )
+                    if (
+                      payoutRequestIsExisting.length < 1 &&
+                      investment[0].requestType !== 'start investment' &&
+                      investment[0].approvalStatus !== 'pending' &&
+                      investment[0].status !== 'initiated'
+                    ) {
+                      console.log('Payout investment data line 1445:', payload)
+                      payout = await Payout.create(payload)
+                      payout.status = 'matured'
+                      await payout.save()
+                      console.log('Matured Payout investment data line 1449:', payout)
+                    }
+
                     try {
                       // TODO
                       // Update with the real transaction service endpoint and payload
                       let rate = await sendPaymentDetails(amount, duration, investmentType)
-                      console.log(' Rate return line 1311 : ', rate)
+                      console.log(' Rate return line 1456 : ', rate)
                     } catch (error) {
                       console.error(error)
                       return response.send({
@@ -1426,14 +1481,14 @@ export default class InvestmentsController {
                     return response.send({
                       status: 'OK',
                       message:
-                        'Rollover target has been reached, and payout of the sum total of your principal and interest has been initiated.',
+                        'Rollover target has been reached or exceeded, and payout of the sum total of your principal and interest has been initiated.',
                       data: investment[0].$original,
                     })
                   }
                   // if rolloverDone < rolloverTarget
                   investmentData = investment[0]
                   let payload = investmentData
-                  console.log('Payload line 1386 :', payload)
+                  console.log('Payload line 1484 :', payload)
                   let payloadDuration = investmentData.duration
                   let payloadInvestmentType = investmentData.investmentType
 
