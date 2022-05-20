@@ -1387,6 +1387,7 @@ export default class InvestmentsController {
                       amount,
                       rolloverType,
                       rolloverTarget,
+
                       investmentType,
                       duration,
                       userId,
