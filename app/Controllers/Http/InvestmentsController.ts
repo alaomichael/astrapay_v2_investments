@@ -1281,7 +1281,7 @@ export default class InvestmentsController {
             if (rolloverType === '100') {
               // Save the payment data in payout table
               payload = investmentData
-              console.log('Payout investment data line 1231:', payload)
+              console.log('Payout investment data line 1284:', payload)
               // payout = await Payout.create(payload)
               // payout.status = 'matured'
               // await payout.save()
@@ -1293,7 +1293,7 @@ export default class InvestmentsController {
                 user_id: userId,
               })
               console.log(
-                'Investment payout Request Is Existing data line 1161:',
+                'Investment payout Request Is Existing data line 1296:',
                 payoutRequestIsExisting
               )
               if (
@@ -1307,6 +1307,13 @@ export default class InvestmentsController {
                 payout.status = 'matured'
                 await payout.save()
                 console.log('Matured Payout investment data line 1309:', payout)
+              } else {
+                payoutRequestIsExisting[0].requestType = 'payout investment'
+                payoutRequestIsExisting[0].approvalStatus = 'pending'
+                // investment[0].status = 'matured'
+                // Save
+                payoutRequestIsExisting[0].save()
+                investment.save()
               }
 
               //  Proceed to payout the Total Amount due on maturity
@@ -1316,7 +1323,7 @@ export default class InvestmentsController {
                 // TODO
                 // Update with the real transaction service endpoint and payload
                 let rate = await sendPaymentDetails(amount, duration, investmentType)
-                console.log(' Rate return line 1230 : ', rate)
+                console.log(' Rate return line 1326 : ', rate)
               } catch (error) {
                 console.error(error)
                 return response.send({
@@ -1353,7 +1360,7 @@ export default class InvestmentsController {
                */
 
               console.log(
-                'Data for line 1265: ',
+                'Data for line 1363: ',
                 rolloverType,
                 amount,
                 duration,
@@ -1407,7 +1414,7 @@ export default class InvestmentsController {
                     if (approvalIsAutomated === false) {
                       // Send Approval Request to Admin
                       let approval = await approvalRequest(userId, investmentId, requestType)
-                      console.log(' Approval request return line 1332 : ', approval)
+                      console.log(' Approval request return line 1417 : ', approval)
                       if (approval === undefined) {
                         return response.status(400).json({
                           status: 'fail',
@@ -1416,66 +1423,66 @@ export default class InvestmentsController {
                           data: [],
                         })
                       }
-                    } else if (approvalIsAutomated === true){
+                    } else if (approvalIsAutomated === true) {
                       investment.status = 'approved'
                       investment.requestType = requestType
                       investment.approvalStatus = 'approved'
                       investment.isPayoutAuthorized = true
                       investment.isTerminationAuthorized = true
-                      await investment[0].save()
-                    }
+                      await investment.save()
 
-                    //  Proceed to payout the Total Amount due on maturity
-                    // Save the payment data in payout table
-                    // console.log('Payout investment data line 1349:', payload)
-                    // payout = await Payout.create(payload)
-                    // payout.status = 'matured'
-                    // await payout.save()
-                    // console.log('Matured Payout investment data line 1353:', payout)
-                    payload = investmentData
-                    console.log('Payout investment data line 1429:', payload)
-                    // check if payout request is existing
-                    let payoutRequestIsExisting = await Payout.query().where({
-                      investment_id: investmentId,
-                      user_id: userId,
-                    })
-                    console.log(
-                      'Investment payout Request Is Existing data line 1436:',
-                      payoutRequestIsExisting
-                    )
-                    if (
-                      payoutRequestIsExisting.length < 1 &&
-                      investment[0].requestType !== 'start investment' &&
-                      investment[0].approvalStatus !== 'pending' &&
-                      investment[0].status !== 'initiated'
-                    ) {
-                      console.log('Payout investment data line 1445:', payload)
-                      payout = await Payout.create(payload)
-                      payout.status = 'matured'
-                      await payout.save()
-                      console.log('Matured Payout investment data line 1449:', payout)
-                    }
+                      //  Proceed to payout the Total Amount due on maturity
+                      // Save the payment data in payout table
+                      // console.log('Payout investment data line 1349:', payload)
+                      // payout = await Payout.create(payload)
+                      // payout.status = 'matured'
+                      // await payout.save()
+                      // console.log('Matured Payout investment data line 1353:', payout)
+                      payload = investmentData
+                      console.log('Payout investment data line 1442:', payload)
+                      // check if payout request is existing
+                      let payoutRequestIsExisting = await Payout.query().where({
+                        investment_id: investmentId,
+                        user_id: userId,
+                      })
+                      console.log(
+                        'Investment payout Request Is Existing data line 1449:',
+                        payoutRequestIsExisting
+                      )
+                      if (
+                        payoutRequestIsExisting.length < 1 &&
+                        investment[0].requestType !== 'start investment' &&
+                        investment[0].approvalStatus !== 'pending' &&
+                        investment[0].status !== 'initiated'
+                      ) {
+                        console.log('Payout investment data line 1458:', payload)
+                        payout = await Payout.create(payload)
+                        payout.status = 'matured'
+                        await payout.save()
+                        console.log('Matured Payout investment data line 1462:', payout)
+                      }
 
-                    try {
-                      // TODO
-                      // Update with the real transaction service endpoint and payload
-                      let rate = await sendPaymentDetails(amount, duration, investmentType)
-                      console.log(' Rate return line 1456 : ', rate)
-                    } catch (error) {
-                      console.error(error)
-                      return response.send({
-                        status: 'FAILED',
-                        message: 'The transaction was not sent successfully.',
-                        error: error.message,
-                      })
-                    }
-                    isTransactionSentForProcessing = true
-                    if (isTransactionSentForProcessing === false) {
-                      return response.send({
-                        status: 'FAILED',
-                        message: 'The transaction was not sent successfully.',
-                        isTransactionInProcess: isTransactionSentForProcessing,
-                      })
+                      try {
+                        // TODO
+                        // Update with the real transaction service endpoint and payload
+                        let rate = await sendPaymentDetails(amount, duration, investmentType)
+                        console.log(' Rate return line 1469 : ', rate)
+                      } catch (error) {
+                        console.error(error)
+                        return response.send({
+                          status: 'FAILED',
+                          message: 'The transaction was not sent successfully.',
+                          error: error.message,
+                        })
+                      }
+                      isTransactionSentForProcessing = true
+                      if (isTransactionSentForProcessing === false) {
+                        return response.send({
+                          status: 'FAILED',
+                          message: 'The transaction was not sent successfully.',
+                          isTransactionInProcess: isTransactionSentForProcessing,
+                        })
+                      }
                     }
 
                     return response.send({
@@ -1591,13 +1598,13 @@ export default class InvestmentsController {
                     // @ts-ignore
                     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
                     await investment.save()
-                    console.log('The new Reinvestment, line 1489 :', investment)
+                    console.log('The new Reinvestment, line 1601 :', investment)
 
                     // TODO
                     // Send Investment Payload To Transaction Service
                     let sendToTransactionService = 'status: OK' //= new SendToTransactionService(investment)
                     console.log(
-                      ' Feedback from Transaction service line 1495: ',
+                      ' Feedback from Transaction service line 1607: ',
                       sendToTransactionService
                     )
 
@@ -1613,7 +1620,7 @@ export default class InvestmentsController {
                       let investmentId = investment.id
                       // let requestType = 'start investment'
                       let approval = await approvalRequest(userId, investmentId, requestType)
-                      console.log(' Approval request return line 1452 : ', approval)
+                      console.log(' Approval request return line 1623 : ', approval)
                       if (approval === undefined) {
                         return response.status(400).json({
                           status: 'fail',
@@ -1659,11 +1666,11 @@ export default class InvestmentsController {
                       investmentData = investment[0]
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Payout investment data line 1562:', payload)
+                      console.log('Payout investment data line 1669:', payload)
                       payout = await Payout.create(payload)
                       payout.status = 'matured'
                       await payout.save()
-                      console.log('Matured Payout investment data line 1566:', payout)
+                      console.log('Matured Payout investment data line 1673:', payout)
 
                       // send payment details to transction service
 
@@ -1693,11 +1700,11 @@ export default class InvestmentsController {
                       investmentData = investment[0]
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Payout investment data line 1552:', payload)
+                      console.log('Payout investment data line 1703:', payload)
                       payout = await Payout.create(payload)
                       payout.status = 'matured'
                       await payout.save()
-                      console.log('Matured Payout investment data line 1556:', payout)
+                      console.log('Matured Payout investment data line 1707:', payout)
 
                       // send payment details to transction service
 
@@ -1728,11 +1735,11 @@ export default class InvestmentsController {
                       investmentData = investment[0]
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Payout investment data line 1587:', payload)
+                      console.log('Payout investment data line 1738:', payload)
                       payout = await Payout.create(payload)
                       payout.status = 'matured'
                       await payout.save()
-                      console.log('Matured Payout investment data line 1591:', payout)
+                      console.log('Matured Payout investment data line 1742:', payout)
                       // send payment details to transction service
 
                       // initiate a new investment
@@ -1763,7 +1770,7 @@ export default class InvestmentsController {
                 rolloverTarget
               )
               console.log(
-                'testing Rollover Implementation line 1414',
+                'testing Rollover Implementation line 1773',
                 testingRolloverImplementation
               )
               await investment[0].save()
@@ -1783,7 +1790,7 @@ export default class InvestmentsController {
             let approvalForTerminationIsAutomated = false
             if (approvalForTerminationIsAutomated === false) {
               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-              console.log(' Approval request return line 1598 : ', approvalRequestIsDone)
+              console.log(' Approval request return line 1793 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
                   status: 'fail',
@@ -1798,7 +1805,7 @@ export default class InvestmentsController {
             //  Proceed to payout the Total Amount due on maturity
             try {
               let rate = await sendPaymentDetails(amount, duration, investmentType)
-              console.log(' Rate return line 1612 : ', rate)
+              console.log(' Rate return line 1808 : ', rate)
             } catch (error) {
               console.error(error)
               return response.send({
@@ -1837,7 +1844,7 @@ export default class InvestmentsController {
             // @ts-ignore
             // investment[0].datePayoutWasDone = new Date().toISOString()
             await investment[0].save()
-            console.log('Terminated Payout investment data line 1652:', investment)
+            console.log('Terminated Payout investment data line 1847:', investment)
             return response.status(200).json({
               status: 'OK',
               data: investment.map((inv) => inv.$original),
