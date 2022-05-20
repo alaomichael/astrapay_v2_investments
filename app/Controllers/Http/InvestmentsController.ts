@@ -837,18 +837,22 @@ export default class InvestmentsController {
     await investment.save()
     // Send Investment Initiation Message to Queue
 
-    // Send Approval Request to Admin
-    let userId = investment.userId
-    let investmentId = investment.id
-    let requestType = 'start investment'
-    let approval = await approvalRequest(userId, investmentId, requestType)
-    console.log(' Approval request return line 280 : ', approval)
-    if (approval === undefined) {
-      return response.status(400).json({
-        status: 'fail',
-        message: 'investment approval request was not successful, please try again.',
-        data: [],
-      })
+    // check if Approval is set to Auto, from Setting Controller
+    let approvalIsAutomated = false
+    if (approvalIsAutomated === false) {
+      // Send Approval Request to Admin
+      let userId = investment.userId
+      let investmentId = investment.id
+      let requestType = 'start investment'
+      let approval = await approvalRequest(userId, investmentId, requestType)
+      console.log(' Approval request return line 848 : ', approval)
+      if (approval === undefined) {
+        return response.status(400).json({
+          status: 'fail',
+          message: 'investment approval request was not successful, please try again.',
+          data: [],
+        })
+      }
     }
 
     // Testing
@@ -1036,14 +1040,17 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
-          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 966 : ', approvalRequestIsDone)
-          if (approvalRequestIsDone === undefined) {
-            return response.status(400).json({
-              status: 'FAILED',
-              message: 'payout approval request was not successful, please try again.',
-              data: [],
-            })
+          let approvalIsAutomated = false
+          if (approvalIsAutomated === false) {
+            let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+            console.log(' Approval request return line 966 : ', approvalRequestIsDone)
+            if (approvalRequestIsDone === undefined) {
+              return response.status(400).json({
+                status: 'FAILED',
+                message: 'payout approval request was not successful, please try again.',
+                data: [],
+              })
+            }
           }
           console.log('Payout investment data 1:', payload)
           payload.investmentId = investmentId
@@ -1087,14 +1094,17 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'terminate investment'
-          let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-          console.log(' Approval request return line 1000 : ', approvalRequestIsDone)
-          if (approvalRequestIsDone === undefined) {
-            return response.status(400).json({
-              status: 'fail',
-              message: 'termination approval request was not successful, please try again.',
-              data: [],
-            })
+          let approvalIsAutomated = false
+          if (approvalIsAutomated === false) {
+            let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+            console.log(' Approval request return line 1000 : ', approvalRequestIsDone)
+            if (approvalRequestIsDone === undefined) {
+              return response.status(400).json({
+                status: 'fail',
+                message: 'termination approval request was not successful, please try again.',
+                data: [],
+              })
+            }
           }
 
           payload.investmentId = investmentId
@@ -1449,20 +1459,23 @@ export default class InvestmentsController {
 
                     await investment.save()
                     // Send Investment Initiation Message to Queue
-// check if 
-                    // Send Approval Request to Admin
-                    userId = investment.userId
-                    let investmentId = investment.id
-                    let requestType = 'start investment'
-                    let approval = await approvalRequest(userId, investmentId, requestType)
-                    console.log(' Approval request return line 1452 : ', approval)
-                    if (approval === undefined) {
-                      return response.status(400).json({
-                        status: 'fail',
-                        message:
-                          'investment approval request was not successful, please try again.',
-                        data: [],
-                      })
+                    // check if Approval is set to Auto, from Setting Controller
+                    let approvalIsAutomated = false
+                    if (approvalIsAutomated === false) {
+                      // Send Approval Request to Admin
+                      userId = investment.userId
+                      let investmentId = investment.id
+                      let requestType = 'start investment'
+                      let approval = await approvalRequest(userId, investmentId, requestType)
+                      console.log(' Approval request return line 1452 : ', approval)
+                      if (approval === undefined) {
+                        return response.status(400).json({
+                          status: 'fail',
+                          message:
+                            'investment approval request was not successful, please try again.',
+                          data: [],
+                        })
+                      }
                     }
 
                     let newInvestmentId = investment.id
@@ -1545,6 +1558,13 @@ export default class InvestmentsController {
                       investment[0].rolloverDone = rolloverDone
                       await investment[0].save()
                       investmentData = investment[0]
+                      // Save the payment data in payout table
+                      payload = investmentData
+                      console.log('Payout investment data line 1562:', payload)
+                      const payout = await Payout.create(payload)
+                      payout.status = 'matured'
+                      await payout.save()
+                      console.log('Matured Payout investment data line 1566:', payout)
                       // send payment details to transction service
 
                       // initiate a new investment
@@ -1592,14 +1612,17 @@ export default class InvestmentsController {
             let userId = payload.userId
             let investmentId = payload.id
             let requestType = 'terminate investment'
-            let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 1598 : ', approvalRequestIsDone)
-            if (approvalRequestIsDone === undefined) {
-              return response.status(400).json({
-                status: 'fail',
-                message: 'termination approval request was not successful, please try again.',
-                data: [],
-              })
+            let approvalForTerminationIsAutomated = false
+            if (approvalForTerminationIsAutomated === false) {
+              let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+              console.log(' Approval request return line 1598 : ', approvalRequestIsDone)
+              if (approvalRequestIsDone === undefined) {
+                return response.status(400).json({
+                  status: 'fail',
+                  message: 'termination approval request was not successful, please try again.',
+                  data: [],
+                })
+              }
             }
             // if payout was approved
 
@@ -1632,13 +1655,12 @@ export default class InvestmentsController {
             // Move the code below to a new function that will check payout approval status and update the transaction
             // START
             // payload.datePayoutWasDone = new Date().toISOString()
-            // console.log('Payout investment data 1:', payload)
-            // const payout = await Payout.create(payload)
-            // payout.status = 'terminated'
-            // await payout.save()
-            // console.log('Terminated Payout investment data 1:', payout)
+            console.log('Payout investment data 1:', payload)
+            const payout = await Payout.create(payload)
+            payout.status = 'terminated'
+            await payout.save()
+            console.log('Terminated Payout investment data 1:', payout)
             //  END
-            // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
             investment = await Investment.query().where('id', investmentId)
             investment[0].requestType = requestType
             investment[0].status = 'active'
