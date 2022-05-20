@@ -1258,7 +1258,7 @@ export default class InvestmentsController {
             investment[0].approvalStatus === 'approved' &&
             investment[0].status === 'terminated')
         ) {
-          console.log('investment search data line 1186 :', investment[0].$original)
+          console.log('investment search data line 1261 :', investment[0].$original)
           // @ts-ignore
           // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
           // console.log('Is due for payout status :', isDueForPayout)
@@ -1309,8 +1309,9 @@ export default class InvestmentsController {
                 console.log('Matured Payout investment data line 1309:', payout)
               } else {
                 payoutRequestIsExisting[0].requestType = 'payout investment'
-                payoutRequestIsExisting[0].approvalStatus = 'pending'
-                // investment[0].status = 'matured'
+                payoutRequestIsExisting[0].approvalStatus = 'approved'
+                payoutRequestIsExisting[0].status = 'matured'
+                investment[0].status = 'matured'
                 // Save
                 payoutRequestIsExisting[0].save()
                 investment.save()
@@ -1633,8 +1634,8 @@ export default class InvestmentsController {
                       investment.requestType = requestType
                       investment.status = 'active'
                       investment.approvalStatus = 'approved'
+                      investment.startDate = DateTime.now() //new Date().toISOString()
                       // @ts-ignore
-                      investment.startDate = new Date().toISOString()
                     }
 
                     let newInvestmentId = investment.id
@@ -1798,9 +1799,19 @@ export default class InvestmentsController {
                   data: [],
                 })
               }
-            }
-            // if payout was approved
-
+               console.log('Payout investment data 1:', payload)
+               const payout = await Payout.create(payload)
+               payout.status = 'terminated'
+               await payout.save()
+               console.log('Terminated Payout investment data 1:', payout)
+               //  END
+               investment = await Investment.query().where('id', investmentId)
+               investment[0].requestType = requestType
+               investment[0].status = 'active'
+               investment[0].approvalStatus = 'pending'
+               await investment[0].save()
+            } else if (approvalForTerminationIsAutomated === true) {
+                 // if payout was approved
             // send to transaction service
             //  Proceed to payout the Total Amount due on maturity
             try {
@@ -1840,9 +1851,11 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             investment[0].status = 'active'
             investment[0].approvalStatus = 'pending'
+            await investment[0].save()
             // update datePayoutWasDone
             // @ts-ignore
             // investment[0].datePayoutWasDone = new Date().toISOString()
+          }
             await investment[0].save()
             console.log('Terminated Payout investment data line 1847:', investment)
             return response.status(200).json({
