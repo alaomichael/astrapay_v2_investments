@@ -742,7 +742,7 @@ export default class InvestmentsController {
     }
     // return // 401
   }
-  
+
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const investmentSchema = schema.create({
@@ -1640,11 +1640,17 @@ export default class InvestmentsController {
                         })
                       }
                     } else if (approvalIsAutomated === true) {
-                      investment.requestType = requestType
-                      investment.status = 'active'
-                      investment.approvalStatus = 'approved'
-                      investment.startDate = DateTime.now() //new Date().toISOString()
-                      // @ts-ignore
+                     // Send Investment Payload To Transaction Service
+      let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+      console.log(' Feedback from Transaction service: ', sendToTransactionService)
+      if (sendToTransactionService === 'Ok') {
+        // Activate the investment
+        investment.requestType = requestType
+        investment.status = 'active'
+        investment.approvalStatus = 'approved'
+        investment.startDate = DateTime.now() //.toISODate()
+        investment.payoutDate = DateTime.now().plus({ days: parseInt(investmentDuration) })
+        await investment.save()
                     }
 
                     let newInvestmentId = investment.id
