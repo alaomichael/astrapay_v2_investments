@@ -825,13 +825,14 @@ export default class InvestmentsController {
 
     // TODO
     // Send Investment Payload To Transaction Service
-
+    let sendToTransactionService //= new SendToTransactionService(investment)
+    console.log(' Feedback from Transaction service: ', sendToTransactionService)
     // UPDATE Investment Status based on the response from Transaction Service
-    let duration = Number(investment.duration)
-    let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
-    let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
-    console.log('updated CreatedAt Time : ' + updatedCreatedAt)
-    console.log('Updated Payout Date: ' + updatedPayoutDate)
+    // let duration = Number(investment.duration)
+    // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
+    // let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
+    // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
+    // console.log('Updated Payout Date: ' + updatedPayoutDate)
     // Save Investment new status to Database
     await investment.save()
     // Send Investment Initiation Message to Queue
@@ -1326,7 +1327,6 @@ export default class InvestmentsController {
                   investmentData = investment[0]
                   let payload = investmentData
                   console.log('Payload line 1336 :', payload)
-                  // let payloadAmount //= payload.amount
                   let payloadDuration = investmentData.duration //= payload.duration
                   let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
                   // let investmentRate = async function () {
@@ -1377,51 +1377,77 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
-                    let payload = investmentData
-                    payload.interestRate = rate
-                    payload.isPayoutAuthorized = false
-                    payload.isTerminationAuthorized = false
-                    payload.isPayoutSuccessful = false
-                    // payload.startDate = null
-                    // payload.createdAt = null
-                    console.log('PAYLOAD line 1393 :', payload)
-                    const investment = await Investment.create(payload)
+                    let payload // = investmentData
 
+                    // payload.isPayoutAuthorized = false
+                    // payload.isTerminationAuthorized = false
+                    // payload.isPayoutSuccessful = false
+
+                    let {
+                      amount,
+                      rolloverType,
+                      rolloverTarget,
+                      investmentType,
+                      duration,
+                      userId,
+                      tagName,
+                      currencyCode,
+                      long,
+                      lat,
+                      walletHolderDetails,
+                    } = investmentData
+                    payload = {
+                      amount,
+                      rolloverType,
+                      rolloverTarget,
+                      investmentType,
+                      duration,
+                      userId,
+                      tagName,
+                      currencyCode,
+                      long,
+                      lat,
+                      walletHolderDetails,
+                    }
+                    payload.amount = payloadAmount
+                    //  payload.interestRate = rate
+                    console.log('PAYLOAD line 1393 :', payload)
+
+                    const investment = await Investment.create(payload)
                     investment.interestRate = rate
 
                     // When the Invest has been approved and activated
-
-                    //  let amount = investment.amount
-                    //  let investmentDuration = investment.duration
-                    //  let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
-                    //  investment.interestDueOnInvestment = amountDueOnPayout
-                    //  investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-
-                    //  investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
-                    //  // @ts-ignore
-                    //  investment.walletId = investment.walletHolderDetails.investorFundingWalletId
-                    //  await investment.save()
-                    console.log('The new investment line 1410:', investment)
+                    let investmentAmount = investment.amount
+                    let investmentDuration = investment.duration
+                    let amountDueOnPayout = await interestDueOnPayout(
+                      investmentAmount,
+                      rate,
+                      investmentDuration
+                    )
+                    investment.interestDueOnInvestment = amountDueOnPayout
+                    investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+                    // @ts-ignore
+                    investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+                    await investment.save()
+                    console.log('The new Reinvestment, line 1432 :', investment)
 
                     // TODO
                     // Send Investment Payload To Transaction Service
+                    let sendToTransactionService = 'status: OK' //= new SendToTransactionService(investment)
+                    console.log(
+                      ' Feedback from Transaction service line 1437: ',
+                      sendToTransactionService
+                    )
 
-                    //  // UPDATE Investment Status based on the response from Transaction Service
-                    //  let duration = Number(investment.duration)
-                    //  let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
-                    //  let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
-                    //  console.log('updated CreatedAt Time : ' + updatedCreatedAt)
-                    //  console.log('Updated Payout Date: ' + updatedPayoutDate)
-                    //  // Save Investment new status to Database
                     await investment.save()
                     // Send Investment Initiation Message to Queue
 
                     // Send Approval Request to Admin
-                    let userId = investment.userId
+                    userId = investment.userId
                     let investmentId = investment.id
                     let requestType = 'start investment'
                     let approval = await approvalRequest(userId, investmentId, requestType)
-                    console.log(' Approval request return line 1426 : ', approval)
+                    console.log(' Approval request return line 280 : ', approval)
                     if (approval === undefined) {
                       return response.status(400).json({
                         status: 'fail',
@@ -1431,26 +1457,18 @@ export default class InvestmentsController {
                       })
                     }
 
-                    //  // Testing
-                    //  // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
-                    //  // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
-                    //  // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-                    //  // console.log('Testing Payout Date: ' + testingPayoutDate)
                     let newInvestmentId = investment.id
                     // @ts-ignore
                     let newInvestmentEmail = investment.walletHolderDetails.email
+                    // Send to Notification Service
                     Event.emit('new:investment', {
                       id: newInvestmentId,
                       email: newInvestmentEmail,
                     })
                     return response.status(201).json({ status: 'OK', data: investment.$original })
-                  }
 
-                  //  createInvestment(payloadAmount,
-                  //    payloadDuration,
-                  //    payloadInvestmentType,
-                  //    investmentData
-                  //  )
+                    // END
+                  }
 
                   switch (rolloverType) {
                     case '101':
