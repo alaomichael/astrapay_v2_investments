@@ -1029,7 +1029,7 @@ export default class InvestmentsController {
         console.log('Time investment was started line 955: ', startDate)
         let isDueForPayout = await dueForPayout(startDate, duration)
         console.log('Is due for payout status line 957:', isDueForPayout)
-
+        // let amt = investment[0].amount
         if (isDueForPayout) {
           let payload = investment[0].$original
           // send to Admin for approval
@@ -1220,6 +1220,8 @@ export default class InvestmentsController {
               // Send Payment Details to Transaction Service
               // use try catch
               try {
+                // TODO
+                // Update with the real transaction service endpoint and payload
                 let rate = await sendPaymentDetails(amount, duration, investmentType)
                 console.log(' Rate return line 1230 : ', rate)
               } catch (error) {
@@ -1297,10 +1299,12 @@ export default class InvestmentsController {
                   }
                   let amountToPayoutNow
                   let amountToBeReinvested
-                  if (rolloverDone === rolloverTarget) {
+                  if (rolloverDone >= rolloverTarget) {
                     amountToPayoutNow = amount + investmentData.interestDueOnInvestment
                     //  Proceed to payout the Total Amount due on maturity
                     try {
+                      // TODO
+                      // Update with the real transaction service endpoint and payload
                       let rate = await sendPaymentDetails(amount, duration, investmentType)
                       console.log(' Rate return line 1311 : ', rate)
                     } catch (error) {
@@ -1327,12 +1331,13 @@ export default class InvestmentsController {
                       data: investment[0].$original,
                     })
                   }
-                  // if rolloverDone < rolloverTarge
+                  // if rolloverDone < rolloverTarget
                   investmentData = investment[0]
                   let payload = investmentData
                   console.log('Payload line 1336 :', payload)
-                  let payloadDuration = investmentData.duration //= payload.duration
-                  let payloadInvestmentType = investmentData.investmentType // = payload.investmentType
+                  let payloadDuration = investmentData.duration
+                  let payloadInvestmentType = investmentData.investmentType
+
                   // let investmentRate = async function () {
                   //   try {
                   //     const response = await axios.get(
@@ -1381,12 +1386,8 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
-                    let payload // = investmentData
-
-                    // payload.isPayoutAuthorized = false
-                    // payload.isTerminationAuthorized = false
-                    // payload.isPayoutSuccessful = false
-
+                    let payload
+                    // destructure / extract the needed data from the investment
                     let {
                       amount,
                       rolloverType,
@@ -1401,6 +1402,7 @@ export default class InvestmentsController {
                       lat,
                       walletHolderDetails,
                     } = investmentData
+                    // copy the investment data to payload
                     payload = {
                       amount,
                       rolloverType,
@@ -1447,7 +1449,7 @@ export default class InvestmentsController {
 
                     await investment.save()
                     // Send Investment Initiation Message to Queue
-
+// check if 
                     // Send Approval Request to Admin
                     userId = investment.userId
                     let investmentId = investment.id
@@ -1576,37 +1578,6 @@ export default class InvestmentsController {
                 'testing Rollover Implementation line 1414',
                 testingRolloverImplementation
               )
-              //  let payload = investment[0].$original
-              //  // send to Admin for approval
-              //  let userId = payload.userId
-              //  let investmentId = payload.id
-              //  let requestType = 'payout investment'
-              //  // let approvalStatus = 'pending'
-              //  let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-              //  console.log(' Approval request return line 1021 : ', approvalRequestIsDone)
-              //  if (approvalRequestIsDone === undefined) {
-              //    return response.status(400).json({
-              //      status: 'FAILED',
-              //      message: 'payout approval request was not successful, please try again.',
-              //      data: [],
-              //    })
-              //  }
-
-              // TODO
-              // Move the code below to another function
-              // if payout was approved
-
-              // send to transaction service
-
-              // // if transaction was successfully processed
-              // // update Date
-
-              // investment = await Investment.query().where('id', investmentId)
-              // investment[0].status = 'payout'
-              // investment[0].approvalStatus = approvalStatus
-              // // Date investment was effected
-              // // @ts-ignore
-              // // investment[0].datePayoutWasDone = new Date().toISOString()
               await investment[0].save()
               console.log('Investment data after payout 2:', investment)
               return response.status(200).json({
