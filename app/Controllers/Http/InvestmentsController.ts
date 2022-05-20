@@ -823,12 +823,10 @@ export default class InvestmentsController {
     await investment.save()
     console.log('The new investment:', investment)
 
-
-
     // TODO
     // Send Investment Payload To Transaction Service
-    let sendToTransactionService //= new SendToTransactionService(investment)
-    console.log(' Feedback from Transaction service: ', sendToTransactionService)
+    // let sendToTransactionService //= new SendToTransactionService(investment)
+    // console.log(' Feedback from Transaction service: ', sendToTransactionService)
     // UPDATE Investment Status based on the response from Transaction Service
     // let duration = Number(investment.duration)
     // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
@@ -840,23 +838,41 @@ export default class InvestmentsController {
     // Send Investment Initiation Message to Queue
 
     // check if Approval is set to Auto, from Setting Controller
+    let userId = investment.userId
+    let investmentId = investment.id
+    let requestType = 'start investment'
     let approvalIsAutomated = false
     if (approvalIsAutomated === false) {
       // Send Approval Request to Admin
-      let userId = investment.userId
-      let investmentId = investment.id
-      let requestType = 'start investment'
       let approval = await approvalRequest(userId, investmentId, requestType)
       console.log(' Approval request return line 848 : ', approval)
       if (approval === undefined) {
         return response.status(400).json({
-          status: 'fail',
+          status: 'FAILED',
           message: 'investment approval request was not successful, please try again.',
           data: [],
         })
       }
-    } else if(approvalIsAutomated === true){
-
+    } else if (approvalIsAutomated === true) {
+      // TODO
+      // Send Investment Payload To Transaction Service
+      let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+      console.log(' Feedback from Transaction service: ', sendToTransactionService)
+      if (sendToTransactionService === 'Ok') {
+        // Activate the investment
+        investment.requestType = requestType
+        investment.status = 'active'
+        investment.approvalStatus = 'approved'
+        investment.startDate = DateTime.now() //.toISODate()
+        investment.payoutDate = DateTime.now().plus({ days: parseInt(investmentDuration) })
+        await investment.save()
+      } else {
+        return response.json({
+          status: 'FAILED',
+          message: 'Investment was not successfully sent to Transaction Service, please try again.',
+          data: investment,
+        })
+      }
     }
 
     // Testing
@@ -865,6 +881,7 @@ export default class InvestmentsController {
     // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
     // console.log('Testing Payout Date: ' + testingPayoutDate)
     let newInvestmentId = investment.id
+    // Send to Notificaation Service
     // @ts-ignore
     let newInvestmentEmail = investment.walletHolderDetails.email
     Event.emit('new:investment', {
@@ -1059,16 +1076,17 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             investment[0].status = 'active'
             investment[0].approvalStatus = 'pending'
+            // Save
+            await investment[0].save()
           } else if (approvalIsAutomated === true) {
             // update status of investment
             investment[0].requestType = requestType
             investment[0].approvalStatus = 'approved'
-            // update start date
             investment[0].status = 'active'
             // Save
             await investment[0].save()
             // Send notification
-            console.log('Updated investment Status line 201: ', investment)
+            console.log('Updated investment Status line 1088: ', investment)
           }
           console.log('Payout investment data 1:', payload)
           payload.investmentId = investmentId
@@ -1079,10 +1097,10 @@ export default class InvestmentsController {
             user_id: userId,
           })
           console.log(
-            'Investment payout Request Is Existing data line 988:',
+            'Investment payout Request Is Existing data line 1099:',
             payoutRequestIsExisting
           )
-          console.log('Investment payload data line 1059:', payload)
+          console.log('Investment payload data line 1102:', payload)
           if (
             payoutRequestIsExisting.length < 1 &&
             investment[0].requestType !== 'start investment' &&
@@ -1092,7 +1110,7 @@ export default class InvestmentsController {
             const payout = await Payout.create(payload)
             payout.status = 'matured'
             await payout.save()
-            console.log('Matured Payout investment data line 995:', payout)
+            console.log('Matured Payout investment data line 1112:', payout)
           }
           // investment = await Investment.query().where('id', investmentId)
           // investment[0].requestType = requestType
@@ -1115,7 +1133,7 @@ export default class InvestmentsController {
           let approvalIsAutomated = false
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 1000 : ', approvalRequestIsDone)
+            console.log(' Approval request return line 1135 : ', approvalRequestIsDone)
             if (approvalRequestIsDone === undefined) {
               return response.status(400).json({
                 status: 'fail',
@@ -1141,7 +1159,7 @@ export default class InvestmentsController {
             user_id: userId,
           })
           console.log(
-            'Investment payout Request Is Existing data line 1046:',
+            'Investment payout Request Is Existing data line 1161:',
             payoutRequestIsExisting
           )
           if (
@@ -1154,14 +1172,14 @@ export default class InvestmentsController {
             const payout = await Payout.create(payload)
             payout.status = 'terminated'
             await payout.save()
-            console.log('Terminated Payout investment data line 1052:', payout)
+            console.log('Terminated Payout investment data line 1174:', payout)
           }
           // investment = await Investment.query().where('id', investmentId)
           // investment[0].requestType = requestType
           // investment[0].status = 'active'
           // investment[0].approvalStatus = 'pending'
           await investment[0].save()
-          console.log('Terminated Payout investment data line 1034:', investment)
+          console.log('Terminated Payout investment data line 1181:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment.map((inv) => inv.$original),
@@ -1169,7 +1187,7 @@ export default class InvestmentsController {
         }
       } else {
         return response.status(404).json({
-          status: 'fail',
+          status: 'FAILED',
           message: 'no investment matched your search',
           data: [],
         })
