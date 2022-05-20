@@ -273,7 +273,7 @@ export default class InvestmentsController {
         console.log('Time investment payout date line 197: ', investment[0].payoutDate)
         // Save
         await investment[0].save()
-        // send notification
+        // Send notification
         console.log('Updated investment Status line 201: ', investment)
         return response.json({
           status: 'OK',
@@ -823,6 +823,8 @@ export default class InvestmentsController {
     await investment.save()
     console.log('The new investment:', investment)
 
+
+
     // TODO
     // Send Investment Payload To Transaction Service
     let sendToTransactionService //= new SendToTransactionService(investment)
@@ -834,7 +836,7 @@ export default class InvestmentsController {
     // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
     // console.log('Updated Payout Date: ' + updatedPayoutDate)
     // Save Investment new status to Database
-    await investment.save()
+    // await investment.save()
     // Send Investment Initiation Message to Queue
 
     // check if Approval is set to Auto, from Setting Controller
@@ -853,6 +855,8 @@ export default class InvestmentsController {
           data: [],
         })
       }
+    } else if(approvalIsAutomated === true){
+
     }
 
     // Testing
@@ -1051,6 +1055,20 @@ export default class InvestmentsController {
                 data: [],
               })
             }
+            investment = await Investment.query().where('id', investmentId)
+            investment[0].requestType = requestType
+            investment[0].status = 'active'
+            investment[0].approvalStatus = 'pending'
+          } else if (approvalIsAutomated === true) {
+            // update status of investment
+            investment[0].requestType = requestType
+            investment[0].approvalStatus = 'approved'
+            // update start date
+            investment[0].status = 'active'
+            // Save
+            await investment[0].save()
+            // Send notification
+            console.log('Updated investment Status line 201: ', investment)
           }
           console.log('Payout investment data 1:', payload)
           payload.investmentId = investmentId
@@ -1076,10 +1094,10 @@ export default class InvestmentsController {
             await payout.save()
             console.log('Matured Payout investment data line 995:', payout)
           }
-          investment = await Investment.query().where('id', investmentId)
-          investment[0].requestType = requestType
-          investment[0].status = 'active'
-          investment[0].approvalStatus = 'pending'
+          // investment = await Investment.query().where('id', investmentId)
+          // investment[0].requestType = requestType
+          // investment[0].status = 'active'
+          // investment[0].approvalStatus = 'pending'
 
           await investment[0].save()
           console.log('Investment data after payout request 2:', investment)
@@ -1105,6 +1123,14 @@ export default class InvestmentsController {
                 data: [],
               })
             }
+            investment = await Investment.query().where('id', investmentId)
+            investment[0].requestType = requestType
+            investment[0].status = 'active'
+            investment[0].approvalStatus = 'pending'
+          } else if (approvalIsAutomated === true) {
+            investment[0].requestType = requestType
+            investment[0].status = 'terminated'
+            investment[0].approvalStatus = 'approved'
           }
 
           payload.investmentId = investmentId
@@ -1130,10 +1156,10 @@ export default class InvestmentsController {
             await payout.save()
             console.log('Terminated Payout investment data line 1052:', payout)
           }
-          investment = await Investment.query().where('id', investmentId)
-          investment[0].requestType = requestType
-          investment[0].status = 'active'
-          investment[0].approvalStatus = 'pending'
+          // investment = await Investment.query().where('id', investmentId)
+          // investment[0].requestType = requestType
+          // investment[0].status = 'active'
+          // investment[0].approvalStatus = 'pending'
           await investment[0].save()
           console.log('Terminated Payout investment data line 1034:', investment)
           return response.status(200).json({
@@ -1518,21 +1544,12 @@ export default class InvestmentsController {
                         })
                       }
                     } else if (approvalIsAutomated === true) {
-                       // Send Approval Request to Admin
-                       userId = investment.userId
-                       let investmentId = investment.id
-                       // let requestType = 'start investment'
-                       let approval = await approvalRequest(userId, investmentId, requestType)
-                       console.log(' Approval request return line 1452 : ', approval)
-                       if (approval === undefined) {
-                         return response.status(400).json({
-                           status: 'fail',
-                           message:
-                             'investment approval request was not successful, please try again.',
-                           data: [],
-                         })
-                       }
-                     }
+                      investment.requestType = requestType
+                      investment.status = 'active'
+                      investment.approvalStatus = 'approved'
+                      // @ts-ignore
+                      investment.startDate = new Date().toISOString()
+                    }
 
                     let newInvestmentId = investment.id
                     // @ts-ignore
