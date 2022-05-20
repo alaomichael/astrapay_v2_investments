@@ -1,22 +1,22 @@
 /* eslint-disable prettier/prettier */
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import PayoutRecord from 'App/Models/PayoutRecord'
-import Investment from 'App/Models/Investment'
-import { DateTime } from 'luxon'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import Event from '@ioc:Adonis/Core/Event'
-import Env from '@ioc:Adonis/Core/Env'
-const axios = require('axios').default
+// import Investment from 'App/Models/Investment'
+// import { DateTime } from 'luxon'
+// import { schema, rules } from '@ioc:Adonis/Core/Validator'
+// import Event from '@ioc:Adonis/Core/Event'
+// import Env from '@ioc:Adonis/Core/Env'
+// const axios = require('axios').default
 
-const API_URL = Env.get('API_URL')
-import {
-  generateRate,
-  interestDueOnPayout,
-  dueForPayout,
-  payoutDueDate,
-  approvalRequest,
-  // @ts-ignore
-} from 'App/Helpers/utils'
+// const API_URL = Env.get('API_URL')
+// import {
+//   generateRate,
+//   interestDueOnPayout,
+//   dueForPayout,
+//   payoutDueDate,
+//   approvalRequest,
+//   // @ts-ignore
+// } from 'App/Helpers/utils'
 export default class PayoutRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PayoutRecord params: ', params)
