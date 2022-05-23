@@ -8,35 +8,28 @@ export default class SettingsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('setting params: ', params)
     const {
-      duration,
-      limit,
-      amount,
+      fundingWalletId,
+      isPayoutAutomated,
+      fundingSourceTerminal,
+      isInvestmentAutomated,
+      isTerminationAutomated,
       investmentType,
-      rolloverCode,
-      status,
-      productName,
-      interestRate,
+      tagName,
+      currencyCode,
+      limit,
     } = request.qs()
     console.log('setting query: ', request.qs())
-    const countActiveSetting = await Setting.query().where('status', 'active').getCount()
+    const countActiveSetting = await Setting.query().where('investment_type', 'fixed').getCount()
     console.log('setting Investment count: ', countActiveSetting)
 
     // const setting = await Setting.query().offset(0).limit(1)
     const setting = await Setting.all()
     let sortedSettings = setting
-    if (amount) {
-      // @ts-ignore
-      sortedSettings = await Setting.query()
-        .where('lowest_amount', '<=', amount)
-        .andWhere('highest_amount', '>=', amount)
-    }
 
-    if (duration) {
+    if (fundingWalletId) {
       sortedSettings = sortedSettings.filter((setting) => {
-        console.log(' setting Duration:', setting.duration)
-        console.log(' Query Duration:', duration)
         // @ts-ignore
-        return setting.duration === duration
+        return setting.fundingWalletId === parseInt(fundingWalletId)
       })
     }
 
@@ -47,32 +40,48 @@ export default class SettingsController {
       })
     }
 
-    if (rolloverCode) {
+    if (isPayoutAutomated) {
       sortedSettings = sortedSettings.filter((setting) => {
         // @ts-ignore
-        return setting.rolloverCode!.includes(rolloverCode)
+        return setting.isPayoutAutomated.toString() === isPayoutAutomated
       })
     }
 
-    if (productName) {
+    if (isInvestmentAutomated) {
       sortedSettings = sortedSettings.filter((setting) => {
         // @ts-ignore
-        return setting.productName!.includes(productName)
-      })
-    }
-    if (status) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.status === `${status}`
+        return setting.isInvestmentAutomated.toString() === isInvestmentAutomated
       })
     }
 
-    if (interestRate) {
+    if (isTerminationAutomated) {
       sortedSettings = sortedSettings.filter((setting) => {
         // @ts-ignore
-        return setting.interestRate === parseInt(interestRate)
+        return setting.isTerminationAutomated.toString() === isTerminationAutomated
       })
     }
+
+    if (fundingSourceTerminal) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.fundingSourceTerminal!.includes(fundingSourceTerminal)
+      })
+    }
+
+    if (tagName) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.tagName!.includes(tagName)
+      })
+    }
+
+    if (currencyCode) {
+      sortedSettings = sortedSettings.filter((setting) => {
+        // @ts-ignore
+        return setting.currencyCode!.includes(currencyCode)
+      })
+    }
+
     if (limit) {
       sortedSettings = sortedSettings.slice(0, Number(limit))
     }
@@ -86,26 +95,21 @@ export default class SettingsController {
     // return setting(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedSettings,
+      data: sortedSettings.map((setting) => setting.$original),
     })
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const settingSchema = schema.create({
-      productName: schema.string({ escape: true }, [rules.maxLength(20)]),
-      lowestAmount: schema.number(),
-      highestAmount: schema.number(),
-      duration: schema.string({ escape: true }, [rules.maxLength(4)]),
-      rolloverCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-      investmentType: schema.string({ escape: true }, [rules.maxLength(50)]),
-      interestRate: schema.number(),
+      fundingWalletId: schema.number(),
+      isPayoutAutomated: schema.boolean(),
+      fundingSourceTerminal: schema.string({ escape: true }, [rules.maxLength(50)]),
+      isInvestmentAutomated: schema.boolean(),
+      isTerminationAutomated: schema.boolean(),
+      investmentType: schema.enum(['fixed', 'debenture']),
       tagName: schema.string({ escape: true }, [rules.maxLength(100)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-      additionalDetails: schema.object().members({}),
-      long: schema.number(),
-      lat: schema.number(),
-      status: schema.string({ escape: true }, [rules.maxLength(20)]),
     })
     const payload: any = await request.validate({ schema: settingSchema })
     const setting = await Setting.create(payload)
@@ -122,52 +126,45 @@ export default class SettingsController {
 
     // @ts-ignore
     Event.emit('new:setting', { id: setting.id, extras: setting.additionalDetails })
-    return setting
+    return response.json({ status: 'OK', data: setting.$original })
   }
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { productName, rateId } = request.qs()
+      const { id } = request.qs()
       console.log('Setting query: ', request.qs())
 
       let setting = await Setting.query().where({
-        product_name: productName,
-        id: rateId,
+        id: id,
       })
       console.log(' QUERY RESULT: ', setting)
       if (setting.length > 0) {
         console.log('Investment setting Selected for Update:', setting)
         if (setting) {
-          setting[0].productName = request.input('newProductName')
-            ? request.input('newProductName')
-            : setting[0].productName
-          setting[0].lowestAmount = request.input('lowestAmount')
-            ? request.input('lowestAmount')
-            : setting[0].lowestAmount
-          setting[0].highestAmount = request.input('highestAmount')
-            ? request.input('highestAmount')
-            : setting[0].highestAmount
-          setting[0].duration = request.input('duration')
-            ? request.input('duration')
-            : setting[0].duration
-          setting[0].rolloverCode = request.input('rolloverCode')
-            ? request.input('rolloverCode')
-            : setting[0].rolloverCode
+          setting[0].fundingWalletId = request.input('fundingWalletId')
+            ? request.input('fundingWalletId')
+            : setting[0].fundingWalletId
+          setting[0].isPayoutAutomated = request.input('isPayoutAutomated')
+            ? request.input('isPayoutAutomated')
+            : setting[0].isPayoutAutomated
+          setting[0].fundingSourceTerminal = request.input('fundingSourceTerminal')
+            ? request.input('fundingSourceTerminal')
+            : setting[0].fundingSourceTerminal
+          setting[0].isInvestmentAutomated = request.input('isInvestmentAutomated')
+            ? request.input('isInvestmentAutomated')
+            : setting[0].isInvestmentAutomated
+          setting[0].isTerminationAutomated = request.input('isTerminationAutomated')
+            ? request.input('isTerminationAutomated')
+            : setting[0].isTerminationAutomated
           setting[0].investmentType = request.input('investmentType')
             ? request.input('investmentType')
             : setting[0].investmentType
-          setting[0].interestRate = request.input('interestRate')
-            ? request.input('interestRate')
-            : setting[0].interestRate
           setting[0].tagName = request.input('tagName')
             ? request.input('tagName')
             : setting[0].tagName
-          setting[0].additionalDetails = request.input('additionalDetails')
-            ? request.input('additionalDetails')
-            : setting[0].additionalDetails
-          setting[0].long = request.input('long') ? request.input('long') : setting[0].long
-          setting[0].lat = request.input('lat') ? request.input('lat') : setting[0].lat
-          setting[0].status = request.input('status') ? request.input('status') : setting[0].status
+          setting[0].currencyCode = request.input('currencyCode')
+            ? request.input('currencyCode')
+            : setting[0].currencyCode
 
           if (setting) {
             // send to user
@@ -191,24 +188,18 @@ export default class SettingsController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    // let id = request.input('rateId')
-    const { productName, rateId } = request.qs()
+    const { id } = request.qs()
     console.log('Setting query: ', request.qs())
-    // let setting = await Setting.query().where({
-    //   product_name: request.input('productName'),
-    //   id: request.input('rateId'),
-    // })
+
     let setting = await Setting.query().where({
-      product_name: productName,
-      id: rateId,
+      id: id,
     })
     console.log(' QUERY RESULT: ', setting)
 
     if (setting.length > 0) {
       setting = await Setting.query()
         .where({
-          product_name: productName,
-          id: rateId,
+          id: id,
         })
         .delete()
       console.log('Deleted data:', setting)
