@@ -69,3 +69,4 @@ generateRates(19098, '702', 'fixed')
 // @ts-ignore
 // export {generateRates};
 module.exports.generateRates = generateRates
+export {}

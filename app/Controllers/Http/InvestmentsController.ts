@@ -1869,6 +1869,7 @@ export default class InvestmentsController {
                     // END
                   }
                   let payout
+                  let investmentCreated
                   switch (rolloverType) {
                     case '101':
                       //'101' = 'rollover principal only',
@@ -1932,12 +1933,24 @@ export default class InvestmentsController {
                       // Send Notification
 
                       // initiate a new investment
-                      createInvestment(
-                        amountToBeReinvested,
-                        payloadDuration,
-                        payloadInvestmentType,
-                        investmentData
-                      )
+                      // createInvestment(
+                      //   amountToBeReinvested,
+                      //   payloadDuration,
+                      //   payloadInvestmentType,
+                      //   investmentData
+                      // )
+                         investmentCreated = await createInvestment(
+                          amountToBeReinvested,
+                          payloadDuration,
+                          payloadInvestmentType,
+                          investmentData
+                        )
+                          console.log('investmentCreated data line 1948:', investmentCreated)
+                        if (investmentCreated === undefined) {
+                          // send the money to the user
+                          // send payment details to transction service
+                          // Send Notification
+                        }
 
                       console.log(
                         `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
@@ -1968,12 +1981,16 @@ export default class InvestmentsController {
                       // Send Notification
 
                       // initiate a new investment
-                      let investmentCreated = await createInvestment(
+                       investmentCreated = await createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
                       )
+                        console.log(
+                          'investmentCreated data line 1990:',
+                          investmentCreated
+                        )
                       if (investmentCreated === undefined) {
                         // send the money to the user
                         // send payment details to transction service

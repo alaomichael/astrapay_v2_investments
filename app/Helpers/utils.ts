@@ -404,4 +404,7 @@ module.exports = {
   investmentDuration,
   sendPaymentDetails,
   investmentRate,
+  getTaxRate,
 }
+
+export {}

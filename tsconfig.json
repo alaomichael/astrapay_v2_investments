@@ -18,9 +18,7 @@
         "target": "es2021",
         "esModuleInterop": true,
         "declaration": true,
-        "isolatedModules": true,
-"strict": true,
-"noEmit": true,
+        "isolatedModules": false,
     "paths": {
       "App/*": [
         "./app/*"
