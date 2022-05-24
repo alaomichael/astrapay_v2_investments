@@ -31,6 +31,8 @@ export default class InvestmentsController {
     console.log('INVESTMENT query: ', request.qs())
     const count = await Investment.query().where('currency_code', 'NGN').getCount()
     console.log('INVESTMENT count: ', count)
+    // let settings = await Setting.query().where({ currency_code: 'NGN' })
+    // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
     // let newArray = investment.map((investment) => {return investment.$original})
@@ -91,7 +93,7 @@ export default class InvestmentsController {
       email: investment[0].walletHolderDetails.email,
     })
     // return investment
-    console.log(' SORTED INVESTMENT line 78' + (await sortedInvestments))
+    console.log(' SORTED INVESTMENT line 78' + sortedInvestments)
     return response.status(200).json(sortedInvestments)
   }
 
@@ -1082,6 +1084,7 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
+          
           let approvalIsAutomated = false
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
@@ -1140,7 +1143,7 @@ export default class InvestmentsController {
                 investment[0].status === 'payout')
             ) {
               // let payout = await Payout.create(payload)
-                payoutRequestIsExisting[0].approvalStatus = 'pending'
+              payoutRequestIsExisting[0].approvalStatus = 'pending'
               payoutRequestIsExisting[0].status = 'payout'
               await payoutRequestIsExisting[0].save()
               console.log('Matured Payout investment data line 1144:', payoutRequestIsExisting[0])
