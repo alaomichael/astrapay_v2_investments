@@ -6,59 +6,52 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class TaxesController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('tax params: ', params)
-    const {
-      fundingWalletId,
-      isPayoutAutomated,
-      fundingSourceTerminal,
-      isInvestmentAutomated,
-      isTerminationAutomated,
-      investmentType,
-      tagName,
-      currencyCode,
-      limit,
-    } = request.qs()
+    const { state, lga, taxCode, rate, lowestAmount, highestAmount, limit } = request.qs()
     console.log('tax query: ', request.qs())
-    const countActiveSetting = await Tax.query().where('investment_type', 'fixed').getCount()
-    console.log('tax Investment count: ', countActiveSetting)
+    const countActiveTax = await Tax.query().where('state', 'oyo').getCount()
+    console.log('tax Investment count: ', countActiveTax)
 
     // const tax = await Tax.query().offset(0).limit(1)
     const tax = await Tax.all()
     let sortedTax = tax
 
-    if (fundingWalletId) {
+    if (rate) {
       sortedTax = sortedTax.filter((tax) => {
         // @ts-ignore
-        return tax.fundingWalletId === parseInt(fundingWalletId)
+        return tax.rate === parseInt(rate)
       })
     }
 
-    if (investmentType) {
+
+        if (lowestAmount) {
+          sortedTax = sortedTax.filter((tax) => {
+            // @ts-ignore
+            return tax.lowestAmount === parseInt(lowestAmount)
+          })
+        }
+
+    if (state) {
       sortedTax = sortedTax.filter((tax) => {
         // @ts-ignore
-        return tax.investmentType!.includes(investmentType)
+        return tax.state!.includes(state)
       })
     }
 
-    if (isPayoutAutomated) {
+    if (lga) {
       sortedTax = sortedTax.filter((tax) => {
         // @ts-ignore
-        return tax.isPayoutAutomated.toString() === isPayoutAutomated
+        return tax.lga.includes(lga)
       })
     }
 
-    if (isInvestmentAutomated) {
-      sortedTax = sortedTax.filter((tax) => {
-        // @ts-ignore
-        return tax.isInvestmentAutomated.toString() === isInvestmentAutomated
-      })
-    }
 
-    if (isTerminationAutomated) {
-      sortedTax = sortedTax.filter((tax) => {
-        // @ts-ignore
-        return tax.isTerminationAutomated.toString() === isTerminationAutomated
-      })
-    }
+      if (taxCode) {
+        sortedTax = sortedTax.filter((tax) => {
+          // @ts-ignore
+          return tax.taxCode.includes(taxCode)
+        })
+      }
+
 
     if (fundingSourceTerminal) {
       sortedTax = sortedTax.filter((tax) => {
