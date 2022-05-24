@@ -10,8 +10,8 @@
 // import { DateTime } from 'luxon'
 // const { DateTime } = require('luxon')
 // const {DateTime} = Luxon
-// import Env from '@ioc:Adonis/Core/Env'
-const Env = require('@ioc:Adonis/Core/Env')
+import Env from '@ioc:Adonis/Core/Env'
+// const Env = require('@ioc:Adonis/Core/Env')
 const axios = require('axios').default
 const JSJoda = require('js-joda')
 // const LocalDate = JSJoda.LocalDate
