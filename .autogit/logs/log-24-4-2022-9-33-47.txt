@@ -1,0 +1,19 @@
+-------------------- Auto-Git Log --------------------
+		Tue May 24 2022 09:33:47 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* app/Controllers/Http/TaxesController.ts
+* app/Models/Tax.ts
+* app/Models/TaxRecord.ts
+
+
+Created files:
+* .autogit/logs/log-24-4-2022-9-3-1.txt
+
+
+Deleted files:
+
+
+Renamed files:

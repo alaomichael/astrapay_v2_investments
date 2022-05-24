@@ -100,21 +100,19 @@ export default class TaxesController {
 
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
-    const settingSchema = schema.create({
-      fundingWalletId: schema.number(),
-      isPayoutAutomated: schema.boolean(),
-      fundingSourceTerminal: schema.string({ escape: true }, [rules.maxLength(50)]),
-      isInvestmentAutomated: schema.boolean(),
-      isTerminationAutomated: schema.boolean(),
-      investmentType: schema.enum(['fixed', 'debenture']),
-      tagName: schema.string({ escape: true }, [rules.maxLength(100)]),
-      currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+    const taxSchema = schema.create({
+      state: schema.string({ escape: true }, [rules.maxLength(50)]),
+      lga: schema.string({ escape: true }, [rules.maxLength(100)]),
+      taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+      rate: schema.number(),
+      lowestAmount: schema.number(),
+      highestAmount: schema.number(),
     })
-    const payload: any = await request.validate({ schema: settingSchema })
+    const payload: any = await request.validate({ schema: taxSchema })
     const tax = await Tax.create(payload)
 
     await tax.save()
-    console.log('The new investment:', tax)
+    console.log('The new tax rate:', tax)
 
     // TODO
     console.log('A New tax has been Created.')
@@ -130,40 +128,26 @@ export default class TaxesController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { id } = request.qs()
+      const { state } = request.qs()
       console.log('Tax query: ', request.qs())
 
       let tax = await Tax.query().where({
-        id: id,
+        state: state,
       })
       console.log(' QUERY RESULT: ', tax)
       if (tax.length > 0) {
         console.log('Investment tax Selected for Update:', tax)
         if (tax) {
-          tax[0].fundingWalletId = request.input('fundingWalletId')
-            ? request.input('fundingWalletId')
-            : tax[0].fundingWalletId
-          tax[0].isPayoutAutomated = request.input('isPayoutAutomated')
-            ? request.input('isPayoutAutomated')
-            : tax[0].isPayoutAutomated
-          tax[0].fundingSourceTerminal = request.input('fundingSourceTerminal')
-            ? request.input('fundingSourceTerminal')
-            : tax[0].fundingSourceTerminal
-          tax[0].isInvestmentAutomated = request.input('isInvestmentAutomated')
-            ? request.input('isInvestmentAutomated')
-            : tax[0].isInvestmentAutomated
-          tax[0].isTerminationAutomated = request.input('isTerminationAutomated')
-            ? request.input('isTerminationAutomated')
-            : tax[0].isTerminationAutomated
-          tax[0].investmentType = request.input('investmentType')
-            ? request.input('investmentType')
-            : tax[0].investmentType
-          tax[0].tagName = request.input('tagName')
-            ? request.input('tagName')
-            : tax[0].tagName
-          tax[0].currencyCode = request.input('currencyCode')
-            ? request.input('currencyCode')
-            : tax[0].currencyCode
+          tax[0].state = request.input('state') ? request.input('state') : tax[0].state
+          tax[0].lga = request.input('lga') ? request.input('lga') : tax[0].lga
+          tax[0].taxCode = request.input('taxCode') ? request.input('taxCode') : tax[0].taxCode
+          tax[0].rate = request.input('rate') ? request.input('rate') : tax[0].rate
+          tax[0].lowestAmount = request.input('lowestAmount')
+            ? request.input('lowestAmount')
+            : tax[0].lowestAmount
+          tax[0].highestAmount = request.input('highestAmount')
+            ? request.input('highestAmount')
+            : tax[0].highestAmount
 
           if (tax) {
             // send to user
