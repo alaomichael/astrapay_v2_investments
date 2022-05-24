@@ -1469,7 +1469,9 @@ export default class InvestmentsController {
                 await payoutRequestIsExisting[0].save()
                 await investment[0].save()
               }
-
+let income = investment[0].interestDueOnInvestment
+// @ts-ignore
+let state = investment[0].walletHolderDetails.state
               // If payment processing is automated
               let paymentProcessingIsAutomated = settings[0].isPayoutAutomated
               if (paymentProcessingIsAutomated === true) {
@@ -1478,6 +1480,9 @@ export default class InvestmentsController {
                 // use try catch
                 try {
                   // TODO
+                  // Deduct Tax from the interest
+                  let taxRate = await getTaxRate(state, income)
+                  let taxToBeDeducted = income -( (taxRate/100)*income)
                   // Update with the real transaction service endpoint and payload
                   let rate = await sendPaymentDetails(amount, duration, investmentType)
                   console.log(' Rate return line 1476 : ', rate)
