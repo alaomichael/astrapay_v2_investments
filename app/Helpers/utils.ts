@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 'use strict'
 // @ts-ignore
-import Tax from "App/Models/Tax"
+// import Tax from "App/Models/Tax"
 // const Tax = require('App/Models/Tax.ts')
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
