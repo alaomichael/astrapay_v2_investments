@@ -1,16 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Approval from 'App/Models/Approval'
 import Investment from 'App/Models/Investment'
-import { DateTime } from 'luxon'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import {
-  generateRate,
-  interestDueOnPayout,
-  dueForPayout,
-  payoutDueDate,
-  approvalRequest,
-  investmentDuration,
+   investmentDuration,
   // @ts-ignore
 } from 'App/Helpers/utils'
 
