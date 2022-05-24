@@ -5,6 +5,24 @@ export default class Tax extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public state: string
+
+  @column()
+  public lga: string
+
+  @column()
+  public taxCode: string
+
+  @column()
+  public rate: number
+
+  @column()
+  public lowestAmount: number
+
+  @column()
+  public highestAmount: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

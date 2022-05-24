@@ -1588,6 +1588,8 @@ export default class InvestmentsController {
                   let amountToBeReinvested
                   let settings = await Setting.query().where({ id: 1 })
                   console.log('Approval setting line 1590:', settings[0])
+                  let taxToBeDeducted
+                  let taxRate
 
                   if (rolloverDone >= rolloverTarget) {
                     let payload = investmentData
@@ -1663,29 +1665,26 @@ export default class InvestmentsController {
                     let isPayoutAutomated = settings[0].isPayoutAutomated
                     if (isPayoutAutomated === false) {
                       try {
-                          let approvalRequestIsDone = await approvalRequest(
-                            userId,
-                            investmentId,
-                            requestType
-                          )
-                          console.log(
-                            ' Approval request return line 1672 : ',
-                            approvalRequestIsDone
-                          )
-                          if (approvalRequestIsDone === undefined) {
-                            return response.status(400).json({
-                              status: 'fail',
-                              message:
-                                'payment processing approval request was not successful, please try again.',
-                              data: [],
-                            })
-                          }
-
-                          } catch (error) {
+                        let approvalRequestIsDone = await approvalRequest(
+                          userId,
+                          investmentId,
+                          requestType
+                        )
+                        console.log(' Approval request return line 1672 : ', approvalRequestIsDone)
+                        if (approvalRequestIsDone === undefined) {
+                          return response.status(400).json({
+                            status: 'fail',
+                            message:
+                              'payment processing approval request was not successful, please try again.',
+                            data: [],
+                          })
+                        }
+                      } catch (error) {
                         console.error(error)
                         return response.send({
                           status: 'FAILED',
-                          message: 'The approval request for this transaction was not sent successfully.',
+                          message:
+                            'The approval request for this transaction was not sent successfully.',
                           error: error.message,
                         })
                       }
@@ -1784,8 +1783,8 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
-                      let settings = await Setting.query().where({ id: 1 })
-                      console.log('Approval setting line 1788:', settings[0])
+                    let settings = await Setting.query().where({ id: 1 })
+                    console.log('Approval setting line 1788:', settings[0])
                     let payload
                     // destructure / extract the needed data from the investment
                     let {
@@ -1907,6 +1906,9 @@ export default class InvestmentsController {
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       amountToPayoutNow = investment[0].interestDueOnInvestment
+                      // Deduct tax from the amount to be paid out, based on state of residence
+                      taxToBeDeducted = (taxRate / 100) * amountToPayoutNow
+                      amountToPayoutNow = amountToPayoutNow - taxToBeDeducted
                       investment[0].amount = amountToBeReinvested
                       investment[0].totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
