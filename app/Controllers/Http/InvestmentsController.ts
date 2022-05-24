@@ -1084,8 +1084,8 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
-          
-          let approvalIsAutomated = false
+
+          let approvalIsAutomated = settings[0].isTerminationAutomated
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
             console.log(' Approval request return line 1088 : ', approvalRequestIsDone)
@@ -1244,7 +1244,7 @@ export default class InvestmentsController {
           let requestType = 'terminate investment'
           let settings = await Setting.query().where({ id: 1 })
           console.log('Approval setting line 1241:', settings[0])
-          let approvalIsAutomated = false
+          let approvalIsAutomated = settings[0].isTerminationAutomated // isPayoutAutomated
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
             console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
@@ -1382,7 +1382,9 @@ export default class InvestmentsController {
         let isTransactionSentForProcessing
         let payload
         let payout
-        console.log('Investment Info, line 1380: ', investment)
+        let settings = await Setting.query().where({ id: 1 })
+        console.log('Approval setting line 1386:', settings[0])
+        console.log('Investment Info, line 1387: ', investment)
         if (
           (investment.length > 0 &&
             investment[0].isPayoutAuthorized === true &&
@@ -1469,7 +1471,7 @@ export default class InvestmentsController {
               }
 
               // If payment processing is automated
-              let paymentProcessingIsAutomated = true
+              let paymentProcessingIsAutomated = settings[0].isPayoutAutomated
               if (paymentProcessingIsAutomated === true) {
                 //  Proceed to payout the Total Amount due on maturity
                 // Send Payment Details to Transaction Service
@@ -1584,11 +1586,15 @@ export default class InvestmentsController {
                   }
                   let amountToPayoutNow
                   let amountToBeReinvested
+                  let settings = await Setting.query().where({ id: 1 })
+                  console.log('Approval setting line 1590:', settings[0])
+
                   if (rolloverDone >= rolloverTarget) {
                     let payload = investmentData
                     let payout
                     let investmentId = payload.id
                     userId = payload.userId
+                    let requestType = 'payout investment'
                     amountToPayoutNow = amount + investmentData.interestDueOnInvestment
                     // Send Investment Initiation Message to Queue
 
@@ -1654,36 +1660,74 @@ export default class InvestmentsController {
                       await payload.save()
                     }
 
-                    try {
-                      // TODO
-                      // Send Payment details to Transaction Service
-                      // Update with the real transaction service endpoint and payload
-                      let rate = await sendPaymentDetails(amount, duration, investmentType)
-                      console.log(' Rate return line 1657 : ', rate)
-                    } catch (error) {
-                      console.error(error)
-                      return response.send({
-                        status: 'FAILED',
-                        message: 'The transaction was not sent successfully.',
-                        error: error.message,
-                      })
-                    }
-                    isTransactionSentForProcessing = true
-                    if (isTransactionSentForProcessing === false) {
-                      return response.send({
-                        status: 'FAILED',
-                        message: 'The transaction was not sent successfully.',
-                        isTransactionInProcess: isTransactionSentForProcessing,
-                      })
-                    }
-                    //}
+                    let isPayoutAutomated = settings[0].isPayoutAutomated
+                    if (isPayoutAutomated === false) {
+                      try {
+                          let approvalRequestIsDone = await approvalRequest(
+                            userId,
+                            investmentId,
+                            requestType
+                          )
+                          console.log(
+                            ' Approval request return line 1672 : ',
+                            approvalRequestIsDone
+                          )
+                          if (approvalRequestIsDone === undefined) {
+                            return response.status(400).json({
+                              status: 'fail',
+                              message:
+                                'payment processing approval request was not successful, please try again.',
+                              data: [],
+                            })
+                          }
 
-                    return response.send({
-                      status: 'OK',
-                      message:
-                        'Rollover target has been reached or exceeded, and payout of the sum total of your principal and interest has been initiated.',
-                      data: investment[0].$original,
-                    })
+                          } catch (error) {
+                        console.error(error)
+                        return response.send({
+                          status: 'FAILED',
+                          message: 'The approval request for this transaction was not sent successfully.',
+                          error: error.message,
+                        })
+                      }
+
+                      return response.send({
+                        status: 'OK',
+                        message:
+                          'Rollover target has been reached or exceeded, and the investment details has been sent to admin for payout approval.',
+                        data: investment[0].$original,
+                      })
+                    } else {
+                      try {
+                        // TODO
+                        // Send Payment details to Transaction Service
+                        // Update with the real transaction service endpoint and payload
+                        let rate = await sendPaymentDetails(amount, duration, investmentType)
+                        console.log(' Rate return line 1657 : ', rate)
+                      } catch (error) {
+                        console.error(error)
+                        return response.send({
+                          status: 'FAILED',
+                          message: 'The transaction was not sent successfully.',
+                          error: error.message,
+                        })
+                      }
+                      isTransactionSentForProcessing = true
+                      if (isTransactionSentForProcessing === false) {
+                        return response.send({
+                          status: 'FAILED',
+                          message: 'The transaction was not sent successfully.',
+                          isTransactionInProcess: isTransactionSentForProcessing,
+                        })
+                      }
+                      //}
+
+                      return response.send({
+                        status: 'OK',
+                        message:
+                          'Rollover target has been reached or exceeded, and payout of the sum total of your principal and interest has been initiated.',
+                        data: investment[0].$original,
+                      })
+                    }
                   }
                   // if rolloverDone < rolloverTarget
                   investmentData = investment[0]
@@ -1740,6 +1784,8 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
+                      let settings = await Setting.query().where({ id: 1 })
+                      console.log('Approval setting line 1788:', settings[0])
                     let payload
                     // destructure / extract the needed data from the investment
                     let {
@@ -1802,7 +1848,7 @@ export default class InvestmentsController {
 
                     // check if Approval is set to Auto, from Setting Controller
                     let requestType = 'start investment'
-                    let approvalIsAutomated = false
+                    let approvalIsAutomated = settings[0].isInvestmentAutomated
                     if (approvalIsAutomated === false) {
                       // Send Approval Request to Admin
                       userId = investment.userId
