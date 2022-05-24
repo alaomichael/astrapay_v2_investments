@@ -1,18 +1,21 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable prettier/prettier */
 'use strict'
+// @ts-ignore
+import Tax from "App/Models/Tax"
+// const Tax = require('App/Models/Tax.ts')
 
 // import { string } from '@ioc:Adonis/Core/Helpers'
 // const string = require('@ioc:Adonis/Core/Helpers')
 // import { DateTime } from 'luxon'
-const { DateTime } = require('luxon')
+// const { DateTime } = require('luxon')
 // const {DateTime} = Luxon
 // import Env from '@ioc:Adonis/Core/Env'
 const Env = require('@ioc:Adonis/Core/Env')
 const axios = require('axios').default
 const JSJoda = require('js-joda')
-const LocalDate = JSJoda.LocalDate
-const Moment = require('moment')
+// const LocalDate = JSJoda.LocalDate
+// const Moment = require('moment')
 const API_URL = Env.get('API_URL')
 
 // export const STANDARD_DATE_TIME_FORMAT = 'yyyy-LL-dd HH:mm:ss'
@@ -110,10 +113,10 @@ const interestDueOnPayout = (amount, rate, duration) => {
     let interestDueDaily
     interestDue = amount * rate
     interestDueDaily = interestDue / duration
-     let day = 'day'
-     if (duration > 1) {
-       day = 'days'
-     }
+    let day = 'day'
+    if (duration > 1) {
+      day = 'days'
+    }
     console.log(
       `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
     )
@@ -284,6 +287,29 @@ const approvalRequest = async function (userId, investmentId, requestType) {
   }
 }
 
+const getTaxRate = async function (state, income) {
+  try {
+    console.log('Income from investment: ', income)
+    // const response = await Tax.query().where({ state: state })
+    // ${API_URL}/admin/investments/taxes?state=${state}
+     const response = await axios.get(`${API_URL}/admin/investments/taxes`, {
+       state,
+     })
+    console.log('The API response for tax rate request: ', response[0].rate)
+    if (response && response[0].rate !== undefined && response[0].rate > 0) {
+      console.log('tax request status is OK')
+      return response[0].rate
+    } else {
+      console.log('Tax request status is NOT OK')
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+getTaxRate('oyo', 19000)
+
 const sendPaymentDetails = async function (amount, duration, investmentType) {
   try {
     const response = await axios.get(
@@ -304,22 +330,21 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
 //   ' The Rate return for RATE utils.ts line 299: ',
 //   sendPaymentDetails(12000, 180, 'fixed')
 // )
-  const investmentRate = async function (payloadAmount, payloadDuration, payloadInvestmentType) {
-    try {
-      const response = await axios.get(
-        `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
-      )
-      console.log('The API response: ', response.data)
-      if (response.data.status === 'OK' && response.data.data.length > 0) {
-        return response.data.data[0].interest_rate
-      } else {
-        return
-      }
-    } catch (error) {
-      console.error(error)
+const investmentRate = async function (payloadAmount, payloadDuration, payloadInvestmentType) {
+  try {
+    const response = await axios.get(
+      `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
+    )
+    console.log('The API response: ', response.data)
+    if (response.data.status === 'OK' && response.data.data.length > 0) {
+      return response.data.data[0].interest_rate
+    } else {
+      return
     }
+  } catch (error) {
+    console.error(error)
   }
-
+}
 
 /**
  * An utility function which returns a random number

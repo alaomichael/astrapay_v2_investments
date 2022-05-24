@@ -21,7 +21,7 @@ import {
   sendPaymentDetails,
   investmentRate,
   // @ts-ignore
-} from 'App/Helpers/utils'
+} from 'App/Helpers/utils.js'
 
 import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
