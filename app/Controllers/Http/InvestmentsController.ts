@@ -1474,6 +1474,10 @@ export default class InvestmentsController {
               let paymentProcessingIsAutomated = settings[0].isPayoutAutomated
               if (paymentProcessingIsAutomated === true) {
                 //  Proceed to payout the Total Amount due on maturity
+                investment[0].requestType = 'payout payment'
+                investment[0].approvalStatus = 'approved'
+                investment[0].status = 'payout'
+                investment[0].save()
                 // Send Payment Details to Transaction Service
                 // use try catch
                 try {
@@ -1906,9 +1910,6 @@ export default class InvestmentsController {
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       amountToPayoutNow = investment[0].interestDueOnInvestment
-                      // Deduct tax from the amount to be paid out, based on state of residence
-                      taxToBeDeducted = (taxRate / 100) * amountToPayoutNow
-                      amountToPayoutNow = amountToPayoutNow - taxToBeDeducted
                       investment[0].amount = amountToBeReinvested
                       investment[0].totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
@@ -2001,12 +2002,17 @@ export default class InvestmentsController {
                       // Send Notification
 
                       // initiate a new investment
-                      createInvestment(
+                     let investmentCreated = await createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
                       )
+                      if (investmentCreated === undefined) {
+                        // send the money to the user
+                        // send payment details to transction service
+                        // Send Notification
+                      }
 
                       console.log(
                         `The Interest of ${currencyCode} ${amountToBeReinvested} was Reinvested and the Principal of ${currencyCode} ${amountToPayoutNow} was paid`
