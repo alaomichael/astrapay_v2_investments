@@ -308,7 +308,7 @@ const getTaxRate = async function (state, income) {
   }
 }
 
-getTaxRate('oyo', 19000)
+// getTaxRate('oyo', 19000)
 
 const sendPaymentDetails = async function (amount, duration, investmentType) {
   try {

@@ -21,7 +21,7 @@ import {
   sendPaymentDetails,
   investmentRate,
   // @ts-ignore
-} from 'App/Helpers/utils.js'
+} from 'App/Helpers/utils.ts'
 
 import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
@@ -1469,9 +1469,7 @@ export default class InvestmentsController {
                 await payoutRequestIsExisting[0].save()
                 await investment[0].save()
               }
-let income = investment[0].interestDueOnInvestment
-// @ts-ignore
-let state = investment[0].walletHolderDetails.state
+
               // If payment processing is automated
               let paymentProcessingIsAutomated = settings[0].isPayoutAutomated
               if (paymentProcessingIsAutomated === true) {
@@ -1480,13 +1478,6 @@ let state = investment[0].walletHolderDetails.state
                 // use try catch
                 try {
                   // TODO
-                  // Deduct Tax from the interest
-                  let taxRate = await getTaxRate(state, income)
-                  let taxToBeDeducted = income -( (taxRate/100)*income)
-                  // Save deducted Tax in Tax Records
-
-                  // Update the amount to send for payment, after substracting the tax
-                  amount = amount + (investment[0].interestDueOnInvestment - taxToBeDeducted)
                   // Update with the real transaction service endpoint and payload
                   let rate = await sendPaymentDetails(amount, duration, investmentType)
                   console.log(' Rate return line 1476 : ', rate)
@@ -1515,7 +1506,7 @@ let state = investment[0].walletHolderDetails.state
                   data: investment[0].$original,
                 })
               } else {
-                let requestType = 'process payment'
+                let requestType = 'payout payment'
                 let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
                 console.log(' Approval request return line 1362 : ', approvalRequestIsDone)
                 if (approvalRequestIsDone === undefined) {

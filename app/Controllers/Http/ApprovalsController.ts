@@ -6,7 +6,7 @@ import Event from '@ioc:Adonis/Core/Event'
 import {
    investmentDuration,
   // @ts-ignore
-} from 'App/Helpers/utils.js'
+} from 'App/Helpers/utils.ts'
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
