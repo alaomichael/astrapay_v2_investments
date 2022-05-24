@@ -8,8 +8,8 @@ export default class TaxesController {
     console.log('tax params: ', params)
     const { state, lga, taxCode, rate, lowestAmount, highestAmount, limit } = request.qs()
     console.log('tax query: ', request.qs())
-    // const countActiveTax = await Tax.query().where('state', 'oyo').getCount()
-    // console.log('tax Investment count: ', countActiveTax)
+    const countActiveTax = await Tax.query().where('state', 'oyo').getCount()
+    console.log('tax Investment count: ', countActiveTax)
 
     // const tax = await Tax.query().offset(0).limit(1)
     const tax = await Tax.all()
