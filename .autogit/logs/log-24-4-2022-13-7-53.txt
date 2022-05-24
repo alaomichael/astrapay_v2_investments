@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Tue May 24 2022 13:07:53 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+
+
+Created files:
+* .autogit/logs/log-24-4-2022-12-37-5.txt
+
+
+Deleted files:
+* package-lock.json
+
+
+Renamed files:

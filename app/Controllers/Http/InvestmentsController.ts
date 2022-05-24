@@ -1483,6 +1483,10 @@ let state = investment[0].walletHolderDetails.state
                   // Deduct Tax from the interest
                   let taxRate = await getTaxRate(state, income)
                   let taxToBeDeducted = income -( (taxRate/100)*income)
+                  // Save deducted Tax in Tax Records
+
+                  // Update the amount to send for payment, after substracting the tax
+                  amount = amount + (investment[0].interestDueOnInvestment - taxToBeDeducted)
                   // Update with the real transaction service endpoint and payload
                   let rate = await sendPaymentDetails(amount, duration, investmentType)
                   console.log(' Rate return line 1476 : ', rate)
