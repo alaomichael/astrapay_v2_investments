@@ -6,85 +6,76 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class TaxRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('taxRecord params: ', params)
-    const {
-      fundingWalletId,
-      isPayoutAutomated,
-      fundingSourceTerminal,
-      isInvestmentAutomated,
-      isTerminationAutomated,
-      investmentType,
-      tagName,
-      currencyCode,
-      limit,
-    } = request.qs()
+    const { state, lga, taxCode, rate, income, taxDeducted, userId, investmentId, limit } =
+      request.qs()
     console.log('taxRecord query: ', request.qs())
     const countActiveTaxRecords = await TaxRecord.query().where('state', 'oyo').getCount()
     console.log('taxRecord count: ', countActiveTaxRecords)
 
     // const taxRecord = await TaxRecord.query().offset(0).limit(1)
     const taxRecord = await TaxRecord.all()
-    let sortedTax = taxRecord
+    let sortedTaxRecord = taxRecord
 
-    if (fundingWalletId) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (rate) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.fundingWalletId === parseInt(fundingWalletId)
+        return taxRecord.rate === parseInt(rate)
       })
     }
 
-    if (investmentType) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (income) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.investmentType!.includes(investmentType)
+        return taxRecord.income === parseInt(income)
       })
     }
 
-    if (isPayoutAutomated) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (taxDeducted) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.isPayoutAutomated.toString() === isPayoutAutomated
+        return taxRecord.taxDeducted === parseInt(taxDeducted)
       })
     }
 
-    if (isInvestmentAutomated) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (userId) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.isInvestmentAutomated.toString() === isInvestmentAutomated
+        return taxRecord.userId === parseInt(userId)
       })
     }
 
-    if (isTerminationAutomated) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (investmentId) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.isTerminationAutomated.toString() === isTerminationAutomated
+        return taxRecord.investmentId === parseInt(investmentId)
       })
     }
 
-    if (fundingSourceTerminal) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (state) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.fundingSourceTerminal!.includes(fundingSourceTerminal)
+        return taxRecord.state!.includes(state)
       })
     }
 
-    if (tagName) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (lga) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.tagName!.includes(tagName)
+        return taxRecord.lga.includes(lga)
       })
     }
 
-    if (currencyCode) {
-      sortedTax = sortedTax.filter((taxRecord) => {
+    if (taxCode) {
+      sortedTaxRecord = sortedTaxRecord.filter((taxRecord) => {
         // @ts-ignore
-        return taxRecord.currencyCode!.includes(currencyCode)
+        return taxRecord.taxCode.includes(taxCode)
       })
     }
 
     if (limit) {
-      sortedTax = sortedTax.slice(0, Number(limit))
+      sortedTaxRecord = sortedTaxRecord.slice(0, Number(limit))
     }
-    if (sortedTax.length < 1) {
+    if (sortedTaxRecord.length < 1) {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment taxRecord matched your search',
@@ -94,7 +85,7 @@ export default class TaxRecordsController {
     // return taxRecord(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedTax.map((taxRecord) => taxRecord.$original),
+      data: sortedTaxRecord.map((taxRecord) => taxRecord.$original),
     })
   }
 
@@ -109,6 +100,13 @@ export default class TaxRecordsController {
       taxDeducted: schema.number(),
       userId: schema.number(),
       investmentId: schema.number(),
+      investorDetails: schema.object().members({
+        firstName: schema.string(),
+        lastName: schema.string(),
+        email: schema.string([rules.email()]),
+        phone: schema.number(),
+        investorFundingWalletId: schema.string(),
+      }),
     })
     const payload: any = await request.validate({ schema: taxSchema })
     const taxRecord = await TaxRecord.create(payload)
@@ -142,15 +140,26 @@ export default class TaxRecordsController {
         if (taxRecord) {
           taxRecord[0].state = request.input('state') ? request.input('state') : taxRecord[0].state
           taxRecord[0].lga = request.input('lga') ? request.input('lga') : taxRecord[0].lga
-          taxRecord[0].taxCode = request.input('taxCode') ? request.input('taxCode') : taxRecord[0].taxCode
+          taxRecord[0].taxCode = request.input('taxCode')
+            ? request.input('taxCode')
+            : taxRecord[0].taxCode
           taxRecord[0].rate = request.input('rate') ? request.input('rate') : taxRecord[0].rate
-          taxRecord[0].lowestAmount = request.input('lowestAmount')
-            ? request.input('lowestAmount')
-            : taxRecord[0].lowestAmount
-          taxRecord[0].highestAmount = request.input('highestAmount')
-            ? request.input('highestAmount')
-            : taxRecord[0].highestAmount
+          taxRecord[0].income = request.input('income')
+            ? request.input('income')
+            : taxRecord[0].income
+          taxRecord[0].taxDeducted = request.input('taxDeducted')
+            ? request.input('taxDeducted')
+            : taxRecord[0].taxDeducted
 
+          taxRecord[0].userId = request.input('userId')
+            ? request.input('userId')
+            : taxRecord[0].userId
+          taxRecord[0].investmentId = request.input('investmentId')
+            ? request.input('investmentId')
+            : taxRecord[0].investmentId
+          taxRecord[0].investorDetails = request.input('investorDetails')
+            ? request.input('investorDetails')
+            : taxRecord[0].investorDetails
           if (taxRecord) {
             // send to user
             await taxRecord[0].save()

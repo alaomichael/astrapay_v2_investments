@@ -50,6 +50,7 @@ Route.group(() => {
     Route.get('investments/rates', 'RatesController.index')
     Route.get('admin/investments/settings', 'SettingsController.index')
     Route.get('admin/investments/rates', 'RatesController.index')
+    Route.get('admin/investments/taxes', 'TaxesController.index')
     Route.get('admin/investments/approvals', 'ApprovalsController.index')
     // Route.get('investments/payouts', 'InvestmentsController.showPayouts')
     Route.get('investments/payouts', 'PayoutsController.index')

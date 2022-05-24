@@ -8,8 +8,8 @@ export default class TaxesController {
     console.log('tax params: ', params)
     const { state, lga, taxCode, rate, lowestAmount, highestAmount, limit } = request.qs()
     console.log('tax query: ', request.qs())
-    const countActiveTax = await Tax.query().where('state', 'oyo').getCount()
-    console.log('tax Investment count: ', countActiveTax)
+    // const countActiveTax = await Tax.query().where('state', 'oyo').getCount()
+    // console.log('tax Investment count: ', countActiveTax)
 
     // const tax = await Tax.query().offset(0).limit(1)
     const tax = await Tax.all()
@@ -22,13 +22,19 @@ export default class TaxesController {
       })
     }
 
+    if (lowestAmount) {
+      sortedTax = sortedTax.filter((tax) => {
+        // @ts-ignore
+        return tax.lowestAmount === parseInt(lowestAmount)
+      })
+    }
 
-        if (lowestAmount) {
-          sortedTax = sortedTax.filter((tax) => {
-            // @ts-ignore
-            return tax.lowestAmount === parseInt(lowestAmount)
-          })
-        }
+    if (highestAmount) {
+      sortedTax = sortedTax.filter((tax) => {
+        // @ts-ignore
+        return tax.highestAmount === parseInt(highestAmount)
+      })
+    }
 
     if (state) {
       sortedTax = sortedTax.filter((tax) => {
@@ -44,33 +50,10 @@ export default class TaxesController {
       })
     }
 
-
-      if (taxCode) {
-        sortedTax = sortedTax.filter((tax) => {
-          // @ts-ignore
-          return tax.taxCode.includes(taxCode)
-        })
-      }
-
-
-    if (fundingSourceTerminal) {
+    if (taxCode) {
       sortedTax = sortedTax.filter((tax) => {
         // @ts-ignore
-        return tax.fundingSourceTerminal!.includes(fundingSourceTerminal)
-      })
-    }
-
-    if (tagName) {
-      sortedTax = sortedTax.filter((tax) => {
-        // @ts-ignore
-        return tax.tagName!.includes(tagName)
-      })
-    }
-
-    if (currencyCode) {
-      sortedTax = sortedTax.filter((tax) => {
-        // @ts-ignore
-        return tax.currencyCode!.includes(currencyCode)
+        return tax.taxCode.includes(taxCode)
       })
     }
 
