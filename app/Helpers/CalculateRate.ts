@@ -65,8 +65,8 @@ function generateRates(amount, duration, investment_type) {
   })
 }
 
-generateRates(19098, '702', 'fixed')
+// generateRates(19098, '702', 'fixed')
 // @ts-ignore
 // export {generateRates};
 module.exports.generateRates = generateRates
-export {}
+export { generateRates }
