@@ -11,11 +11,16 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-    "lib": ["es5", "es6", "dom", "dom.iterable", "es2015"],
-        "moduleResolution": "node",
-        "target": "es2021",
-        "esModuleInterop": true,
-        "declaration": true,
+    "lib": ["es2021","ESNEXT"],
+    "module": "commonjs",
+    "target": "es2021",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "declaration": true,
 
 
     "paths": {
@@ -40,5 +45,9 @@
     ],
 
 
+  },  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }
