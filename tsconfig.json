@@ -18,7 +18,7 @@
         "target": "es2015",
         "esModuleInterop": true,
         "declaration": true,
-        "strict": true,
+        "strict": false,
     "paths": {
       "App/*": [
         "./app/*"
