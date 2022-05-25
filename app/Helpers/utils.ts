@@ -4,7 +4,7 @@
 
 // import { createRequire } from 'module'
 // const require = createRequire(import.meta.url)
-import {createRequire} from "module"
+import { createRequire } from 'module'
 // @ts-ignore
 const require = createRequire(import.meta.url)
 // import Tax from "App/Models/Tax"
@@ -297,9 +297,9 @@ const getTaxRate = async function (state, income) {
     console.log('Income from investment: ', income)
     // const response = await Tax.query().where({ state: state })
     // ${API_URL}/admin/investments/taxes?state=${state}
-     const response = await axios.get(`${API_URL}/admin/investments/taxes`, {
-       state,
-     })
+    const response = await axios.get(`${API_URL}/admin/investments/taxes`, {
+      state,
+    })
     console.log('The API response for tax rate request: ', response[0].rate)
     if (response && response[0].rate !== undefined && response[0].rate > 0) {
       console.log('tax request status is OK')
