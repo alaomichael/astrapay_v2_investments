@@ -2,7 +2,7 @@
   "name": "investment",
   "version": "1.0.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
