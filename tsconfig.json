@@ -12,12 +12,13 @@
     "rootDir": "./",
     "sourceMap": true,
 
-    "lib": ["es2020","es2021","esnext"],
+    "lib": ["es2015","es2020","es2021","esnext"],
         "module": "CommonJS",
         "moduleResolution": "node",
-        "target": "esnext",
+        "target": "es2015",
         "esModuleInterop": true,
         "declaration": true,
+        "strict": true,
     "paths": {
       "App/*": [
         "./app/*"
