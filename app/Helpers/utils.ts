@@ -1,6 +1,9 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable prettier/prettier */
 'use strict'
+
+// import { createRequire } from 'module'
+// const require = createRequire(import.meta.url)
 import {createRequire} from "module"
 // @ts-ignore
 const require = createRequire(import.meta.url)
