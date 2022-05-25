@@ -11,7 +11,8 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "test": "node ace test --watch",
-    "deploy": "git add . && git commit -m Heroku && git push heroku main"
+    "deploy": "git add . && git commit -m Heroku && git push heroku main",
+    "restart": "heroku restart -a astrapay-v2-investment"
   },
   "eslintConfig": {
     "extends": [

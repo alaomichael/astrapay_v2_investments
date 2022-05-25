@@ -2251,6 +2251,7 @@ export default class InvestmentsController {
         wallet_id: walletId,
         rollover_target: payload.rolloverTarget,
         rollover_done: payload.rolloverDone,
+        investment_type: payload.investmentType,
       })
       console.log(' QUERY RESULT line 2031: ', payoutRecord)
       if (payoutRecord.length > 0) {
@@ -2283,8 +2284,8 @@ export default class InvestmentsController {
         investment_id: payload.investmentId,
         user_id: userId,
         wallet_id: walletId,
-        rollover_target: payload.rolloverTarget,
-        rollover_done: payload.rolloverDone,
+        rollover_type: payload.rolloverType,
+        duration  : payload.duration,
       })
  console.log('Payout investment data line 2289:', payout)
       payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
