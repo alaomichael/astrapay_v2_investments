@@ -1620,10 +1620,17 @@ export default class InvestmentsController {
                       console.log('Payout investment data line 1637:', payload)
                       payout = await Payout.create(payload)
                       payout.status = 'payout'
+                      payout.isPayoutAuthorized = investment[0].isPayoutAuthorized
+                      payout.isTerminationAuthorized = investment[0].isTerminationAuthorized
+
                       await payout.save()
                       console.log('Matured Payout investment data line 1641:', payout)
                     } else {
                       payoutRequestIsExisting[0].requestType = investment[0].requestType
+                      payoutRequestIsExisting[0].isPayoutAuthorized =
+                        investment[0].isPayoutAuthorized
+                      payoutRequestIsExisting[0].isTerminationAuthorized =
+                        investment[0].isTerminationAuthorized
                       payoutRequestIsExisting[0].status = 'payout'
                       // investment[0]
                       payload.status = 'payout'
@@ -1939,18 +1946,18 @@ export default class InvestmentsController {
                       //   payloadInvestmentType,
                       //   investmentData
                       // )
-                         investmentCreated = await createInvestment(
-                          amountToBeReinvested,
-                          payloadDuration,
-                          payloadInvestmentType,
-                          investmentData
-                        )
-                          console.log('investmentCreated data line 1948:', investmentCreated)
-                        if (investmentCreated === undefined) {
-                          // send the money to the user
-                          // send payment details to transction service
-                          // Send Notification
-                        }
+                      investmentCreated = await createInvestment(
+                        amountToBeReinvested,
+                        payloadDuration,
+                        payloadInvestmentType,
+                        investmentData
+                      )
+                      console.log('investmentCreated data line 1948:', investmentCreated)
+                      if (investmentCreated === undefined) {
+                        // send the money to the user
+                        // send payment details to transction service
+                        // Send Notification
+                      }
 
                       console.log(
                         `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
@@ -1981,16 +1988,13 @@ export default class InvestmentsController {
                       // Send Notification
 
                       // initiate a new investment
-                       investmentCreated = await createInvestment(
+                      investmentCreated = await createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
                       )
-                        console.log(
-                          'investmentCreated data line 1990:',
-                          investmentCreated
-                        )
+                      console.log('investmentCreated data line 1990:', investmentCreated)
                       if (investmentCreated === undefined) {
                         // send the money to the user
                         // send payment details to transction service

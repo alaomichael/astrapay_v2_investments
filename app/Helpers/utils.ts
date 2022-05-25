@@ -395,6 +395,8 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
 // export const isProduction = Env.get('NODE_ENV') === 'production'
 // export const isDevelopment = Env.get('NODE_ENV') === 'development'
 
+// module.exports.generateRates = generateRates
+// export { generateRates }
 module.exports = {
   generateRate,
   interestDueOnPayout,
@@ -418,6 +420,3 @@ export {
   investmentRate,
   getTaxRate,
 }
-
-module.exports.generateRates = generateRates
-export { generateRates }
