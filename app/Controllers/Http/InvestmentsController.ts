@@ -2251,7 +2251,6 @@ export default class InvestmentsController {
         wallet_id: walletId,
         rollover_target: payload.rolloverTarget,
         rollover_done: payload.rolloverDone,
-        investment_type: payload.investmentType,
       })
       console.log(' QUERY RESULT line 2031: ', payoutRecord)
       if (payoutRecord.length > 0) {
@@ -2284,19 +2283,22 @@ export default class InvestmentsController {
         investment_id: payload.investmentId,
         user_id: userId,
         wallet_id: walletId,
-        rollover_type: payload.rolloverType,
-        duration  : payload.duration,
+        rollover_target: payload.rolloverTarget,
+        investment_type: payload.investmentType,
       })
  console.log('Payout investment data line 2289:', payout)
-      payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
-      payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
-      payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
-      payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
-      payout[0].approvalStatus = payoutRecord.approvalStatus
-      payout[0].datePayoutWasDone = payoutRecord.createdAt
-      payout[0].status = payoutRecord
+ if(payout.length > 0) {
+
+   payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
+   payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
+   payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
+   payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
+   payout[0].approvalStatus = payoutRecord.approvalStatus
+   payout[0].datePayoutWasDone = payoutRecord.createdAt
+   payout[0].status = payoutRecord
 // Save the update
-      payout[0].save()
+   payout[0].save()
+ }
 
       // Notify
 
