@@ -2274,7 +2274,7 @@ export default class InvestmentsController {
       // payout.status = 'paid'
       await payoutRecord.save()
 
-      console.log('Payout investment data line 2053:', payoutRecord)
+      console.log('Payout Record investment data line 2277:', payoutRecord)
       // @ts-ignore
       investment[0].datePayoutWasDone = payoutRecord.createdAt
 
@@ -2286,7 +2286,7 @@ export default class InvestmentsController {
         rollover_target: payload.rolloverTarget,
         rollover_done: payload.rolloverDone,
       })
-
+ console.log('Payout investment data line 2289:', payout)
       payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
       payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
       payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized

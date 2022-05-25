@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Wed May 25 2022 14:43:47 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Helpers/batchApproval.ts
+* app/Helpers/utils.ts
+
+
+Created files:
+* .autogit/logs/log-25-4-2022-14-13-26.txt
+
+
+Deleted files:
+
+
+Renamed files:
