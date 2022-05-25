@@ -11,18 +11,13 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-    "lib": ["es2021","ESNEXT"],
-    "module": "commonjs",
-    "target": "es2021",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "strict": true,
-    "declaration": true,
 
-
+    "lib": ["es2020"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es2021",
+        "esModuleInterop": true,
+        "declaration": true,  
     "paths": {
       "App/*": [
         "./app/*"
@@ -45,9 +40,5 @@
     ],
 
 
-  },  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
   }
 }

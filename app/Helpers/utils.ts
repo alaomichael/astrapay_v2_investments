@@ -407,4 +407,17 @@ module.exports = {
   getTaxRate,
 }
 
-export {}
+export {
+  generateRate,
+  interestDueOnPayout,
+  dueForPayout,
+  payoutDueDate,
+  approvalRequest,
+  investmentDuration,
+  sendPaymentDetails,
+  investmentRate,
+  getTaxRate,
+}
+
+module.exports.generateRates = generateRates
+export { generateRates }
