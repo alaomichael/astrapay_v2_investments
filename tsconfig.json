@@ -11,14 +11,8 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
+    "lib": ["es5", "es6", "dom", "dom.iterable", "es2015"],
 
-    "lib": ["ES6"],
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "es2021",
-        "esModuleInterop": true,
-        "declaration": true,
-        "isolatedModules": false,
     "paths": {
       "App/*": [
         "./app/*"
