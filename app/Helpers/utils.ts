@@ -2,9 +2,9 @@
 /* eslint-disable prettier/prettier */
 'use strict'
 
-import { createRequire } from 'module'
+// import { createRequire } from 'module'
 // @ts-ignore
-const require = createRequire(import.meta.url)
+// const require = createRequire(import.meta.url)
 // import Tax from "App/Models/Tax"
 // const Tax = require('App/Models/Tax.ts')
 
