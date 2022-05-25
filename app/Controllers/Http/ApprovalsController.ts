@@ -4,9 +4,9 @@ import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import {
-   investmentDuration,
+  investmentDuration,
   // @ts-ignore
-} from 'App/Helpers/utils.ts'
+} from 'App/Helpers/utils'
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
@@ -188,7 +188,7 @@ export default class ApprovalsController {
               let expectedDuration = investment[0].duration
               let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
               let amountInvested = investment[0].amount
-              if (expectedDuration > daysOfInvestment) {
+              if (parseInt(expectedDuration) > daysOfInvestment) {
                 // Pro-rata the Interest Due on Investment
                 let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
                 let newInterestDueToTermination = daysOfInvestment * interestDuePerDay

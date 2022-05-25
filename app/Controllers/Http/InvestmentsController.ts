@@ -21,7 +21,7 @@ import {
   sendPaymentDetails,
   investmentRate,
   // @ts-ignore
-} from 'App/Helpers/utils.ts'
+} from 'App/Helpers/utils'
 
 import Approval from 'App/Models/Approval'
 export default class InvestmentsController {
@@ -834,7 +834,9 @@ export default class InvestmentsController {
     let amount = investment.amount
     let investmentDuration = investment.duration
     let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
+    // @ts-ignore
     investment.interestDueOnInvestment = amountDueOnPayout
+    // @ts-ignore
     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
 
     // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
@@ -1808,7 +1810,9 @@ export default class InvestmentsController {
                       rate,
                       investmentDuration
                     )
+                    // @ts-ignore
                     investment.interestDueOnInvestment = amountDueOnPayout
+                    // @ts-ignore
                     investment.totalAmountToPayout = investment.amount + amountDueOnPayout
                     // @ts-ignore
                     investment.walletId = investment.walletHolderDetails.investorFundingWalletId
@@ -2144,15 +2148,21 @@ export default class InvestmentsController {
       // get update from the endpoint with axios
       transactionStatus = 'OK'
       if (transactionStatus !== 'OK') {
+        let walletId = investment[0].walletId
+        let investmentId = investment[0].id
+        let totalAmountToPayout = investment[0].totalAmountToPayout
+        // @ts-ignore
+        let phone = investment[0].walletHolderDetails.phone
+        console.log('Unsuccessful transaction, line 2152')
         return response.json({
           status: 'FAILED',
           message: 'The transaction was not successful.',
           data: {
-            walletId: 1,
-            walletBalance: 2500,
+            investmentId: investmentId,
+            totalAmountToPayout: totalAmountToPayout,
             receiverDetails: {
-              walletId: 2,
-              phone: 2347056435467,
+              walletId: walletId,
+              phone: phone,
             },
           },
         })
@@ -2230,13 +2240,12 @@ export default class InvestmentsController {
       payload.status = 'paid'
       payload.isPayoutSuccessful = isPayoutSuccessful
       // @ts-ignore
-      // payload.datePayoutWasDone = new Date().toISOString()
-
       console.log('Payout Payload: ', payload)
 
       // @ts-ignore
       // let { userId, investmentId, walletId } = request.all()
-      let payoutRecord = await PayoutRecord.query().where({
+      let payoutRecord
+      payoutRecord = await PayoutRecord.query().where({
         investment_id: payload.investmentId,
         user_id: userId,
         wallet_id: walletId,
@@ -2260,14 +2269,33 @@ export default class InvestmentsController {
 
       // Save the Update
       await investment[0].save()
-      let payout = await PayoutRecord.create(payload)
+      payoutRecord = await PayoutRecord.create(payload)
       // update investment status
       // payout.status = 'paid'
-      await payout.save()
+      await payoutRecord.save()
 
-      console.log('Payout investment data line 2053:', payout)
+      console.log('Payout investment data line 2053:', payoutRecord)
       // @ts-ignore
-      investment[0].datePayoutWasDone = payout.createdAt
+      investment[0].datePayoutWasDone = payoutRecord.createdAt
+
+      // Update Payout
+      let payout = await Payout.query().where({
+        investment_id: payload.investmentId,
+        user_id: userId,
+        wallet_id: walletId,
+        rollover_target: payload.rolloverTarget,
+        rollover_done: payload.rolloverDone,
+      })
+
+      payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
+      payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
+      payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
+      payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
+      payout[0].approvalStatus = payoutRecord.approvalStatus
+      payout[0].datePayoutWasDone = payoutRecord.createdAt
+      payout[0].status = payoutRecord
+// Save the update
+      payout[0].save()
 
       // Notify
 
@@ -2278,7 +2306,7 @@ export default class InvestmentsController {
         investment.map((inv) => inv.$original)
       )
       await investment[0].save()
-      return response.json({ status: 'OK', data: payout.$original })
+      return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }

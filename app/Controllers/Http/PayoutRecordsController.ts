@@ -9,18 +9,11 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 // const axios = require('axios').default
 
 // const API_URL = Env.get('API_URL')
-// import {
-//   generateRate,
-//   interestDueOnPayout,
-//   dueForPayout,
-//   payoutDueDate,
-//   approvalRequest,
-//   // @ts-ignore
-// } from 'App/Helpers/utils'
+
 export default class PayoutRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PayoutRecord params: ', params)
-    const { search, limit } = request.qs()
+    const { search, limit,userId, investmentId,status } = request.qs()
     console.log('PayoutRecord query: ', request.qs())
     const countPayouts = await PayoutRecord.query().where('status', 'paid').getCount()
     console.log('PayoutRecord Investment count: ', countPayouts)
@@ -32,22 +25,41 @@ export default class PayoutRecordsController {
     if (search) {
       sortedPayouts = sortedPayouts.filter((payoutRecord) => {
         // @ts-ignore
-        // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+        // console.log(' Sorted :', payoutRecord.walletHolderDetails.lastName!.startsWith(search))
         // @ts-ignore
         return payoutRecord.walletHolderDetails.lastName!.startsWith(search)
       })
     }
+       if (status) {
+         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+           // @ts-ignore
+           return payoutRecord.status.includes(status)
+         })
+       }
+
+       if (userId) {
+         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+           // @ts-ignore
+           return payoutRecord.userId === parseInt(userId)
+         })
+       }
+       if (investmentId) {
+         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+           // @ts-ignore
+           return payoutRecord.investmentId === parseInt(investmentId)
+         })
+       }
     if (limit) {
       sortedPayouts = sortedPayouts.slice(0, Number(limit))
     }
     if (sortedPayouts.length < 1) {
       return response.status(200).json({
         status: 'FAILED',
-        message: 'no investment payout matched your search',
+        message: 'no investment payout record matched your search',
         data: [],
       })
     }
-    // return investment
+    // return payoutRecord
     return response.status(200).json({
       status: 'OK',
       data: sortedPayouts.map((payoutRecord) => {
@@ -62,8 +74,8 @@ export default class PayoutRecordsController {
   //     // let id = request.input('userId')
   //     let { userId, investmentId } = request.all()
   //     console.log('Params for update line 191: ', userId, investmentId)
-  //     // const investment = await Investment.query().where('user_id', id).where('id', params.id).delete()
-  //     // let investment = await Investment.query().where('user_id', id).where('id', params.id)
+  //     // const payoutRecord = await Investment.query().where('user_id', id).where('id', params.id).delete()
+  //     // let payoutRecord = await Investment.query().where('user_id', id).where('id', params.id)
   //     let investment = await Investment.query().where('id', investmentId)
   //     console.log('Investment Info, line 58: ', investment)
   //     if (investment.length > 0) {
