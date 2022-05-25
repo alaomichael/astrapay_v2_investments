@@ -2287,7 +2287,7 @@ export default class InvestmentsController {
         investment_type: payload.investmentType,
       })
  console.log('Payout investment data line 2289:', payout)
- if(payout.length > 0) {
+ if(payout.length > 0 && payout !== undefined) {
 
    payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
    payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
@@ -2299,7 +2299,6 @@ export default class InvestmentsController {
 // Save the update
    payout[0].save()
  }
-
       // Notify
 
       // Check RollOver Target
