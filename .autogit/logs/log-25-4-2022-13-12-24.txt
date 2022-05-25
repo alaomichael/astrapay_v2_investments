@@ -1,0 +1,20 @@
+-------------------- Auto-Git Log --------------------
+		Wed May 25 2022 13:12:24 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/ApprovalsController.ts
+* app/Controllers/Http/InvestmentsController.ts
+* app/Controllers/Http/PayoutRecordsController.ts
+
+
+Created files:
+* .autogit/logs/log-25-4-2022-12-10-3.txt
+* app/Helpers/batchApproval.ts
+* app/Helpers/batchPayment.ts
+
+
+Deleted files:
+
+
+Renamed files:
