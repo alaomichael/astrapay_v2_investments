@@ -86,7 +86,7 @@ export default class ApprovalsController {
       const payload: any = await request.validate({ schema: approvalSchema })
       // check if the request is not existing
       let approval
-      let requestIsExisting = await Approval.query().where({
+     { let requestIsExisting = await Approval.query().where({
         user_id: payload.userId,
         investment_id: payload.investmentId,
       })
@@ -121,7 +121,7 @@ export default class ApprovalsController {
         // @ts-ignore
         Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
         return response.status(201).json({ status: 'OK', data: approval[0].$original })
-      }
+      }}
     } catch (error) {
       console.error(error)
       return response.status(404).json({

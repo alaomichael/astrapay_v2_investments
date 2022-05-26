@@ -146,7 +146,7 @@ export default class InvestmentsController {
         if (duration) {
           sortedInvestments = sortedInvestments.filter((investment) => {
             // @ts-ignore
-            return investment.duration === parseInt(duration)
+            return investment.duration === duration
           })
         }
         if (limit) {
@@ -268,12 +268,6 @@ export default class InvestmentsController {
       console.log('approvals line 170: ', approvals[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start investment
       if (approvals[0].approvalStatus === 'approved') {
-        // .where('status', 'initiated')
-        // investment = await Investment.query()
-        //   .where('requestType', requestType)
-        //   .where('user_id', userId)
-        //   .where('id', investmentId)
-
         //  investment
         try {
           investment = await Investment.query().where({
