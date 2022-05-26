@@ -7,8 +7,9 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
+import PuppeteerServices from 'App/Services/PuppeteerServices'
 // import { string } from '@ioc:Adonis/Core/Helpers'
-// import Env from '@ioc:Adonis/Core/Env'
+import Env from '@ioc:Adonis/Core/Env'
 // const axios = require('axios').default
 
 // const API_URL = Env.get('API_URL')
@@ -318,6 +319,14 @@ export default class InvestmentsController {
         await investment[0].save()
         // Send notification
         console.log('Updated investment Status line 201: ', investment)
+const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
+await new PuppeteerServices(requestUrl, {
+  paperFormat: 'a3',
+  fileName: `${investment[0].requestType}_${investment[0].id}`,
+})
+  .printAsPDF(investment[0])
+  .catch((error) => console.error(error))
+ console.log('Investment Certificate generated, URL, line 329: ', requestUrl)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
