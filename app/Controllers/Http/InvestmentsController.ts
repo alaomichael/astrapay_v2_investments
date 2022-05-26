@@ -79,7 +79,7 @@ export default class InvestmentsController {
     }
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
-        status: 'fail',
+        status: 'FAILED',
         message: 'no investment matched your search',
         data: [],
       })
@@ -99,44 +99,20 @@ export default class InvestmentsController {
 
   public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    const { limit } = request.qs()
-    console.log('INVESTMENT query: ', request.qs())
-    // post will always be of type Post
-    // const investment1 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => new Investment())
-    // console.log('INVESTMENT 1 query: ', investment1)
-
-    // post can be of type Post or string
-    // const investment2 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => 'working')
-    // console.log('INVESTMENT 2 query: ', investment2)
-
-    // use a fallback query!
-    // const investment3 = await Investment.query()
-    //   .where('id', 1)
-    //   .firstOr(() => Investment.query().where('id', 2).first())
-    // console.log('INVESTMENT 3 query: ', investment3)
-    // console.log('INVESTMENT query params: ', request.ctx)
-    try {
+           const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
+             request.qs()
+       console.log('INVESTMENT query: ', request.qs())
+       try {
       let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
       let sortedInvestments = investment.map((investment) => {
         return investment.$original
       })
-      let sortedInvestments = investment.map((investment) => {
-        return investment.$original
-      })
       if (sortedInvestments.length > 0) {
-        console.log('INVESTMENT DATA unconverted: ', investment)
-        // console.log('INVESTMENT newArray sorting: ', newArray)
         console.log('INVESTMENT before sorting: ', sortedInvestments)
         if (search) {
           sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
             // @ts-ignore
             return investment.walletHolderDetails.lastName!.startsWith(search)
           })
@@ -153,10 +129,24 @@ export default class InvestmentsController {
             return investment.status.includes(status)
           })
         }
+
+          if (approvalStatus) {
+            sortedInvestments = sortedInvestments.filter((investment) => {
+              // @ts-ignore
+              return investment.approvalStatus.includes(approvalStatus)
+            })
+          }
         if (investmentId) {
           sortedInvestments = sortedInvestments.filter((investment) => {
             // @ts-ignore
             return investment.id === parseInt(investmentId)
+          })
+        }
+
+        if (duration) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            return investment.duration === parseInt(duration)
           })
         }
         if (limit) {
@@ -164,7 +154,7 @@ export default class InvestmentsController {
         }
         if (sortedInvestments.length < 1) {
           return response.status(200).json({
-            status: 'fail',
+            status: 'FAILED',
             message: 'no investment matched your search',
             data: [],
           })
@@ -173,7 +163,7 @@ export default class InvestmentsController {
         return response.status(200).json({ status: 'OK', data: sortedInvestments })
       } else {
         return response.status(200).json({
-          status: 'fail',
+          status: 'FAILED',
           message: 'no investment matched your search',
           data: [],
         })
@@ -721,7 +711,7 @@ export default class InvestmentsController {
     //   console.log(' Rate return line 236 : ', rate)
     //   if (rate === undefined) {
     //     return response.status(400).json({
-    //       status: 'fail',
+    //       status: 'FAILED',
     //       message: 'no investment rate matched your search, please try again.',
     //       data: [],
     //     })
@@ -742,7 +732,7 @@ export default class InvestmentsController {
     //   } else {
     //     return response
     //       .status(200)
-    //       .json({ status: 'fail', message: 'no investment matched your query.' })
+    //       .json({ status: 'FAILED', message: 'no investment matched your query.' })
     //   }
     // } catch (error) {
     //   console.error(error)
@@ -786,15 +776,15 @@ export default class InvestmentsController {
             }
           } catch (error) {
             console.error('Is due for payout status Error :', error)
-            return response.json({ status: 'fail', data: error.message })
+            return response.json({ status: 'FAILED', data: error.message })
           }
         } else {
-          return response.json({ status: 'fail', data: investment.map((inv) => inv.$original) })
+          return response.json({ status: 'FAILED', data: investment.map((inv) => inv.$original) })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -852,7 +842,7 @@ export default class InvestmentsController {
     console.log(' Rate return line 684 : ', rate)
     if (rate === undefined) {
       return response.status(400).json({
-        status: 'fail',
+        status: 'FAILED',
         message: 'no investment rate matched your search, please try again.',
         data: [],
       })
@@ -997,12 +987,12 @@ export default class InvestmentsController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: investment })
+          return response.status(304).json({ status: 'FAILED', data: investment })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -1291,7 +1281,7 @@ export default class InvestmentsController {
             console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
             if (approvalRequestIsDone === undefined) {
               return response.status(400).json({
-                status: 'fail',
+                status: 'FAILED',
                 message: 'termination approval request was not successful, please try again.',
                 data: [],
               })
@@ -1556,7 +1546,7 @@ export default class InvestmentsController {
                 console.log(' Approval request return line 1362 : ', approvalRequestIsDone)
                 if (approvalRequestIsDone === undefined) {
                   return response.status(400).json({
-                    status: 'fail',
+                    status: 'FAILED',
                     message:
                       'payment processing approval request was not successful, please try again.',
                     data: [],
@@ -1691,7 +1681,7 @@ export default class InvestmentsController {
                         console.log(' Approval request return line 1672 : ', approvalRequestIsDone)
                         if (approvalRequestIsDone === undefined) {
                           return response.status(400).json({
-                            status: 'fail',
+                            status: 'FAILED',
                             message:
                               'payment processing approval request was not successful, please try again.',
                             data: [],
@@ -1796,7 +1786,7 @@ export default class InvestmentsController {
                     console.log(' Rate return line 1730 : ', rate)
                     if (rate === undefined) {
                       return response.status(400).json({
-                        status: 'fail',
+                        status: 'FAILED',
                         message: 'no investment rate matched your search, please try again.',
                         data: [],
                       })
@@ -1877,7 +1867,7 @@ export default class InvestmentsController {
                       console.log(' Approval request return line 1807 : ', approval)
                       if (approval === undefined) {
                         return response.status(400).json({
-                          status: 'fail',
+                          status: 'FAILED',
                           message:
                             'investment approval request was not successful, please try again.',
                           data: [],
@@ -2087,7 +2077,7 @@ export default class InvestmentsController {
               console.log(' Approval request return line 2057 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
-                  status: 'fail',
+                  status: 'FAILED',
                   message: 'termination approval request was not successful, please try again.',
                   data: [],
                 })
@@ -2371,7 +2361,7 @@ export default class InvestmentsController {
       console.log('Deleted data:', investment)
       return response.send('Investment Deleted.')
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }

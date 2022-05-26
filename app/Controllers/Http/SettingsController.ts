@@ -174,12 +174,12 @@ export default class SettingsController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: setting })
+          return response.status(304).json({ status: 'FAILED', data: setting })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -205,7 +205,7 @@ export default class SettingsController {
       console.log('Deleted data:', setting)
       return response.send('setting Delete.')
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }

@@ -168,12 +168,12 @@ export default class TaxRecordsController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: taxRecord })
+          return response.status(304).json({ status: 'FAILED', data: taxRecord })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -199,7 +199,7 @@ export default class TaxRecordsController {
       console.log('Deleted data:', taxRecord)
       return response.send('taxRecord Delete.')
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }

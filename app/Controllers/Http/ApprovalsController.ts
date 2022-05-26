@@ -64,7 +64,7 @@ export default class ApprovalsController {
     }
     if (sortedApprovals.length < 1) {
       return response.status(200).json({
-        status: 'fail',
+        status: 'FAILED',
         message: 'no approval request matched your search',
         data: [],
       })
@@ -125,7 +125,7 @@ export default class ApprovalsController {
     } catch (error) {
       console.error(error)
       return response.status(404).json({
-        status: 'fail',
+        status: 'FAILED',
         message: 'your approval request was not successful, please try again.',
       })
     }
@@ -258,12 +258,12 @@ export default class ApprovalsController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: approval })
+          return response.status(304).json({ status: 'FAILED', data: approval })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -289,7 +289,7 @@ export default class ApprovalsController {
       console.log('Deleted data:', approval)
       return response.status(200).json({ status: 'OK', message: 'Approval Request Deleted.' })
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }

@@ -133,12 +133,12 @@ export default class TaxesController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: tax })
+          return response.status(304).json({ status: 'FAILED', data: tax })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -164,7 +164,7 @@ export default class TaxesController {
       console.log('Deleted data:', tax)
       return response.send('tax Delete.')
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }

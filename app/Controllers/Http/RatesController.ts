@@ -187,12 +187,12 @@ export default class RatesController {
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'fail', data: rate })
+          return response.status(304).json({ status: 'FAILED', data: rate })
         }
       } else {
         return response
           .status(404)
-          .json({ status: 'fail', message: 'No data match your query parameters' })
+          .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
       console.error(error)
@@ -224,7 +224,7 @@ export default class RatesController {
       console.log('Deleted data:', rate)
       return response.send('Rate Delete.')
     } else {
-      return response.status(404).json({ status: 'fail', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }
   }
 }
