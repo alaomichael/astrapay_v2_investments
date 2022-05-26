@@ -86,11 +86,11 @@ export default class RatesController {
     // return rate(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedRates,
+      data: sortedRates.map((rate) => rate.$original),
     })
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const rateSchema = schema.create({
       productName: schema.string({ escape: true }, [rules.maxLength(20)]),
@@ -131,7 +131,10 @@ export default class RatesController {
 
     // @ts-ignore
     Event.emit('new:rate', { id: rate.id, extras: rate.additionalDetails })
-    return rate
+    return response.status(200).json({
+      status: 'OK',
+      data: rate.$original,
+    })
   }
 
   public async update({ request, response }: HttpContextContract) {
@@ -183,7 +186,12 @@ export default class RatesController {
             // send to user
             await rate[0].save()
             console.log('Update Investment rate:', rate)
-            return rate
+            return response.status(200).json({
+              status: 'OK',
+              data: rate.map((rate) => {
+                return rate.$original
+              }),
+            })
           }
           return // 422
         } else {

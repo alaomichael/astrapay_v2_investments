@@ -379,27 +379,27 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
 // export const roundingTypes: RoundingType[] = ['none', 'nearest', 'down', 'up']
 // export const thousandSeparatorTypes: ThousandSeparator[] = ['comma', 'duration', 'none', 'space']
 
-// export const getPrintServerBaseUrl = function () {
-//   let host: string
-//   let port: number
-//   const NODE_ENV = Env.get('NODE_ENV')
 
-//   if (NODE_ENV === 'production' || NODE_ENV === 'testing') {
-//     host = Env.get('PROD_PRINT_SERVER_HOST')
-//     port = Env.get('PROD_PRINT_SERVER_PORT')
-//   } else {
-//     host = Env.get('DEV_PRINT_SERVER_HOST')
-//     port = Env.get('DEV_PRINT_SERVER_PORT')
-//   }
+export const getPrintServerBaseUrl = function () {
+  let host: string
+  let port: number
+  const NODE_ENV = Env.get('NODE_ENV')
 
-//   return `http://${host}:${port}`
-// }
+  if (NODE_ENV === 'production' || NODE_ENV === 'testing') {
+    host = Env.get('PROD_PRINT_SERVER_HOST')
+    port = Env.get('PROD_PRINT_SERVER_PORT')
+  } else {
+    host = Env.get('DEV_PRINT_SERVER_HOST')
+    port = Env.get('DEV_PRINT_SERVER_PORT')
+  }
 
-// export const isProduction = Env.get('NODE_ENV') === 'production'
-// export const isDevelopment = Env.get('NODE_ENV') === 'development'
+  return `http://${host}:${port}`
+}
 
-// module.exports.generateRates = generateRates
-// export { generateRates }
+export const isProduction = Env.get('NODE_ENV') === 'production'
+export const isDevelopment = Env.get('NODE_ENV') === 'development'
+
+
 module.exports = {
   generateRate,
   interestDueOnPayout,
