@@ -5,7 +5,7 @@ export default class TaxRecords extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').index().unique().notNullable()
+       table.uuid('id').primary().index().unique().notNullable()
       table.string('state', 100).notNullable().index()
       table.string('lga', 100).nullable().index()
       table.string('tax_code', 100).nullable().index()

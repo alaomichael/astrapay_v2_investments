@@ -5,7 +5,7 @@ export default class Rates extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').index().unique().notNullable()
+       table.uuid('id').primary().index().unique().notNullable()
       table.string('product_name', 50).notNullable().index()
       table.float('lowest_amount', 12).unsigned().notNullable().index()
       table.float('highest_amount', 12).unsigned().notNullable().index()

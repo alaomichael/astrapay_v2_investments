@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { v4 as uuid } from 'uuid'
 
 /**
  * .enum('rollover_type', ['100' = 'no rollover',
@@ -11,7 +12,7 @@ import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 // type RollOverType = '100' | '101' | '102' | '103'
 export default class Payout extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public userId: number
@@ -96,4 +97,9 @@ export default class Payout extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static assignUuid(payout: Payout) {
+    payout.id = uuid()
+  }
 }

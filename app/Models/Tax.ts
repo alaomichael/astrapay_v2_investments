@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { v4 as uuid } from 'uuid'
 
 export default class Tax extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public state: string
@@ -28,4 +29,9 @@ export default class Tax extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static assignUuid(tax: Tax) {
+    tax.id = uuid()
+  }
 }
