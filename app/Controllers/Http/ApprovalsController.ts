@@ -86,42 +86,53 @@ export default class ApprovalsController {
       const payload: any = await request.validate({ schema: approvalSchema })
       // check if the request is not existing
       let approval
-     { let requestIsExisting = await Approval.query().where({
+      let investmentIsExisting = await Investment.query().where({
         user_id: payload.userId,
-        investment_id: payload.investmentId,
+        id: payload.investmentId,
       })
+      if (investmentIsExisting.length > 0) {
+        let requestIsExisting = await Approval.query().where({
+          user_id: payload.userId,
+          investment_id: payload.investmentId,
+        })
 
-      console.log('Existing Approval Request details: ', requestIsExisting)
-      if (requestIsExisting.length < 1) {
-        approval = await Approval.create(payload)
-        // @ts-ignore
-        // approval.status = 'active'
-        await approval.save()
-        console.log('The new approval request:', approval)
-        console.log('A New approval request has been Created.')
+        console.log('Existing Approval Request details: ', requestIsExisting)
+        if (requestIsExisting.length < 1) {
+          approval = await Approval.create(payload)
+          // @ts-ignore
+          // approval.status = 'active'
+          await approval.save()
+          console.log('The new approval request:', approval)
+          console.log('A New approval request has been Created.')
 
-        // Save approval new status to Database
-        await approval.save()
-        // Send approval Creation Message to Queue
-        // @ts-ignore
-        Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
-        return response.status(201).json({ status: 'OK', data: approval.$original })
-      } else {
-        //  Update approval request
-        approval = requestIsExisting
-        if (approval[0].requestType === payload.requestType) {
-          console.log('No update was made, because the request is similar to the current one.')
+          // Save approval new status to Database
+          await approval.save()
+          // Send approval Creation Message to Queue
+          // @ts-ignore
+          Event.emit('new:approval', { id: approval.id, extras: approval.requestType })
+          return response.status(201).json({ status: 'OK', data: approval.$original })
+        } else {
+          //  Update approval request
+          approval = requestIsExisting
+          if (approval[0].requestType === payload.requestType) {
+            console.log('No update was made, because the request is similar to the current one.')
+            return response.status(201).json({ status: 'OK', data: approval[0].$original })
+          }
+          approval[0].requestType = payload.requestType
+          approval[0].approvalStatus = 'pending' //payload.approvalStatus
+          approval[0].remark = ''
+
+          await approval[0].save()
+          // @ts-ignore
+          Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
           return response.status(201).json({ status: 'OK', data: approval[0].$original })
         }
-        approval[0].requestType = payload.requestType
-        approval[0].approvalStatus = 'pending' //payload.approvalStatus
-        approval[0].remark = ''
-
-        await approval[0].save()
-        // @ts-ignore
-        Event.emit('new:approval', { id: approval.id, extras: approval[0].requestType })
-        return response.status(201).json({ status: 'OK', data: approval[0].$original })
-      }}
+      } else {
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'No investment data matched your approval request, please try again.',
+        })
+      }
     } catch (error) {
       console.error(error)
       return response.status(404).json({
