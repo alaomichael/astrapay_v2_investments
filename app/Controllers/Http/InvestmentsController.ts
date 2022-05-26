@@ -123,15 +123,54 @@ export default class InvestmentsController {
       let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
-      let newArray = investment.map((investment) => {
+      let sortedInvestments = investment.map((investment) => {
         return investment.$original
       })
-      if (newArray.length > 0) {
+      let sortedInvestments = investment.map((investment) => {
+        return investment.$original
+      })
+      if (sortedInvestments.length > 0) {
         console.log('INVESTMENT DATA unconverted: ', investment)
-        if (limit) {
-          newArray = newArray.slice(0, Number(limit))
+        // console.log('INVESTMENT newArray sorting: ', newArray)
+        console.log('INVESTMENT before sorting: ', sortedInvestments)
+        if (search) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
+            // @ts-ignore
+            return investment.walletHolderDetails.lastName!.startsWith(search)
+          })
         }
-        return response.status(200).json({ status: 'OK', data: newArray })
+        if (requestType) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            return investment.requestType.startsWith(requestType)
+          })
+        }
+        if (status) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            return investment.status.includes(status)
+          })
+        }
+        if (investmentId) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            return investment.id === parseInt(investmentId)
+          })
+        }
+        if (limit) {
+          sortedInvestments = sortedInvestments.slice(0, Number(limit))
+        }
+        if (sortedInvestments.length < 1) {
+          return response.status(200).json({
+            status: 'fail',
+            message: 'no investment matched your search',
+            data: [],
+          })
+        }
+
+        return response.status(200).json({ status: 'OK', data: sortedInvestments })
       } else {
         return response.status(200).json({
           status: 'fail',
