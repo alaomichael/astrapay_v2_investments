@@ -6,8 +6,8 @@ export default class Approvals extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
        table.uuid('id').primary().index().unique().notNullable()
-      table.integer('user_id').unsigned().notNullable().index()
-      table.integer('investment_id').unsigned().notNullable().index()
+      table.string('user_id').unsigned().notNullable().index()
+      table.string('investment_id').unsigned().notNullable().index()
       table.string('request_type', 100).notNullable().index()
       table.string('approval_status', 100).nullable().index().defaultTo('pending')
       table.string('remark', 100).nullable().index()

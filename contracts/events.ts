@@ -29,8 +29,8 @@ declare module '@ioc:Adonis/Core/Event' {
   */
   interface EventsList {
     // making event type safe
-    'new:investment': { id: number; email: string }
-    'list:investments': { id: number; email: string }
+    'new:investment': { id: number | string; email: string }
+    'list:investments': { id: number | string; email: string }
     'investments:list': { investment: Investment | null }
   }
 }

@@ -13,8 +13,8 @@ export default class Investments extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
        table.uuid('id').primary().index().unique().notNullable()
-      table.integer('user_id').unsigned().notNullable().index()
-      table.integer('wallet_id').unsigned().nullable().index()
+      table.string('user_id').unsigned().notNullable().index()
+      table.string('wallet_id').unsigned().nullable().index()
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()

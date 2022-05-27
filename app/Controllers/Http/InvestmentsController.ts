@@ -631,7 +631,7 @@ await new PuppeteerServices(requestUrl, {
           return (
             investment.requestType === requestType &&
             investment.userId === parseInt(userId) &&
-            investment.id === parseInt(investmentId) &&
+            investment.id === investmentId &&
             investment.approvalStatus === approvalStatus
           )
         })
