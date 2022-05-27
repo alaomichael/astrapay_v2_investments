@@ -176,75 +176,18 @@ export default class InvestmentsController {
   }
   public async showByInvestmentId({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-    const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
-      request.qs()
-    console.log('INVESTMENT query: ', request.qs())
+    const { investmentId } = request.params()
     try {
-      let investment = await Investment.query().where({'user_id':params.userId, 'investment_id': params.investmentId})
-      // .orWhere('id', params.id)
-      // .limit()
-      let sortedInvestments = investment.map((investment) => {
-        return investment.$original
+      let investment = await Investment.query().where({ id: investmentId }).first()
+      if(!investment) return response.status(404).json({ status: 'FAILED' })
+      const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
+      await new PuppeteerServices(requestUrl, {
+        paperFormat: 'a3',
+        fileName: `${investment.requestType}_${investment.id}`,
       })
-      if (sortedInvestments.length > 0) {
-        console.log('INVESTMENT before sorting: ', sortedInvestments)
-        if (search) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.walletHolderDetails.lastName!.startsWith(search)
-          })
-        }
-        if (requestType) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.requestType.startsWith(requestType)
-          })
-        }
-        if (status) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.status.includes(status)
-          })
-        }
-
-        if (approvalStatus) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.approvalStatus.includes(approvalStatus)
-          })
-        }
-        if (investmentId) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.id === parseInt(investmentId)
-          })
-        }
-
-        if (duration) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.duration === duration
-          })
-        }
-        if (limit) {
-          sortedInvestments = sortedInvestments.slice(0, Number(limit))
-        }
-        if (sortedInvestments.length < 1) {
-          return response.status(200).json({
-            status: 'FAILED',
-            message: 'no investment matched your search',
-            data: [],
-          })
-        }
-
-        return response.status(200).json({ status: 'OK', data: sortedInvestments })
-      } else {
-        return response.status(200).json({
-          status: 'FAILED',
-          message: 'no investment matched your search',
-          data: [],
-        })
-      }
+        .printAsPDF(investment)
+        .catch((error) => console.error(error))
+      return response.status(200).json({ status: 'OK', data: investment })
     } catch (error) {
       console.log(error)
     }

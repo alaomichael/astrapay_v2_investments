@@ -277,7 +277,7 @@ const approvalRequest = async function (userId, investmentId, requestType) {
       investmentId,
       requestType,
     })
-    console.log('The API response for approval request: ', response.data)
+    console.log('The API response for approval request line 280: ', response.data)
     if (response && response.data.status === 'OK') {
       console.log('Approval request status is OK')
       return response.data
@@ -320,7 +320,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
     )
     console.log('The API response: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
-      return response.data.data[0].interest_rate
+      return response.data.data[0].interestRate
     } else {
       return
     }
@@ -381,6 +381,23 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
 // export const thousandSeparatorTypes: ThousandSeparator[] = ['comma', 'duration', 'none', 'space']
 
 
+// export const getPrintServerBaseUrl = function () {
+//   let host: string
+//   let port: number
+//   const NODE_ENV = Env.get('NODE_ENV')
+
+//   if (NODE_ENV === 'production' || NODE_ENV === 'testing') {
+//     host = Env.get('PROD_PRINT_SERVER_HOST')
+//     port = Env.get('PROD_PRINT_SERVER_PORT')
+//   } else {
+//     host = Env.get('DEV_PRINT_SERVER_HOST')
+//     port = Env.get('DEV_PRINT_SERVER_PORT')
+//   }
+
+//   return `http://${host}:${port}`
+// }
+
+
 export const getPrintServerBaseUrl = function () {
   let host: string
   let port: number
@@ -397,6 +414,8 @@ export const getPrintServerBaseUrl = function () {
   return `http://${host}:${port}`
 }
 
+
+
 export const isProduction = Env.get('NODE_ENV') === 'production'
 export const isDevelopment = Env.get('NODE_ENV') === 'development'
 
@@ -411,6 +430,7 @@ module.exports = {
   sendPaymentDetails,
   investmentRate,
   getTaxRate,
+  getPrintServerBaseUrl,
 }
 
 export {
