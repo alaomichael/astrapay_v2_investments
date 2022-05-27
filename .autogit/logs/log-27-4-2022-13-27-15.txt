@@ -1,0 +1,15 @@
+-------------------- Auto-Git Log --------------------
+Fri May 27 2022 13:27:15 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/RatesController.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:
