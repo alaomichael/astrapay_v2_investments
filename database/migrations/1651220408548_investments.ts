@@ -42,6 +42,7 @@ export default class Investments extends BaseSchema {
       table.string('request_type', 255).notNullable().defaultTo('start investment').index()
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
+      table.array().anyMembers()
 
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
