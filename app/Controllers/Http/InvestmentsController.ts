@@ -101,10 +101,10 @@ export default class InvestmentsController {
 
   public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
-           const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
-             request.qs()
-       console.log('INVESTMENT query: ', request.qs())
-       try {
+    const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
+      request.qs()
+    console.log('INVESTMENT query: ', request.qs())
+    try {
       let investment = await Investment.query().where('user_id', params.userId)
       // .orWhere('id', params.id)
       // .limit()
@@ -132,12 +132,12 @@ export default class InvestmentsController {
           })
         }
 
-          if (approvalStatus) {
-            sortedInvestments = sortedInvestments.filter((investment) => {
-              // @ts-ignore
-              return investment.approvalStatus.includes(approvalStatus)
-            })
-          }
+        if (approvalStatus) {
+          sortedInvestments = sortedInvestments.filter((investment) => {
+            // @ts-ignore
+            return investment.approvalStatus.includes(approvalStatus)
+          })
+        }
         if (investmentId) {
           sortedInvestments = sortedInvestments.filter((investment) => {
             // @ts-ignore
@@ -320,14 +320,14 @@ export default class InvestmentsController {
         await investment[0].save()
         // Send notification
         console.log('Updated investment Status line 201: ', investment)
-const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
-await new PuppeteerServices(requestUrl, {
-  paperFormat: 'a3',
-  fileName: `${investment[0].requestType}_${investment[0].id}`,
-})
-  .printAsPDF(investment[0])
-  .catch((error) => console.error(error))
- console.log('Investment Certificate generated, URL, line 329: ', requestUrl)
+        const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
+        await new PuppeteerServices(requestUrl, {
+          paperFormat: 'a3',
+          fileName: `${investment[0].requestType}_${investment[0].id}`,
+        })
+          .printAsPDF(investment[0])
+          .catch((error) => console.error(error))
+        console.log('Investment Certificate generated, URL, line 329: ', requestUrl)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -907,24 +907,35 @@ await new PuppeteerServices(requestUrl, {
     let userId = investment.userId
     let investmentId = investment.id
     let requestType = 'start investment'
-     let settings = await Setting.query().where({ id: 1 })
-     console.log('Approval setting line 910:', settings[0])
-     let timelineObject = [
-       {
-         id: uuid(),
-         action: 'investment initiated',
-         // @ts-ignore
-         message: `${investment.walletHolderDetails.firstName} just initiated an investment`,
-         createdAt: investment.createdAt,
-         meta: `duration: ${investment.duration}`
-       },
-     ]
-     let approvalIsAutomated = settings[0].isInvestmentAutomated
+    let settings = await Setting.query().where({ id: 1 })
+    console.log('Approval setting line 910:', settings[0])
+    let timeline
+
+    //  create a new object for the timeline
+    let timelineObject = {
+      id: uuid(),
+      action: 'investment initiated',
+      // @ts-ignore
+      message: `${investment.walletHolderDetails.firstName} just initiated an investment`,
+      createdAt: investment.createdAt,
+      meta: `duration: ${investment.duration}`,
+    }
+    console.log('Approval setting line 923:', timelineObject)
+    //  Push the new object to the array
+    await timeline.push(timelineObject)
+
+    console.log('Approval setting line 927:', timeline)
+
+    // stringify the timeline array
+    investment.timeline = JSON.stringify(timeline)
+
+    //  Check if investment activation is automated
+    let approvalIsAutomated = settings[0].isInvestmentAutomated
     // let approvalIsAutomated = false
     if (approvalIsAutomated === false) {
       // Send Approval Request to Admin
       let approval = await approvalRequest(userId, investmentId, requestType)
-      console.log(' Approval request return line 848 : ', approval)
+      console.log(' Approval request return line 938 : ', approval)
       if (approval === undefined) {
         return response.status(400).json({
           status: 'FAILED',
@@ -2343,19 +2354,18 @@ await new PuppeteerServices(requestUrl, {
         rollover_target: payload.rolloverTarget,
         investment_type: payload.investmentType,
       })
- console.log('Payout investment data line 2289:', payout)
- if(payout.length > 0 && payout !== undefined) {
-
-   payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
-   payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
-   payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
-   payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
-   payout[0].approvalStatus = payoutRecord.approvalStatus
-   payout[0].datePayoutWasDone = payoutRecord.createdAt
-   payout[0].status = payoutRecord
-// Save the update
-   payout[0].save()
- }
+      console.log('Payout investment data line 2289:', payout)
+      if (payout.length > 0 && payout !== undefined) {
+        payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
+        payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
+        payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
+        payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
+        payout[0].approvalStatus = payoutRecord.approvalStatus
+        payout[0].datePayoutWasDone = payoutRecord.createdAt
+        payout[0].status = payoutRecord
+        // Save the update
+        payout[0].save()
+      }
       // Notify
 
       // Check RollOver Target
