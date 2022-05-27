@@ -630,7 +630,7 @@ await new PuppeteerServices(requestUrl, {
         sortedInvestment = sortedInvestment.filter((investment) => {
           return (
             investment.requestType === requestType &&
-            investment.userId === parseInt(userId) &&
+            investment.userId === userId &&
             investment.id === investmentId &&
             investment.approvalStatus === approvalStatus
           )
@@ -655,13 +655,13 @@ await new PuppeteerServices(requestUrl, {
       if (userId) {
         console.log('USER ID', userId)
         sortedApproval = sortedApproval.filter((approval) => {
-          return approval.userId === parseInt(userId)
+          return approval.userId === userId
         })
       }
       if (investmentId) {
         console.log('INVESTMENT ID', investmentId)
         sortedApproval = sortedApproval.filter((approval) => {
-          return approval.investmentId === parseInt(investmentId)
+          return approval.investmentId === investmentId
         })
       }
       //  approvalStatuss
