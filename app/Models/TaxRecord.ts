@@ -27,9 +27,9 @@ export default class TaxRecord extends BaseModel {
   public investorDetails: JSON
 
   @column()
-  public userId: number
+  public userId: string
   @column()
-  public investmentId: number
+  public investmentId: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,0 +1,20 @@
+-------------------- Auto-Git Log --------------------
+Fri May 27 2022 10:23:32 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* contracts/events.ts
+* database/migrations/1651220408548_investments.ts
+* database/migrations/1651658735814_payouts.ts
+* database/migrations/1652258441909_approvals.ts
+* database/migrations/1652775736415_payout_records.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

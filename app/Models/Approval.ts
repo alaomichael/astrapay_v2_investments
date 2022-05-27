@@ -6,10 +6,10 @@ export default class Approval extends BaseModel {
   public id: string
 
   @column()
-  public userId: number
+  public userId: string
 
   @column()
-  public investmentId: number
+  public investmentId: string
 
   @column()
   public requestType: string

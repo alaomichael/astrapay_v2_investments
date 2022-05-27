@@ -6,13 +6,13 @@ export default class PayoutRecord extends BaseModel {
   public id: string
 
   @column()
-  public userId: number
+  public userId: string
 
   @column()
-  public investmentId: number
+  public investmentId: string
 
   @column()
-  public walletId: number
+  public walletId: string
 
   @column()
   public amount: number

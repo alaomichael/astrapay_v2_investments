@@ -16,10 +16,10 @@ export default class Investment extends BaseModel {
   public id: string
 
   @column()
-  public userId: number
+  public userId: string
 
   @column()
-  public walletId: number
+  public walletId: string
 
   @column()
   public amount: number

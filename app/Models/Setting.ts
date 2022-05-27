@@ -7,7 +7,7 @@ export default class Setting extends BaseModel {
   public id: string
 
   @column()
-  public fundingWalletId: number
+  public fundingWalletId: string
 
   @column()
   public isPayoutAutomated: boolean
