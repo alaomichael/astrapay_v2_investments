@@ -90,6 +90,9 @@ export default class Investment extends BaseModel {
   @column()
   public status: string
 
+  @column()
+  public timeline: JSON
+
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
