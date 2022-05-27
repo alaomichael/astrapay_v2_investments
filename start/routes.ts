@@ -63,6 +63,9 @@ Route.group(() => {
     Route.get('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
     Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/:userId', 'InvestmentsController.show')
+    Route.get('investments/:userId/:investmentId', 'InvestmentsController.showByInvestmentId')
+    Route.get('admin/investments/:userId/:investmentId', 'InvestmentsController.showByInvestmentId')
+
     // Route.get('investments/rates', 'InvestmentsController.rate')
 
     // PUT ROUTES

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Application from '@ioc:Adonis/Core/Application'
 import puppeteer, { PaperFormat } from 'puppeteer'
 import HttpContext from '@ioc:Adonis/Core/HttpContext'

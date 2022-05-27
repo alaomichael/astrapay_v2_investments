@@ -93,6 +93,9 @@ export default class Investment extends BaseModel {
   @column()
   public timeline: string
 
+  @column()
+  public certificateUrl: string
+
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 

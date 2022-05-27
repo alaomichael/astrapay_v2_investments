@@ -43,6 +43,7 @@ export default class Investments extends BaseSchema {
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
       table.jsonb('timeline').nullable().index()
+      table.string('certificate_url').nullable().index()
 
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
@@ -73,6 +74,7 @@ export default class Investments extends BaseSchema {
           'approval_status',
           'status',
           'date_payout_was_done',
+          'certificate_url',
         ],
         'investment_full_index'
       )
