@@ -36,7 +36,7 @@ export default class PuppeteerServices {
   }
 
   public async printAsPDF(data: Investment) {
-    const ctx = HttpContext.get()
+    const ctx = HttpContext.get() 
 
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--headless', '--disable-gpu', '--window-size=1920x1080'],

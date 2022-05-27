@@ -187,7 +187,7 @@ export default class InvestmentsController {
       })
         .printAsPDF(investment)
         .catch((error) => console.error(error))
-      return response.status(200).json({ status: 'OK', data: investment })
+      return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
       console.log(error)
     }
@@ -338,6 +338,17 @@ export default class InvestmentsController {
         await investment[0].save()
         // Send notification
         console.log('Updated investment Status line 201: ', investment)
+// START
+//  const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
+//  await new PuppeteerServices(requestUrl, {
+//    paperFormat: 'a3',
+//    fileName: `${investment.requestType}_${investment.id}`,
+//  })
+//    .printAsPDF(investment)
+//    .catch((error) => console.error(error))
+//  return response.status(200).json({ status: 'OK', data: investment.$original })
+
+// END
         const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
         await new PuppeteerServices(requestUrl, {
           paperFormat: 'a3',

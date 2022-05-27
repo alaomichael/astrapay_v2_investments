@@ -79,8 +79,8 @@ export default class ApprovalsController {
   public async store({ request, response }: HttpContextContract) {
     try {
       const approvalSchema = schema.create({
-        userId: schema.number(),
-        investmentId: schema.number(),
+        userId: schema.string(),
+        investmentId: schema.string(),
         requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       })
       const payload: any = await request.validate({ schema: approvalSchema })
