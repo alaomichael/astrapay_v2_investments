@@ -338,9 +338,10 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
     )
-    console.log('The API response: ', response.data)
+    console.log('The API response line 341: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
-      return response.data.data[0].interest_rate
+      console.log('The API response line 343: ', response.data.data[0].interestRate)
+      return response.data.data[0].interestRate
     } else {
       return
     }
