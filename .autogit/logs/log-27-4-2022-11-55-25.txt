@@ -1,0 +1,16 @@
+-------------------- Auto-Git Log --------------------
+Fri May 27 2022 11:55:25 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Models/Investment.ts
+* database/migrations/1651220408548_investments.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

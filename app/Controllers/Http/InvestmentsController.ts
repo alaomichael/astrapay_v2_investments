@@ -7,6 +7,7 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
+import { v4 as uuid } from 'uuid'
 import PuppeteerServices from 'App/Services/PuppeteerServices'
 // import { string } from '@ioc:Adonis/Core/Helpers'
 import Env from '@ioc:Adonis/Core/Env'
@@ -768,6 +769,17 @@ await new PuppeteerServices(requestUrl, {
               investment[0].rolloverTarget = request.input('rolloverTarget')
               investment[0].rolloverType = request.input('rolloverType')
               // investment[0].investmentType = request.input('investmentType')
+              // Todo
+              // Update Timeline
+              // Retrieve the current timeline
+
+              // Turn Timeline string to json
+
+              // push the update to the array
+
+              // Turn Timeline json to string
+
+              // save the timeline to the investment object
 
               if (investment) {
                 // send to user
@@ -895,7 +907,20 @@ await new PuppeteerServices(requestUrl, {
     let userId = investment.userId
     let investmentId = investment.id
     let requestType = 'start investment'
-    let approvalIsAutomated = false
+     let settings = await Setting.query().where({ id: 1 })
+     console.log('Approval setting line 910:', settings[0])
+     let timelineObject = [
+       {
+         id: uuid(),
+         action: 'investment initiated',
+         // @ts-ignore
+         message: `${investment.walletHolderDetails.firstName} just initiated an investment`,
+         createdAt: investment.createdAt,
+         meta: `duration: ${investment.duration}`
+       },
+     ]
+     let approvalIsAutomated = settings[0].isInvestmentAutomated
+    // let approvalIsAutomated = false
     if (approvalIsAutomated === false) {
       // Send Approval Request to Admin
       let approval = await approvalRequest(userId, investmentId, requestType)
