@@ -907,10 +907,9 @@ export default class InvestmentsController {
     let userId = investment.userId
     let investmentId = investment.id
     let requestType = 'start investment'
-    let settings = await Setting.query().where({ id: 1 })
+    let settings = await Setting.query().where({ tagName: 'default setting' })
     console.log('Approval setting line 910:', settings[0])
-    let timeline
-
+    let timeline: any[] = []
     //  create a new object for the timeline
     let timelineObject = {
       id: uuid(),
@@ -920,11 +919,11 @@ export default class InvestmentsController {
       createdAt: investment.createdAt,
       meta: `duration: ${investment.duration}`,
     }
-    console.log('Approval setting line 923:', timelineObject)
+    console.log('Timeline object line 923:', timelineObject)
     //  Push the new object to the array
-    await timeline.push(timelineObject)
+    timeline.push(timelineObject)
 
-    console.log('Approval setting line 927:', timeline)
+    console.log('Timeline object line 927:', timeline)
 
     // stringify the timeline array
     investment.timeline = JSON.stringify(timeline)
@@ -1114,7 +1113,7 @@ export default class InvestmentsController {
       // return rate(s)
       return response.status(200).json({
         status: 'OK',
-        data: await sortedApprovalRequest.map((inv) => inv.$original),
+        data: sortedApprovalRequest.map((inv) => inv.$original),
       })
     } catch (error) {
       console.log(error)
@@ -1145,7 +1144,7 @@ export default class InvestmentsController {
         let isDueForPayout = await dueForPayout(startDate, duration)
         console.log('Is due for payout status line 1074:', isDueForPayout)
         // let amt = investment[0].amount
-        let settings = await Setting.query().where({ id: 1 })
+       let settings = await Setting.query().where({ tagName: 'default setting' })
         console.log('Approval setting line 1077:', settings[0])
         if (isDueForPayout) {
           //  START
@@ -1312,7 +1311,7 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'terminate investment'
-          let settings = await Setting.query().where({ id: 1 })
+        let settings = await Setting.query().where({ tagName: 'default setting' })
           console.log('Approval setting line 1241:', settings[0])
           let approvalIsAutomated = settings[0].isTerminationAutomated // isPayoutAutomated
           if (approvalIsAutomated === false) {
@@ -1452,7 +1451,7 @@ export default class InvestmentsController {
         let isTransactionSentForProcessing
         let payload
         let payout
-        let settings = await Setting.query().where({ id: 1 })
+       let settings = await Setting.query().where({ tagName: 'default setting' })
         console.log('Approval setting line 1386:', settings[0])
         console.log('Investment Info, line 1387: ', investment)
         if (
@@ -1660,7 +1659,7 @@ export default class InvestmentsController {
                   }
                   let amountToPayoutNow
                   let amountToBeReinvested
-                  let settings = await Setting.query().where({ id: 1 })
+                let settings = await Setting.query().where({ tagName: 'default setting' })
                   console.log('Approval setting line 1590:', settings[0])
                   if (rolloverDone >= rolloverTarget) {
                     let payload = investmentData
@@ -1830,7 +1829,7 @@ export default class InvestmentsController {
                         data: [],
                       })
                     }
-                    let settings = await Setting.query().where({ id: 1 })
+                   let settings = await Setting.query().where({ tagName: 'default setting' })
                     console.log('Approval setting line 1788:', settings[0])
                     let payload
                     // destructure / extract the needed data from the investment
