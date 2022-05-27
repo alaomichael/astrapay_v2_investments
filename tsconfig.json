@@ -11,14 +11,18 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-
-    "lib": ["es2015","es2020","es2021","esnext"],
-        "module": "CommonJS",
-        "moduleResolution": "node",
-        "target": "es2015",
-        "esModuleInterop": true,
-        "declaration": true,
-        "strict": false,
+    "lib": [
+      "es2015",
+      "es2020",
+      "es2021",
+      "esnext"
+    ],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "esModuleInterop": true,
+    "declaration": true,
+    "strict": false,
     "paths": {
       "App/*": [
         "./app/*"
@@ -37,9 +41,8 @@
       "@adonisjs/core",
       "@adonisjs/repl",
       "@japa/preset-adonis/build/adonis-typings",
-      "@adonisjs/lucid"
-    ],
-
-
+      "@adonisjs/lucid",
+      "@adonisjs/attachment-lite"
+    ]
   }
 }

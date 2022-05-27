@@ -21,7 +21,8 @@
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
-    "./providers/QueryBuilderProvider"
+    "./providers/QueryBuilderProvider",
+    "@adonisjs/attachment-lite"
   ],
   "aceProviders": [
     "@adonisjs/repl"
