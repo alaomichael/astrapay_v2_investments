@@ -16,7 +16,7 @@ export default class RatesController {
       productName,
       interestRate,
     } = request.qs()
-    console.log('Rate query: ', request.qs())
+    console.log('Rate query line 19: ', request.qs())
     const countActiveRates = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countActiveRates)
     // const countSuspended = await Rate.query().where('status', 'suspended').getCount()
@@ -76,6 +76,8 @@ export default class RatesController {
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
+    console.log('sortedRates line 79: ', sortedRates)
+
     if (sortedRates.length < 1) {
       return response.status(200).json({
         status: 'OK',
@@ -122,7 +124,6 @@ export default class RatesController {
     await rate.save()
     console.log('The new investment:', rate)
 
-    // TODO
     console.log('A New Rate has been Created.')
 
     // Save Rate new status to Database
