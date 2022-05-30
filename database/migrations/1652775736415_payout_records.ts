@@ -37,6 +37,8 @@ export default class PayoutRecords extends BaseSchema {
       table.boolean('is_payout_successful').notNullable().defaultTo(true).index()
       table.string('approval_status', 255).notNullable().defaultTo('approved').index()
       table.string('status', 255).notNullable().index()
+        table.jsonb('timeline').nullable().index()
+        table.string('certificate_url').nullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').notNullable().index()
       table.timestamp('updated_at', { useTz: true })

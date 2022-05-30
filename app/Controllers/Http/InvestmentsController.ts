@@ -181,7 +181,7 @@ export default class InvestmentsController {
     try {
       let investment = await Investment.query().where({ id: investmentId }).first()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
-      const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
+      const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
       await new PuppeteerServices(requestUrl, {
         paperFormat: 'a3',
         fileName: `${investment.requestType}_${investment.id}`,
@@ -1315,11 +1315,11 @@ export default class InvestmentsController {
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
       console.log(
-        'Params for update line 1185: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+        'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       let investment = await Investment.query().where('id', investmentId)
-      console.log('Investment Info, line 1189: ', investment)
+      console.log('Investment Info, line 1322: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
         // @ts-ignore
@@ -1329,14 +1329,14 @@ export default class InvestmentsController {
         // TESTING
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
         let duration = 4
-        console.log('Time investment was started line 1199: ', startDate)
+        console.log('Time investment was started line 1332: ', startDate)
         let timelineObject
         let timeline
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 1203:', isDueForPayout)
+        console.log('Is due for payout status line 1336:', isDueForPayout)
         // let amt = investment[0].amount
         let settings = await Setting.query().where({ tagName: 'default setting' })
-        console.log('Approval setting line 1206:', settings[0])
+        console.log('Approval setting line 1339:', settings[0])
         if (isDueForPayout) {
           //  START
           let payload = investment[0].$original
@@ -1348,7 +1348,7 @@ export default class InvestmentsController {
           let approvalIsAutomated = settings[0].isTerminationAutomated
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 1218 : ', approvalRequestIsDone)
+            console.log(' Approval request return line 1351 : ', approvalRequestIsDone)
             if (approvalRequestIsDone === undefined) {
               return response.status(400).json({
                 status: 'FAILED',
@@ -1360,8 +1360,8 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             // START
 
-            console.log('Updated investment Status line 1230: ', investment)
-            console.log('Payout investment data line 1231:', payload)
+            console.log('Updated investment Status line 1363: ', investment)
+            console.log('Payout investment data line 1364:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
             // check if payout request is existing
@@ -1370,16 +1370,16 @@ export default class InvestmentsController {
               user_id: userId,
             })
             console.log(
-              'Investment payout Request Is Existing data line 1240:',
+              'Investment payout Request Is Existing data line 1373:',
               payoutRequestIsExisting
             )
             console.log(
-              'Investment payout Request Is Existing data length line 1244:',
+              'Investment payout Request Is Existing data length line 1377:',
               payoutRequestIsExisting.length
             )
-            console.log('Investment payload data line 1247:', payload)
-            console.log(' investment[0].approvalStatus  line 1248:', investment[0].approvalStatus)
-            console.log(' investment[0].status line 1249:', investment[0].status)
+            console.log('Investment payload data line 1380:', payload)
+            console.log(' investment[0].approvalStatus  line 1381:', investment[0].approvalStatus)
+            console.log(' investment[0].status line 1382:', investment[0].status)
             let payout
             if (
               (payoutRequestIsExisting.length < 1 &&
@@ -2291,7 +2291,7 @@ export default class InvestmentsController {
                         investment.timeline = JSON.stringify(timeline)
                         // Save
                         await investment.save()
-                        const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
+                        const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
                         await new PuppeteerServices(requestUrl, {
                           paperFormat: 'a3',
                           fileName: `${investment.requestType}_${investment.id}`,

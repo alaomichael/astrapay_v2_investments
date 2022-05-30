@@ -83,6 +83,12 @@ export default class PayoutRecord extends BaseModel {
   @column()
   public status: string
 
+  @column()
+  public timeline: string
+
+  @column()
+  public certificateUrl: string
+
   @column.dateTime({ autoCreate: true })
   public datePayoutWasDone: DateTime
 
