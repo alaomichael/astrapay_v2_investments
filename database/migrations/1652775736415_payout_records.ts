@@ -69,6 +69,7 @@ export default class PayoutRecords extends BaseSchema {
           'approval_status',
           'status',
           'date_payout_was_done',
+          'certificate_url',
         ],
         'payout_records_full_index'
       )

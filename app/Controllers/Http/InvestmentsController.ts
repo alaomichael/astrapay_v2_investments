@@ -183,9 +183,8 @@ export default class InvestmentsController {
       if (!investment) return response.status(404).json({ status: 'FAILED' })
       const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
       await new PuppeteerServices(requestUrl, {
-        paperFormat: 'a3',
-        fileName: `${investment.requestType}_${investment.id}`,
-      })
+        paperFormat: 'a4',
+        fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`}) //.toISODate({ format: 'basic'} )}`})
         .printAsPDF(investment)
         .catch((error) => console.error(error))
       return response.status(200).json({ status: 'OK', data: investment.$original })
