@@ -844,7 +844,7 @@ export default class InvestmentsController {
       rolloverTarget: schema.number(),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
-      userId: schema.number(),
+      userId: schema.string(),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
       long: schema.number(),
