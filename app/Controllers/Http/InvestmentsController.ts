@@ -348,7 +348,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 348:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline //JSON.parse(investment[0].timeline)
         timeline.push(timelineObject)
         console.log('Timeline object line 352:', timeline)
         // stringify the timeline array
@@ -432,7 +432,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 429:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 433:', timeline)
         // stringify the timeline array
@@ -532,7 +532,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 529:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 533:', timeline)
         // stringify the timeline array
@@ -586,7 +586,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 583:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 587:', timeline)
         // stringify the timeline array
@@ -679,7 +679,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 676:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 680:', timeline)
         // stringify the timeline array
@@ -733,7 +733,7 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 730:', timelineObject)
         //  Push the new object to the array
-        timeline = JSON.parse(investment[0].timeline)
+        timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 734:', timeline)
         // stringify the timeline array
@@ -938,7 +938,7 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 935:', timelineObject)
                 //  Push the new object to the array
-                timeline = JSON.parse(investment[0].timeline)
+                timeline = investment[0].timeline
                 timeline.push(timelineObject)
                 console.log('Timeline object line 939:', timeline)
                 // stringify the timeline array
@@ -1427,7 +1427,7 @@ export default class InvestmentsController {
             }
             console.log('Timeline object line 1295:', timelineObject)
             //  Push the new object to the array
-            timeline = JSON.parse(investment[0].timeline)
+            timeline = investment[0].timeline
             timeline.push(timelineObject)
             console.log('Timeline object line 1299:', timeline)
             // stringify the timeline array
@@ -1512,7 +1512,7 @@ export default class InvestmentsController {
             }
             console.log('Timeline object line 1380:', timelineObject)
             //  Push the new object to the array
-            timeline = JSON.parse(investment[0].timeline)
+            timeline = investment[0].timeline
             timeline.push(timelineObject)
 
             console.log('Timeline object line 1385:', timeline)
@@ -1641,7 +1641,7 @@ export default class InvestmentsController {
           }
           console.log('Timeline object line 1509:', timelineObject)
           //  Push the new object to the array
-          timeline = JSON.parse(investment[0].timeline)
+          timeline = investment[0].timeline
           timeline.push(timelineObject)
 
           console.log('Timeline object line 1514:', timeline)
@@ -1828,7 +1828,7 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 1696:', timelineObject)
                 //  Push the new object to the array
-                timeline = JSON.parse(investment[0].timeline)
+                timeline = investment[0].timeline
                 timeline.push(timelineObject)
 
                 console.log('Timeline object line 1701:', timeline)
@@ -1872,7 +1872,7 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 1740:', timelineObject)
                 //  Push the new object to the array
-                timeline = JSON.parse(investment[0].timeline)
+                timeline = investment[0].timeline
                 timeline.push(timelineObject)
                 console.log('Timeline object line 1744:', timeline)
                 // stringify the timeline array
@@ -2031,7 +2031,7 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 1899:', timelineObject)
                       //  Push the new object to the array
-                      timeline = JSON.parse(investment[0].timeline)
+                      timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 1903:', timeline)
                       // stringify the timeline array
@@ -2080,7 +2080,7 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 1948:', timelineObject)
                       //  Push the new object to the array
-                      timeline = JSON.parse(investment[0].timeline)
+                      timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 1952:', timeline)
                       // stringify the timeline array
@@ -2363,7 +2363,7 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 2360:', timelineObject)
                       //  Push the new object to the array
-                      timeline = JSON.parse(investment[0].timeline)
+                      timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 2364:', timeline)
                       // stringify the timeline array
@@ -2429,7 +2429,7 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 2426:', timelineObject)
                       //  Push the new object to the array
-                      timeline = JSON.parse(investment[0].timeline)
+                      timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 2430:', timeline)
                       // stringify the timeline array
@@ -2589,7 +2589,7 @@ export default class InvestmentsController {
             }
             console.log('Timeline object line 2586:', timelineObject)
             //  Push the new object to the array
-            timeline = JSON.parse(investment[0].timeline)
+            timeline = investment[0].timeline
             timeline.push(timelineObject)
             console.log('Timeline object line 2590:', timeline)
             // stringify the timeline array
@@ -2802,7 +2802,7 @@ export default class InvestmentsController {
       }
       console.log('Timeline object line 2408:', timelineObject)
       //  Push the new object to the array
-      timeline = JSON.parse(investment[0].timeline)
+      timeline = investment[0].timeline
       timeline.push(timelineObject)
       console.log('Timeline object line 2412:', timeline)
       // stringify the timeline array
