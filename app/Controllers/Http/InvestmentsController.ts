@@ -794,7 +794,8 @@ export default class InvestmentsController {
             if (
               investment &&
               investment[0].investmentType !== 'debenture' &&
-              isDueForPayout === false
+              isDueForPayout === false &&
+              newRolloverTarget <= 5
             ) {
               // investment[0].amount = request.input('amount')
               investment[0].rolloverTarget = newRolloverTarget
@@ -819,6 +820,12 @@ export default class InvestmentsController {
                 return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
               }
               return // 422
+            } else {
+              return response.status(400).json({
+                status: 'FAILED',
+                data: investment.map((inv) => inv.$original),
+                message: 'please check your investment type, and note the rollover target cannot be more than 5 times'
+              })
             }
           } catch (error) {
             console.error('Is due for payout status Error :', error)
