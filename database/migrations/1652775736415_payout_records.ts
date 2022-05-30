@@ -3,9 +3,9 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class PayoutRecords extends BaseSchema {
   protected tableName = 'payout_records'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-       table.uuid('id').primary().index().unique().notNullable()
+      table.uuid('id').primary().index().unique().notNullable()
       table.string('user_id').unsigned().notNullable().index()
       table.string('investment_id').unsigned().notNullable().index()
       table.string('wallet_id').unsigned().nullable().index()
@@ -37,8 +37,8 @@ export default class PayoutRecords extends BaseSchema {
       table.boolean('is_payout_successful').notNullable().defaultTo(true).index()
       table.string('approval_status', 255).notNullable().defaultTo('approved').index()
       table.string('status', 255).notNullable().index()
-        table.jsonb('timeline').nullable().index()
-        table.string('certificate_url').nullable().index()
+      table.jsonb('timeline').nullable().index()
+      table.string('certificate_url').nullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').notNullable().index()
       table.timestamp('updated_at', { useTz: true })
@@ -76,7 +76,7 @@ export default class PayoutRecords extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

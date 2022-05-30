@@ -184,7 +184,8 @@ export default class InvestmentsController {
       const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
       await new PuppeteerServices(requestUrl, {
         paperFormat: 'a4',
-        fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`}) //.toISODate({ format: 'basic'} )}`})
+        fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
+      })
         .printAsPDF(investment)
         .catch((error) => console.error(error))
       return response.status(200).json({ status: 'OK', data: investment.$original })
@@ -1388,11 +1389,15 @@ export default class InvestmentsController {
                 investment[0].approvalStatus === 'approved' &&
                 investment[0].status === 'payout')
             ) {
+              console.log('Matured Payout investment data line 1392:', payload)
+              payload.timeline = JSON.stringify(investment[0].timeline)
+              // await payload.save()
+              console.log('Matured Payout investment data line 1394:', payload)
               payout = await Payout.create(payload)
               payout.approvalStatus = 'pending'
               payout.status = 'payout'
               await payout.save()
-              console.log('Matured Payout investment data line 1262:', payout)
+              console.log('Matured Payout investment data line 1397:', payout)
             } else if (
               (payoutRequestIsExisting.length > 0 &&
                 investment[0].approvalStatus === 'approved' &&
