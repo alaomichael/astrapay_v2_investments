@@ -72,12 +72,12 @@ export default class PuppeteerServices {
         })
         .then(() => {
           console.log('File created')
-          // let customer = JSON.parse(JSON.stringify(data?.walletHolderDetails))
-          // Event.emit('investment::investment_certificate_generated', {
-          //   name: customer.firstName,
-          //   email: customer.email,
-          //   filePath: filePath,
-          // })
+          let customer = JSON.parse(JSON.stringify(data?.walletHolderDetails))
+          Event.emit('investment::investment_certificate_generated', {
+            name: customer.firstName,
+            email: customer.email,
+            filePath: filePath,
+          })
         })
         .catch((error) => {
           Logger.error('Error at PuppeteerServices.printAsPDF > page.pdf(): %j', error)
