@@ -37,6 +37,7 @@ export default class InvestmentsController {
     // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
     // const investment = await Investment.query().offset(0).limit(1)
     const investment = await Investment.all()
+        // console.log('INVESTMENT before sorting line 40: ', investment)
     // let newArray = investment.map((investment) => {return investment.$original})
     let sortedInvestments = investment.map((investment) => {
       return investment.$original
@@ -1154,6 +1155,9 @@ export default class InvestmentsController {
     // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
     // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
     // console.log('Testing Payout Date: ' + testingPayoutDate)
+
+    // Save update to database
+    await investment.save()
     let newInvestmentId = investment.id
     // Send to Notificaation Service
     // @ts-ignore
