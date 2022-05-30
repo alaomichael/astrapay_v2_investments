@@ -302,7 +302,7 @@ export default class InvestmentsController {
           console.error(error)
           return response.json({ status: 'FAILED', message: error.message })
         }
-        console.log('INVESTMENT DATA line 178: ', investment)
+        console.log('INVESTMENT DATA line 305: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -333,14 +333,29 @@ export default class InvestmentsController {
         investment[0].startDate = DateTime.now().toISO()
         let duration = parseInt(investment[0].duration)
         investment[0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 195: ', currentDateMs)
-        console.log('Time investment was started line 196: ', investment[0].startDate)
-        console.log('Time investment payout date line 197: ', investment[0].payoutDate)
-
+        console.log('The currentDate line 336: ', currentDateMs)
+        console.log('Time investment was started line 337: ', investment[0].startDate)
+        console.log('Time investment payout date line 338: ', investment[0].payoutDate)
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment activated',
+          // @ts-ignore
+          message: `${investment[0].walletHolderDetails.firstName} investment has just been activated.`,
+          createdAt: DateTime.now(),
+          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+        }
+        console.log('Timeline object line 348:', timelineObject)
+        //  Push the new object to the array
+        timeline = JSON.parse(investment[0].timeline)
+        timeline.push(timelineObject)
+        console.log('Timeline object line 352:', timeline)
+        // stringify the timeline array
+        investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
         // Send notification
-        console.log('Updated investment Status line 201: ', investment)
+        console.log('Updated investment Status line 358: ', investment)
         // START
         //  const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
         //  await new PuppeteerServices(requestUrl, {
@@ -360,6 +375,9 @@ export default class InvestmentsController {
           .printAsPDF(investment[0])
           .catch((error) => console.error(error))
         console.log('Investment Certificate generated, URL, line 329: ', requestUrl)
+        // save the certicate url
+        investment[0].certificateUrl = requestUrl
+        await investment[0].save()
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -402,11 +420,30 @@ export default class InvestmentsController {
 
         // investment[0].status = 'declined'
         investment[0].approvalStatus = approvals[0].approvalStatus
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment declined',
+          // @ts-ignore
+          message: `${investment[0].walletHolderDetails.firstName} investment has just been declined.`,
+          createdAt: DateTime.now(),
+          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+        }
+        console.log('Timeline object line 429:', timelineObject)
+        //  Push the new object to the array
+        timeline = JSON.parse(investment[0].timeline)
+        timeline.push(timelineObject)
+        console.log('Timeline object line 433:', timeline)
+        // stringify the timeline array
+        investment[0].timeline = JSON.stringify(timeline)
+        // Save
+        await investment[0].save()
+
         // await Save
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 253: ',
+          'INVESTMENT DATA line 443: ',
           investment.map((inv) => inv.$original)
         )
 
@@ -483,10 +520,27 @@ export default class InvestmentsController {
         // console.log('Time investment was started line 285: ', investment[0].startDate)
         // console.log('Time investment payout date line 286: ', investment[0].payoutDate)
 
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment terminated',
+          // @ts-ignore
+          message: `${investment[0].walletHolderDetails.firstName} investment has just been terminated.`,
+          createdAt: DateTime.now(),
+          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+        }
+        console.log('Timeline object line 529:', timelineObject)
+        //  Push the new object to the array
+        timeline = JSON.parse(investment[0].timeline)
+        timeline.push(timelineObject)
+        console.log('Timeline object line 533:', timeline)
+        // stringify the timeline array
+        investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
+
         // send notification
-        console.log('Updated investment Status line 312: ', investment)
+        console.log('Updated investment Status line 540: ', investment)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -520,8 +574,25 @@ export default class InvestmentsController {
 
         // investment[0].status = 'declined'
         investment[0].approvalStatus = approvals[0].approvalStatus
-        // await Save
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment termination declined',
+          // @ts-ignore
+          message: `${investment[0].walletHolderDetails.firstName} investment termination has just been declined.`,
+          createdAt: DateTime.now(),
+          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+        }
+        console.log('Timeline object line 583:', timelineObject)
+        //  Push the new object to the array
+        timeline = JSON.parse(investment[0].timeline)
+        timeline.push(timelineObject)
+        console.log('Timeline object line 587:', timeline)
+        // stringify the timeline array
+        investment[0].timeline = JSON.stringify(timeline)
+        // Save
         await investment[0].save()
+
         // send notification
         console.log(
           'INVESTMENT DATA line 337: ',
@@ -596,10 +667,27 @@ export default class InvestmentsController {
         // console.log('The currentDate line 372: ', currentDateMs)
         // console.log('Time investment was started line 373: ', investment[0].startDate)
         console.log('Time investment payout date line 390: ', investment[0].payoutDate)
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment payout approved',
+          // @ts-ignore
+          message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
+          createdAt: DateTime.now(),
+          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+        }
+        console.log('Timeline object line 676:', timelineObject)
+        //  Push the new object to the array
+        timeline = JSON.parse(investment[0].timeline)
+        timeline.push(timelineObject)
+        console.log('Timeline object line 680:', timeline)
+        // stringify the timeline array
+        investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
+
         // send notification
-        console.log('Updated investment Status line 394: ', investment)
+        console.log('Updated investment Status line 687: ', investment)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -610,7 +698,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 405: ', investment)
+        console.log('The declined investment line 698: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -636,17 +724,17 @@ export default class InvestmentsController {
         // update timeline
         timelineObject = {
           id: uuid(),
-          action: 'investment declined',
+          action: 'investment payout declined',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment has just been declined.`,
+          message: `${investment[0].walletHolderDetails.firstName} investment payout has just been declined.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
-        console.log('Timeline object line 643:', timelineObject)
+        console.log('Timeline object line 730:', timelineObject)
         //  Push the new object to the array
         timeline = JSON.parse(investment[0].timeline)
         timeline.push(timelineObject)
-        console.log('Timeline object line 647:', timeline)
+        console.log('Timeline object line 734:', timeline)
         // stringify the timeline array
         investment[0].timeline = JSON.stringify(timeline)
         // Save
@@ -656,7 +744,7 @@ export default class InvestmentsController {
         await investment[0].save()
         // send notification
         console.log(
-          'INVESTMENT DATA line 419: ',
+          'INVESTMENT DATA line 744: ',
           investment.map((inv) => inv.$original)
         )
         return response.json({
@@ -694,7 +782,7 @@ export default class InvestmentsController {
             message: 'No investment approval request data matched your query, please try again',
           })
         }
-        console.log('approval line 521: ', sortedInvestment)
+        console.log('approval line 782: ', sortedInvestment)
 
         return response.json({ status: 'OK', data: sortedInvestment.map((inv) => inv.$original) })
       }
@@ -725,14 +813,14 @@ export default class InvestmentsController {
       }
 
       // check the approval status
-      console.log('approval line 552: ', sortedApproval)
+      console.log('approval line 813: ', sortedApproval)
       if (sortedApproval.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approval line 559: ', sortedApproval)
+      console.log('approval line 820: ', sortedApproval)
 
       return response.json({ status: 'OK', data: sortedApproval.map((inv) => inv.$original) })
     } else {
@@ -801,7 +889,7 @@ export default class InvestmentsController {
         id: request.input('investmentId'),
       })
       if (investment.length > 0) {
-        console.log('Investment Selected for Update line 272:', investment[0].startDate)
+        console.log('Investment Selected for Update line 889:', investment[0].startDate)
         let isDueForPayout
         if (investment[0].startDate !== null) {
           let createdAt = investment[0].createdAt
@@ -847,11 +935,11 @@ export default class InvestmentsController {
                   createdAt: DateTime.now(),
                   meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
                 }
-                console.log('Timeline object line 828:', timelineObject)
+                console.log('Timeline object line 935:', timelineObject)
                 //  Push the new object to the array
                 timeline = JSON.parse(investment[0].timeline)
                 timeline.push(timelineObject)
-                console.log('Timeline object line 832:', timeline)
+                console.log('Timeline object line 939:', timeline)
                 // stringify the timeline array
                 investment[0].timeline = JSON.stringify(timeline)
                 // Save
@@ -2199,6 +2287,20 @@ export default class InvestmentsController {
                         investment.timeline = JSON.stringify(timeline)
                         // Save
                         await investment.save()
+                                const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
+                                await new PuppeteerServices(requestUrl, {
+                                  paperFormat: 'a3',
+                                  fileName: `${investment[0].requestType}_${investment[0].id}`,
+                                })
+                                  .printAsPDF(investment[0])
+                                  .catch((error) => console.error(error))
+                                console.log(
+                                  'Investment Certificate generated, URL, line 329: ',
+                                  requestUrl
+                                )
+                                // save the certicate url
+                                investment[0].certificateUrl = requestUrl
+                                await investment[0].save()
                         // Send to Notification Service
                         // New Investment Initiated and Activated
                         Event.emit('new:investment', {
