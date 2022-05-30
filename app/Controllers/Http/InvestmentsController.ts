@@ -368,14 +368,14 @@ export default class InvestmentsController {
         //  return response.status(200).json({ status: 'OK', data: investment.$original })
 
         // END
-        const requestUrl = Env.get('CERTIFICATE_URL') + investment[0].id
+        const requestUrl = Env.get('CERTIFICATE_URL') //+ investment[0].id
         await new PuppeteerServices(requestUrl, {
           paperFormat: 'a3',
           fileName: `${investment[0].requestType}_${investment[0].id}`,
         })
           .printAsPDF(investment[0])
           .catch((error) => console.error(error))
-        console.log('Investment Certificate generated, URL, line 329: ', requestUrl)
+        console.log('Investment Certificate generated, URL, line 378: ', requestUrl)
         // save the certicate url
         investment[0].certificateUrl = requestUrl
         await investment[0].save()
