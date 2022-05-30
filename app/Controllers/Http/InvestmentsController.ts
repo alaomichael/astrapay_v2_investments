@@ -788,6 +788,8 @@ export default class InvestmentsController {
             isDueForPayout = await dueForPayout(createdAt, duration)
             // isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
             console.log('Is due for payout status :', isDueForPayout)
+            let newRolloverTarget =  request.input('rolloverTarget')
+            let newRolloverType = request.input('rolloverType')
             // Restrict update to timed/fixed deposit only
             if (
               investment &&
@@ -795,8 +797,8 @@ export default class InvestmentsController {
               isDueForPayout === false
             ) {
               // investment[0].amount = request.input('amount')
-              investment[0].rolloverTarget = request.input('rolloverTarget')
-              investment[0].rolloverType = request.input('rolloverType')
+              investment[0].rolloverTarget = newRolloverTarget
+              investment[0].rolloverType = newRolloverType
               // investment[0].investmentType = request.input('investmentType')
               // Todo
               // Update Timeline
@@ -841,7 +843,7 @@ export default class InvestmentsController {
     const investmentSchema = schema.create({
       amount: schema.number(),
       rolloverType: schema.enum(['100', '101', '102', '103']),
-      rolloverTarget: schema.number(),
+      rolloverTarget: schema.number([rules.range(0,5)]),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.string(),
