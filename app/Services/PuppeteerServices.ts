@@ -55,7 +55,7 @@ export default class PuppeteerServices {
           waitUntil: 'networkidle0', //consider navigation to be finished when there are no more than 0 network connections for at least 500 ms
         })
         .then(() => {
-          console.log('waitForNavigation done') 
+          console.log('waitForNavigation done')
         })
     } */
 
