@@ -2458,6 +2458,8 @@ export default class InvestmentsController {
                   }
                   let payout
                   let investmentCreated
+                      let newTimeline: any[] = []
+
                   switch (rolloverType) {
                     case '101':
                       //'101' = 'rollover principal only',
@@ -2505,15 +2507,15 @@ export default class InvestmentsController {
                         // @ts-ignore
                         message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        meta: `amount invested: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                        meta: `amount reinvested: ${investment[0].amount},amount paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
                       console.log('Timeline object line 2360:', timelineObject)
                       //  Push the new object to the array
-                      timeline = investment[0].timeline
-                      timeline.push(timelineObject)
-                      console.log('Timeline object line 2364:', timeline)
+                      newTimeline = investment[0].timeline
+                      newTimeline.push(timelineObject)
+                      console.log('Timeline object line 2364:', newTimeline)
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(timeline)
+                      investment[0].timeline = JSON.stringify(newTimeline)
                       // Save
                       await investment[0].save()
                       break
@@ -2561,28 +2563,40 @@ export default class InvestmentsController {
                         // send the money to the user
                         // send payment details to transction service
                         // Send Notification
-                        return response.status(404).json({status: 'FAILED',message:"new investment was not created successfully"})
+                        return response
+                          .status(404)
+                          .json({
+                            status: 'FAILED',
+                            message: 'reinvestment was not successful, please try again',
+                            data: [
+                              amountToBeReinvested,
+                              payloadDuration,
+                              payloadInvestmentType,
+                              investmentData,
+                            ],
+                          })
                       }
 
                       console.log(
                         `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
                       )
                       // update timeline
+
                       timelineObject = {
                         id: uuid(),
                         action: 'matured investment payout',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                        message: `${investment[0].walletHolderDetails.firstName} payment for matured investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        meta: `amount invested: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                        meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
                       }
                       console.log('Timeline object line 2426:', timelineObject)
                       //  Push the new object to the array
-                      timeline = investment[0].timeline
-                      timeline.push(timelineObject)
-                      console.log('Timeline object line 2430:', timeline)
+                      newTimeline = investment[0].timeline
+                      newTimeline.push(timelineObject)
+                      console.log('Timeline object line 2430:', newTimeline)
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(timeline)
+                      investment[0].timeline = JSON.stringify(newTimeline)
                       // Save
                       await investment[0].save()
                       break
@@ -2622,6 +2636,16 @@ export default class InvestmentsController {
                     //     // send the money to the user
                     //     // send payment details to transction service
                     //     // Send Notification
+                        // return response.status(404).json({
+                        //   status: 'FAILED',
+                        //   message: 'reinvestment was not successful, please try again',
+                        //   data: [
+                        //     amountToBeReinvested,
+                        //     payloadDuration,
+                        //     payloadInvestmentType,
+                        //     investmentData,
+                        //   ],
+                        // })
                     //   }
 
                     //   console.log(
