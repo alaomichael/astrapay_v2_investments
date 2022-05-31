@@ -1351,8 +1351,19 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
+          let  approvalStatus = 'approved'
 
           let approvalIsAutomated = settings[0].isTerminationAutomated
+          let approvalRequestIsExisting = await Approval.query().where({
+            investment_id: investmentId,
+            user_id: userId,
+            request_type:requestType
+          })
+
+        console.log(
+          'approvalRequestIsExisting line 1362: ',
+          approvalRequestIsExisting
+        )
           if (approvalIsAutomated === false) {
             let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
             console.log(' Approval request return line 1351 : ', approvalRequestIsDone)
@@ -1367,8 +1378,8 @@ export default class InvestmentsController {
             investment[0].requestType = requestType
             // START
 
-            console.log('Updated investment Status line 1363: ', investment)
-            console.log('Payout investment data line 1364:', payload)
+            console.log('Updated investment Status line 1379: ', investment)
+            console.log('Payout investment data line 1380:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
             // check if payout request is existing
@@ -1377,11 +1388,11 @@ export default class InvestmentsController {
               user_id: userId,
             })
             console.log(
-              'Investment payout Request Is Existing data line 1373:',
+              'Investment payout Request Is Existing data line 1389:',
               payoutRequestIsExisting
             )
             console.log(
-              'Investment payout Request Is Existing data length line 1377:',
+              'Investment payout Request Is Existing data length line 1393:',
               payoutRequestIsExisting.length
             )
             console.log('Investment payload data line 1380:', payload)
