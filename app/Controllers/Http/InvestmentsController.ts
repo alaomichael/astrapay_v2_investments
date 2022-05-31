@@ -2359,7 +2359,7 @@ export default class InvestmentsController {
                       let investmentId = investment.id
                       // let requestType = 'start investment'
                       let approval = await approvalRequest(userId, investmentId, requestType)
-                      console.log(' Approval request return line 1807 : ', approval)
+                      console.log(' Approval request return line 2362 : ', approval)
                       if (approval === undefined) {
                         return response.status(400).json({
                           status: 'FAILED',
@@ -2375,13 +2375,14 @@ export default class InvestmentsController {
                         // @ts-ignore
                         message: `${investment.walletHolderDetails.firstName} investment has just been sent for activation approval.`,
                         createdAt: DateTime.now(),
-                        meta: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+                        meta: `amount invested: ${investment.amount}, request type : ${requestType}`,
                       }
-                      console.log('Timeline object line 2112:', timelineObject)
+                      console.log('Timeline object line 2380:', timelineObject)
                       //  Push the new object to the array
+                       console.log('Timeline array line 2382:', investment.timeline)
                       timeline = JSON.parse(investment.timeline)
                       timeline.push(timelineObject)
-                      console.log('Timeline object line 2116:', timeline)
+                      console.log('Timeline object line 2384:', timeline)
                       // stringify the timeline array
                       investment.timeline = JSON.stringify(timeline)
                       // Save
