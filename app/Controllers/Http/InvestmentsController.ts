@@ -1354,26 +1354,27 @@ export default class InvestmentsController {
           let  approvalStatus = 'approved'
 
           let approvalIsAutomated = settings[0].isTerminationAutomated
-          let approvalRequestIsExisting = await Approval.query().where({
-            investment_id: investmentId,
-            user_id: userId,
-            request_type:requestType
-          })
-
-        console.log(
-          'approvalRequestIsExisting line 1362: ',
-          approvalRequestIsExisting
-        )
+          let approvalRequestIsExisting
           if (approvalIsAutomated === false) {
-            let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 1351 : ', approvalRequestIsDone)
-            if (approvalRequestIsDone === undefined) {
-              return response.status(400).json({
-                status: 'FAILED',
-                message: 'payout approval request was not successful, please try again.',
-                data: [],
-              })
-            }
+             approvalRequestIsExisting = await Approval.query().where({
+               investment_id: investmentId,
+               user_id: userId,
+               request_type: requestType,
+               approval_status: approvalStatus,
+             })
+
+             console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+             if (approvalRequestIsExisting.length < 1) {
+               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+               console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
+               if (approvalRequestIsDone === undefined) {
+                 return response.status(400).json({
+                   status: 'FAILED',
+                   message: 'payout approval request was not successful, please try again.',
+                   data: [],
+                 })
+               }
+             }
             investment = await Investment.query().where('id', investmentId)
             investment[0].requestType = requestType
             // START
@@ -1456,14 +1457,16 @@ export default class InvestmentsController {
             // Save
             await investment[0].save()
           } else if (approvalIsAutomated === true) {
-            // update status of investment
-            investment[0].requestType = requestType
-            investment[0].approvalStatus = 'approved'
-            investment[0].status = 'payout'
-            investment[0].isPayoutAuthorized = true
-            investment[0].isTerminationAuthorized = true
-            // Save
-            await investment[0].save()
+            if (( investment[0].status !== 'paid')) {
+              // update status of investment
+              investment[0].requestType = requestType
+              investment[0].approvalStatus = 'approved'
+              investment[0].status = 'payout'
+              investment[0].isPayoutAuthorized = true
+              investment[0].isTerminationAuthorized = true
+              // Save
+              await investment[0].save()
+            }
             // Send notification
 
             console.log('Updated investment Status line 1315: ', investment)
@@ -1495,10 +1498,12 @@ export default class InvestmentsController {
                 investment[0].approvalStatus === 'approved' &&
                 investment[0].status === 'payout')
             ) {
+               payload.timeline = JSON.stringify(investment[0].timeline)
+               console.log('Matured Payout investment data line 1500:', payload)
               payout = await Payout.create(payload)
               payout.status = 'payout'
               await payout.save()
-              console.log('Matured Payout investment data line 1347:', payout)
+              console.log('Matured Payout investment data line 1504:', payout)
             } else if (
               (payoutRequestIsExisting.length > 0 &&
                 investment[0].approvalStatus === 'approved' &&
