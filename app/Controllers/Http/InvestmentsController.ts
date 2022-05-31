@@ -860,7 +860,7 @@ export default class InvestmentsController {
     //   )
     //   let rate = await investmentRate(testAmount, testDuration, testInvestmentType)
     //   console.log(' Rate return line 236 : ', rate)
-    //   if (rate === undefined) {
+    //   if (rate === undefined  || rate.length < 1) {
     //     return response.status(400).json({
     //       status: 'FAILED',
     //       message: 'no investment rate matched your search, please try again.',
@@ -1031,7 +1031,7 @@ export default class InvestmentsController {
     )
     let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
     console.log(' Rate return line 684 : ', rate)
-    if (rate === undefined) {
+    if (rate === undefined || rate.length < 1) {
       return response.status(400).json({
         status: 'FAILED',
         message: 'no investment rate matched your search, please try again.',
@@ -2284,7 +2284,7 @@ export default class InvestmentsController {
                       payloadInvestmentType
                     )
                     console.log(' Rate return line 1730 : ', rate)
-                    if (rate === undefined) {
+                    if (rate === undefined || rate.length < 1) {
                       return response.status(400).json({
                         status: 'FAILED',
                         message: 'no investment rate matched your search, please try again.',
@@ -2534,7 +2534,6 @@ export default class InvestmentsController {
                       console.log('Payout investment data line 2408:', payload)
                       payload.timeline = JSON.stringify(investment[0].timeline)
                       console.log('Matured Payout investment data line 2410:', payload)
-
                       payout = await Payout.create(payload)
                       payout.status = 'payout'
                       await payout.save()
@@ -2562,6 +2561,7 @@ export default class InvestmentsController {
                         // send the money to the user
                         // send payment details to transction service
                         // Send Notification
+                        return response.status(404).json({status: 'FAILED',message:"new investment was not created successfully"})
                       }
 
                       console.log(
