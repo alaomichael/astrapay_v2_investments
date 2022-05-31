@@ -189,7 +189,7 @@ export default class InvestmentsController {
       //   .printAsPDF(investment)
       //   .catch((error) => console.error(error))
             await new PuppeteerServices(requestUrl, {
-              paperFormat: 'a3',
+              paperFormat: 'a4',
               fileName: `${Math.random()*7}_${investment.id}`,
             })
               .printAsPDF(investment)

@@ -45,6 +45,7 @@ export default class PuppeteerServices {
 
     // 1. Create PDF from URL
     // await page.goto("http://192.168.88.18:3000/")
+    // await page.goto('http://example.com/')
     await page.goto(this.url)
     // await page.setContent("<h1>Hello World !</h1>")
 
