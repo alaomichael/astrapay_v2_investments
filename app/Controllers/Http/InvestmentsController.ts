@@ -2454,6 +2454,7 @@ export default class InvestmentsController {
                   let payout
                   let investmentCreated
                   let newTimeline: any[] = []
+                  let rate
 
                   switch (rolloverType) {
                     case '101':
@@ -2492,7 +2493,7 @@ export default class InvestmentsController {
                           payloadInvestmentType
                         )
                       )
-                      let rate = await investmentRate(
+                      rate = await investmentRate(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType
@@ -2501,7 +2502,7 @@ export default class InvestmentsController {
                       if (rate === undefined) {
                         //  send the money to the investor wallet
                         console.log(
-                          `Principal of ${currencyCode} ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
+                          `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
                         )
                         // update timeline
                         timelineObject = {
@@ -2510,7 +2511,7 @@ export default class InvestmentsController {
                           // @ts-ignore
                           message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          meta: `amount reinvested: ${investment[0].amount},amount paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                          meta: `amount invested: ${investment[0].amount},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                         }
                         console.log('Timeline object line 2360:', timelineObject)
                         //  Push the new object to the array
@@ -2584,13 +2585,51 @@ export default class InvestmentsController {
 
                       // Send Notification
 
-                      // initiate a new investment
-                      // createInvestment(
-                      //   amountToBeReinvested,
-                      //   payloadDuration,
-                      //   payloadInvestmentType,
-                      //   investmentData
-                      // )
+                        console.log(
+                          ' The Rate return for RATE line 2489: ',
+                          await investmentRate(
+                            amountToBeReinvested,
+                            payloadDuration,
+                            payloadInvestmentType
+                          )
+                        )
+                         rate = await investmentRate(
+                          amountToBeReinvested,
+                          payloadDuration,
+                          payloadInvestmentType
+                        )
+                        console.log(' Rate return line 2497 : ', rate)
+                        if (rate === undefined) {
+                          //  send the money to the investor wallet
+                          console.log(
+                            `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
+                          )
+                          // update timeline
+                          timelineObject = {
+                            id: uuid(),
+                            action: 'matured investment payout',
+                            // @ts-ignore
+                            message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                            createdAt: DateTime.now(),
+                            meta: `amount invested: ${investment[0].amount},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                          }
+                          console.log('Timeline object line 2360:', timelineObject)
+                          //  Push the new object to the array
+                          newTimeline = investment[0].timeline
+                          newTimeline.push(timelineObject)
+                          console.log('Timeline object line 2364:', newTimeline)
+                          // stringify the timeline array
+                          investment[0].timeline = JSON.stringify(newTimeline)
+                          // Save
+                          await investment[0].save()
+
+                          return response.status(400).json({
+                            status: 'FAILED',
+                            message: 'no investment rate matched your search, please try again.',
+                            data: [],
+                          })
+                        }
+
                       investmentCreated = await createInvestment(
                         amountToBeReinvested,
                         payloadDuration,
@@ -2845,7 +2884,7 @@ export default class InvestmentsController {
       id: investmentId,
       user_id: userId,
       wallet_id: walletId,
-    })
+    }).andWhereNot({status:'paid'})
     console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
       // investment = await Investment.query().where({id: investmentId,user_id: userId,})
@@ -2861,7 +2900,7 @@ export default class InvestmentsController {
         let totalAmountToPayout = investment[0].totalAmountToPayout
         // @ts-ignore
         let phone = investment[0].walletHolderDetails.phone
-        console.log('Unsuccessful transaction, line 2152')
+        console.log('Unsuccessful transaction, line 2903')
         return response.json({
           status: 'FAILED',
           message: 'The transaction was not successful.',
@@ -2907,8 +2946,8 @@ export default class InvestmentsController {
         datePayoutWasDone,
       } = investment[0]
 
-      console.log('Initial status line 1977: ', status)
-      console.log('Initial datePayoutWasDone line 2722: ', datePayoutWasDone)
+      console.log('Initial status line 2949: ', status)
+      console.log('Initial datePayoutWasDone line 2950: ', datePayoutWasDone)
       let payload = {
         investmentId: id,
         userId,
@@ -2961,7 +3000,7 @@ export default class InvestmentsController {
         rollover_target: payload.rolloverTarget,
         rollover_done: payload.rolloverDone,
       })
-      console.log(' QUERY RESULT line 2775: ', payoutRecord)
+      console.log(' QUERY RESULT line 3003: ', payoutRecord)
       if (payoutRecord.length > 0) {
         return response.json({
           status: 'OK',
@@ -2979,14 +3018,14 @@ export default class InvestmentsController {
       // Save the Update
       await investment[0].save()
       payload.timeline = JSON.stringify(investment[0].timeline)
-      console.log('Matured Payout investment data line 2793:', payload)
+      console.log('Matured Payout investment data line 3021:', payload)
 
       payoutRecord = await PayoutRecord.create(payload)
       // update investment status
       // payout.status = 'paid'
       await payoutRecord.save()
 
-      console.log('Payout Record investment data line 2799:', payoutRecord)
+      console.log('Payout Record investment data line 3028:', payoutRecord)
       // @ts-ignore
       investment[0].datePayoutWasDone = payoutRecord.createdAt
 
@@ -2998,7 +3037,7 @@ export default class InvestmentsController {
         rollover_target: payload.rolloverTarget,
         investment_type: payload.investmentType,
       })
-      console.log('Payout investment data line 2812:', payout)
+      console.log('Payout investment data line 3040:', payout)
       if (payout.length > 0 && payout !== undefined) {
         payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
         payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
@@ -3023,11 +3062,11 @@ export default class InvestmentsController {
         createdAt: DateTime.now(),
         meta: `amount paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
       }
-      console.log('Timeline object line 2837:', timelineObject)
+      console.log('Timeline object line 3065:', timelineObject)
       //  Push the new object to the array
       timeline = investment[0].timeline
       timeline.push(timelineObject)
-      console.log('Timeline object line 2412:', timeline)
+      console.log('Timeline object line 3069:', timeline)
       // stringify the timeline array
       investment[0].timeline = JSON.stringify(timeline)
       // Save
@@ -3039,7 +3078,7 @@ export default class InvestmentsController {
       )
       return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
-      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
+      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters, or payment has been effected.' })
     }
   }
 
