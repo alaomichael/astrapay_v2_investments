@@ -13,8 +13,8 @@ export default class Investments extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
        table.uuid('id').primary().index().unique().notNullable()
-      table.string('user_id').unsigned().notNullable().index()
-      table.string('wallet_id').unsigned().nullable().index()
+      table.text('user_id').unsigned().notNullable().index()
+      table.text('wallet_id').unsigned().nullable().index()
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
@@ -43,7 +43,7 @@ export default class Investments extends BaseSchema {
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
       table.jsonb('timeline').nullable().index()
-      table.string('certificate_url').nullable().index()
+      table.text('certificate_url').nullable().index()
 
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
