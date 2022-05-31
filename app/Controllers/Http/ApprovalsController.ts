@@ -29,7 +29,7 @@ export default class ApprovalsController {
     if (investmentId) {
       sortedApprovals = sortedApprovals.filter((approval) => {
         // @ts-ignore
-        return approval.investmentId === parseInt(investmentId)
+        return approval.investmentId === investmentId
       })
     }
 

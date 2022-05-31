@@ -1091,7 +1091,7 @@ export default class InvestmentsController {
       id: uuid(),
       action: 'investment initiated',
       // @ts-ignore
-      message: `${investment.walletHolderDetails.firstName} just initiated an investment`,
+      message: `${investment.walletHolderDetails.firstName} just initiated an investment.`,
       createdAt: investment.createdAt,
       meta: `duration: ${investment.duration}`,
     }
@@ -1124,7 +1124,7 @@ export default class InvestmentsController {
       // Send Investment Payload To Transaction Service
       let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
       console.log(' Feedback from Transaction service: ', sendToTransactionService)
-      if (sendToTransactionService === 'Ok') {
+      if (sendToTransactionService === 'OK') {
         // Activate the investment
         investment.requestType = requestType
         investment.status = 'active'
@@ -1135,7 +1135,7 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment activated',
           // @ts-ignore
-          message: `${investment.walletHolderDetails.firstName} investment has just been activated`,
+          message: `${investment.walletHolderDetails.firstName} investment has just been activated.`,
           createdAt: investment.startDate,
           meta: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
         }
@@ -1351,7 +1351,7 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'payout investment'
-          let  approvalStatus = 'approved'
+          // let  approvalStatus = 'approved'
 
           let approvalIsAutomated = settings[0].isTerminationAutomated
           let approvalRequestIsExisting
@@ -1360,7 +1360,7 @@ export default class InvestmentsController {
                investment_id: investmentId,
                user_id: userId,
                request_type: requestType,
-               approval_status: approvalStatus,
+              //  approval_status: approvalStatus,
              })
 
              console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
@@ -1422,7 +1422,7 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout initiated',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing`,
+                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
                 createdAt: payout.createdAt,
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1456,8 +1456,8 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout initiated',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing`,
-                createdAt: payoutRequestIsExisting[0].updatedAt,
+                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
+                createdAt: DateTime.now(),
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
               console.log('Timeline object line 1463:', timelineObject)
@@ -1488,7 +1488,7 @@ export default class InvestmentsController {
             //   id: uuid(),
             //   action: 'investment payout initiated',
             //   // @ts-ignore
-            //   message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing`,
+            //   message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
             //   createdAt: payout.createdAt,
             //   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             // }
@@ -1524,16 +1524,16 @@ export default class InvestmentsController {
               user_id: userId,
             })
             console.log(
-              'Investment payout Request Is Existing data line 1325:',
+              'Investment payout Request Is Existing data line 1527:',
               payoutRequestIsExisting
             )
             console.log(
-              'Investment payout Request Is Existing data length line 1329:',
+              'Investment payout Request Is Existing data length line 1531:',
               payoutRequestIsExisting.length
             )
-            console.log('Investment payload data line 1332:', payload)
-            console.log(' investment[0].approvalStatus  line 1333:', investment[0].approvalStatus)
-            console.log(' investment[0].status line 1334:', investment[0].status)
+            console.log('Investment payload data line 1534:', payload)
+            console.log(' investment[0].approvalStatus  line 1535:', investment[0].approvalStatus)
+            console.log(' investment[0].status line 1536:', investment[0].status)
             let payout
             if (
               (payoutRequestIsExisting.length < 1 &&
@@ -1544,18 +1544,18 @@ export default class InvestmentsController {
                 investment[0].status === 'payout')
             ) {
                payload.timeline = JSON.stringify(investment[0].timeline)
-               console.log('Matured Payout investment data line 1500:', payload)
+               console.log('Matured Payout investment data line 1548:', payload)
               payout = await Payout.create(payload)
               payout.status = 'payout'
               await payout.save()
-              console.log('Matured Payout investment data line 1504:', payout)
+              console.log('Matured Payout investment data line 1551:', payout)
 
               // update timeline
               timelineObject = {
                 id: uuid(),
                 action: 'investment payout approved',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout`,
+                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
                 createdAt: payout.createdAt,
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1588,8 +1588,8 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout approved',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout`,
-                createdAt: payoutRequestIsExisting[0].updatedAt,
+                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
+                createdAt: DateTime.now(),
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
               console.log('Timeline object line 1595:', timelineObject)
@@ -1652,19 +1652,32 @@ export default class InvestmentsController {
           let userId = payload.userId
           let investmentId = payload.id
           let requestType = 'terminate investment'
+          // let approvalStatus = 'approved'
           let settings = await Setting.query().where({ tagName: 'default setting' })
           console.log('Approval setting line 1241:', settings[0])
+            let approvalRequestIsExisting
           let approvalIsAutomated = settings[0].isTerminationAutomated // isPayoutAutomated
           if (approvalIsAutomated === false) {
-            let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
-            if (approvalRequestIsDone === undefined) {
-              return response.status(400).json({
-                status: 'FAILED',
-                message: 'termination approval request was not successful, please try again.',
-                data: [],
-              })
-            }
+            approvalRequestIsExisting = await Approval.query().where({
+               investment_id: investmentId,
+               user_id: userId,
+               request_type: requestType,
+              //  approval_status: approvalStatus,
+             })
+             console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+             if (approvalRequestIsExisting.length < 1) {
+
+               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+               console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
+               if (approvalRequestIsDone === undefined) {
+                 return response.status(400).json({
+                   status: 'FAILED',
+                   message: 'termination approval request was not successful, please try again.',
+                   data: [],
+                 })
+               }
+             }
+
             investment = await Investment.query().where('id', investmentId)
             investment[0].requestType = requestType
             payload.investmentId = investmentId
@@ -1756,7 +1769,7 @@ export default class InvestmentsController {
             id: uuid(),
             action: 'investment termination initiated',
             // @ts-ignore
-            message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing`,
+            message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing.`,
             createdAt: DateTime.now(),
             meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
           }
@@ -1946,7 +1959,7 @@ export default class InvestmentsController {
                   id: uuid(),
                   action: 'investment payment initiated',
                   // @ts-ignore
-                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing`,
+                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing.`,
                   createdAt: DateTime.now(),
                   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                 }
@@ -1990,7 +2003,7 @@ export default class InvestmentsController {
                   id: uuid(),
                   action: 'investment termination initiated',
                   // @ts-ignore
-                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing`,
+                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing.`,
                   createdAt: DateTime.now(),
                   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                 }
@@ -2152,7 +2165,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'investment payment approval initiated',
                         // @ts-ignore
-                        message: `${investment.walletHolderDetails.firstName} investment has just been sent for payment processing approval`,
+                        message: `${investment.walletHolderDetails.firstName} investment has just been sent for payment processing approval.`,
                         createdAt: DateTime.now(),
                         meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
@@ -2201,7 +2214,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'investment payout initiated',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing`,
+                        message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing.`,
                         createdAt: DateTime.now(),
                         meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
@@ -2365,7 +2378,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'investment initiated',
                         // @ts-ignore
-                        message: `${investment.walletHolderDetails.firstName} investment has just been sent for activation approval`,
+                        message: `${investment.walletHolderDetails.firstName} investment has just been sent for activation approval.`,
                         createdAt: DateTime.now(),
                         meta: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                       }
