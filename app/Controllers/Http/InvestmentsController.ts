@@ -990,6 +990,7 @@ export default class InvestmentsController {
       amount: schema.number(),
       rolloverType: schema.enum(['100', '101', '102']),
       rolloverTarget: schema.number([rules.range(0, 5)]),
+      rolloverDone: schema.number([rules. (0, 5)]),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.string(),
@@ -1050,6 +1051,7 @@ export default class InvestmentsController {
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
     investment.interestRate = rate
+    investment.rolloverDone = payload.rolloverDone
 
     // When the Invest has been approved and activated
     let amount = investment.amount
@@ -2766,7 +2768,7 @@ export default class InvestmentsController {
                 rolloverTarget
               )
               console.log(
-                'testing Rollover Implementation line 2769',
+                'testing Rollover Implementation line 2770',
                 testingRolloverImplementation
               )
               await investment[0].save()
@@ -2776,7 +2778,7 @@ export default class InvestmentsController {
                 // @ts-ignore
                 testingRolloverImplementation?.rolloverIsSuccessful === undefined
               ) {
-                console.log('Investment data after payout line 2779:', investment)
+                console.log('Investment data after payout for unsuccessful reinvestment, line 2779:', investment)
                 return response.status(400).json({
                   status: 'FAILED',
                   data: investment.map((inv) => inv.$original),
