@@ -3098,8 +3098,10 @@ export default class InvestmentsController {
         payout.isTerminationAuthorized = payoutRecord.isTerminationAuthorized
         payout.isPayoutSuccessful = payoutRecord.isPayoutSuccessful
         payout.approvalStatus = payoutRecord.approvalStatus
+        payout.rolloverDone = payoutRecord.rolloverDone
         payout.datePayoutWasDone = payoutRecord.createdAt
-        payout.status = payoutRecord
+        payout.status = payoutRecord.status
+        payout.timeline = payoutRecord.timeline
         // Save the update
         await payout.save()
       }
