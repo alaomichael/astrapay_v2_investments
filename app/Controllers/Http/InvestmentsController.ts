@@ -990,7 +990,7 @@ export default class InvestmentsController {
       amount: schema.number(),
       rolloverType: schema.enum(['100', '101', '102']),
       rolloverTarget: schema.number([rules.range(0, 5)]),
-      rolloverDone: schema.number([rules. (0, 5)]),
+      rolloverDone: schema.number([rules.range(0, 5)]),
       investmentType: schema.enum(['fixed', 'debenture']),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
       userId: schema.string(),
@@ -1007,7 +1007,7 @@ export default class InvestmentsController {
       }),
     })
     const payload: any = await request.validate({ schema: investmentSchema })
-    console.log('Payload  :', payload)
+    console.log('Payload line 1010  :', payload)
     let payloadAmount = payload.amount
     let payloadDuration = payload.duration
     let payloadInvestmentType = payload.investmentType
@@ -1051,7 +1051,7 @@ export default class InvestmentsController {
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
     investment.interestRate = rate
-    investment.rolloverDone = payload.rolloverDone
+    // investment.rolloverDone = payload.rolloverDone
 
     // When the Invest has been approved and activated
     let amount = investment.amount
