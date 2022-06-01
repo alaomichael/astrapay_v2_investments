@@ -3068,9 +3068,9 @@ export default class InvestmentsController {
       //  Push the new object to the array
       timeline = investment[0].timeline
       timeline.push(timelineObject)
-      console.log('Timeline object line 3069:', timeline)
       // stringify the timeline array
       investment[0].timeline = JSON.stringify(timeline)
+      console.log('Timeline object line 3069:', timeline)
       // Save
       await investment[0].save()
 
