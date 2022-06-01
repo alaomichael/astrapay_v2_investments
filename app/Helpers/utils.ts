@@ -2,6 +2,11 @@
 /* eslint-disable prettier/prettier */
 'use strict'
 
+import Investment from "App/Models/Investment"
+import Setting from "App/Models/Setting"
+import PuppeteerServices from "App/Services/PuppeteerServices"
+import { DateTime } from "luxon"
+
 // import { createRequire } from 'module'
 // @ts-ignore
 // const require = createRequire(import.meta.url)
@@ -350,6 +355,279 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
   }
 }
 
+const createNewInvestment = async function ( payloadAmount,
+                  payloadDuration,
+                  payloadInvestmentType,
+                  investmentData) {
+                      console.log('Investment data line 362: ', investmentData)
+                  console.log('Investment payloadAmount data line 363: ', payloadAmount)
+                  console.log('Investment payloadDuration data line 364: ', payloadDuration)
+                  console.log(
+                    'Investment payloadInvestmentType data line 366: ',
+                    payloadInvestmentType
+                  )
+  try {
+    // let requestType = 'start investment'
+      let payload
+                  // destructure / extract the needed data from the investment
+                  let {
+                    amount,
+                    rolloverType,
+                    rolloverTarget,
+                    rolloverDone,
+                    investmentType,
+                    duration,
+                    userId,
+                    tagName,
+                    currencyCode,
+                    long,
+                    lat,
+                    walletHolderDetails,
+                  } = investmentData
+                  // copy the investment data to payload
+                  payload = {
+                    amount,
+                    rolloverType,
+                    rolloverTarget,
+                    rolloverDone,
+                    investmentType,
+                    duration,
+                    userId,
+                    tagName,
+                    currencyCode,
+                    long,
+                    lat,
+                    walletHolderDetails,
+                  }
+                  payload.amount = payloadAmount
+                  //  payload.interestRate = rate
+                  console.log('PAYLOAD line 2325 :', payload)
+
+    const response = await axios.post(`${API_URL}/investments`, {
+     amount,
+                    rolloverType,
+                    rolloverTarget,
+                    rolloverDone,
+                    investmentType,
+                    duration,
+                    userId,
+                    tagName,
+                    currencyCode,
+                    long,
+                    lat,
+                    walletHolderDetails,
+    })
+    console.log('The API response for new investment creation request line 420: ', response.data)
+    if (response && response.data.status === 'OK') {
+      console.log('New investment created successfully, request status is OK')
+      return response.data
+    } else {
+      console.log('New investment request status is NOT OK')
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
+// const createInvestment = async (
+//                   payloadAmount,
+//                   payloadDuration,
+//                   payloadInvestmentType,
+//                   investmentData
+//                 ) => {
+//                   console.log('Investment data line 1713: ', investmentData)
+//                   console.log('Investment payloadAmount data line 1714: ', payloadAmount)
+//                   console.log('Investment payloadDuration data line 1715: ', payloadDuration)
+//                   console.log(
+//                     'Investment payloadInvestmentType data line 1717: ',
+//                     payloadInvestmentType
+//                   )
+
+//                   console.log(
+//                     ' The Rate return for RATE line 2274: ',
+//                     await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+//                   )
+//                   let rate = await investmentRate(
+//                     payloadAmount,
+//                     payloadDuration,
+//                     payloadInvestmentType
+//                   )
+//                   console.log(' Rate return line 2282 : ', rate)
+//                   if (rate === undefined) {
+//                     return response.status(400).json({
+//                       status: 'FAILED',
+//                       message: 'no investment rate matched your search, please try again.',
+//                       data: [],
+//                     })
+//                   }
+//                   let settings = await Setting.query().where({ tagName: 'default setting' })
+//                   console.log('Approval setting line 2291:', settings[0])
+//                   let payload
+//                   // destructure / extract the needed data from the investment
+//                   let {
+//                     amount,
+//                     rolloverType,
+//                     rolloverTarget,
+//                     rolloverDone,
+//                     investmentType,
+//                     duration,
+//                     userId,
+//                     tagName,
+//                     currencyCode,
+//                     long,
+//                     lat,
+//                     walletHolderDetails,
+//                   } = investmentData
+//                   // copy the investment data to payload
+//                   payload = {
+//                     amount,
+//                     rolloverType,
+//                     rolloverTarget,
+//                     rolloverDone,
+//                     investmentType,
+//                     duration,
+//                     userId,
+//                     tagName,
+//                     currencyCode,
+//                     long,
+//                     lat,
+//                     walletHolderDetails,
+//                   }
+//                   payload.amount = payloadAmount
+//                   //  payload.interestRate = rate
+//                   console.log('PAYLOAD line 2325 :', payload)
+
+//                   const investment = await Investment.create(payload)
+//                   investment.interestRate = rate
+
+//                   // When the Invest has been approved and activated
+//                   let investmentAmount = investment.amount
+//                   let investmentDuration = investment.duration
+//                   let amountDueOnPayout = await interestDueOnPayout(
+//                     investmentAmount,
+//                     rate,
+//                     investmentDuration
+//                   )
+//                   // @ts-ignore
+//                   investment.interestDueOnInvestment = amountDueOnPayout
+//                   // @ts-ignore
+//                   investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+//                   // @ts-ignore
+//                   investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+//                   await investment.save()
+//                   console.log('The new Reinvestment, line 2345 :', investment)
+
+//                   await investment.save()
+//                   let newInvestmentId = investment.id
+//                   // @ts-ignore
+//                   let newInvestmentEmail = investment.walletHolderDetails.email
+
+//                   // Send Investment Initiation Message to Queue
+
+//                   // check if Approval is set to Auto, from Setting Controller
+//                   let requestType = 'start investment'
+//                   let approvalIsAutomated = settings[0].isInvestmentAutomated
+//                   if (approvalIsAutomated === false) {
+//                     // Send Approval Request to Admin
+//                     userId = investment.userId
+//                     let investmentId = investment.id
+//                     // let requestType = 'start investment'
+//                     let approval = await approvalRequest(userId, investmentId, requestType)
+//                     console.log(' Approval request return line 2362 : ', approval)
+//                     if (approval === undefined) {
+//                       return response.status(400).json({
+//                         status: 'FAILED',
+//                         message:
+//                           'investment approval request was not successful, please try again.',
+//                         data: [],
+//                       })
+//                     }
+//                     // update timeline
+//                     timelineObject = {
+//                       id: uuid(),
+//                       action: 'investment initiated',
+//                       // @ts-ignore
+//                       message: `${investment.walletHolderDetails.firstName} investment has just been sent for activation approval.`,
+//                       createdAt: DateTime.now(),
+//                       meta: `amount invested: ${investment.amount}, request type : ${requestType}`,
+//                     }
+//                     console.log('Timeline object line 2380:', timelineObject)
+//                     //  Push the new object to the array
+//                     console.log('Timeline array line 2382:', investment.timeline)
+//                     //  create a new timeline array
+//                     timeline = []
+//                     timeline.push(timelineObject)
+//                     console.log('Timeline object line 2384:', timeline)
+//                     // stringify the timeline array
+//                     investment.timeline = JSON.stringify(timeline)
+//                     console.log('Timeline array line 2389:', investment.timeline)
+//                     // Save
+//                     await investment.save()
+
+//                     // Send to Notification Service
+//                     // New investment initiated
+//                     Event.emit('new:investment', {
+//                       id: newInvestmentId,
+//                       email: newInvestmentEmail,
+//                     })
+//                   } else if (approvalIsAutomated === true) {
+//                     // TODO
+//                     // If Approval is automated
+//                     // Send Investment Payload To Transaction Service and await response
+//                     let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+//                     console.log(' Feedback from Transaction service: ', sendToTransactionService)
+//                     if (sendToTransactionService === 'OK') {
+//                       // Activate the investment
+//                       investment.requestType = requestType
+//                       investment.status = 'active'
+//                       investment.approvalStatus = 'approved'
+//                       investment.startDate = DateTime.now() //.toISODate()
+//                       investment.payoutDate = DateTime.now().plus({
+//                         days: parseInt(investmentDuration),
+//                       })
+//                       // update timeline
+//                       timelineObject = {
+//                         id: uuid(),
+//                         action: 'investment activated',
+//                         // @ts-ignore
+//                         message: `${investment.walletHolderDetails.firstName} investment has just been activated.`,
+//                         createdAt: DateTime.now(),
+//                         meta: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+//                       }
+//                       console.log('Timeline object line 2422:', timelineObject)
+//                       //  Push the new object to the array
+//                       timeline = [] //JSON.parse(investment.timeline)
+//                       timeline.push(timelineObject)
+//                       console.log('Timeline object line 2426:', timeline)
+//                       // stringify the timeline array
+//                       investment.timeline = JSON.stringify(timeline)
+//                       // Save
+//                       await investment.save()
+//                       const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
+//                       await new PuppeteerServices(requestUrl, {
+//                         paperFormat: 'a3',
+//                         fileName: `${investment.requestType}_${investment.id}`,
+//                       })
+//                         .printAsPDF(investment)
+//                         .catch((error) => console.error(error))
+//                       console.log('Investment Certificate generated, URL, line 2439: ', requestUrl)
+//                       // save the certicate url
+//                       investment.certificateUrl = requestUrl
+//                       await investment.save()
+//                       // Send to Notification Service
+//                       // New Investment Initiated and Activated
+//                       Event.emit('new:investment', {
+//                         id: newInvestmentId,
+//                         email: newInvestmentEmail,
+//                       })
+//                     }
+//                   }
+//                   return response.status(201).json({ status: 'OK', data: investment.$original })
+//                   // END
+//                 }
+
 /**
  * An utility function which returns a random number
  * @param {number} min Minimum value
@@ -431,6 +709,7 @@ module.exports = {
   investmentRate,
   getTaxRate,
   getPrintServerBaseUrl,
+  createNewInvestment,
 }
 
 export {
@@ -442,5 +721,5 @@ export {
   investmentDuration,
   sendPaymentDetails,
   investmentRate,
-  getTaxRate,
+  getTaxRate,createNewInvestment
 }
