@@ -22,6 +22,7 @@ import {
   approvalRequest,
   sendPaymentDetails,
   investmentRate,
+  createNewInvestment,
   // @ts-ignore
 } from 'App/Helpers/utils'
 
@@ -2074,6 +2075,7 @@ export default class InvestmentsController {
                   let amountToBeReinvested
                   let timelineObject
                   let timeline
+                  let rolloverIsSuccessful
                   let settings = await Setting.query().where({ tagName: 'default setting' })
                   console.log('Approval setting line 2081:', settings[0])
                   if (rolloverDone >= rolloverTarget) {
@@ -2436,7 +2438,6 @@ export default class InvestmentsController {
                   //   // END
                   // }
                   let payout
-                  let investmentCreated
                   let newTimeline: any[] = []
                   let rate
 
@@ -2508,21 +2509,41 @@ export default class InvestmentsController {
                         investment[0].timeline = JSON.stringify(newTimeline)
                         // Save
                         await investment[0].save()
+                        rolloverIsSuccessful = false
+                        break
 
-                        return response.status(400).json({
-                          status: 'FAILED',
-                          message: 'no investment rate matched your search, please try again.',
-                          data: [],
-                        })
+                        // return response.status(400).json({
+                        //   status: 'FAILED',
+                        //   message: 'no investment rate matched your search, please try again.',
+                        //   data: [],
+                        // })
                       }
                       // initiate a new investment
-                      createNewInvestment(
+                      let isNewInvestmentCreated = await createNewInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
                       )
-
+                      console.log('new investment is created: ', isNewInvestmentCreated)
+                      if (isNewInvestmentCreated === undefined) {
+                        // send the money to the user
+                        // send payment details to transction service
+                        // Send Notification
+                        rolloverIsSuccessful = false
+                        break
+                        //  return response.status(404).json({
+                        //    status: 'FAILED',
+                        //    message: 'reinvestment was not successful, please try again',
+                        //    data: [
+                        //      amountToBeReinvested,
+                        //      payloadDuration,
+                        //      payloadInvestmentType,
+                        //      investmentData,
+                        //    ],
+                        //  })
+                        // break
+                      }
                       console.log(
                         `Principal of ${currencyCode} ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
                       )
@@ -2544,13 +2565,14 @@ export default class InvestmentsController {
                       investment[0].timeline = JSON.stringify(newTimeline)
                       // Save
                       await investment[0].save()
+                      rolloverIsSuccessful = true
                       break
                     case '102':
                       // '102' = 'rollover principal plus interest',
                       amountToBeReinvested = amount + investment[0].interestDueOnInvestment
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
-                    //  investment[0].amount = amountToBeReinvested
+                      //  investment[0].amount = amountToBeReinvested
                       investment[0].totalAmountToPayout = 0
                       amountToPayoutNow = investment[0].totalAmountToPayout
                       rolloverDone = rolloverDone + 1
@@ -2572,74 +2594,77 @@ export default class InvestmentsController {
 
                       // Send Notification
 
-                        console.log(
-                          ' The Rate return for RATE line 2591: ',
-                          await investmentRate(
-                            amountToBeReinvested,
-                            payloadDuration,
-                            payloadInvestmentType
-                          )
-                        )
-                         rate = await investmentRate(
+                      console.log(
+                        ' The Rate return for RATE line 2591: ',
+                        await investmentRate(
                           amountToBeReinvested,
                           payloadDuration,
                           payloadInvestmentType
                         )
-                        console.log(' Rate return line 2603 : ', rate)
-                        if (rate === undefined) {
-                          //  send the money to the investor wallet
-                          console.log(
-                            `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
-                          )
-                          // update timeline
-                          timelineObject = {
-                            id: uuid(),
-                            action: 'matured investment payout',
-                            // @ts-ignore
-                            message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
-                            createdAt: DateTime.now(),
-                            meta: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
-                          }
-                          console.log('Timeline object line 2618:', timelineObject)
-                          //  Push the new object to the array
-                          newTimeline = investment[0].timeline
-                          newTimeline.push(timelineObject)
-                          console.log('Timeline object line 2622:', newTimeline)
-                          // stringify the timeline array
-                          investment[0].timeline = JSON.stringify(newTimeline)
-                          // Save
-                          await investment[0].save()
-
-                          return response.status(400).json({
-                            status: 'FAILED',
-                            message: 'no investment rate matched your search, please try again.',
-                            data: [],
-                          })
+                      )
+                      rate = await investmentRate(
+                        amountToBeReinvested,
+                        payloadDuration,
+                        payloadInvestmentType
+                      )
+                      console.log(' Rate return line 2603 : ', rate)
+                      if (rate === undefined) {
+                        //  send the money to the investor wallet
+                        console.log(
+                          `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
+                        )
+                        // update timeline
+                        timelineObject = {
+                          id: uuid(),
+                          action: 'matured investment payout',
+                          // @ts-ignore
+                          message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                          createdAt: DateTime.now(),
+                          meta: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                         }
+                        console.log('Timeline object line 2618:', timelineObject)
+                        //  Push the new object to the array
+                        newTimeline = investment[0].timeline
+                        newTimeline.push(timelineObject)
+                        console.log('Timeline object line 2622:', newTimeline)
+                        // stringify the timeline array
+                        investment[0].timeline = JSON.stringify(newTimeline)
+                        // Save
+                        await investment[0].save()
+                        rolloverIsSuccessful = false
+                        break
+                        // return response.status(400).json({
+                        //   status: 'FAILED',
+                        //   message: 'no investment rate matched your search, please try again.',
+                        //   data: [],
+                        // })
+                      }
 
-                      investmentCreated = await createInvestment(
+                      // initiate a new investment
+                      isNewInvestmentCreated = await createNewInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
                         investmentData
                       )
-                      console.log('investmentCreated data line 2641:', investmentCreated)
-                      if (investmentCreated === undefined) {
+                      console.log('new investment is created 2628: ', isNewInvestmentCreated)
+                      if (isNewInvestmentCreated === undefined) {
                         // send the money to the user
                         // send payment details to transction service
                         // Send Notification
-                        return response
-                          .status(404)
-                          .json({
-                            status: 'FAILED',
-                            message: 'reinvestment was not successful, please try again',
-                            data: [
-                              amountToBeReinvested,
-                              payloadDuration,
-                              payloadInvestmentType,
-                              investmentData,
-                            ],
-                          })
+
+                        rolloverIsSuccessful = false
+                        break
+                        // return response.status(404).json({
+                        //   status: 'FAILED',
+                        //   message: 'reinvestment was not successful, please try again',
+                        //   data: [
+                        //     amountToBeReinvested,
+                        //     payloadDuration,
+                        //     payloadInvestmentType,
+                        //     investmentData,
+                        //   ],
+                        // })
                         // break
                       }
 
@@ -2665,6 +2690,7 @@ export default class InvestmentsController {
                       investment[0].timeline = JSON.stringify(newTimeline)
                       // Save
                       await investment[0].save()
+                      rolloverIsSuccessful = true
                       break
                     // case '103':
                     //   // '103' = 'rollover interest only'
@@ -2727,6 +2753,7 @@ export default class InvestmentsController {
                     amountToBeReinvested,
                     amountToPayoutNow,
                     rolloverDone,
+                    rolloverIsSuccessful,
                   })
                 })
               }
@@ -2739,11 +2766,23 @@ export default class InvestmentsController {
                 rolloverTarget
               )
               console.log(
-                'testing Rollover Implementation line 2752',
+                'testing Rollover Implementation line 2769',
                 testingRolloverImplementation
               )
               await investment[0].save()
-              console.log('Investment data after payout line 2756:', investment)
+              if (
+                // @ts-ignore
+                testingRolloverImplementation?.rolloverIsSuccessful === false ||
+                // @ts-ignore
+                testingRolloverImplementation?.rolloverIsSuccessful === undefined
+              ) {
+                console.log('Investment data after payout line 2779:', investment)
+                return response.status(400).json({
+                  status: 'FAILED',
+                  data: investment.map((inv) => inv.$original),
+                })
+              }
+              console.log('Investment data after payout line 2785:', investment)
               return response.status(200).json({
                 status: 'OK',
                 data: investment.map((inv) => inv.$original),
@@ -2872,11 +2911,14 @@ export default class InvestmentsController {
     console.log('Rate query: ', request.qs())
     // @ts-ignore
     let { userId, investmentId, walletId } = request.all()
-    let investment = await Investment.query().where({
-      id: investmentId,
-      user_id: userId,
-      wallet_id: walletId,
-    }).andWhereNot({status:'paid'}).first()
+    let investment = await Investment.query()
+      .where({
+        id: investmentId,
+        user_id: userId,
+        wallet_id: walletId,
+      })
+      .andWhereNot({ status: 'paid' })
+      .first()
     console.log(' QUERY RESULT: ', investment)
     if (investment) {
       // investment = await Investment.query().where({id: investmentId,user_id: userId,})
@@ -3022,13 +3064,15 @@ export default class InvestmentsController {
       investment.datePayoutWasDone = payoutRecord.createdAt
 
       // Update Payout
-      let payout = await Payout.query().where({
-        investment_id: payload.investmentId,
-        user_id: userId,
-        wallet_id: walletId,
-        rollover_target: payload.rolloverTarget,
-        investment_type: payload.investmentType,
-      }).first()
+      let payout = await Payout.query()
+        .where({
+          investment_id: payload.investmentId,
+          user_id: userId,
+          wallet_id: walletId,
+          rollover_target: payload.rolloverTarget,
+          investment_type: payload.investmentType,
+        })
+        .first()
       console.log('Payout investment data line 3040:', payout)
       if (payout) {
         payout.totalAmountToPayout = payoutRecord.totalAmountPaid
@@ -3064,13 +3108,12 @@ export default class InvestmentsController {
       // Save
       await investment.save()
 
-      console.log(
-        'data:',
-        investment.$original
-      )
+      console.log('data:', investment.$original)
       return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
-      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters, or payment has been effected.' })
+      return response
+        .status(404)
+        .json({ status: 'FAILED', message: 'Invalid parameters, or payment has been effected.' })
     }
   }
 
