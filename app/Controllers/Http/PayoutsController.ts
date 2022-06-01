@@ -41,13 +41,13 @@ export default class PayoutsController {
     if (userId) {
       sortedPayouts = sortedPayouts.filter((payout) => {
         // @ts-ignore
-        return payout.userId === parseInt(userId)
+        return payout.userId === userId
       })
     }
     if (investmentId) {
       sortedPayouts = sortedPayouts.filter((payout) => {
         // @ts-ignore
-        return payout.investmentId === parseInt(investmentId)
+        return payout.investmentId === investmentId
       })
     }
     if (requestType) {
