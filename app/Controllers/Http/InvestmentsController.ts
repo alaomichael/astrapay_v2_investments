@@ -2519,7 +2519,7 @@ export default class InvestmentsController {
                         // })
                       }
                       // initiate a new investment
-                      let isNewInvestmentCreated = await createNewInvestment(
+                      var isNewInvestmentCreated = await createNewInvestment(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType,
@@ -2684,10 +2684,10 @@ export default class InvestmentsController {
                       console.log('Timeline object line 2674:', timelineObject)
                       //  Push the new object to the array
                       newTimeline = investment[0].timeline
-                      newTimeline.push(timelineObject)
-                      console.log('Timeline object line 2678:', newTimeline)
+                      newTimeline[0].push(timelineObject)
+                      console.log('Timeline object line 2678:', newTimeline[0])
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(newTimeline)
+                      investment[0].timeline = JSON.stringify(newTimeline[0])
                       // Save
                       await investment[0].save()
                       rolloverIsSuccessful = true

@@ -343,9 +343,9 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
     )
-    console.log('The API response line 341: ', response.data)
+    console.log('The API response line 346: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
-      console.log('The API response line 343: ', response.data.data[0].interestRate)
+      console.log('The API response line 348: ', response.data.data[0].interestRate)
       return response.data.data[0].interestRate
     } else {
       return
@@ -404,18 +404,18 @@ const createNewInvestment = async function ( payloadAmount,
                   console.log('PAYLOAD line 2325 :', payload)
 
     const response = await axios.post(`${API_URL}/investments`, {
-     amount,
-                    rolloverType,
-                    rolloverTarget,
-                    rolloverDone,
-                    investmentType,
-                    duration,
-                    userId,
-                    tagName,
-                    currencyCode,
-                    long,
-                    lat,
-                    walletHolderDetails,
+      payloadAmount,
+      rolloverType,
+      rolloverTarget,
+      rolloverDone,
+      investmentType,
+      duration,
+      userId,
+      tagName,
+      currencyCode,
+      long,
+      lat,
+      walletHolderDetails,
     })
     console.log('The API response for new investment creation request line 420: ', response.data)
     if (response && response.data.status === 'OK') {
