@@ -2466,7 +2466,7 @@ export default class InvestmentsController {
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
                       amountToPayoutNow = investment[0].interestDueOnInvestment
-                      investment[0].amount = amountToBeReinvested
+                      // investment[0].amount = amountToBeReinvested
                       investment[0].totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
                       investment[0].rolloverTarget = rolloverTarget
@@ -2514,7 +2514,9 @@ export default class InvestmentsController {
                           // @ts-ignore
                           message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          meta: `amount reinvested: ${investment[0].amount},interest paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                          meta: `amount invested: ${investment[0].amount},amount paid: ${
+                            investment[0].interestDueOnInvestment + investment[0].amount
+                          }, request type : ${investment[0].requestType}`,
                         }
                         console.log('Timeline object line 2518:', timelineObject)
                         //  Push the new object to the array
@@ -2567,7 +2569,7 @@ export default class InvestmentsController {
                       amountToBeReinvested = amount + investment[0].interestDueOnInvestment
                       payloadDuration = investment[0].duration
                       payloadInvestmentType = investment[0].investmentType
-                      investment[0].amount = amountToBeReinvested
+                    //  investment[0].amount = amountToBeReinvested
                       investment[0].totalAmountToPayout = 0
                       amountToPayoutNow = investment[0].totalAmountToPayout
                       rolloverDone = rolloverDone + 1
@@ -2615,7 +2617,7 @@ export default class InvestmentsController {
                             // @ts-ignore
                             message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
                             createdAt: DateTime.now(),
-                            meta: `amount invested: ${investment[0].amount},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                            meta: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                           }
                           console.log('Timeline object line 2618:', timelineObject)
                           //  Push the new object to the array
@@ -2671,7 +2673,7 @@ export default class InvestmentsController {
                         // @ts-ignore
                         message: `${investment[0].walletHolderDetails.firstName} payment for matured investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+                        meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment[0].requestType}`,
                       }
                       console.log('Timeline object line 2674:', timelineObject)
                       //  Push the new object to the array
@@ -2744,7 +2746,6 @@ export default class InvestmentsController {
                     amountToBeReinvested,
                     amountToPayoutNow,
                     rolloverDone,
-                    investmentCreated,
                   })
                 })
               }
