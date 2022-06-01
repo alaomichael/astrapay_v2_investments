@@ -2386,6 +2386,7 @@ export default class InvestmentsController {
                       console.log('Timeline object line 2384:', timeline)
                       // stringify the timeline array
                       investment.timeline = JSON.stringify(timeline)
+                      console.log('Timeline array line 2389:', investment.timeline)
                       // Save
                       await investment.save()
 
@@ -2886,9 +2887,9 @@ export default class InvestmentsController {
       id: investmentId,
       user_id: userId,
       wallet_id: walletId,
-    }).andWhereNot({status:'paid'})
+    }).andWhereNot({status:'paid'}).first()
     console.log(' QUERY RESULT: ', investment)
-    if (investment.length > 0) {
+    if (investment) {
       // investment = await Investment.query().where({id: investmentId,user_id: userId,})
       let timeline
       let timelineObject
@@ -2897,11 +2898,11 @@ export default class InvestmentsController {
       // get update from the endpoint with axios
       transactionStatus = 'OK'
       if (transactionStatus !== 'OK') {
-        let walletId = investment[0].walletId
-        let investmentId = investment[0].id
-        let totalAmountToPayout = investment[0].totalAmountToPayout
+        let walletId = investment.walletId
+        let investmentId = investment.id
+        let totalAmountToPayout = investment.totalAmountToPayout
         // @ts-ignore
-        let phone = investment[0].walletHolderDetails.phone
+        let phone = investment.walletHolderDetails.phone
         console.log('Unsuccessful transaction, line 2903')
         return response.json({
           status: 'FAILED',
@@ -2946,7 +2947,7 @@ export default class InvestmentsController {
         approvalStatus,
         status,
         datePayoutWasDone,
-      } = investment[0]
+      } = investment
 
       console.log('Initial status line 2949: ', status)
       console.log('Initial datePayoutWasDone line 2950: ', datePayoutWasDone)
@@ -3011,15 +3012,15 @@ export default class InvestmentsController {
         })
       }
       // investment[0].totalAmountToPayout = amountPaid
-      investment[0].isPayoutSuccessful = isPayoutSuccessful
-      investment[0].approvalStatus = 'approved'
-      investment[0].status = 'paid'
+      investment.isPayoutSuccessful = isPayoutSuccessful
+      investment.approvalStatus = 'approved'
+      investment.status = 'paid'
       // @ts-ignore
       // investment[0].datePayoutWasDone = new Date().toISOString()
 
       // Save the Update
-      await investment[0].save()
-      payload.timeline = JSON.stringify(investment[0].timeline)
+      await investment.save()
+      payload.timeline = JSON.stringify(investment.timeline)
       console.log('Matured Payout investment data line 3021:', payload)
 
       payoutRecord = await PayoutRecord.create(payload)
@@ -3029,7 +3030,7 @@ export default class InvestmentsController {
 
       console.log('Payout Record investment data line 3028:', payoutRecord)
       // @ts-ignore
-      investment[0].datePayoutWasDone = payoutRecord.createdAt
+      investment.datePayoutWasDone = payoutRecord.createdAt
 
       // Update Payout
       let payout = await Payout.query().where({
@@ -3038,18 +3039,18 @@ export default class InvestmentsController {
         wallet_id: walletId,
         rollover_target: payload.rolloverTarget,
         investment_type: payload.investmentType,
-      })
+      }).first()
       console.log('Payout investment data line 3040:', payout)
-      if (payout.length > 0 && payout !== undefined) {
-        payout[0].totalAmountToPayout = payoutRecord.totalAmountPaid
-        payout[0].isPayoutAuthorized = payoutRecord.isPayoutAuthorized
-        payout[0].isTerminationAuthorized = payoutRecord.isTerminationAuthorized
-        payout[0].isPayoutSuccessful = payoutRecord.isPayoutSuccessful
-        payout[0].approvalStatus = payoutRecord.approvalStatus
-        payout[0].datePayoutWasDone = payoutRecord.createdAt
-        payout[0].status = payoutRecord
+      if (payout) {
+        payout.totalAmountToPayout = payoutRecord.totalAmountPaid
+        payout.isPayoutAuthorized = payoutRecord.isPayoutAuthorized
+        payout.isTerminationAuthorized = payoutRecord.isTerminationAuthorized
+        payout.isPayoutSuccessful = payoutRecord.isPayoutSuccessful
+        payout.approvalStatus = payoutRecord.approvalStatus
+        payout.datePayoutWasDone = payoutRecord.createdAt
+        payout.status = payoutRecord
         // Save the update
-        payout[0].save()
+        await payout.save()
       }
       // Notify
 
@@ -3060,23 +3061,23 @@ export default class InvestmentsController {
         id: uuid(),
         action: 'investment payout has been done ',
         // @ts-ignore
-        message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been made.`,
+        message: `${investment.walletHolderDetails.firstName} payment on investment has just been made.`,
         createdAt: DateTime.now(),
-        meta: `amount paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+        meta: `amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
       }
       console.log('Timeline object line 3065:', timelineObject)
       //  Push the new object to the array
-      timeline = investment[0].timeline
+      timeline = investment.timeline
       timeline.push(timelineObject)
       // stringify the timeline array
-      investment[0].timeline = JSON.stringify(timeline)
+      investment.timeline = JSON.stringify(timeline)
       console.log('Timeline object line 3069:', timeline)
       // Save
-      await investment[0].save()
+      await investment.save()
 
       console.log(
         'data:',
-        investment.map((inv) => inv.$original)
+        investment.$original
       )
       return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
