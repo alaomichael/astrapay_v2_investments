@@ -7,12 +7,14 @@
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
     "start:prod": "node ./build/server.js",
-    "start": "node server.js",
+     "start": "pm2-runtime start ecosystem.config.js --env production",
+    "start_former": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "test": "node ace test --watch",
     "deploy": "git add . && git commit -m Heroku && git push heroku main",
-    "restart": "heroku restart -a astrapay-v2-investment"
+    "restart": "heroku restart -a astrapay-v2-investment",
+    "heroku-postbuild": "npm install pm2"
   },
   "eslintConfig": {
     "extends": [
@@ -82,6 +84,7 @@
     "objection": "^3.0.1",
     "pg": "^8.7.3",
     "phc-argon2": "^1.1.3",
+    "pm2": "^5.2.0",
     "proxy-addr": "^2.0.7",
     "puppeteer": "^14.1.1",
     "reflect-metadata": "^0.1.13",
