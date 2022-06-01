@@ -404,7 +404,7 @@ const createNewInvestment = async function ( payloadAmount,
                   console.log('PAYLOAD line 2325 :', payload)
 
     const response = await axios.post(`${API_URL}/investments`, {
-      payloadAmount,
+      amount:payloadAmount,
       rolloverType,
       rolloverTarget,
       rolloverDone,

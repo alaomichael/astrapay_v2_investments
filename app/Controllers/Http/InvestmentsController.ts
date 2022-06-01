@@ -1040,7 +1040,7 @@ export default class InvestmentsController {
         data: [],
       })
     }
-
+    console.log('Payload line 1043  :', payload)
     const investment = await Investment.create(payload)
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
@@ -2683,13 +2683,15 @@ export default class InvestmentsController {
                         createdAt: DateTime.now(),
                         meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment[0].requestType}`,
                       }
-                      console.log('Timeline object line 2674:', timelineObject)
+                      console.log('Timeline object line 2686:', timelineObject)
                       //  Push the new object to the array
-                      newTimeline = investment[0].timeline
-                      newTimeline[0].push(timelineObject)
-                      console.log('Timeline object line 2678:', newTimeline[0])
+                      console.log('Timeline object line 2688:', investment[0].timeline)
+                      newTimeline = JSON.parse(investment[0].timeline)
+                      console.log('Timeline object line 2690:', newTimeline)
+                      newTimeline.push(timelineObject)
+                      console.log('Timeline object line 2692:', newTimeline)
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(newTimeline[0])
+                      investment[0].timeline = JSON.stringify(newTimeline)
                       // Save
                       await investment[0].save()
                       rolloverIsSuccessful = true
@@ -2778,7 +2780,10 @@ export default class InvestmentsController {
                 // @ts-ignore
                 testingRolloverImplementation?.rolloverIsSuccessful === undefined
               ) {
-                console.log('Investment data after payout for unsuccessful reinvestment, line 2779:', investment)
+                console.log(
+                  'Investment data after payout for unsuccessful reinvestment, line 2779:',
+                  investment
+                )
                 return response.status(400).json({
                   status: 'FAILED',
                   data: investment.map((inv) => inv.$original),
