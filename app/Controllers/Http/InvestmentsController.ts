@@ -37,7 +37,7 @@ export default class InvestmentsController {
     // let settings = await Setting.query().where({ currency_code: 'NGN' })
     // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
     // const investment = await Investment.query().offset(0).limit(1)
-    const investment = await Investment.all().
+    const investment =  (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
     // console.log('INVESTMENT before sorting line 40: ', investment)
     // let newArray = investment.map((investment) => {return investment.$original})
     let sortedInvestments = investment.map((investment) => {
@@ -180,7 +180,12 @@ export default class InvestmentsController {
     console.log('INVESTMENT params: ', params)
     const { investmentId } = request.params()
     try {
-      let investment = await Investment.query().where({ id: investmentId }).first()
+      let investment = await Investment.query()
+        .where({ id: investmentId })
+        .first()
+        // .with('timeline')
+        // .orderBy('timeline', 'desc')
+        // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
       const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
       // await new PuppeteerServices(requestUrl, {
@@ -196,6 +201,7 @@ export default class InvestmentsController {
         .printAsPDF(investment)
         .catch((error) => console.error(error))
       console.log('Investment Certificate generated, URL, line 197: ', requestUrl)
+      investment = investment.
       return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
       console.log(error)
