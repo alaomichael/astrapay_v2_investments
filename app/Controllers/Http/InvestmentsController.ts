@@ -201,7 +201,6 @@ export default class InvestmentsController {
         .printAsPDF(investment)
         .catch((error) => console.error(error))
       console.log('Investment Certificate generated, URL, line 197: ', requestUrl)
-      investment = investment.
       return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
       console.log(error)
