@@ -37,7 +37,7 @@ export default class InvestmentsController {
     // let settings = await Setting.query().where({ currency_code: 'NGN' })
     // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
     // const investment = await Investment.query().offset(0).limit(1)
-    const investment = await Investment.all()
+    const investment = await Investment.all().
     // console.log('INVESTMENT before sorting line 40: ', investment)
     // let newArray = investment.map((investment) => {return investment.$original})
     let sortedInvestments = investment.map((investment) => {
@@ -2762,7 +2762,7 @@ export default class InvestmentsController {
                 })
               }
 
-              let testingRolloverImplementation = await effectRollover(
+              let rolloverImplementation = await effectRollover(
                 investmentData,
                 amount,
                 rolloverType,
@@ -2771,14 +2771,14 @@ export default class InvestmentsController {
               )
               console.log(
                 'testing Rollover Implementation line 2770',
-                testingRolloverImplementation
+                rolloverImplementation
               )
               await investment[0].save()
               if (
                 // @ts-ignore
-                testingRolloverImplementation?.rolloverIsSuccessful === false ||
+                rolloverImplementation?.rolloverIsSuccessful === false ||
                 // @ts-ignore
-                testingRolloverImplementation?.rolloverIsSuccessful === undefined
+                rolloverImplementation?.rolloverIsSuccessful === undefined
               ) {
                 console.log(
                   'Investment data after payout for unsuccessful reinvestment, line 2779:',
@@ -2907,6 +2907,12 @@ export default class InvestmentsController {
             },
           })
         }
+      } else {
+  console.log('Investment data after search line 2911:', investment)
+  return response.status(200).json({
+    status: 'FAILED',
+    data: investment.map((inv) => inv.$original),
+  })
       }
     } catch (error) {
       console.error(error)
