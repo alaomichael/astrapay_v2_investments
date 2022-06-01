@@ -2046,8 +2046,6 @@ export default class InvestmentsController {
                 rolloverTarget,
                 rolloverDone
               )
-              // let payout
-              // let payload = investmentData
               //  function for effecting the set rollover
               const effectRollover = async (
                 investmentData,
