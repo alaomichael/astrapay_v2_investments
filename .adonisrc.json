@@ -22,7 +22,8 @@
     "@adonisjs/core",
     "@adonisjs/lucid",
     "./providers/QueryBuilderProvider",
-    "@adonisjs/attachment-lite"
+    "@adonisjs/attachment-lite",
+    "@adonisjs/session"
   ],
   "aceProviders": [
     "@adonisjs/repl"
