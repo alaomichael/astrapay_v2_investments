@@ -2,10 +2,10 @@
 /* eslint-disable prettier/prettier */
 'use strict'
 
-import Investment from "App/Models/Investment"
-import Setting from "App/Models/Setting"
-import PuppeteerServices from "App/Services/PuppeteerServices"
-import { DateTime } from "luxon"
+// import Investment from "App/Models/Investment"
+// import Setting from "App/Models/Setting"
+// import PuppeteerServices from "App/Services/PuppeteerServices"
+// import { DateTime } from "luxon"
 
 // import { createRequire } from 'module'
 // @ts-ignore
