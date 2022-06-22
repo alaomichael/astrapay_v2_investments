@@ -3,7 +3,6 @@ import { column, beforeCreate, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import Saving from './Saving'
-import Investment from './Investment'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })

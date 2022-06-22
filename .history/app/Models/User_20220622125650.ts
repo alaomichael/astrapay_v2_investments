@@ -1,9 +1,7 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
-import Saving from './Saving'
-import Investment from './Investment'
 
 export default class User extends AppBaseModel {
   @column({ isPrimary: true })
@@ -60,11 +58,8 @@ export default class User extends AppBaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Saving, { localKey: 'id' })
-  public savings: HasMany<typeof Saving>
-
-  @hasMany(() => Investment, { localKey: 'id' })
-  public investments: HasMany<typeof Investment>
+  @hasMany(() => Timeline, { localKey: 'id' })
+  public timelines: HasMany<typeof Timeline>
 
   @beforeCreate()
   public static assignUuid(user: User) {

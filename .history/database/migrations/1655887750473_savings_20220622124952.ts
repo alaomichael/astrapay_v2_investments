@@ -6,22 +6,8 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().index().unique().notNullable()
-      table
-        .text('user_id')
-        .unsigned()
-        .notNullable()
-        .index()
-        .references('user_id')
-        .inTable('users')
-        .onDelete('CASCADE')
-      table
-        .text('wallet_id')
-        .unsigned()
-        .nullable()
-        .index()
-        .references('wallet_id')
-        .inTable('users')
-        .onDelete('CASCADE')
+      table.text('user_id').unsigned().notNullable().index().references('user_id').inTable('users').on
+      table.text('wallet_id').unsigned().nullable().index().references('wallet_id').inTable('users')
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('type', ['daily', 'weekly', 'monthly', 'yearly']).notNullable().index()

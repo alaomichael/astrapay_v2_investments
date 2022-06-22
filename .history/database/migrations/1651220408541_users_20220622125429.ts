@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().index().unique().notNullable()
       table.text('user_id').unsigned().unique().notNullable().index()
       table.text('wallet_id').unsigned().unique().nullable().index()
-      table.text('okra_record_id').unsigned().unique().notNullable().index()
+      table.text('okra_record_id').unsigned().notNullable().index()
       table.jsonb('account_to_credit_details').notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()

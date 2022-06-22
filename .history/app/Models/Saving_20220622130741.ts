@@ -1,18 +1,18 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate, belongsTo, BelongsTo  } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
-import User from './User'
 
-/**
-   * .enum('rollover_type', ['100' = 'no rollover',
-   *  '101' = 'rollover principal only',
-   * '102' = 'rollover principal with interest',
-   * '103' = 'rollover interest only'])
-   */
-type RollOverType = '100' | '101' | '102' | '103'
+//  schedule: { // required
+//                     interval: 'monthly',
+//                     startDate: 'YYYY-MM-DD', // If blank will default to today
+//                     endDate: 'YYYY-MM-DD' //If blank will not stop
+//             },
 
-export default class Investment extends AppBaseModel {
+type Interval = 'daily' | 'weekly' | 'monthly' | 'yearly'
+type Type = 'one-time' | 'recurring' | 'future' | 'lock'
+
+export default class Saving extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string
 
@@ -29,16 +29,16 @@ export default class Investment extends AppBaseModel {
   public duration: string
 
   @column()
-  public rolloverType: RollOverType
+  public type: Type
 
   @column()
-  public rolloverTarget: number
+  public interval: Interval
 
   @column()
-  public rolloverDone: number
+  public accountToDebitDetails: JSON
 
   @column()
-  public investmentType: 'fixed' | 'debenture'
+  public recurrenceDone: number
 
   @column()
   public tagName: string
@@ -50,6 +50,9 @@ export default class Investment extends AppBaseModel {
   public walletHolderDetails: JSON
 
   @column()
+  public schedule: JSON
+
+  @column()
   public long: number
 
   @column()
@@ -59,19 +62,19 @@ export default class Investment extends AppBaseModel {
   public interestRate: number
 
   @column()
-  public interestDueOnInvestment: number
+  public interestDueOnSaving: number
 
   @column()
-  public totalAmountToPayout: number
+  public targetAmount: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: false })
+  @column.dateTime({ autoCreate: true })
   public startDate: DateTime
 
   @column.dateTime({ autoCreate: false })
-  public payoutDate: DateTime
+  public endDate: DateTime
 
   @column()
   public isPayoutAuthorized: boolean
@@ -94,20 +97,17 @@ export default class Investment extends AppBaseModel {
   @column()
   public timeline: string
 
-  @column()
-  public certificateUrl: string
-
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => User, { localKey: 'userId' })
-  public user: BelongsTo<typeof User>
+  @belongsTo(() => Loan, { localKey: 'loanId' })
+  public loan: BelongsTo<typeof Loan>
 
   @beforeCreate()
-  public static assignUuid(investment: Investment) {
-    investment.id = uuid()
+  public static assignUuid(saving: Saving) {
+    saving.id = uuid()
   }
 }
