@@ -2,15 +2,22 @@ import { DateTime } from 'luxon'
 import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
-export default class PayoutRecord extends AppBaseModel {
+
+//  schedule: { // required
+//                     interval: 'monthly',
+//                     startDate: 'YYYY-MM-DD', // If blank will default to today
+//                     endDate: 'YYYY-MM-DD' //If blank will not stop
+//             },
+
+type Interval = 'daily' | 'weekly' | 'monthly' | 'yearly'
+type Type = 'one-time' | 'recurring' | 'future' | 'yearly'
+
+export default class Saving extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string
 
   @column()
   public userId: string
-
-  @column()
-  public investmentId: string
 
   @column()
   public walletId: string
@@ -22,7 +29,10 @@ export default class PayoutRecord extends AppBaseModel {
   public duration: string
 
   @column()
-  public rolloverType: string
+  public type: Type
+
+  @column()
+  public interval: Interval
 
   @column()
   public rolloverTarget: number
@@ -31,7 +41,7 @@ export default class PayoutRecord extends AppBaseModel {
   public rolloverDone: number
 
   @column()
-  public investmentType: string
+  public investmentType: 'fixed' | 'debenture'
 
   @column()
   public tagName: string
@@ -43,6 +53,9 @@ export default class PayoutRecord extends AppBaseModel {
   public walletHolderDetails: JSON
 
   @column()
+  public schedule: JSON
+
+  @column()
   public long: number
 
   @column()
@@ -52,10 +65,10 @@ export default class PayoutRecord extends AppBaseModel {
   public interestRate: number
 
   @column()
-  public interestDueOnInvestment: number
+  public interestDueOnSavings: number
 
   @column()
-  public totalAmountPaid: number
+  public targetAmount: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -64,7 +77,7 @@ export default class PayoutRecord extends AppBaseModel {
   public startDate: DateTime
 
   @column.dateTime({ autoCreate: false })
-  public payoutDate: DateTime
+  public endDate: DateTime
 
   @column()
   public isPayoutAuthorized: boolean
@@ -90,14 +103,14 @@ export default class PayoutRecord extends AppBaseModel {
   @column()
   public certificateUrl: string
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
   @beforeCreate()
-  public static assignUuid(payoutRecord: PayoutRecord) {
-    payoutRecord.id = uuid()
+  public static assignUuid(investment: Investment) {
+    investment.id = uuid()
   }
 }

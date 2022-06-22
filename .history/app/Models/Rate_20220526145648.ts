@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate} from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
-import AppBaseModel from 'App/Models/AppBaseModel'
 /**
  * .enum('rollover_type', ['100' = 'no rollover',
  *  '101' = 'rollover principal only',
@@ -11,7 +10,7 @@ import AppBaseModel from 'App/Models/AppBaseModel'
 
 // type RollOverType = '100' | '101' | '102' | '103'
 
-export default class Rate extends AppBaseModel {
+export default class Rate extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 

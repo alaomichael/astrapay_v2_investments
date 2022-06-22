@@ -1,8 +1,16 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate  } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
-import AppBaseModel from 'App/Models/AppBaseModel'
-export default class PayoutRecord extends AppBaseModel {
+
+/**
+ * .enum('rollover_type', ['100' = 'no rollover',
+ *  '101' = 'rollover principal only',
+ * '102' = 'rollover principal with interest',
+ * '103' = 'rollover interest only'])
+ */
+
+// type RollOverType = '100' | '101' | '102' | '103'
+export default class Payout extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
@@ -10,10 +18,10 @@ export default class PayoutRecord extends AppBaseModel {
   public userId: string
 
   @column()
-  public investmentId: string
+  public walletId: string
 
   @column()
-  public walletId: string
+  public investmentId: string
 
   @column()
   public amount: number
@@ -55,7 +63,7 @@ export default class PayoutRecord extends AppBaseModel {
   public interestDueOnInvestment: number
 
   @column()
-  public totalAmountPaid: number
+  public totalAmountToPayout: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -90,14 +98,14 @@ export default class PayoutRecord extends AppBaseModel {
   @column()
   public certificateUrl: string
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
   @beforeCreate()
-  public static assignUuid(payoutRecord: PayoutRecord) {
-    payoutRecord.id = uuid()
+  public static assignUuid(payout: Payout) {
+    payout.id = uuid()
   }
 }

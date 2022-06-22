@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
-import AppBaseModel from 'App/Models/AppBaseModel'
+
 export default class Setting extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string

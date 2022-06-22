@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
-import AppBaseModel from 'App/Models/AppBaseModel'
-export default class TaxRecord extends AppBaseModel {
+
+export default class Tax extends BaseModel {
   @column({ isPrimary: true })
   public id: string
 
@@ -19,18 +19,10 @@ export default class TaxRecord extends AppBaseModel {
   public rate: number
 
   @column()
-  public income: number
+  public lowestAmount: number
 
   @column()
-  public taxDeducted: number
-
-  @column()
-  public investorDetails: JSON
-
-  @column()
-  public userId: string
-  @column()
-  public investmentId: string
+  public highestAmount: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -39,7 +31,7 @@ export default class TaxRecord extends AppBaseModel {
   public updatedAt: DateTime
 
   @beforeCreate()
-  public static assignUuid(taxRecord: TaxRecord) {
-    taxRecord.id = uuid()
+  public static assignUuid(tax: Tax) {
+    tax.id = uuid()
   }
 }
