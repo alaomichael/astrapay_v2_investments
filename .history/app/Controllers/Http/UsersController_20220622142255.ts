@@ -107,16 +107,6 @@ export default class UsersController {
     try {
       const { state, userId } = request.qs()
       console.log('User query: ', request.qs())
-       const userSchema = schema.create({
-         state: schema.string({ escape: true }, [rules.maxLength(50)]),
-         lga: schema.string({ escape: true }, [rules.maxLength(100)]),
-         taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-         rate: schema.number(),
-         lowestAmount: schema.number(),
-         highestAmount: schema.number(),
-       })
-       const payload: any = await request.validate({ schema: userSchema })
-   
 
       let user = await User.query().where({
         userId: userId,

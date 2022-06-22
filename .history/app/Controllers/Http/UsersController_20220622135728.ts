@@ -77,7 +77,7 @@ export default class UsersController {
 
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
-    const userSchema = schema.create({
+    const taxSchema = schema.create({
       state: schema.string({ escape: true }, [rules.maxLength(50)]),
       lga: schema.string({ escape: true }, [rules.maxLength(100)]),
       taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
@@ -85,7 +85,7 @@ export default class UsersController {
       lowestAmount: schema.number(),
       highestAmount: schema.number(),
     })
-    const payload: any = await request.validate({ schema: userSchema })
+    const payload: any = await request.validate({ schema: taxSchema })
     const user = await User.create(payload)
 
     await user.save()
@@ -107,30 +107,20 @@ export default class UsersController {
     try {
       const { state, userId } = request.qs()
       console.log('User query: ', request.qs())
-       const userSchema = schema.create({
-         state: schema.string({ escape: true }, [rules.maxLength(50)]),
-         lga: schema.string({ escape: true }, [rules.maxLength(100)]),
-         taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-         rate: schema.number(),
-         lowestAmount: schema.number(),
-         highestAmount: schema.number(),
-       })
-       const payload: any = await request.validate({ schema: userSchema })
-   
 
       let user = await User.query().where({
         userId: userId,
       }).first()
       console.log(' QUERY RESULT: ', user)
-      if (user) {
+      if (user.length > 0) {
         console.log('Investment user Selected for Update:', user)
         if (user) {
-            user.merge(payload)
             // @ts-ignore
+          user.merge(payload)
 
           if (user) {
             // send to user
-            await user.save()
+            await user[0].save()
             console.log('Update Investment user:', user)
             return user
           }
