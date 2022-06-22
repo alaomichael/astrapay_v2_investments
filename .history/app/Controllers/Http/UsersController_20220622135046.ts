@@ -14,54 +14,54 @@ export default class UsersController {
 
     // const user = await User.query().offset(0).limit(1)
     const user = await User.all()
-    let sortedUser = user
+    let sortedTax = user
 
     if (rate) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.rate === parseInt(rate)
       })
     }
 
     if (lowestAmount) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.lowestAmount === parseInt(lowestAmount)
       })
     }
 
     if (highestAmount) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.highestAmount === parseInt(highestAmount)
       })
     }
 
     if (state) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.state!.includes(state)
       })
     }
 
     if (lga) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.lga.includes(lga)
       })
     }
 
     if (taxCode) {
-      sortedUser = sortedUser.filter((user) => {
+      sortedTax = sortedTax.filter((user) => {
         // @ts-ignore
         return user.taxCode.includes(taxCode)
       })
     }
 
     if (limit) {
-      sortedUser = sortedUser.slice(0, Number(limit))
+      sortedTax = sortedTax.slice(0, Number(limit))
     }
-    if (sortedUser.length < 1) {
+    if (sortedTax.length < 1) {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment user matched your search',
@@ -71,7 +71,7 @@ export default class UsersController {
     // return user(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedUser.map((user) => user.$original),
+      data: sortedTax.map((user) => user.$original),
     })
   }
 
