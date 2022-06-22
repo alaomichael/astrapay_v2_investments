@@ -41,6 +41,9 @@ export default class Saving extends AppBaseModel {
   public recurrenceDone: number
 
   @column()
+  public investmentType: 'fixed' | 'debenture'
+
+  @column()
   public tagName: string
 
   @column()
@@ -62,7 +65,7 @@ export default class Saving extends AppBaseModel {
   public interestRate: number
 
   @column()
-  public interestDueOnSaving: number
+  public interestDueOnSavings: number
 
   @column()
   public targetAmount: number

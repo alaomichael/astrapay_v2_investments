@@ -38,7 +38,10 @@ export default class Saving extends AppBaseModel {
   public accountToDebitDetails: JSON
 
   @column()
-  public recurrenceDone: number
+  public recurrencyDone: number
+
+  @column()
+  public investmentType: 'fixed' | 'debenture'
 
   @column()
   public tagName: string
@@ -62,7 +65,7 @@ export default class Saving extends AppBaseModel {
   public interestRate: number
 
   @column()
-  public interestDueOnSaving: number
+  public interestDueOnSavings: number
 
   @column()
   public targetAmount: number

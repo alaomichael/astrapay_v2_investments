@@ -62,7 +62,7 @@ export default class Saving extends AppBaseModel {
   public interestRate: number
 
   @column()
-  public interestDueOnSaving: number
+  public interestDueOnSavings: number
 
   @column()
   public targetAmount: number

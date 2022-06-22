@@ -22,14 +22,16 @@ export default class extends BaseSchema {
       table.float('lat').unsigned().nullable()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_saving').unsigned().nullable()
-      table.float('target_amount', 255).unsigned().nullable().index()
+       table.float('target_amount', 255).unsigned().nullable().index()
+      table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
+      table.float('total_amount_to_payout').unsigned().nullable().index()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true }).index()
       table.date('start_date').nullable().index()
-      table.date('end_date').nullable().index()
+      table.date('payout_date').nullable().index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
@@ -44,7 +46,34 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true })
 
       // indexes
-      table.index(['id', 'user_id', 'wallet_id', 'amount'], 'saving_full_index')
+      table.index(
+        [
+          'id',
+          'user_id',
+          'wallet_id',
+          'amount',
+          'duration',
+          'rollover_type',
+          'rollover_target',
+          'rollover_done',
+          'investment_type',
+          'wallet_holder_details',
+          'long',
+          'lat',
+          'start_date',
+          'payout_date',
+          'total_amount_to_payout',
+          'is_payout_authorized',
+          'is_termination_authorized',
+          'is_payout_successful',
+          'request_type',
+          'approval_status',
+          'status',
+          'date_payout_was_done',
+          'certificate_url',
+        ],
+        'saving_full_index'
+      )
     })
   }
 
