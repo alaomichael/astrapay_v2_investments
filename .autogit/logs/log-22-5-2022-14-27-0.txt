@@ -1,0 +1,15 @@
+-------------------- Auto-Git Log --------------------
+Wed Jun 22 2022 14:27:00 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/UsersController.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

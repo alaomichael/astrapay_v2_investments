@@ -67,27 +67,20 @@ tagName, limit } = request.qs()
     // const user = await auth.authenticate()
     const userSchema = schema.create({
       userId: schema.string({ escape: true }, [rules.maxLength(50)]),
-      walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
+      walletId: schema.string({ escape: true }, [rules.maxLength(100)]),
       okraRecordId: schema.string({ escape: true }, [rules.maxLength(100)]),
       tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
       currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
       long: schema.number(),
       lat: schema.number(),
-      accountToCreditDetails: schema.object().members({
-        firstName: schema.string(),
-        lastName: schema.string(),
-        email: schema.string([rules.email()]),
-        phone: schema.number(),
-        bankName: schema.string(),
-        accountNumber: schema.string(),
-      }),
-      walletHolderDetails: schema.object.optional().members({
+      walletHolderDetails: schema.object().members({
         firstName: schema.string(),
         lastName: schema.string(),
         email: schema.string([rules.email()]),
         phone: schema.number(),
         investorFundingWalletId: schema.string(),
       }),
+      
     })
     const payload: any = await request.validate({ schema: userSchema })
     const user = await User.create(payload)

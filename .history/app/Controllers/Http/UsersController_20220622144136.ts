@@ -33,26 +33,41 @@ tagName, limit } = request.qs()
       })
     }
 
-    if (okraRecordId) {
+    if (highestAmount) {
       sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return user.okraRecordId === okraRecordId
+        return user.highestAmount === parseInt(highestAmount)
       })
     }
 
-    if (tagName) {
+    if (state) {
       sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return user.tagName!.includes(tagName)
+        return user.state!.includes(state)
       })
     }
+
+    if (lga) {
+      sortedUser = sortedUser.filter((user) => {
+        // @ts-ignore
+        return user.lga.includes(lga)
+      })
+    }
+
+    if (taxCode) {
+      sortedUser = sortedUser.filter((user) => {
+        // @ts-ignore
+        return user.taxCode.includes(taxCode)
+      })
+    }
+
     if (limit) {
       sortedUser = sortedUser.slice(0, Number(limit))
     }
     if (sortedUser.length < 1) {
       return response.status(200).json({
         status: 'OK',
-        message: 'no user matched your search',
+        message: 'no investment user matched your search',
         data: [],
       })
     }
@@ -66,28 +81,12 @@ tagName, limit } = request.qs()
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const userSchema = schema.create({
-      userId: schema.string({ escape: true }, [rules.maxLength(50)]),
-      walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
-      okraRecordId: schema.string({ escape: true }, [rules.maxLength(100)]),
-      tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
-      currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-      long: schema.number(),
-      lat: schema.number(),
-      accountToCreditDetails: schema.object().members({
-        firstName: schema.string(),
-        lastName: schema.string(),
-        email: schema.string([rules.email()]),
-        phone: schema.number(),
-        bankName: schema.string(),
-        accountNumber: schema.string(),
-      }),
-      walletHolderDetails: schema.object.optional().members({
-        firstName: schema.string(),
-        lastName: schema.string(),
-        email: schema.string([rules.email()]),
-        phone: schema.number(),
-        investorFundingWalletId: schema.string(),
-      }),
+      state: schema.string({ escape: true }, [rules.maxLength(50)]),
+      lga: schema.string({ escape: true }, [rules.maxLength(100)]),
+      taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+      rate: schema.number(),
+      lowestAmount: schema.number(),
+      highestAmount: schema.number(),
     })
     const payload: any = await request.validate({ schema: userSchema })
     const user = await User.create(payload)
