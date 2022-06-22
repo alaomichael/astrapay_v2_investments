@@ -1,30 +1,21 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'savings'
+  protected tableName = 'users'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().index().unique().notNullable()
-      table.text('user_id').unsigned().notNullable().index().references('user_id').inTable('users')
-      table.text('wallet_id').unsigned().nullable().index().references('wallet_id').inTable('users')
-      table.float('amount', 255).unsigned().notNullable().index()
-      table.string('duration', 100).notNullable().index()
-      table.enum('type', ['daily', 'weekly', 'monthly', 'yearly']).notNullable().index()
-      table.enum('interval', ['one-time', 'recurring', 'future', 'lock']).notNullable().index()
-      table.jsonb('account_to_debit_details').notNullable().index()
-      table.integer('recurrence_done').unsigned().notNullable().defaultTo(0).index()
+      table.text('user_id').unsigned().notNullable().index()
+      table.text('wallet_id').unsigned().nullable().index()
+      table.text('okra_record_id').unsigned().notNullable().index()
+      table.jsonb('account_to_credit_details').notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('wallet_holder_details').nullable().index()
-      table.jsonb('schedule').nullable().index()
       table.float('long').unsigned().nullable()
       table.float('lat').unsigned().nullable()
-      table.float('interest_rate').unsigned().nullable()
-      table.float('interest_due_on_saving').unsigned().nullable()
-      table.float('target_amount', 255).unsigned().nullable().index()
-
-      /**
+          /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true }).index()

@@ -28,7 +28,7 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true })
 
       // indexes
-      table.index(['id', 'user_id', 'wallet_id', 'okra_record_id'], 'user_full_index')
+      table.index(['id', 'user_id', 'wallet_id', 'amount', 'okra_record_id'], 'user_full_index')
     })
   }
 

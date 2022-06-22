@@ -1,14 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'savings'
+  protected tableName = 'users'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().index().unique().notNullable()
-      table.text('user_id').unsigned().notNullable().index().references('user_id').inTable('users')
-      table.text('wallet_id').unsigned().nullable().index().references('wallet_id').inTable('users')
-      table.float('amount', 255).unsigned().notNullable().index()
+      table.text('user_id').unsigned().notNullable().index()
+      table.text('wallet_id').unsigned().nullable().index()
+      table.text('okra_record_id', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('type', ['daily', 'weekly', 'monthly', 'yearly']).notNullable().index()
       table.enum('interval', ['one-time', 'recurring', 'future', 'lock']).notNullable().index()

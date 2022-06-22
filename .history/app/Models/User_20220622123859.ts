@@ -29,13 +29,40 @@ export default class User extends AppBaseModel {
   public walletHolderDetails: JSON
 
   @column()
+  public schedule: JSON
+
+  @column()
   public long: number
 
   @column()
   public lat: number
 
+  @column()
+  public interestRate: number
+
+  @column()
+  public interestDueOnSaving: number
+
+  @column()
+  public targetAmount: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true })
+  public startDate: DateTime
+
+  @column.dateTime({ autoCreate: false })
+  public endDate: DateTime
+
+  @column()
+  public isPayoutAuthorized: boolean
+
+  @column()
+  public isTerminationAuthorized: boolean
+
+  @column()
+  public isPayoutSuccessful: boolean
 
   @column()
   public requestType: string
@@ -48,9 +75,6 @@ export default class User extends AppBaseModel {
 
   @column()
   public timeline: string
-
-  @column()
-  public certificateUrl: string
 
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime

@@ -49,6 +49,7 @@ export default class User extends AppBaseModel {
   @column()
   public timeline: string
 
+
   @column()
   public certificateUrl: string
 

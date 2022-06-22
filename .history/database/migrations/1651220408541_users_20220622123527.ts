@@ -15,11 +15,11 @@ export default class extends BaseSchema {
       table.jsonb('wallet_holder_details').nullable().index()
       table.float('long').unsigned().nullable()
       table.float('lat').unsigned().nullable()
-      /**
+          /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true }).index()
-      table.string('request_type', 255).notNullable().defaultTo('store record').index()
+      table.string('request_type', 255).notNullable().defaultTo('start investment').index()
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
       table.jsonb('timeline').nullable().index()
@@ -28,7 +28,7 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true })
 
       // indexes
-      table.index(['id', 'user_id', 'wallet_id', 'okra_record_id'], 'user_full_index')
+      table.index(['id', 'user_id', 'wallet_id', 'amount', 'okra_record_id'], 'user_full_index')
     })
   }
 
