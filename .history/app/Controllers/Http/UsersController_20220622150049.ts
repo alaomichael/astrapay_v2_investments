@@ -87,7 +87,6 @@ export default class UsersController {
       }),
     })
     const payload: any = await request.validate({ schema: userSchema })
-    console.log('The new user payload:', payload)
     const user = await User.create(payload)
 
     await user.save()
@@ -110,27 +109,27 @@ export default class UsersController {
       const { userId } = request.qs()
       console.log('User query: ', request.qs())
       const userSchema = schema.create({
-        userId: schema.string.optional({ escape: true }, [rules.maxLength(50)]),
+        userId: schema.string({ escape: true }, [rules.maxLength(50)]),
         walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
-        okraRecordId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
-        tagName: schema.string.optional({ escape: true }, [rules.maxLength(150)]),
-        currencyCode: schema.string.optional({ escape: true }, [rules.maxLength(5)]),
-        long: schema.number.optional(),
-        lat: schema.number.optional(),
-        accountToCreditDetails: schema.object.optional().members({
-          firstName: schema.string.optional(),
-          lastName: schema.string.optional(),
-          email: schema.string.optional([rules.email()]),
-          phone: schema.number.optional(),
-          bankName: schema.string.optional(),
-          accountNumber: schema.string.optional(),
+        okraRecordId: schema.string({ escape: true }, [rules.maxLength(100)]),
+        tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
+        currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+        long: schema.number(),
+        lat: schema.number(),
+        accountToCreditDetails: schema.object().members({
+          firstName: schema.string(),
+          lastName: schema.string(),
+          email: schema.string([rules.email()]),
+          phone: schema.number(),
+          bankName: schema.string(),
+          accountNumber: schema.string(),
         }),
         walletHolderDetails: schema.object.optional().members({
-          firstName: schema.string.optional(),
-          lastName: schema.string.optional(),
-          email: schema.string.optional([rules.email()]),
-          phone: schema.number.optional(),
-          walletId: schema.string.optional(),
+          firstName: schema.string(),
+          lastName: schema.string(),
+          email: schema.string([rules.email()]),
+          phone: schema.number(),
+          walletId: schema.string(),
         }),
       })
       const payload: any = await request.validate({ schema: userSchema })

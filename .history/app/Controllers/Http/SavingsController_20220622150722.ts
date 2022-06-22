@@ -13,39 +13,39 @@ export default class SavingsController {
 
     // const saving = await Saving.query().offset(0).limit(1)
     const saving = await Saving.all()
-    let sortedSaving = saving
+    let sortedUser = saving
 
     if (userId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((saving) => {
         // @ts-ignore
         return saving.userId === userId
       })
     }
 
     if (walletId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((saving) => {
         // @ts-ignore
         return saving.walletId === walletId
       })
     }
 
     if (okraRecordId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((saving) => {
         // @ts-ignore
         return saving.okraRecordId === okraRecordId
       })
     }
 
     if (tagName) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((saving) => {
         // @ts-ignore
         return saving.tagName!.includes(tagName)
       })
     }
     if (limit) {
-      sortedSaving = sortedSaving.slice(0, Number(limit))
+      sortedUser = sortedUser.slice(0, Number(limit))
     }
-    if (sortedSaving.length < 1) {
+    if (sortedUser.length < 1) {
       return response.status(200).json({
         status: 'OK',
         message: 'no saving matched your search',
@@ -55,7 +55,7 @@ export default class SavingsController {
     // return saving(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedSaving.map((saving) => saving.$original),
+      data: sortedUser.map((saving) => saving.$original),
     })
   }
 

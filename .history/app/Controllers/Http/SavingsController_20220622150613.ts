@@ -2,65 +2,65 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 // import { DateTime } from 'luxon'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
-import Saving from 'App/Models/Saving'
+import User from 'App/Models/User'
 export default class SavingsController {
   public async index({ params, request, response }: HttpContextContract) {
-    console.log('saving params: ', params)
+    console.log('user params: ', params)
     const { userId, walletId, okraRecordId, tagName, limit } = request.qs()
-    console.log('saving query: ', request.qs())
-    const countActiveTax = await Saving.query().where('state', 'oyo').getCount()
-    console.log('saving Investment count: ', countActiveTax)
+    console.log('user query: ', request.qs())
+    const countActiveTax = await User.query().where('state', 'oyo').getCount()
+    console.log('user Investment count: ', countActiveTax)
 
-    // const saving = await Saving.query().offset(0).limit(1)
-    const saving = await Saving.all()
-    let sortedSaving = saving
+    // const user = await User.query().offset(0).limit(1)
+    const user = await User.all()
+    let sortedUser = user
 
     if (userId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return saving.userId === userId
+        return user.userId === userId
       })
     }
 
     if (walletId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return saving.walletId === walletId
+        return user.walletId === walletId
       })
     }
 
     if (okraRecordId) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return saving.okraRecordId === okraRecordId
+        return user.okraRecordId === okraRecordId
       })
     }
 
     if (tagName) {
-      sortedSaving = sortedSaving.filter((saving) => {
+      sortedUser = sortedUser.filter((user) => {
         // @ts-ignore
-        return saving.tagName!.includes(tagName)
+        return user.tagName!.includes(tagName)
       })
     }
     if (limit) {
-      sortedSaving = sortedSaving.slice(0, Number(limit))
+      sortedUser = sortedUser.slice(0, Number(limit))
     }
-    if (sortedSaving.length < 1) {
+    if (sortedUser.length < 1) {
       return response.status(200).json({
         status: 'OK',
-        message: 'no saving matched your search',
+        message: 'no user matched your search',
         data: [],
       })
     }
-    // return saving(s)
+    // return user(s)
     return response.status(200).json({
       status: 'OK',
-      data: sortedSaving.map((saving) => saving.$original),
+      data: sortedUser.map((user) => user.$original),
     })
   }
 
   public async store({ request, response }: HttpContextContract) {
-    // const saving = await auth.authenticate()
+    // const user = await auth.authenticate()
     const userSchema = schema.create({
       userId: schema.string({ escape: true }, [rules.maxLength(50)]),
       walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
@@ -86,28 +86,28 @@ export default class SavingsController {
       }),
     })
     const payload: any = await request.validate({ schema: userSchema })
-    console.log('The new saving payload:', payload)
-    const saving = await Saving.create(payload)
+    console.log('The new user payload:', payload)
+    const user = await User.create(payload)
 
-    await saving.save()
-    console.log('The new saving rate:', saving)
+    await user.save()
+    console.log('The new user rate:', user)
 
     // TODO
-    console.log('A New saving has been Created.')
+    console.log('A New user has been Created.')
 
-    // Save saving new status to Database
-    await saving.save()
-    // Send saving Creation Message to Queue
+    // Save user new status to Database
+    await user.save()
+    // Send user Creation Message to Queue
 
     // @ts-ignore
-    Event.emit('new:saving', { id: saving.id, extras: saving.additionalDetails })
-    return response.json({ status: 'OK', data: saving.$original })
+    Event.emit('new:user', { id: user.id, extras: user.additionalDetails })
+    return response.json({ status: 'OK', data: user.$original })
   }
 
   public async update({ request, response }: HttpContextContract) {
     try {
       const { userId } = request.qs()
-      console.log('Saving query: ', request.qs())
+      console.log('User query: ', request.qs())
       const userSchema = schema.create({
         userId: schema.string.optional({ escape: true }, [rules.maxLength(50)]),
         walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
@@ -133,27 +133,27 @@ export default class SavingsController {
         }),
       })
       const payload: any = await request.validate({ schema: userSchema })
-      let saving = await Saving.query()
+      let user = await User.query()
         .where({
           userId: userId,
         })
         .first()
-      console.log(' QUERY RESULT: ', saving)
-      if (saving) {
-        console.log('Investment saving Selected for Update:', saving)
-        if (saving) {
-          saving.merge(payload)
+      console.log(' QUERY RESULT: ', user)
+      if (user) {
+        console.log('Investment user Selected for Update:', user)
+        if (user) {
+          user.merge(payload)
           // @ts-ignore
 
-          if (saving) {
-            // send to saving
-            await saving.save()
-            console.log('Update Investment saving:', saving)
-            return saving
+          if (user) {
+            // send to user
+            await user.save()
+            console.log('Update Investment user:', user)
+            return user
           }
           return // 422
         } else {
-          return response.status(304).json({ status: 'FAILED', data: saving })
+          return response.status(304).json({ status: 'FAILED', data: user })
         }
       } else {
         return response
@@ -168,21 +168,21 @@ export default class SavingsController {
 
   public async destroy({ request, response }: HttpContextContract) {
     const { id } = request.qs()
-    console.log('Saving query: ', request.qs())
+    console.log('User query: ', request.qs())
 
-    let saving = await Saving.query().where({
+    let user = await User.query().where({
       id: id,
     })
-    console.log(' QUERY RESULT: ', saving)
+    console.log(' QUERY RESULT: ', user)
 
-    if (saving.length > 0) {
-      saving = await Saving.query()
+    if (user.length > 0) {
+      user = await User.query()
         .where({
           id: id,
         })
         .delete()
-      console.log('Deleted data:', saving)
-      return response.send('saving Delete.')
+      console.log('Deleted data:', user)
+      return response.send('user Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
     }

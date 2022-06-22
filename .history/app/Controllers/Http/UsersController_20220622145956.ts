@@ -87,7 +87,6 @@ export default class UsersController {
       }),
     })
     const payload: any = await request.validate({ schema: userSchema })
-    console.log('The new user payload:', payload)
     const user = await User.create(payload)
 
     await user.save()
@@ -107,33 +106,18 @@ export default class UsersController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { userId } = request.qs()
+      const {  userId } = request.qs()
       console.log('User query: ', request.qs())
       const userSchema = schema.create({
-        userId: schema.string.optional({ escape: true }, [rules.maxLength(50)]),
-        walletId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
-        okraRecordId: schema.string.optional({ escape: true }, [rules.maxLength(100)]),
-        tagName: schema.string.optional({ escape: true }, [rules.maxLength(150)]),
-        currencyCode: schema.string.optional({ escape: true }, [rules.maxLength(5)]),
-        long: schema.number.optional(),
-        lat: schema.number.optional(),
-        accountToCreditDetails: schema.object.optional().members({
-          firstName: schema.string.optional(),
-          lastName: schema.string.optional(),
-          email: schema.string.optional([rules.email()]),
-          phone: schema.number.optional(),
-          bankName: schema.string.optional(),
-          accountNumber: schema.string.optional(),
-        }),
-        walletHolderDetails: schema.object.optional().members({
-          firstName: schema.string.optional(),
-          lastName: schema.string.optional(),
-          email: schema.string.optional([rules.email()]),
-          phone: schema.number.optional(),
-          walletId: schema.string.optional(),
-        }),
+        state: schema.string({ escape: true }, [rules.maxLength(50)]),
+        lga: schema.string({ escape: true }, [rules.maxLength(100)]),
+        taxCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+        rate: schema.number(),
+        lowestAmount: schema.number(),
+        highestAmount: schema.number(),
       })
       const payload: any = await request.validate({ schema: userSchema })
+
       let user = await User.query()
         .where({
           userId: userId,
