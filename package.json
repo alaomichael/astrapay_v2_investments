@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node ace serve --watch",
+    "debug": "node ace serve --node-args=\"--inspect\"",
     "build": "node ace build --production",
     "start:prod": "node ./build/server.js",
     "start": "pm2-runtime start ecosystem.config.js --env production",
