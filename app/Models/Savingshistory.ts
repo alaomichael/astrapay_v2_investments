@@ -4,7 +4,7 @@ import AppBaseModel from 'App/Models/AppBaseModel'
 
 export default class Savingshistory extends AppBaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
