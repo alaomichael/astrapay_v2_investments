@@ -6,6 +6,9 @@ export default class Savingshistory extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string
 
+  @column()
+  public amount: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
