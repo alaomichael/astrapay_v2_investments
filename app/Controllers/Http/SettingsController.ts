@@ -24,7 +24,7 @@ export default class SettingsController {
       await request.validate(CreateSettingValidator);
       const settingsService = new SettingServices();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, fundingWalletId, isPayoutAutomated,
-        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, investmentType, tagName, } = request.body();
+        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -34,7 +34,7 @@ export default class SettingsController {
         fundingSourceTerminal: fundingSourceTerminal,
         isInvestmentAutomated: isInvestmentAutomated,
         isRolloverAutomated: isRolloverAutomated,
-        investmentType: investmentType,
+        // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
       }
@@ -81,7 +81,7 @@ export default class SettingsController {
       const settingsService = new SettingServices();
       const { id } = request.params();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, fundingWalletId, isPayoutAutomated,
-        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, investmentType, tagName, } = request.body();
+        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -91,7 +91,7 @@ export default class SettingsController {
         fundingSourceTerminal: fundingSourceTerminal,
         isInvestmentAutomated: isInvestmentAutomated,
         isRolloverAutomated: isRolloverAutomated,
-        investmentType: investmentType,
+        // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
       }

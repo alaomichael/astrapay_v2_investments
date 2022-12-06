@@ -33,8 +33,8 @@ export default class Setting extends AppBaseModel {
   @column()
   public isRolloverAutomated: boolean
 
-  @column()
-  public investmentType: 'fixed' | 'debenture'
+  // @column()
+  // public investmentType: 'fixed' | 'debenture'
 
   @column()
   public tagName: string

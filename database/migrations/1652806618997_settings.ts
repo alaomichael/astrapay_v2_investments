@@ -15,7 +15,7 @@ export default class Settings extends BaseSchema {
       table.boolean('is_investment_automated').notNullable().defaultTo(false).index()
       table.boolean('is_rollover_automated').notNullable().defaultTo(false).index()
       // table.boolean('is_termination_automated').notNullable().defaultTo(false).index()
-      table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
+      // table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).nullable()
       table.string('currency_code', 10).notNullable().index()
 
@@ -36,8 +36,7 @@ export default class Settings extends BaseSchema {
           'is_payout_automated',
           'funding_source_terminal',
           'is_investment_automated',
-          'is_termination_automated',
-          'investment_type',
+          'is_rollover_automated',
           'currency_code',
         ],
         'setting_full_index'

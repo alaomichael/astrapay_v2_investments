@@ -7,7 +7,7 @@ export interface SettingType {
     fundingSourceTerminal: string,
     isInvestmentAutomated: boolean,
     isRolloverAutomated: boolean,
-    investmentType: string,
+    // investmentType: string,
     tagName: string,
     currencyCode: string,
 }

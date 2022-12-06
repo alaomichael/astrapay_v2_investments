@@ -16,8 +16,8 @@ export default class Rates extends BaseSchema {
       table.string('tag_name', 100).notNullable().index()
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('additional_details').nullable().index()
-      table.float('long').unsigned().nullable().index()
-      table.float('lat').unsigned().nullable().index()
+      table.string('lng').unsigned().nullable().index()
+      table.string('lat').unsigned().nullable().index()
       table.float('interest_rate').unsigned().nullable().index()
 
       /**

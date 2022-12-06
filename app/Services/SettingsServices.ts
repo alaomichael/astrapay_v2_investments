@@ -189,12 +189,12 @@ export default class SettingsServices {
             // queryFields.isTokenRequestAutomated = queryFields.isRolloverAutomated == "true" ? 1 : 0;
             params.push(queryFields.isRolloverAutomated)
         }
-        if (queryFields.investmentType) {
-            predicateExists()
-            predicate = predicate + "investment_type=?";
-            // queryFields.investmentType = queryFields.isAccountLinkingAutomated == "true" ? 1 : 0;
-            params.push(queryFields.investmentType)
-        }
+        // if (queryFields.investmentType) {
+        //     predicateExists()
+        //     predicate = predicate + "investment_type=?";
+        //     // queryFields.investmentType = queryFields.isAccountLinkingAutomated == "true" ? 1 : 0;
+        //     params.push(queryFields.investmentType)
+        // }
         if (queryFields.tagName) {
             predicateExists()
             predicate = predicate + "tag_name=?"

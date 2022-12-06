@@ -38,12 +38,17 @@ export default class Investments extends BaseSchema {
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('long').unsigned().nullable()
+      table.float('lng').unsigned().nullable()
       table.float('lat').unsigned().nullable()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().nullable()
       table.float('total_amount_to_payout').unsigned().nullable().index()
-
+      table.boolean("is_request_sent").notNullable().defaultTo(false);
+      table.string("investment_request_reference").nullable();
+      table.boolean("is_investment_created").notNullable().defaultTo(false);
+      table.string("account_creation_request_reference").nullable();
+      table.boolean("is_investment_completed").notNullable().defaultTo(false);
+      table.timestamp("investment_completion_date").nullable().index();
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
@@ -76,7 +81,7 @@ export default class Investments extends BaseSchema {
           'rollover_done',
           'investment_type',
           'wallet_holder_details',
-          'long',
+          'lng',
           'lat',
           'start_date',
           'payout_date',
