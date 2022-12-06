@@ -45,6 +45,7 @@ Route.group(() => {
     Route.post('admin/investments/approvals', 'ApprovalsController.store')
     Route.post('admin/investments/transactions', 'InvestmentsController.processPayment')
     Route.post('admin/investments/settings', 'SettingsController.store')
+    Route.post('admin/investments/rfi_records', 'RfiRecordsController.store')
 
     // GET ROUTES
     Route.get('investments', 'InvestmentsController.index')
@@ -61,9 +62,11 @@ Route.group(() => {
     Route.get('admin/investments/payoutrecords', 'PayoutRecordsController.index')
     Route.get('admin/investments/feedbacks', 'InvestmentsController.feedbacks')
     Route.get('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
+    Route.get('admin/investments/rfi_records', 'RfiRecordsController.index')
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('admin/investments/:investmentId', 'InvestmentsController.showByInvestmentId')
     Route.get('investments/:investmentId', 'InvestmentsController.showByInvestmentId')
+    
     // Route.get('investments/:userId', 'InvestmentsController.show')
 
     // Route.get('investments/rates', 'InvestmentsController.rate')
@@ -80,6 +83,7 @@ Route.group(() => {
     Route.put('admin/investments/approvals', 'ApprovalsController.update')
     Route.put('admin/investments', 'InvestmentsController.update')
     Route.put('investments', 'InvestmentsController.update')
+    Route.put('admin/investments/rfi_records', 'RfiRecordsController.update')
 
     // DELETE ROUTES
     Route.delete('admin/investments/settings', 'SettingsController.destroy')
@@ -87,8 +91,10 @@ Route.group(() => {
     Route.delete('admin/investments/taxes', 'TaxesController.destroy')
     Route.delete('admin/investments/taxrecords', 'TaxRecordsController.destroy')
     Route.delete('admin/investments/approvals', 'ApprovalsController.destroy')
+    Route.delete('admin/investments/rfi_records', 'RfiRecordsController.destroy')
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
     Route.delete('investments/:userId', 'InvestmentsController.destroy')
+    
     // Route.delete('investments/:id', 'InvestmentsController.destroy')
   })
 }).prefix('api/v2')

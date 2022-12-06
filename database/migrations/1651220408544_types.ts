@@ -18,7 +18,7 @@ export default class extends BaseSchema {
       table.float('highest_amount', 12).unsigned().notNullable().index()
       table.string('duration', 5).notNullable().index()
       table.float('interest_rate').unsigned().nullable().index()
-      table.string('rollover_code').unsigned().nullable().index()
+      table.boolean('is_rollover_allowed').index().notNullable().defaultTo(true);
       // table.boolean('is_active').notNullable().index().defaultTo(true)
       table.float("quantity_issued").notNullable().defaultTo(0);
       table.float("quantity_available_for_issue").nullable();
@@ -37,12 +37,11 @@ export default class extends BaseSchema {
       // table.float("yearly_minimum_limit", 255).notNullable().index().defaultTo(0);
       // table.float("yearly_maximum_limit", 255).notNullable().index().defaultTo(0);
       table.boolean("is_automated").notNullable().defaultTo(false);
-      table.boolean("is_renewable").notNullable().defaultTo(true);
+      // table.boolean("is_renewable").notNullable().defaultTo(true);
       table.specificType('features', 'text ARRAY').nullable();
       table.specificType('requirements', 'text ARRAY').nullable();
-      table.string("tag_name", 255).notNullable().unique();
       table.string("created_by").notNullable();
-      table.string('tag_name', 100).nullable().index()
+      table.string('tag_name', 100).notNullable().index().unique();
       table.string('currency_code', 10).notNullable().index().defaultTo("NGN")
       table.string('lng').unsigned().nullable().index()
       table.string('lat').unsigned().nullable().index()
