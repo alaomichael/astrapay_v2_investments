@@ -6,6 +6,18 @@ export default class Setting extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string
 
+  @column({
+  })
+  public rfiName: string
+
+  @column({
+  })
+  public rfiCode: string
+
+  @column({
+  })
+  public rfiImageUrl: string
+
   @column()
   public fundingWalletId: string
 
@@ -19,7 +31,7 @@ export default class Setting extends AppBaseModel {
   public isInvestmentAutomated: boolean
 
   @column()
-  public isTerminationAutomated: boolean
+  public isRolloverAutomated: boolean
 
   @column()
   public investmentType: 'fixed' | 'debenture'
