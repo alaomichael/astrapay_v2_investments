@@ -27,6 +27,12 @@ import {
 } from 'App/Helpers/utils'
 
 import Approval from 'App/Models/Approval'
+import CreateInvestmentValidator from 'App/Validators/CreateInvestmentValidator'
+import { InvestmentType } from 'App/Services/types/investment_type'
+import InvestmentsServices from 'App/Services/InvestmentsServices'
+import TimelinesServices from 'App/Services/TimelinesServices'
+const randomstring = require("randomstring");
+
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -37,7 +43,7 @@ export default class InvestmentsController {
     // let settings = await Setting.query().where({ currency_code: 'NGN' })
     // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
     // const investment = await Investment.query().offset(0).limit(1)
-    const investment =  (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
+    const investment = (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
     // console.log('INVESTMENT before sorting line 40: ', investment)
     // let newArray = investment.map((investment) => {return investment.$original})
     let sortedInvestments = investment.map((investment) => {
@@ -183,9 +189,9 @@ export default class InvestmentsController {
       let investment = await Investment.query()
         .where({ id: investmentId })
         .first()
-        // .with('timeline')
-        // .orderBy('timeline', 'desc')
-        // .fetch()
+      // .with('timeline')
+      // .orderBy('timeline', 'desc')
+      // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
       const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
       // await new PuppeteerServices(requestUrl, {
@@ -345,7 +351,7 @@ export default class InvestmentsController {
         let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
         investment[0].startDate = DateTime.now().toISO()
-        let duration = parseInt(investment[0].duration)
+        let duration = investment[0].duration;  //parseInt(investment[0].duration)
         investment[0].payoutDate = DateTime.now().plus({ days: duration })
         console.log('The currentDate line 336: ', currentDateMs)
         console.log('Time investment was started line 337: ', investment[0].startDate)
@@ -361,11 +367,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 348:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline //JSON.parse(investment[0].timeline)
+        // timeline = investment[0].timeline //JSON.parse(investment[0].timeline)
         timeline.push(timelineObject)
         console.log('Timeline object line 352:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
         // Send notification
@@ -445,11 +451,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 429:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline
+        // timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 433:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
 
@@ -545,11 +551,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 529:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline
+        // timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 533:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
 
@@ -599,11 +605,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 583:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline
+        // timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 587:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
 
@@ -692,11 +698,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 676:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline
+        // timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 680:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
 
@@ -746,11 +752,11 @@ export default class InvestmentsController {
         }
         console.log('Timeline object line 730:', timelineObject)
         //  Push the new object to the array
-        timeline = investment[0].timeline
+        // timeline = investment[0].timeline
         timeline.push(timelineObject)
         console.log('Timeline object line 734:', timeline)
         // stringify the timeline array
-        investment[0].timeline = JSON.stringify(timeline)
+        // investment[0].timeline = JSON.stringify(timeline)
         // Save
         await investment[0].save()
 
@@ -951,11 +957,11 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 935:', timelineObject)
                 //  Push the new object to the array
-                timeline = investment[0].timeline
-                timeline.push(timelineObject)
+                // timeline = investment[0].timeline
+                // timeline.push(timelineObject)
                 console.log('Timeline object line 939:', timeline)
                 // stringify the timeline array
-                investment[0].timeline = JSON.stringify(timeline)
+                // investment[0].timeline = JSON.stringify(timeline)
                 // Save
                 await investment[0].save()
                 console.log('Update Investment:', investment)
@@ -990,48 +996,71 @@ export default class InvestmentsController {
   }
 
   public async store({ request, response }: HttpContextContract) {
+    await request.validate(CreateInvestmentValidator);
+    const investmentsService = new InvestmentsServices();
+    const timelineService = new TimelinesServices();
     // const user = await auth.authenticate()
-    const investmentSchema = schema.create({
-      amount: schema.number(),
-      rolloverType: schema.enum(['100', '101', '102']),
-      rolloverTarget: schema.number([rules.range(0, 5)]),
-      rolloverDone: schema.number([rules.range(0, 5)]),
-      investmentType: schema.enum(['fixed', 'debenture']),
-      duration: schema.string({ escape: true }, [rules.maxLength(4)]),
-      userId: schema.string(),
-      tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
-      currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-      long: schema.number(),
-      lat: schema.number(),
-      walletHolderDetails: schema.object().members({
-        firstName: schema.string(),
-        lastName: schema.string(),
-        email: schema.string([rules.email()]),
-        phone: schema.number(),
-        investorFundingWalletId: schema.string(),
-      }),
-    })
-    const payload: any = await request.validate({ schema: investmentSchema })
+    // const investmentSchema = schema.create({
+    //   amount: schema.number(),
+    //   rolloverType: schema.enum(['100', '101', '102']),
+    //   rolloverTarget: schema.number([rules.range(0, 5)]),
+    //   rolloverDone: schema.number([rules.range(0, 5)]),
+    //   investmentType: schema.enum(['fixed', 'debenture']),
+    //   duration: schema.string({ escape: true }, [rules.maxLength(4)]),
+    //   userId: schema.string(),
+    //   tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
+    //   currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+    //   long: schema.number(),
+    //   lat: schema.number(),
+    //   firstName: schema.string(),
+    //   lastName: schema.string(),
+    //   email: schema.string([rules.email()]),
+    //   phone: schema.number(),
+    //   investorFundingWalletId: schema.string(),
+    // })
+    // const payload: any = await request.validate({ schema: investmentSchema })
+
+    const {  lastName, firstName,  
+      walletId, userId,investmentTypeId, investmentTypeName, rfiCode, currencyCode,
+      lng, lat,rfiRecordId,phone,email,investorFundingWalletId,amount,duration,rolloverType,
+rolloverTarget,investmentType,tagName,  } = request.body();
+
+    const payload: InvestmentType = {
+      lastName: lastName,
+      firstName: firstName,
+      walletId: walletId,
+      userId: userId,
+      investmentTypeId: investmentTypeId,
+      investmentTypeName: investmentTypeName,
+      rfiCode: rfiCode,
+      currencyCode: currencyCode,
+      lng: lng,
+      lat: lat,
+      rfiRecordId: rfiRecordId,
+      phone:phone,
+      email:email,
+      investorFundingWalletId:investorFundingWalletId,
+      amount:amount,
+      duration:duration,
+      rolloverType:rolloverType,
+      rolloverTarget:rolloverTarget,
+      investmentType:investmentType,
+      tagName:tagName,
+      interestRate: 0,
+      interestDueOnInvestment: 0,
+      totalAmountToPayout: 0,
+      // isPayoutSuccessful: false,
+      // requestType: '',
+      // approvalStatus: '',
+      // status: '',
+      // datePayoutWasDone: new DateTime
+    }
+
+
     console.log('Payload line 1010  :', payload)
     let payloadAmount = payload.amount
     let payloadDuration = payload.duration
     let payloadInvestmentType = payload.investmentType
-    // let investmentRate = async function () {
-    //   try {
-    //     const response = await axios.get(
-    //       `${API_URL}/investments/rates?amount=${payload.amount}&duration=${payload.duration}&investmentType=${payload.investmentType}`
-    //     )
-    //     console.log('The API response: ', response.data)
-    //     if (response.data.status === 'OK' && response.data.data.length > 0) {
-    //       return response.data.data[0].interest_rate
-    //     } else {
-    //       return
-    //     }
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // }
-
     console.log(
       ' The Rate return for RATE line 541: ',
       await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
@@ -1046,20 +1075,27 @@ export default class InvestmentsController {
       })
     }
     console.log('Payload line 1043  :', payload)
-    const investment = await Investment.create(payload)
+    // const investment = await Investment.create(payload)
+    // @ts-ignore
+    payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
+    // @ts-ignore
+    payload.isRequestSent = true;
+    const investment = await investmentsService.createInvestment(payload);
+    console.log("New account request line 1082: ", investment);
+                // console.log("The new newAccountRequest data:", newAccountRequest);
+
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
     // return response.OK(investment)
     // The code below only work when there is auth
     // await user.related('investments').save(investment)
-
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
     investment.interestRate = rate
     // investment.rolloverDone = payload.rolloverDone
 
     // When the Invest has been approved and activated
-    let amount = investment.amount
+    // let amount = investment.amount
     let investmentDuration = investment.duration
     let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
     // @ts-ignore
@@ -1069,7 +1105,7 @@ export default class InvestmentsController {
 
     // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
     // @ts-ignore
-    investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+    // investment.walletId = investorFundingWalletId
     await investment.save()
     console.log('The new investment:', investment)
 
@@ -1088,29 +1124,31 @@ export default class InvestmentsController {
     // Send Investment Initiation Message to Queue
 
     // check if Approval is set to Auto, from Setting Controller
-    let userId = investment.userId
+    // let userId = investment.userId
     let investmentId = investment.id
     let requestType = 'start_investment'
-    let settings = await Setting.query().where({ tagName: 'default setting' })
+    let settings = await Setting.query().where({ rfiCode: rfiCode })
     console.log('Approval setting line 910:', settings[0])
-    let timeline: any[] = []
+    // let timeline: any[] = []
     //  create a new object for the timeline
     let timelineObject = {
       id: uuid(),
+      investmentId: investmentId,
+      walletId: walletId,
+      userId: userId,
       action: 'investment initiated',
       // @ts-ignore
-      message: `${investment.walletHolderDetails.firstName} just initiated an investment.`,
+      message: `${firstName} just initiated an investment.`,
       createdAt: investment.createdAt,
-      meta: `duration: ${investment.duration}`,
+      metadata: `duration: ${investment.duration}`,
     }
     console.log('Timeline object line 923:', timelineObject)
-    //  Push the new object to the array
-    timeline.push(timelineObject)
-
-    console.log('Timeline object line 927:', timeline)
+    await timelineService.createTimeline(timelineObject);
+    // let newTimeline = await timelineService.createTimeline(timelineObject);
+    // console.log('Timeline object line 927:', newTimeline)
 
     // stringify the timeline array
-    investment.timeline = JSON.stringify(timeline)
+    // investment.timeline = JSON.stringify(timeline)
     await investment.save()
 
     //  Check if investment activation is automated
@@ -1138,23 +1176,27 @@ export default class InvestmentsController {
         investment.status = 'active'
         investment.approvalStatus = 'approved'
         investment.startDate = DateTime.now() //.toISODate()
-        investment.payoutDate = DateTime.now().plus({ days: parseInt(investmentDuration) })
+        investment.payoutDate = DateTime.now().plus({ days: investmentDuration })
         timelineObject = {
           id: uuid(),
+          investmentId: investmentId,
+          userId:userId,
+          walletId:walletId,
           action: 'investment activated',
           // @ts-ignore
-          message: `${investment.walletHolderDetails.firstName} investment has just been activated.`,
+          message: `${firstName} investment has just been activated.`,
           createdAt: investment.startDate,
-          meta: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
+          metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
         }
-        console.log('Timeline object line 1004:', timelineObject)
+        // console.log('Timeline object line 1004:', timelineObject)
         //  Push the new object to the array
-        timeline.push(timelineObject)
+        // timeline.push(timelineObject)
 
-        console.log('Timeline object line 1008:', timeline)
+        // console.log('Timeline object line 1008:', timeline)
 
         // stringify the timeline array
-        investment.timeline = JSON.stringify(timeline)
+        // investment.timeline = JSON.stringify(timeline)
+        await timelineService.createTimeline(timelineObject);
         await investment.save()
       } else {
         return response.json({
@@ -1176,7 +1218,7 @@ export default class InvestmentsController {
     let newInvestmentId = investment.id
     // Send to Notificaation Service
     // @ts-ignore
-    let newInvestmentEmail = investment.walletHolderDetails.email
+    let newInvestmentEmail = email
     Event.emit('new:investment', {
       id: newInvestmentId,
       email: newInvestmentEmail,
@@ -1436,11 +1478,11 @@ export default class InvestmentsController {
               }
               console.log('Timeline object line 1429:', timelineObject)
               //  Push the new object to the array
-              timeline = investment[0].timeline
+              // timeline = investment[0].timeline
               timeline.push(timelineObject)
               console.log('Timeline object line 1433:', timeline)
               // stringify the timeline array
-              investment[0].timeline = JSON.stringify(timeline)
+              // investment[0].timeline = JSON.stringify(timeline)
               // Save
               await investment[0].save()
               // stringify the timeline array
@@ -1470,11 +1512,11 @@ export default class InvestmentsController {
               }
               console.log('Timeline object line 1463:', timelineObject)
               //  Push the new object to the array
-              timeline = investment[0].timeline
+              // timeline = investment[0].timeline
               timeline.push(timelineObject)
               console.log('Timeline object line 1467:', timeline)
               // stringify the timeline array
-              investment[0].timeline = JSON.stringify(timeline)
+              // investment[0].timeline = JSON.stringify(timeline)
               await investment[0].save()
               // stringify the timeline array
               payoutRequestIsExisting[0].timeline = JSON.stringify(timeline)
@@ -1551,7 +1593,7 @@ export default class InvestmentsController {
                 investment[0].approvalStatus === 'approved' &&
                 investment[0].status === 'payout')
             ) {
-              payload.timeline = JSON.stringify(investment[0].timeline)
+              // payload.timeline = JSON.stringify(investment[0].timeline)
               console.log('Matured Payout investment data line 1548:', payload)
               payout = await Payout.create(payload)
               payout.status = 'payout'
@@ -1569,11 +1611,11 @@ export default class InvestmentsController {
               }
               console.log('Timeline object line 1562:', timelineObject)
               //  Push the new object to the array
-              timeline = investment[0].timeline
+              // timeline = investment[0].timeline
               timeline.push(timelineObject)
               console.log('Timeline object line 1566:', timeline)
               // stringify the timeline array
-              investment[0].timeline = JSON.stringify(timeline)
+              // investment[0].timeline = JSON.stringify(timeline)
               // Save
               await investment[0].save()
               // stringify the timeline array
@@ -1602,11 +1644,11 @@ export default class InvestmentsController {
               }
               console.log('Timeline object line 1595:', timelineObject)
               //  Push the new object to the array
-              timeline = investment[0].timeline
+              // timeline = investment[0].timeline
               timeline.push(timelineObject)
               console.log('Timeline object line 1599:', timeline)
               // stringify the timeline array
-              investment[0].timeline = JSON.stringify(timeline)
+              // investment[0].timeline = JSON.stringify(timeline)
               await investment[0].save()
               // stringify the timeline array
               payoutRequestIsExisting[0].timeline = JSON.stringify(timeline)
@@ -1705,7 +1747,7 @@ export default class InvestmentsController {
               investment[0].status === 'active'
             ) {
               console.log('Payout investment data 1:', payload)
-              payload.timeline = JSON.stringify(investment[0].timeline)
+              // payload.timeline = JSON.stringify(investment[0].timeline)
               console.log('Payout investment data line 1576:', payload)
               payout = await Payout.create(payload)
               payout.status = 'terminated'
@@ -1747,7 +1789,7 @@ export default class InvestmentsController {
               investment[0].status === 'active'
             ) {
               console.log('Payout investment data 1:', payload)
-              payload.timeline = JSON.stringify(investment[0].timeline)
+              // payload.timeline = JSON.stringify(investment[0].timeline)
               console.log('Investment data line 1618:', payload)
 
               payout = await Payout.create(payload)
@@ -1782,13 +1824,13 @@ export default class InvestmentsController {
           }
           console.log('Timeline object line 1509:', timelineObject)
           //  Push the new object to the array
-          timeline = investment[0].timeline
+          // timeline = investment[0].timeline
           timeline.push(timelineObject)
 
           console.log('Timeline object line 1514:', timeline)
 
           // stringify the timeline array
-          investment[0].timeline = JSON.stringify(timeline)
+          // investment[0].timeline = JSON.stringify(timeline)
           await investment[0].save()
 
           console.log('Terminated Payout investment data line 1521:', investment)
@@ -1972,13 +2014,13 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 1696:', timelineObject)
                 //  Push the new object to the array
-                timeline = investment[0].timeline
+                // timeline = investment[0].timeline
                 timeline.push(timelineObject)
 
                 console.log('Timeline object line 1701:', timeline)
 
                 // stringify the timeline array
-                investment[0].timeline = JSON.stringify(timeline)
+                // investment[0].timeline = JSON.stringify(timeline)
                 await investment[0].save()
 
                 return response.send({
@@ -2016,11 +2058,11 @@ export default class InvestmentsController {
                 }
                 console.log('Timeline object line 1740:', timelineObject)
                 //  Push the new object to the array
-                timeline = investment[0].timeline
+                // timeline = investment[0].timeline
                 timeline.push(timelineObject)
                 console.log('Timeline object line 1744:', timeline)
                 // stringify the timeline array
-                investment[0].timeline = JSON.stringify(timeline)
+                // investment[0].timeline = JSON.stringify(timeline)
                 // Save
                 await investment[0].save()
 
@@ -2173,11 +2215,11 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 2168:', timelineObject)
                       //  Push the new object to the array
-                      timeline = investment[0].timeline
+                      // timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 2173:', timeline)
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(timeline)
+                      // investment[0].timeline = JSON.stringify(timeline)
                       // Save
                       await investment[0].save()
 
@@ -2222,11 +2264,11 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 2217:', timelineObject)
                       //  Push the new object to the array
-                      timeline = investment[0].timeline
+                      // timeline = investment[0].timeline
                       timeline.push(timelineObject)
                       console.log('Timeline object line 2221:', timeline)
                       // stringify the timeline array
-                      investment[0].timeline = JSON.stringify(timeline)
+                      // investment[0].timeline = JSON.stringify(timeline)
                       // Save
                       await investment[0].save()
 
@@ -2503,9 +2545,8 @@ export default class InvestmentsController {
                           // @ts-ignore
                           message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          meta: `amount invested: ${investment[0].amount},amount paid: ${
-                            investment[0].interestDueOnInvestment + investment[0].amount
-                          }, request type : ${investment[0].requestType}`,
+                          meta: `amount invested: ${investment[0].amount},amount paid: ${investment[0].interestDueOnInvestment + investment[0].amount
+                            }, request type : ${investment[0].requestType}`,
                         }
                         console.log('Timeline object line 2518:', timelineObject)
                         //  Push the new object to the array
@@ -2566,7 +2607,7 @@ export default class InvestmentsController {
                       }
                       console.log('Timeline object line 2554:', timelineObject)
                       //  Push the new object to the array
-newTimeline = JSON.parse(investment[0].timeline)
+                      newTimeline = JSON.parse(investment[0].timeline)
                       // newTimeline = investment[0].timeline
                       newTimeline.push(timelineObject)
                       console.log('Timeline object line 2558:', newTimeline)
@@ -2633,7 +2674,7 @@ newTimeline = JSON.parse(investment[0].timeline)
                         }
                         console.log('Timeline object line 2618:', timelineObject)
                         //  Push the new object to the array
-          newTimeline = JSON.parse(investment[0].timeline)
+                        newTimeline = JSON.parse(investment[0].timeline)
                         // newTimeline = investment[0].timeline
                         newTimeline.push(timelineObject)
                         console.log('Timeline object line 2622:', newTimeline)
@@ -2893,11 +2934,11 @@ newTimeline = JSON.parse(investment[0].timeline)
             }
             console.log('Timeline object line 2850:', timelineObject)
             //  Push the new object to the array
-            timeline = investment[0].timeline
+            // timeline = investment[0].timeline
             timeline.push(timelineObject)
             console.log('Timeline object line 2854:', timeline)
             // stringify the timeline array
-            investment[0].timeline = JSON.stringify(timeline)
+            // investment[0].timeline = JSON.stringify(timeline)
             // Save
             await investment[0].save()
             return response.status(200).json({
@@ -2916,11 +2957,11 @@ newTimeline = JSON.parse(investment[0].timeline)
           })
         }
       } else {
-  console.log('Investment data after search line 2911:', investment)
-  return response.status(200).json({
-    status: 'FAILED',
-    data: investment.map((inv) => inv.$original),
-  })
+        console.log('Investment data after search line 2911:', investment)
+        return response.status(200).json({
+          status: 'FAILED',
+          data: investment.map((inv) => inv.$original),
+        })
       }
     } catch (error) {
       console.error(error)
@@ -2983,8 +3024,8 @@ newTimeline = JSON.parse(investment[0].timeline)
         investmentType,
         tagName,
         currencyCode,
-        walletHolderDetails,
-        long,
+        // walletHolderDetails,
+        lng,
         lat,
         interestRate,
         interestDueOnInvestment,
@@ -3015,8 +3056,8 @@ newTimeline = JSON.parse(investment[0].timeline)
         investmentType,
         tagName,
         currencyCode,
-        walletHolderDetails,
-        long,
+        // walletHolderDetails,
+        lng,
         lat,
         interestRate,
         interestDueOnInvestment,
@@ -3072,7 +3113,7 @@ newTimeline = JSON.parse(investment[0].timeline)
 
       // Save the Update
       await investment.save()
-      payload.timeline = JSON.stringify(investment.timeline)
+      // payload.timeline = JSON.stringify(investment.timeline)
       console.log('Matured Payout investment data line 3021:', payload)
 
       payoutRecord = await PayoutRecord.create(payload)
@@ -3123,10 +3164,10 @@ newTimeline = JSON.parse(investment[0].timeline)
       }
       console.log('Timeline object line 3065:', timelineObject)
       //  Push the new object to the array
-      timeline = investment.timeline
+      // timeline = investment.timeline
       timeline.push(timelineObject)
       // stringify the timeline array
-      investment.timeline = JSON.stringify(timeline)
+      // investment.timeline = JSON.stringify(timeline)
       console.log('Timeline object line 3069:', timeline)
       // Save
       await investment.save()

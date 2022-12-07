@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { v4 as uuid } from "uuid";
 import AppBaseModel from 'App/Models/AppBaseModel'
 import Type from './Type';
+import Investment from './Investment';
 // import BankVerificationRequirement from './BankVerificationRequirement';
 // import GeneralVerificationRequirement from './GeneralVerificationRequirement';
 
@@ -62,8 +63,8 @@ export default class RfiRecord extends AppBaseModel {
   public types: HasMany<typeof Type>;
 
 
-  // @hasMany(() => BankVerificationRequirement, { localKey: "id" })
-  // public bankVerificationRequirements: HasMany<typeof BankVerificationRequirement>;
+  @hasMany(() => Investment, { localKey: "id" })
+  public investments: HasMany<typeof Investment>;
 
 
   @beforeCreate()

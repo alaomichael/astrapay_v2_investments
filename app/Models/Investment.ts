@@ -1,8 +1,9 @@
+import  RfiRecord  from './RfiRecord';
 import { DateTime } from 'luxon'
 import { column, beforeCreate, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
-import User from './User'
+// import User from './User'
 
 /**
  * .enum('rollover_type', ['100' = 'no rollover',
@@ -23,10 +24,31 @@ export default class Investment extends AppBaseModel {
   public walletId: string
 
   @column()
+  public rfiRecordId: string
+
+  @column()
+  public rfiCode: string
+
+  @column()
+  public firstName: string
+
+  @column()
+  public lastName: string
+
+  @column()
+  public phone: string
+
+  @column()
+  public email: string
+
+  @column()
+  public investorFundingWalletId: string
+
+  @column()
   public amount: number
 
   @column()
-  public duration: string
+  public duration: number
 
   @column()
   public rolloverType: RollOverType
@@ -38,22 +60,19 @@ export default class Investment extends AppBaseModel {
   public rolloverDone: number
 
   @column()
-  public investmentType: 'fixed' | 'debenture'
+  public investmentTypeName: string
+
+  @column()
+  public investmentTypeId: string
+
+  @column()
+  public investmentType: string // 'fixed' | 'debenture'
 
   @column()
   public tagName: string
 
   @column()
   public currencyCode: string
-
-  @column()
-  public walletHolderDetails: JSON
-
-  @column()
-  public long: number
-
-  @column()
-  public lat: number
 
   @column()
   public interestRate: number
@@ -64,8 +83,23 @@ export default class Investment extends AppBaseModel {
   @column()
   public totalAmountToPayout: number
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  // @column()
+  // public walletHolderDetails: JSON
+
+  @column()
+  public isRequestSent: boolean
+
+  @column()
+  public investmentRequestReference: string
+
+  @column()
+  public isInvestmentCreated: boolean
+
+  @column()
+  public isInvestmentCompleted: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public investmentCompletionDate: DateTime
 
   @column.dateTime({ autoCreate: false })
   public startDate: DateTime
@@ -78,7 +112,7 @@ export default class Investment extends AppBaseModel {
 
   @column()
   public isTerminationAuthorized: boolean
-
+  
   @column()
   public isPayoutSuccessful: boolean
 
@@ -92,19 +126,25 @@ export default class Investment extends AppBaseModel {
   public status: string
 
   @column()
-  public timeline: string
-
-  @column()
   public certificateUrl: string
 
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
+  @column()
+  public lng: string
+
+  @column()
+  public lat: string
+string
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => User, { localKey: 'userId' })
-  public user: BelongsTo<typeof User>
+  @belongsTo(() => RfiRecord, { localKey: 'rfiRecordId' })
+  public rfiRecord: BelongsTo<typeof RfiRecord>
 
   @beforeCreate()
   public static assignUuid(investment: Investment) {

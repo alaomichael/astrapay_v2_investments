@@ -42,16 +42,21 @@ export default class Investments extends BaseSchema {
       table.string("email", 225).notNullable().index();
       table.string("investor_funding_wallet_id", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
-      table.float('duration', 100).notNullable().index()
+      table.integer('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
       table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
       table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
+      table.string('investment_type_name',255).notNullable().index()
+      table.uuid('investment_type_id')
+        .references("id")
+        .inTable("types")
+        .notNullable()
+        .index()
+        .onDelete("CASCADE");
       table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
       // table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('lng').unsigned().nullable()
-      table.float('lat').unsigned().nullable()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().nullable()
       table.float('total_amount_to_payout').unsigned().nullable().index()
@@ -63,7 +68,7 @@ export default class Investments extends BaseSchema {
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      table.timestamp('created_at', { useTz: true }).index()
+     
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
@@ -77,6 +82,9 @@ export default class Investments extends BaseSchema {
 
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').nullable().index()
+      table.float('lng').unsigned().nullable()
+      table.float('lat').unsigned().nullable()
+      table.timestamp('created_at', { useTz: true }).index()
       table.timestamp('updated_at', { useTz: true })
 
       // indexes

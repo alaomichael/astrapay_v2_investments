@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id')
       table.uuid("type_id").references('id').inTable('types').notNullable().index().onDelete('CASCADE');
-      table.float("tenure", 255).unsigned().notNullable().index()
+      table.integer("tenure", 255).unsigned().notNullable().index()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
