@@ -175,7 +175,7 @@ export default class ApprovalsController {
             await approval[0].save()
             console.log('Update Approval Request line 171:', approval)
             if (
-              approval[0].requestType === 'start investment' &&
+              approval[0].requestType === 'start_investment' &&
               approval[0].approvalStatus === 'approved'
             ) {
               newStatus = 'initiated'
@@ -229,7 +229,7 @@ export default class ApprovalsController {
               // Save the updated investment
               await investment[0].save()
             } else if (
-              approval[0].requestType === 'start investment' &&
+              approval[0].requestType === 'start_investment' &&
               approval[0].approvalStatus === 'declined'
             ) {
               newStatus = 'initiated'

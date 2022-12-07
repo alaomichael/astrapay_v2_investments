@@ -1,0 +1,72 @@
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import BaseValidator from './BaseValidator'
+export default class CreateInvestmentValidator extends BaseValidator {
+    constructor(protected ctx: HttpContextContract) {
+        super()
+    }
+
+    public schema = schema.create({
+        userId: schema.string(),
+        walletId: schema.string(),
+        rfiRecordId: schema.string(),
+        rfiCode: schema.string(),
+        firstName: schema.string(),
+        lastName: schema.string(),
+        phone: schema.string(),
+        email: schema.string(),
+        // investorFundingWalletId: schema.string(),
+        amount: schema.number(),
+        duration: schema.number(),
+        customerSavingsAccount: schema.string.optional(),
+        loanProductName: schema.string(),
+        loanProductId: schema.string(),
+        loanAccountNumber: schema.string.optional(),
+        bankCode: schema.string.optional(),
+        beneficiaryAccountNumber: schema.string.optional(),
+        beneficiaryAccountName: schema.string.optional(),
+        beneficiaryAccountBankName: schema.string.optional(),
+        beneficiaryAccountBankCode: schema.string.optional(),
+        otherAccountNumber: schema.string.optional(),
+        otherAccountName: schema.string.optional(),
+        otherAccountBankName: schema.string.optional(),
+        otherAccountBankCode: schema.string.optional(),
+        duration: schema.enum([
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "14",
+            "21",
+            "30",
+            "45",
+            "60",
+            "90",
+            "120",
+            "150",
+            "180",
+            "210",
+            "240",
+            "270",
+            "300",
+            "330",
+            "360",
+        ]),
+        tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
+        currencyCode: schema.string.optional({ escape: true }, [rules.maxLength(5)]),
+        bvn: schema.string.optional({ escape: true }, [
+            rules.minLength(11),
+            rules.maxLength(11),
+        ]),
+        lng: schema.string(),
+        lat: schema.string(),
+        currentState: schema.string.optional(),
+        currentLGA: schema.string.optional(),
+        okraCustomerId: schema.string(),
+        processedBy: schema.string.optional(),
+        label: schema.string.optional(),
+    });
+}

@@ -1,4 +1,4 @@
 export interface TenureType {
     typeId: string,
-    tenure: string,
+    tenure: number,
 }

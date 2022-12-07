@@ -424,7 +424,7 @@ export default class TypesController {
                 Type Status: ${formerTypeStatus}
                 Type Tenures: ${formerTypeTenures}
 
-
+================================================================**********=============================================================================**********=============================================================================
                 New Investment type details are as follows:
 
                 Type Name: ${type.typeName}
@@ -439,11 +439,11 @@ export default class TypesController {
                 Type Status: ${type.status}
                 Type Tenures: ${typeTenure}
 
-                Please check your loan type.
+                Please check your investment type.
 
                 Thank you.
 
-                AstraPay Loan.`;
+                AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                 console.log("newNotificationMessage line 306:", newNotificationMessage);
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {

@@ -280,7 +280,7 @@ export default class InvestmentsController {
     let timeline
     let timelineObject
     if (
-      requestType === 'start investment' &&
+      requestType === 'start_investment' &&
       userId &&
       investmentId &&
       !approvalStatus &&
@@ -302,7 +302,7 @@ export default class InvestmentsController {
         })
       }
       console.log('approvals line 170: ', approvals[0].approvalStatus)
-      //  if approved update investment status to active, update startDate,  and start investment
+      //  if approved update investment status to active, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         //  investment
         try {
@@ -488,7 +488,7 @@ export default class InvestmentsController {
         })
       }
       console.log('approvals line 277: ', approvals[0].approvalStatus)
-      //  if approved update investment status to terminated, update startDate,  and start investment
+      //  if approved update investment status to terminated, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
           .where('status', 'active')
@@ -639,7 +639,7 @@ export default class InvestmentsController {
         })
       }
       console.log('approvals line 345: ', approvals[0].approvalStatus)
-      //  if approved update investment status to active, update startDate,  and start investment
+      //  if approved update investment status to active, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
           .where('status', 'active')
@@ -1090,7 +1090,7 @@ export default class InvestmentsController {
     // check if Approval is set to Auto, from Setting Controller
     let userId = investment.userId
     let investmentId = investment.id
-    let requestType = 'start investment'
+    let requestType = 'start_investment'
     let settings = await Setting.query().where({ tagName: 'default setting' })
     console.log('Approval setting line 910:', settings[0])
     let timeline: any[] = []
@@ -1907,7 +1907,7 @@ export default class InvestmentsController {
               )
               if (
                 payoutRequestIsExisting.length < 1 &&
-                // investment[0].requestType !== 'start investment' &&
+                // investment[0].requestType !== 'start_investment' &&
                 investment[0].approvalStatus !== 'pending' &&
                 investment[0].status !== 'initiated'
               ) {
@@ -2106,7 +2106,7 @@ export default class InvestmentsController {
                     )
                     if (
                       payoutRequestIsExisting.length < 1 &&
-                      // investment[0].requestType !== 'start investment' &&
+                      // investment[0].requestType !== 'start_investment' &&
                       payload.approvalStatus !== 'pending' &&
                       payload.status !== 'initiated'
                     ) {
@@ -2341,13 +2341,13 @@ export default class InvestmentsController {
                   //   // Send Investment Initiation Message to Queue
 
                   //   // check if Approval is set to Auto, from Setting Controller
-                  //   let requestType = 'start investment'
+                  //   let requestType = 'start_investment'
                   //   let approvalIsAutomated = settings[0].isInvestmentAutomated
                   //   if (approvalIsAutomated === false) {
                   //     // Send Approval Request to Admin
                   //     userId = investment.userId
                   //     let investmentId = investment.id
-                  //     // let requestType = 'start investment'
+                  //     // let requestType = 'start_investment'
                   //     let approval = await approvalRequest(userId, investmentId, requestType)
                   //     console.log(' Approval request return line 2362 : ', approval)
                   //     if (approval === undefined) {

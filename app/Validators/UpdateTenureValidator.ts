@@ -8,7 +8,7 @@ export default class UpdateTenureValidator extends BaseValidator {
     }
 
     public schema = schema.create({
-        duration: schema.string.optional(),
+        duration: schema.number.optional(),
     })
 
 }

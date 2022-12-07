@@ -276,7 +276,7 @@ const payoutDueDate = (created_at, duration) => {
 
 const approvalRequest = async function (userId, investmentId, requestType) {
   try {
-    // let requestType = 'start investment'
+    // let requestType = 'start_investment'
     const response = await axios.post(`${API_URL}/investments/approvals`, {
       userId,
       investmentId,
@@ -367,7 +367,7 @@ const createNewInvestment = async function ( payloadAmount,
                     payloadInvestmentType
                   )
   try {
-    // let requestType = 'start investment'
+    // let requestType = 'start_investment'
       let payload
                   // destructure / extract the needed data from the investment
                   let {
@@ -527,13 +527,13 @@ const createNewInvestment = async function ( payloadAmount,
 //                   // Send Investment Initiation Message to Queue
 
 //                   // check if Approval is set to Auto, from Setting Controller
-//                   let requestType = 'start investment'
+//                   let requestType = 'start_investment'
 //                   let approvalIsAutomated = settings[0].isInvestmentAutomated
 //                   if (approvalIsAutomated === false) {
 //                     // Send Approval Request to Admin
 //                     userId = investment.userId
 //                     let investmentId = investment.id
-//                     // let requestType = 'start investment'
+//                     // let requestType = 'start_investment'
 //                     let approval = await approvalRequest(userId, investmentId, requestType)
 //                     console.log(' Approval request return line 2362 : ', approval)
 //                     if (approval === undefined) {

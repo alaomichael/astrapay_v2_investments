@@ -16,7 +16,7 @@ export default class UpdateTypeValidator extends BaseValidator {
         lowestAmount: schema.number.optional(),
         highestAmount: schema.number.optional(),
         duration: schema.array.optional().members(
-            schema.string(),
+            schema.number(),
         ),
         interestRate: schema.number.optional(),
         isRolloverAllowed: schema.boolean.optional(),

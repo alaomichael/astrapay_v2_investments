@@ -13,7 +13,7 @@ export default class InvestmentTenure extends AppBaseModel {
     public typeId: string;
 
     @column({})
-    public tenure: string;
+    public tenure: number;
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime;

@@ -47,7 +47,7 @@ export default class extends BaseSchema {
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
-      table.string('request_type', 255).notNullable().defaultTo('start investment').index()
+      table.string('request_type', 255).notNullable().defaultTo('start_investment').index()
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
       table.jsonb('timeline').nullable().index()

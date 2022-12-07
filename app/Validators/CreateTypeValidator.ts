@@ -16,7 +16,7 @@ export default class CreateTypeValidator extends BaseValidator {
         lowestAmount: schema.number(),
         highestAmount: schema.number(),
         duration: schema.array().members(
-            schema.string(),
+            schema.number(),
         ),
         interestRate: schema.number(),
         isRolloverAllowed: schema.boolean(),
