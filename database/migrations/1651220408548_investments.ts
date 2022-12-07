@@ -29,6 +29,13 @@ export default class Investments extends BaseSchema {
         .references('wallet_id')
         .inTable('users')
         .onDelete('CASCADE')
+      table.uuid("rfi_record_id")
+        .references("id")
+        .inTable("rfi_records")
+        .notNullable()
+        .index()
+        .onDelete("CASCADE");
+      table.string("rfi_code", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
@@ -46,7 +53,6 @@ export default class Investments extends BaseSchema {
       table.boolean("is_request_sent").notNullable().defaultTo(false);
       table.string("investment_request_reference").nullable();
       table.boolean("is_investment_created").notNullable().defaultTo(false);
-      table.string("account_creation_request_reference").nullable();
       table.boolean("is_investment_completed").notNullable().defaultTo(false);
       table.timestamp("investment_completion_date").nullable().index();
       /**

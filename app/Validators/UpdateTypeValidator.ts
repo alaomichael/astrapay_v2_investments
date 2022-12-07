@@ -1,25 +1,25 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import BaseValidator from './BaseValidator'
-export default class CreateTypeValidator extends BaseValidator {
+export default class UpdateTypeValidator extends BaseValidator {
     constructor(protected ctx: HttpContextContract) {
         super()
     }
 
     public schema = schema.create({
-        rfiRecordId: schema.string(),
-        rfiCode: schema.string(),
-        typeName: schema.string({ escape: true }, [rules.maxLength(100), rules.unique({
+        rfiRecordId: schema.string.optional(),
+        rfiCode: schema.string.optional(),
+        typeName: schema.string.optional({ escape: true }, [rules.maxLength(100), rules.unique({
             table: 'types',
             column: 'type_name'
         })]),
-        lowestAmount: schema.number(),
-        highestAmount: schema.number(),
-        duration: schema.array().members(
+        lowestAmount: schema.number.optional(),
+        highestAmount: schema.number.optional(),
+        duration: schema.array.optional().members(
             schema.string(),
         ),
-        interestRate: schema.number(),
-        isRolloverAllowed: schema.boolean(),
+        interestRate: schema.number.optional(),
+        isRolloverAllowed: schema.boolean.optional(),
         quantityIssued: schema.number.optional(),
         quantityAvailableForIssue: schema.number.optional(),
         // fixedCharge: schema.number.optional(),
@@ -28,8 +28,8 @@ export default class CreateTypeValidator extends BaseValidator {
             schema.string(),
         ),
 
-        minimumAllowedPeriodOfInvestment: schema.string(),
-        maximumAllowedPeriodOfInvestment: schema.string(),
+        minimumAllowedPeriodOfInvestment: schema.string.optional(),
+        maximumAllowedPeriodOfInvestment: schema.string.optional(),
         // dailyMinimumLimit: schema.number.optional(),
         // dailyMaximumLimit: schema.number.optional(),
         // weeklyMinimumLimit: schema.number.optional(),
@@ -38,22 +38,24 @@ export default class CreateTypeValidator extends BaseValidator {
         // monthlyMaximumLimit: schema.number.optional(),
         // yearlyMinimumLimit: schema.number.optional(),
         // yearlyMaximumLimit: schema.number.optional(),
-        isAutomated: schema.boolean(),
+        isAutomated: schema.boolean.optional(),
         description: schema.string.optional(),
-        features: schema.array().members(
+        // isRenewable: schema.boolean.optional(),
+        features: schema.array.optional().members(
             schema.string(),
         ),
-        requirements: schema.array().members(
+        requirements: schema.array.optional().members(
             schema.string(),
         ),
         createdBy: schema.string.optional(),
-        tagName: schema.string({ escape: true }, [rules.maxLength(100), rules.unique({
+        tagName: schema.string.optional({ escape: true }, [rules.maxLength(100), rules.unique({
             table: 'types',
             column: 'tag_name'
         })]),
-        currencyCode: schema.string(),
+        currencyCode: schema.string.optional(),
         lng: schema.string.optional(),
         lat: schema.string.optional(),
-        status: schema.enum(['active', 'inactive']),
+        status: schema.enum.optional(['active', 'inactive']),
+
     });
 }

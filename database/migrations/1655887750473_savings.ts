@@ -32,7 +32,7 @@ export default class extends BaseSchema {
       table.string('currency_code', 10).notNullable().index()
       table.jsonb('wallet_holder_details').nullable().index()
       table.jsonb('schedule').nullable().index()
-      table.float('long').unsigned().nullable()
+      table.float('lng').unsigned().nullable()
       table.float('lat').unsigned().nullable()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_saving').unsigned().nullable()

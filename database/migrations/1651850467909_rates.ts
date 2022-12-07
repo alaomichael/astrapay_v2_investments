@@ -39,7 +39,7 @@ export default class Rates extends BaseSchema {
           'tag_name',
           'currency_code',
           'additional_details',
-          'long',
+          'lng',
           'lat',
           'status',
           'interest_rate',

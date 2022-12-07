@@ -19,7 +19,7 @@ export default class PayoutRecords extends BaseSchema {
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
       table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('long').unsigned().nullable().index()
+      table.float('lng').unsigned().nullable().index()
       table.float('lat').unsigned().nullable().index()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().notNullable().index()
@@ -56,7 +56,7 @@ export default class PayoutRecords extends BaseSchema {
           'rollover_done',
           'investment_type',
           'wallet_holder_details',
-          'long',
+          'lng',
           'lat',
           'start_date',
           'payout_date',

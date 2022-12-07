@@ -16,7 +16,7 @@ export default class extends BaseSchema {
       table.string("type_name", 255).notNullable().index().unique();
       table.float('lowest_amount', 12).unsigned().notNullable().index()
       table.float('highest_amount', 12).unsigned().notNullable().index()
-      table.string('duration', 5).notNullable().index()
+      // table.string('duration', 5).notNullable().index()
       table.float('interest_rate').unsigned().nullable().index()
       table.boolean('is_rollover_allowed').index().notNullable().defaultTo(true);
       // table.boolean('is_active').notNullable().index().defaultTo(true)
@@ -26,7 +26,7 @@ export default class extends BaseSchema {
       // table.float("rated_charge", 255).nullable();
       table.specificType('available_types', 'text ARRAY').nullable();
       // table.jsonb("available_types").nullable();
-            table.string("minimum_allowed_period_of_investment", 255).notNullable().defaultTo(30);
+      table.string("minimum_allowed_period_of_investment", 255).notNullable().defaultTo(30);
       table.string("maximum_allowed_period_of_investment", 255).notNullable().defaultTo(360);
       // table.float("daily_minimum_limit", 255).notNullable().index().defaultTo(0);
       // table.float("daily_maximum_limit", 255).notNullable().index().defaultTo(0);
@@ -37,7 +37,7 @@ export default class extends BaseSchema {
       // table.float("yearly_minimum_limit", 255).notNullable().index().defaultTo(0);
       // table.float("yearly_maximum_limit", 255).notNullable().index().defaultTo(0);
       table.boolean("is_automated").notNullable().defaultTo(false);
-      // table.boolean("is_renewable").notNullable().defaultTo(true);
+      table.string("description").nullable();
       table.specificType('features', 'text ARRAY').nullable();
       table.specificType('requirements', 'text ARRAY').nullable();
       table.string("created_by").notNullable();
@@ -50,7 +50,7 @@ export default class extends BaseSchema {
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
