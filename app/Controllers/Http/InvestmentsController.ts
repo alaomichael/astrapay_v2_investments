@@ -4,7 +4,7 @@ import Investment from 'App/Models/Investment'
 import Setting from 'App/Models/Setting'
 import Payout from 'App/Models/Payout'
 import PayoutRecord from 'App/Models/PayoutRecord'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
+// import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
@@ -1020,10 +1020,10 @@ export default class InvestmentsController {
     // })
     // const payload: any = await request.validate({ schema: investmentSchema })
 
-    const {  lastName, firstName,  
-      walletId, userId,investmentTypeId, investmentTypeName, rfiCode, currencyCode,
-      lng, lat,rfiRecordId,phone,email,investorFundingWalletId,amount,duration,rolloverType,
-rolloverTarget,investmentType,tagName,  } = request.body();
+    const { lastName, firstName,
+      walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
+      lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
+      rolloverTarget, investmentType, tagName, } = request.body();
 
     const payload: InvestmentType = {
       lastName: lastName,
@@ -1037,15 +1037,15 @@ rolloverTarget,investmentType,tagName,  } = request.body();
       lng: lng,
       lat: lat,
       rfiRecordId: rfiRecordId,
-      phone:phone,
-      email:email,
-      investorFundingWalletId:investorFundingWalletId,
-      amount:amount,
-      duration:duration,
-      rolloverType:rolloverType,
-      rolloverTarget:rolloverTarget,
-      investmentType:investmentType,
-      tagName:tagName,
+      phone: phone,
+      email: email,
+      investorFundingWalletId: investorFundingWalletId,
+      amount: amount,
+      duration: duration,
+      rolloverType: rolloverType,
+      rolloverTarget: rolloverTarget,
+      investmentType: investmentType,
+      tagName: tagName,
       interestRate: 0,
       interestDueOnInvestment: 0,
       totalAmountToPayout: 0,
@@ -1082,7 +1082,7 @@ rolloverTarget,investmentType,tagName,  } = request.body();
     payload.isRequestSent = true;
     const investment = await investmentsService.createInvestment(payload);
     console.log("New account request line 1082: ", investment);
-                // console.log("The new newAccountRequest data:", newAccountRequest);
+    // console.log("The new newAccountRequest data:", newAccountRequest);
 
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
@@ -1180,8 +1180,8 @@ rolloverTarget,investmentType,tagName,  } = request.body();
         timelineObject = {
           id: uuid(),
           investmentId: investmentId,
-          userId:userId,
-          walletId:walletId,
+          userId: userId,
+          walletId: walletId,
           action: 'investment activated',
           // @ts-ignore
           message: `${firstName} investment has just been activated.`,

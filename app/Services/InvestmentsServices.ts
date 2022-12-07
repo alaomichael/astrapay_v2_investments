@@ -9,19 +9,19 @@ import Investment from 'App/Models/Investment'
 import SettingServices from "App/Services/SettingsServices";
 import TimelinesServices from './TimelinesServices'
 // import InvestmentabilityStatusesServices from './InvestmentabilityStatusesServices'
-import ProductsServices from './ProductsServices'
-import RepaymentSchedulesServices from './RepaymentSchedulesServices'
+import TypesServices from './TypesServices'
+// import RepaymentSchedulesServices from './RepaymentSchedulesServices'
 import { calculateTotalCharge, dueForRepayment, investmentDuration } from 'App/Helpers/utils_02'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { getUserWalletsById } from 'App/Helpers/getUserWalletsById'
-import { createNewInvestmentWallet } from 'App/Helpers/createNewInvestmentWallet'
+// import { createNewInvestmentWallet } from 'App/Helpers/createNewInvestmentWallet'
 import axios from 'axios'
-import { disburseApprovedInvestment } from 'App/Helpers/disburseApprovedInvestment'
+// import { disburseApprovedInvestment } from 'App/Helpers/disburseApprovedInvestment'
 import { sendNotification } from 'App/Helpers/sendNotification';
-import { repayDueInvestment } from 'App/Helpers/repayDueInvestment';
-import RepaidInvestmentsServices from './RepaidInvestmentsServices';
-import RepaymentDefaultersServices from './RepaymentDefaultersServices';
-import { recoverInvestmentFromUserMainWallet } from 'App/Helpers/recoverInvestmentFromUserMainWallet';
+// import { repayDueInvestment } from 'App/Helpers/repayDueInvestment';
+// import RepaidInvestmentsServices from './RepaidInvestmentsServices';
+// import RepaymentDefaultersServices from './RepaymentDefaultersServices';
+// import { recoverInvestmentFromUserMainWallet } from 'App/Helpers/recoverInvestmentFromUserMainWallet';
 const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
 const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
@@ -120,8 +120,8 @@ export default class InvestmentsServices {
             const settingsService = new SettingServices();
             const timelineService = new TimelinesServices();
             // const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
-            const productsService = new ProductsServices();
-            const repaymentSchedulesService = new RepaymentSchedulesServices();
+            const typesService = new TypesServices();
+            // const repaymentSchedulesService = new RepaymentSchedulesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // debugger;
@@ -151,7 +151,7 @@ export default class InvestmentsServices {
 
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
-                let { investment_product_id, created_at, } = investment;
+                let { investment_type_id, created_at, } = investment;
                 // console.log("Created at for the current investment line 106", created_at);
                 investment.created_at = DateTime.fromJSDate(created_at);
                 investment.checked_for_payment_at = DateTime.now();
@@ -171,25 +171,25 @@ export default class InvestmentsServices {
                         // debit user main wallet with total charge
                         // Total charge = fixed charge + (amount * rated charge)
 
-                        // console.log(" investmentProductName ==============================");
-                        // console.log(investment_product_name);
-                        // const investmentProduct = await productsService.getProductByProductName(investment_product_name);
+                        // console.log(" investmentTypeName ==============================");
+                        // console.log(investment_type_name);
+                        // const investmentType = await typesService.getTypeByTypeName(investment_type_name);
 
                         // New Code Update
-                        // console.log(" investmentProductId ==============================");
-                        // console.log(investment_product_id);
-                        const investmentProduct = await productsService.getProductByProductId(investment_product_id)
+                        // console.log(" investmentTypeId ==============================");
+                        // console.log(investment_type_id);
+                        const investmentType = await typesService.getTypeByTypeId(investment_type_id)
 
-                        // console.log(" investmentProduct ==============================");
-                        // console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            // new Error(`Investment Product Named: ${investment_product_name} does not exist.`)
-                            // console.log(`Investment Product Named: ${investment_product_name} does not exist.`)
-                            console.log(`Investment Product Id: ${investment_product_id} does not exist.`)
+                        // console.log(" investmentType ==============================");
+                        // console.log(investmentType);
+                        if (!investmentType) {
+                            // new Error(`Investment Type Named: ${investment_type_name} does not exist.`)
+                            // console.log(`Investment Type Named: ${investment_type_name} does not exist.`)
+                            console.log(`Investment Type Id: ${investment_type_id} does not exist.`)
                             return;
                         }
                         // @ts-ignore
-                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount } = investmentProduct;
+                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount } = investmentType;
                         let amountApproved = investment.amount_approved;
                         let totalCharge = Number(await calculateTotalCharge(amountApproved, fixedCharge, ratedCharge));
                         // console.log("Total amount to be charged:", totalCharge);
@@ -253,7 +253,7 @@ export default class InvestmentsServices {
                             let holderName = `${investment.first_name} ${investment.last_name}`
                             let holderId = user_id;
                             let walletType = 'LOAN';
-                            await createNewInvestmentWallet(holderName, holderId, walletType);
+                            // await createNewInvestmentWallet(holderName, holderId, walletType);
                             // let newInvestmentWallet = await createNewInvestmentWallet(holderName, holderId, walletType);
                             // console.log("newInvestmentWallet line 669:", newInvestmentWallet);
                             genericWallet = await getUserWalletsById(user_id);
@@ -329,7 +329,7 @@ export default class InvestmentsServices {
                         // console.log(description);
 
                         // let investmentDisbursement = await disburseInvestment(investmentDisbursementReference, userInvestmentWalletId, userMainWalletId, fundingWalletId, outstandingInvestmentWalletId, amountToDebitAndCredit, description, lng, lat);
-                        let investmentDisbursement = await disburseApprovedInvestment(investmentDisbursementReference, userInvestmentWalletId, amountToDebitAndCredit, outstandingInvestmentWalletId, investmentFundingAccount,
+                        // let investmentDisbursement = await disburseApprovedInvestment(investmentDisbursementReference, userInvestmentWalletId, amountToDebitAndCredit, outstandingInvestmentWalletId, investmentFundingAccount,
                             customer_savings_account, description, lng, lat);
                         // console.log("Investment Disbursement transaction response, line 325");
                         // console.log(investmentDisbursement);
@@ -402,15 +402,15 @@ export default class InvestmentsServices {
                             // investment.amount_outstanding_on_interest = Number(investment.interest_due_on_investment)
 
                             let userId = investment.user_id;
-                            let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(userId);
+                            // let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(userId);
 
                             // console.log("investmentability Status line 396:", investmentabilityStatus);
                             //@ts-ignore
                             investment.is_bvn_verified = investmentabilityStatus!.isBvnVerified;
 
-                            investment.okra_customer_id = investmentabilityStatus!.okraRecordId;
+                            // investment.okra_customer_id = investmentabilityStatus!.okraRecordId;
 
-                            investmentabilityStatus!.status = investment.status;
+                            // investmentabilityStatus!.status = investment.status;
 
                             // @ts-ignore
                             let { recommendation, amountInvestmentable, totalNumberOfInvestmentsCollected, totalAmountOfInvestmentsCollected, totalAmountOfInvestmentsYetToBeRepaid, } = investmentabilityStatus;
@@ -419,13 +419,13 @@ export default class InvestmentsServices {
                             let newTotalNumberOfInvestmentsCollected = totalNumberOfInvestmentsCollected + 1;
                             let newTotalAmountOfInvestmentsCollected = totalAmountOfInvestmentsCollected + amountToDebitAndCredit;
                             let newTotalAmountOfInvestmentsYetToBeRepaid = totalAmountOfInvestmentsYetToBeRepaid + amountToDebitAndCredit;
-                            investmentabilityStatus!.recommendation = newRecommendation;
-                            investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
-                            investmentabilityStatus!.totalNumberOfInvestmentsCollected = newTotalNumberOfInvestmentsCollected;
-                            investmentabilityStatus!.totalAmountOfInvestmentsCollected = newTotalAmountOfInvestmentsCollected;
-                            investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
+                            // investmentabilityStatus!.recommendation = newRecommendation;
+                            // investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
+                            // investmentabilityStatus!.totalNumberOfInvestmentsCollected = newTotalNumberOfInvestmentsCollected;
+                            // investmentabilityStatus!.totalAmountOfInvestmentsCollected = newTotalAmountOfInvestmentsCollected;
+                            // investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
                             // Save
-                            investmentabilityStatus!.save()
+                            // investmentabilityStatus!.save()
 
                             // update investment
                             let currentInvestment = await this.getInvestmentsByIdAndWalletIdAndUserId(investment.id, wallet_id, userId);
@@ -449,7 +449,7 @@ export default class InvestmentsServices {
                             repayment_date = repayment_date.toISODate(); // convert to 2022-07-28
                             // console.log(" Repayment Date in ISO format, line 437", repayment_date);
 
-                            let hasExistingRepaymentSchedule = await repaymentSchedulesService.getRepaymentScheduleByUserIdAndWalletIdAndInvestmentIdAndRepaymentDueDateAndAmount(userId, wallet_id, id, repayment_date, amount_approved);
+                            let hasExistingRepaymentSchedule //= await repaymentSchedulesService.getRepaymentScheduleByUserIdAndWalletIdAndInvestmentIdAndRepaymentDueDateAndAmount(userId, wallet_id, id, repayment_date, amount_approved);
                             if (!hasExistingRepaymentSchedule) {
                                 let repaymentSchedulePayload = {
                                     walletId: wallet_id,
@@ -466,7 +466,7 @@ export default class InvestmentsServices {
                                     subType: "sagamy",
                                     repaymentModel: "full",
                                 }
-                                await repaymentSchedulesService.createRepaymentSchedule(repaymentSchedulePayload);
+                                // await repaymentSchedulesService.createRepaymentSchedule(repaymentSchedulePayload);
                                 // let newRepaymentSchedule = await repaymentSchedulesService.createRepaymentSchedule(repaymentSchedulePayload);
                                 // console.log("newRepaymentSchedule line 457:");
                                 // console.log(newRepaymentSchedule);
@@ -546,10 +546,10 @@ export default class InvestmentsServices {
             // const investmentLogsService = new InvestmentLogsServices();
             const settingsService = new SettingServices();
             const timelineService = new TimelinesServices();
-            const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
-            const repaymentSchedulesService = new RepaymentSchedulesServices();
-            const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            // const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
+            // const repaymentSchedulesService = new RepaymentSchedulesServices();
+            // const repaidInvestmentsService = new RepaidInvestmentsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 578:", settings);
@@ -626,8 +626,8 @@ export default class InvestmentsServices {
                 // console.log("investment details line 619 =============================:", investment);
                 // if (investment.status === 'active' && investment.is_repayment_successful.toString() == "0") {
 
-                const investmentProduct = await getInvestmentProduct();
-                let { outstandingInvestmentWalletId, investmentRepaymentAccount, interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentProduct; //fixedCharge,ratedCharge,investmentFundingAccount,
+                const investmentType = await getInvestmentType();
+                let { outstandingInvestmentWalletId, investmentRepaymentAccount, interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentType; //fixedCharge,ratedCharge,investmentFundingAccount,
 
 
                 let newTimeline;
@@ -902,8 +902,8 @@ export default class InvestmentsServices {
                     // DEBIT SAGAMY ACCOUNT
                     let investmentRepayment;
                     if (accountType == "sagamy") {
-                        investmentRepayment = await repayDueInvestment(investmentRepaymentReference, userInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, outstandingInvestmentWalletId, investmentRepaymentAccount,
-                            interestOnInvestmentAccount, accountNumber, description, lng, lat);
+                        // investmentRepayment = await repayDueInvestment(investmentRepaymentReference, userInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, outstandingInvestmentWalletId, investmentRepaymentAccount,
+                            // interestOnInvestmentAccount, accountNumber, description, lng, lat);
                         // console.log("Investment Repayment transaction response");
                         // console.log(investmentRepayment);
                         if (investmentRepayment.status == "FAILED TO REPAY LOAN" && investmentRepayment.errorMessage !== 'Duplicate batch payment id') {
@@ -1002,8 +1002,8 @@ export default class InvestmentsServices {
                         }
                     } else if (accountType == "astrapay") {
                         // DEBIT ASTRAPAY WALLET
-                        investmentRepayment = await recoverInvestmentFromUserMainWallet(investmentRepaymentReference, userInvestmentWalletId, accountNumber, outstandingInvestmentWalletId, investmentRecoveryWalletId,
-                            interestOnInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, description, lng, lat);
+                        // investmentRepayment = await recoverInvestmentFromUserMainWallet(investmentRepaymentReference, userInvestmentWalletId, accountNumber, outstandingInvestmentWalletId, investmentRecoveryWalletId,
+                            // interestOnInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, description, lng, lat);
                         // outstandingInvestmentWalletId
                         // console.log("Investment Repayment from Main Wallet transaction response");
                         // console.log(investmentRepayment);
@@ -1110,7 +1110,7 @@ export default class InvestmentsServices {
                             subType: accountType, //"sagamy",  or "astrapay"
                             repaymentModel: repaymentMethod,//"full",
                         };
-                        await repaidInvestmentsService.createRepaidInvestment(repaidInvestmentPayload);
+                        // await repaidInvestmentsService.createRepaidInvestment(repaidInvestmentPayload);
                         // let newRepaidInvestment = await repaidInvestmentsService.createRepaidInvestment(repaidInvestmentPayload);
                         // console.log("newRepaidInvestment line 762:");
                         // console.log(newRepaidInvestment);
@@ -1142,7 +1142,7 @@ export default class InvestmentsServices {
                 }
 
                 async function updateInvestmentabilityStatus() {
-                    let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(user_id);
+                    // let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(user_id);
                     // console.log("investmentability Status line 679:", investmentabilityStatus);
                     // debugger
                     // @ts-ignore
@@ -1155,28 +1155,28 @@ export default class InvestmentsServices {
                     }
                     let newTotalAmountOfInvestmentsRepaid = totalAmountOfInvestmentsRepaid + amount_to_be_deducted;
                     let newTotalAmountOfInvestmentsYetToBeRepaid = totalAmountOfInvestmentsYetToBeRepaid - amount_to_be_deducted;
-                    investmentabilityStatus!.recommendation = newRecommendation;
-                    investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
-                    investmentabilityStatus!.totalNumberOfInvestmentsRepaid = newTotalNumberOfInvestmentsRepaid;
-                    investmentabilityStatus!.totalAmountOfInvestmentsRepaid = newTotalAmountOfInvestmentsRepaid;
-                    investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
-                    investmentabilityStatus!.lastInvestmentPerformanceRating = "100";
+                    // investmentabilityStatus!.recommendation = newRecommendation;
+                    // investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
+                    // investmentabilityStatus!.totalNumberOfInvestmentsRepaid = newTotalNumberOfInvestmentsRepaid;
+                    // investmentabilityStatus!.totalAmountOfInvestmentsRepaid = newTotalAmountOfInvestmentsRepaid;
+                    // investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
+                    // investmentabilityStatus!.lastInvestmentPerformanceRating = "100";
                     // investmentabilityStatus!.lastInvestmentDuration = duration;
                     let currentDate = new Date().toISOString()
                     let currentInvestmentDuration = investmentDuration(investment.start_date, currentDate);
                     console.log("currentInvestmentDuration line 744 ======================");
                     console.log(currentInvestmentDuration);
-                    investmentabilityStatus!.lastInvestmentDuration = (await currentInvestmentDuration).toString();//duration;
+                    // investmentabilityStatus!.lastInvestmentDuration = (await currentInvestmentDuration).toString();//duration;
 
-                    investmentabilityStatus!.lat = investment.lat;
-                    investmentabilityStatus!.lng = investment.lng;
-                    investmentabilityStatus!.isFirstInvestment = false;;
+                    // investmentabilityStatus!.lat = investment.lat;
+                    // investmentabilityStatus!.lng = investment.lng;
+                    // investmentabilityStatus!.isFirstInvestment = false;;
                     // Save
-                    investmentabilityStatus!.save();
+                    // investmentabilityStatus!.save();
                 }
 
                 async function getRepaymentDetails() {
-                    let repaymentDetails = await repaymentSchedulesService.getRepaymentScheduleByUserIdAndInvestmentIdAndWalletId(user_id, investment.id, wallet_id);
+                    let repaymentDetails //= await repaymentSchedulesService.getRepaymentScheduleByUserIdAndInvestmentIdAndWalletId(user_id, investment.id, wallet_id);
                     console.log(" Repayment details +++===========================+++++");
                     console.log(repaymentDetails);
                     if (!repaymentDetails) {
@@ -1269,24 +1269,24 @@ export default class InvestmentsServices {
                     return userInvestmentWalletId;
                 }
 
-                async function getInvestmentProduct() {
-                    // let productName = investment.investment_product_name;
-                    // const investmentProduct = await productsService.getProductByProductName(productName);
-                    // console.log(" investmentProduct ==============================");
-                    // console.log(investmentProduct);
-                    // if (!investmentProduct) {
-                    //   // console.log(`Investment Product Named: ${productName} does not exist.`);
-                    //   throw new AppException({ message: `Investment Product Named: ${productName} does not exist`, codeSt: "500" });
+                async function getInvestmentType() {
+                    // let typeName = investment.investment_type_name;
+                    // const investmentType = await typesService.getTypeByTypeName(typeName);
+                    // console.log(" investmentType ==============================");
+                    // console.log(investmentType);
+                    // if (!investmentType) {
+                    //   // console.log(`Investment Type Named: ${typeName} does not exist.`);
+                    //   throw new AppException({ message: `Investment Type Named: ${typeName} does not exist`, codeSt: "500" });
                     // }
-                    let productId = investment.investment_product_id;
-                    const investmentProduct = await productsService.getProductByProductId(productId);
-                    console.log(" investmentProduct ==============================");
-                    console.log(investmentProduct);
-                    if (!investmentProduct) {
-                        // console.log(`Investment Product Id: ${productId} does not exist.`);
-                        throw new AppException({ message: `Investment Product Id: ${productId} does not exist`, codeSt: "500" });
+                    let typeId = investment.investment_type_id;
+                    const investmentType = await typesService.getTypeByTypeId(typeId);
+                    console.log(" investmentType ==============================");
+                    console.log(investmentType);
+                    if (!investmentType) {
+                        // console.log(`Investment Type Id: ${typeId} does not exist.`);
+                        throw new AppException({ message: `Investment Type Id: ${typeId} does not exist`, codeSt: "500" });
                     }
-                    return investmentProduct;
+                    return investmentType;
                 }
 
                 // async function createNewTimeline() {
@@ -1342,10 +1342,10 @@ export default class InvestmentsServices {
             // const investmentLogsService = new InvestmentLogsServices();
             const settingsService = new SettingServices();
             const timelineService = new TimelinesServices();
-            const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
-            const repaymentSchedulesService = new RepaymentSchedulesServices();
-            const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            // const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
+            // const repaymentSchedulesService = new RepaymentSchedulesServices();
+            // const repaidInvestmentsService = new RepaidInvestmentsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 578:", settings);
@@ -1414,10 +1414,10 @@ export default class InvestmentsServices {
                         // Send all the above flow to batch payment endpoint
 
                         // New Code Update
-                        // const investmentProduct = await getProductByName();
-                        const investmentProduct = await getProductById();
+                        // const investmentType = await getTypeByName();
+                        const investmentType = await getTypeById();
                         // @ts-ignore
-                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount } = investmentProduct;
+                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount } = investmentType;
 
                         // get user investment wallet, or create a new investment wallet for a first time user
                         let userInvestmentWalletId = await getInvestmentWalletId();
@@ -1495,7 +1495,7 @@ export default class InvestmentsServices {
                         // Update Repayment schedule record for this investment
                         repaymentDetails.paid = true;
                         let repaymentUpdatePayload = repaymentDetails;
-                        let updatedRepaymentDetails = await repaymentSchedulesService.updateRepaymentSchedule(repaymentDetails, repaymentUpdatePayload);
+                        // let updatedRepaymentDetails = await repaymentSchedulesService.updateRepaymentSchedule(repaymentDetails, repaymentUpdatePayload);
                         // console.log(" Updated repayment schedule,line 694 ", updatedRepaymentDetails);
                         // Create a new record in Repaid investment table
                         let { repayment_date } = investment;
@@ -1541,7 +1541,7 @@ export default class InvestmentsServices {
                     }
 
                     async function updatePaymentRecord(id: any, repayment_date: any, investmentRepayment: any, total_amount_to_repay: number, updatedRepaymentDetails: any) {
-                        let hasExistingRepaidInvestment = await repaidInvestmentsService.getRepaidInvestmentByUserIdAndWalletIdAndInvestmentIdAndRepaymentDueDateAndTransactionId(user_id, wallet_id, id, repayment_date, amount_approved);
+                        // let hasExistingRepaidInvestment = await repaidInvestmentsService.getRepaidInvestmentByUserIdAndWalletIdAndInvestmentIdAndRepaymentDueDateAndTransactionId(user_id, wallet_id, id, repayment_date, amount_approved);
                         // console.log("hasExistingRepaidInvestment line 1016:");
                         // console.log(hasExistingRepaidInvestment);
                         let amountDue = total_amount_to_repay;
@@ -1567,9 +1567,9 @@ export default class InvestmentsServices {
                                 subType: "sagamy",
                                 repaymentModel: "full",
                             };
-                            let newRepaidInvestment = await repaidInvestmentsService.createRepaidInvestment(repaidInvestmentPayload);
-                            console.log("newRepaidInvestment line 1039:");
-                            console.log(newRepaidInvestment);
+                            // let newRepaidInvestment = await repaidInvestmentsService.createRepaidInvestment(repaidInvestmentPayload);
+                            // console.log("newRepaidInvestment line 1039:");
+                            // console.log(newRepaidInvestment);
                         }
                     }
 
@@ -1589,8 +1589,8 @@ export default class InvestmentsServices {
                     }
 
                     async function updateInvestmentabilityStatus() {
-                        let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(user_id);
-                        console.log("investmentability Status line 1061:", investmentabilityStatus);
+                        // let investmentabilityStatus = await investmentabilityStatusesService.getInvestmentabilitystatusByUserId(user_id);
+                        // console.log("investmentability Status line 1061:", investmentabilityStatus);
                         // @ts-ignore
                         let { recommendation, amountInvestmentable, totalNumberOfInvestmentsRepaid, totalAmountOfInvestmentsRepaid, totalAmountOfInvestmentsYetToBeRepaid, } = investmentabilityStatus;
                         let newRecommendation = recommendation + amount_approved;
@@ -1602,18 +1602,18 @@ export default class InvestmentsServices {
                         }
                         let newTotalAmountOfInvestmentsRepaid = totalAmountOfInvestmentsRepaid + amount_approved;
                         let newTotalAmountOfInvestmentsYetToBeRepaid = totalAmountOfInvestmentsYetToBeRepaid - amount_approved;
-                        investmentabilityStatus!.recommendation = newRecommendation;
-                        investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
-                        investmentabilityStatus!.totalNumberOfInvestmentsRepaid = newTotalNumberOfInvestmentsRepaid;
-                        investmentabilityStatus!.totalAmountOfInvestmentsRepaid = newTotalAmountOfInvestmentsRepaid;
-                        investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
-                        investmentabilityStatus!.lastInvestmentPerformanceRating = "100";
-                        investmentabilityStatus!.lastInvestmentDuration = duration;
-                        investmentabilityStatus!.lat = investment.lat;
-                        investmentabilityStatus!.lng = investment.lng;
-                        investmentabilityStatus!.isFirstInvestment = false;
-                        // Save
-                        investmentabilityStatus!.save();
+                        // investmentabilityStatus!.recommendation = newRecommendation;
+                        // investmentabilityStatus!.amountInvestmentable = newAmountInvestmentable;
+                        // investmentabilityStatus!.totalNumberOfInvestmentsRepaid = newTotalNumberOfInvestmentsRepaid;
+                        // investmentabilityStatus!.totalAmountOfInvestmentsRepaid = newTotalAmountOfInvestmentsRepaid;
+                        // investmentabilityStatus!.totalAmountOfInvestmentsYetToBeRepaid = newTotalAmountOfInvestmentsYetToBeRepaid;
+                        // investmentabilityStatus!.lastInvestmentPerformanceRating = "100";
+                        // investmentabilityStatus!.lastInvestmentDuration = duration;
+                        // investmentabilityStatus!.lat = investment.lat;
+                        // investmentabilityStatus!.lng = investment.lng;
+                        // investmentabilityStatus!.isFirstInvestment = false;
+                        // // Save
+                        // investmentabilityStatus!.save();
                     }
 
                     async function newTimelineObject(newTimeline: any) {
@@ -1637,7 +1637,7 @@ export default class InvestmentsServices {
                     async function investmentRepaymentProcess(investmentRepaymentReference: any, userInvestmentWalletId: any, outstandingInvestmentWalletId: string, investmentRepaymentAccount: string, interestOnInvestmentAccount: string, customer_savings_account: any, description: string, id: any) {
                         // This is done after we have checked the user account Balance
                         // Subtracted #200,then we Debit the Investmented amount from the remaining amount
-                        let investmentRepayment = await repayDueInvestment(investmentRepaymentReference, userInvestmentWalletId, amount_approved, interest_due_on_investment, outstandingInvestmentWalletId, investmentRepaymentAccount,
+                        // let investmentRepayment = await repayDueInvestment(investmentRepaymentReference, userInvestmentWalletId, amount_approved, interest_due_on_investment, outstandingInvestmentWalletId, investmentRepaymentAccount,
                             interestOnInvestmentAccount, customer_savings_account, description, lng, lat);
                         // console.log("Investment Repayment transaction response");
                         // console.log(investmentRepayment);
@@ -1699,9 +1699,9 @@ export default class InvestmentsServices {
                     }
 
                     async function getRepaymentDetails() {
-                        let repaymentDetails = await repaymentSchedulesService.getRepaymentScheduleByUserIdAndInvestmentIdAndWalletId(user_id, investment.id, wallet_id);
-                        console.log(" Repayment details +++===========================+++++");
-                        console.log(repaymentDetails);
+                        // let repaymentDetails = await repaymentSchedulesService.getRepaymentScheduleByUserIdAndInvestmentIdAndWalletId(user_id, investment.id, wallet_id);
+                        // console.log(" Repayment details +++===========================+++++");
+                        // console.log(repaymentDetails);
                         if (!repaymentDetails) {
                             throw new AppException({ message: `This investment does not have a repayment schedule, please check your parameters and try again. Thank you.`, codeSt: "500" });
                         }
@@ -1736,28 +1736,28 @@ export default class InvestmentsServices {
                         return userInvestmentWalletId;
                     }
 
-                    // async function getProductByName() {
-                    //   let productName = investment.investment_product_name;
-                    //   const investmentProduct = await productsService.getProductByProductName(productName);
-                    //   // console.log(" investmentProduct ==============================");
-                    //   // console.log(investmentProduct);
-                    //   if (!investmentProduct) {
-                    //     console.log(`Investment Product Named: ${productName} does not exist.`);
-                    //     throw new AppException({ message: `Investment Product Named: ${productName} does not exist.`, codeSt: "500" });
+                    // async function getTypeByName() {
+                    //   let typeName = investment.investment_type_name;
+                    //   const investmentType = await typesService.getTypeByTypeName(typeName);
+                    //   // console.log(" investmentType ==============================");
+                    //   // console.log(investmentType);
+                    //   if (!investmentType) {
+                    //     console.log(`Investment Type Named: ${typeName} does not exist.`);
+                    //     throw new AppException({ message: `Investment Type Named: ${typeName} does not exist.`, codeSt: "500" });
                     //   }
-                    //   return investmentProduct;
+                    //   return investmentType;
                     // }
 
-                    async function getProductById() {
-                        let productId = investment.investment_product_id;
-                        const investmentProduct = await productsService.getProductByProductId(productId);
-                        // console.log(" investmentProduct ==============================");
-                        // console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            console.log(`Investment Product Id: ${productId} does not exist.`);
-                            throw new AppException({ message: `Investment Product Id: ${productId} does not exist.`, codeSt: "500" });
+                    async function getTypeById() {
+                        let typeId = investment.investment_type_id;
+                        const investmentType = await typesService.getTypeByTypeId(typeId);
+                        // console.log(" investmentType ==============================");
+                        // console.log(investmentType);
+                        if (!investmentType) {
+                            console.log(`Investment Type Id: ${typeId} does not exist.`);
+                            throw new AppException({ message: `Investment Type Id: ${typeId} does not exist.`, codeSt: "500" });
                         }
-                        return investmentProduct;
+                        return investmentType;
                     }
 
                     // async function createNewTimeline() {
@@ -1823,11 +1823,11 @@ export default class InvestmentsServices {
             // const investmentLogsService = new InvestmentLogsServices();
             const settingsService = new SettingServices();
             const timelineService = new TimelinesServices();
-            const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
-            const repaymentSchedulesService = new RepaymentSchedulesServices();
-            const repaymentDefaultersService = new RepaymentDefaultersServices();
-            const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            // const investmentabilityStatusesService = new InvestmentabilityStatusesServices();
+            // const repaymentSchedulesService = new RepaymentSchedulesServices();
+            // const repaymentDefaultersService = new RepaymentDefaultersServices();
+            // const repaidInvestmentsService = new RepaidInvestmentsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 578:", settings);
@@ -1837,7 +1837,8 @@ export default class InvestmentsServices {
                 throw new AppException({ message: `There is no setting with tagName: ${CURRENT_SETTING_TAGNAME} please check and try again.`, codeSt: "500" })
             }
             //  get the investment currency
-            let { currencyCode, gracePeriod } = settings;
+            // let { currencyCode, gracePeriod } = settings;
+            let { currencyCode } = settings;
             let responseData = await Database
                 .from('investments')
                 .useTransaction(trx) // 👈
@@ -1926,25 +1927,25 @@ export default class InvestmentsServices {
                         let interest_to_be_deducted;
                         // let newTimeline;
                         let hasExistingRepaymentDefault;
-                        // let productName = investment.investment_product_name;
-                        let productId = investment.investment_product_id;
+                        // let typeName = investment.investment_type_name;
+                        let typeId = investment.investment_type_id;
                         let subType;
                         // New code update
-                        // const investmentProduct = await productsService.getProductByProductName(productName);
-                        const investmentProduct = await productsService.getProductByProductId(productId);
-                        console.log(" investmentProduct ==============================");
-                        console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            // console.log(`Investment Product Named: ${productName} does not exist.`)
-                            // throw new AppException({ message: `Investment Product Named: ${productName} does not exist.`, codeSt: "500" })
-                            console.log(`Investment Product Id: ${productId} does not exist.`);
-                            throw new AppException({ message: `Investment Product Id: ${productId} does not exist.`, codeSt: "500" });
+                        // const investmentType = await typesService.getTypeByTypeName(typeName);
+                        const investmentType = await typesService.getTypeByTypeId(typeId);
+                        console.log(" investmentType ==============================");
+                        console.log(investmentType);
+                        if (!investmentType) {
+                            // console.log(`Investment Type Named: ${typeName} does not exist.`)
+                            // throw new AppException({ message: `Investment Type Named: ${typeName} does not exist.`, codeSt: "500" })
+                            console.log(`Investment Type Id: ${typeId} does not exist.`);
+                            throw new AppException({ message: `Investment Type Id: ${typeId} does not exist.`, codeSt: "500" });
                         }
                         // @ts-ignore
                         // TODO
                         // Uncomment the code below after testing investment recovery from wallet endpoint
                         let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount,
-                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentProduct;
+                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentType;
                         // get user investment wallet, or create a new investment wallet for a first time user
                         let genericWallet = await getUserWalletsById(user_id);
                         // console.log("genericWallet line 944:", genericWallet);
@@ -1998,8 +1999,8 @@ export default class InvestmentsServices {
                             // console.log("Amount to be deducted for recovery, line 2547:", amount_to_be_deducted);
                             // console.log("Interest to be deducted for recovery, line 2548:", interest_to_be_deducted);
 
-                            investmentRecovery = await repayDueInvestment(investmentRecoveryReference, userInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, outstandingInvestmentWalletId, investmentRepaymentAccount,
-                                interestOnInvestmentAccount, customer_savings_account, description, lng, lat);
+                            // investmentRecovery = await repayDueInvestment(investmentRecoveryReference, userInvestmentWalletId, amount_to_be_deducted, interest_to_be_deducted, outstandingInvestmentWalletId, investmentRepaymentAccount,
+                                // interestOnInvestmentAccount, customer_savings_account, description, lng, lat);
                             // console.log("Investment Recovery transaction response");
                             // console.log(investmentRecovery);
                             if (investmentRecovery.status === 200) {
@@ -2854,7 +2855,7 @@ export default class InvestmentsServices {
             const repaymentSchedulesService = new RepaymentSchedulesServices();
             const repaymentDefaultersService = new RepaymentDefaultersServices();
             const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 578:", settings);
@@ -2950,23 +2951,23 @@ export default class InvestmentsServices {
                         let amount_to_be_deducted;
                         let interest_to_be_deducted;
                         // let newTimeline;
-                        // let productName = investment.investment_product_name;
-                        let productId = investment.investment_product_id;
+                        // let typeName = investment.investment_type_name;
+                        let typeId = investment.investment_type_id;
                         // New code update
-                        // const investmentProduct = await productsService.getProductByProductName(productName);
-                        const investmentProduct = await productsService.getProductByProductId(productId);
-                        // console.log(" investmentProduct ==============================");
-                        // console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            // console.log(`Investment Product Named: ${productName} does not exist.`)
-                            // throw new AppException({ message: `Investment Product Named: ${productName} does not exist.`, codeSt: "500" })
-                            console.log(`Investment Product Id: ${productId} does not exist.`)
-                            throw new AppException({ message: `Investment Product Id: ${productId} does not exist.`, codeSt: "500" })
+                        // const investmentType = await typesService.getTypeByTypeName(typeName);
+                        const investmentType = await typesService.getTypeByTypeId(typeId);
+                        // console.log(" investmentType ==============================");
+                        // console.log(investmentType);
+                        if (!investmentType) {
+                            // console.log(`Investment Type Named: ${typeName} does not exist.`)
+                            // throw new AppException({ message: `Investment Type Named: ${typeName} does not exist.`, codeSt: "500" })
+                            console.log(`Investment Type Id: ${typeId} does not exist.`)
+                            throw new AppException({ message: `Investment Type Id: ${typeId} does not exist.`, codeSt: "500" })
                         }
                         // @ts-ignore
 
                         let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount,
-                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentProduct;
+                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentType;
                         // get user investment wallet, or create a new investment wallet for a first time user
                         let genericWallet = await getUserWalletsById(user_id);
                         // console.log("genericWallet line 944:", genericWallet);
@@ -3939,7 +3940,7 @@ export default class InvestmentsServices {
             const repaymentSchedulesService = new RepaymentSchedulesServices();
             const repaymentDefaultersService = new RepaymentDefaultersServices();
             const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 2932:", settings);
@@ -4025,21 +4026,21 @@ export default class InvestmentsServices {
                         let amount_to_be_deducted;
                         let interest_to_be_deducted;
                         // let newTimeline;
-                        // let productName = investment.investment_product_name;
-                        let productId = investment.investment_product_id;
+                        // let typeName = investment.investment_type_name;
+                        let typeId = investment.investment_type_id;
                         // New code update
-                        // const investmentProduct = await productsService.getProductByProductName(productName);
-                        const investmentProduct = await productsService.getProductByProductId(productId);
-                        // console.log(" investmentProduct ==============================");
-                        // console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            // console.log(`Investment Product Named: ${productName} does not exist.`)
-                            // throw new AppException({ message: `Investment Product Named: ${productName} does not exist.`, codeSt: "500" })
-                            console.log(`Investment Product Id: ${productId} does not exist.`);
-                            throw new AppException({ message: `Investment Product Id: ${productId} does not exist.`, codeSt: "500" });
+                        // const investmentType = await typesService.getTypeByTypeName(typeName);
+                        const investmentType = await typesService.getTypeByTypeId(typeId);
+                        // console.log(" investmentType ==============================");
+                        // console.log(investmentType);
+                        if (!investmentType) {
+                            // console.log(`Investment Type Named: ${typeName} does not exist.`)
+                            // throw new AppException({ message: `Investment Type Named: ${typeName} does not exist.`, codeSt: "500" })
+                            console.log(`Investment Type Id: ${typeId} does not exist.`);
+                            throw new AppException({ message: `Investment Type Id: ${typeId} does not exist.`, codeSt: "500" });
                         }
                         // @ts-ignore
-                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount, } = investmentProduct;
+                        let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount, interestOnInvestmentAccount, } = investmentType;
                         // get user investment wallet, or create a new investment wallet for a first time user
                         let genericWallet = await getUserWalletsById(user_id);
                         // console.log("genericWallet line 3031:", genericWallet);
@@ -4453,7 +4454,7 @@ export default class InvestmentsServices {
             const repaymentSchedulesService = new RepaymentSchedulesServices();
             const repaymentDefaultersService = new RepaymentDefaultersServices();
             const repaidInvestmentsService = new RepaidInvestmentsServices();
-            const productsService = new ProductsServices();
+            const typesService = new TypesServices();
 
             const settings = await settingsService.getSettingBySettingTagName(CURRENT_SETTING_TAGNAME)
             // console.log("Approval setting line 4031:", settings);
@@ -4551,24 +4552,24 @@ export default class InvestmentsServices {
                         let interest_to_be_deducted;
                         // let newTimeline;
                         let hasExistingRepaymentDefault;
-                        // let productName = investment.investment_product_name;
-                        let productId = investment.investment_product_id;
+                        // let typeName = investment.investment_type_name;
+                        let typeId = investment.investment_type_id;
                         // New code update
-                        // const investmentProduct = await productsService.getProductByProductName(productName);
-                        const investmentProduct = await productsService.getProductByProductId(productId);
-                        // console.log(" investmentProduct ==============================");
-                        // console.log(investmentProduct);
-                        if (!investmentProduct) {
-                            // console.log(`Investment Product Named: ${productName} does not exist.`)
-                            // throw new AppException({ message: `Investment Product Named: ${productName} does not exist.`, codeSt: "500" })
-                            console.log(`Investment Product Id: ${productId} does not exist.`);
-                            throw new AppException({ message: `Investment Product Id: ${productId} does not exist.`, codeSt: "500" });
+                        // const investmentType = await typesService.getTypeByTypeName(typeName);
+                        const investmentType = await typesService.getTypeByTypeId(typeId);
+                        // console.log(" investmentType ==============================");
+                        // console.log(investmentType);
+                        if (!investmentType) {
+                            // console.log(`Investment Type Named: ${typeName} does not exist.`)
+                            // throw new AppException({ message: `Investment Type Named: ${typeName} does not exist.`, codeSt: "500" })
+                            console.log(`Investment Type Id: ${typeId} does not exist.`);
+                            throw new AppException({ message: `Investment Type Id: ${typeId} does not exist.`, codeSt: "500" });
                         }
                         // @ts-ignore
                         // TODO
                         // Uncomment the code below after testing investment recovery from wallet endpoint
                         let { fixedCharge, ratedCharge, outstandingInvestmentWalletId, investmentFundingAccount, investmentRepaymentAccount,
-                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentProduct;
+                            interestOnInvestmentAccount, interestOnInvestmentWalletId, investmentRecoveryWalletId, } = investmentType;
                         // get user investment wallet, or create a new investment wallet for a first time user
                         let genericWallet = await getUserWalletsById(user_id);
                         // console.log("genericWallet line 4141:", genericWallet);
@@ -5855,15 +5856,15 @@ export default class InvestmentsServices {
             params.push(queryFields.email)
 
         }
-        if (queryFields.investmentProductName) {
+        if (queryFields.investmentTypeName) {
             predicateExists()
-            predicate = predicate + "investment_product_name=?";
-            params.push(queryFields.investmentProductName)
+            predicate = predicate + "investment_type_name=?";
+            params.push(queryFields.investmentTypeName)
         }
-        if (queryFields.investmentProductId) {
+        if (queryFields.investmentTypeId) {
             predicateExists()
-            predicate = predicate + "investment_product_id=?";
-            params.push(queryFields.investmentProductId)
+            predicate = predicate + "investment_type_id=?";
+            params.push(queryFields.investmentTypeId)
         }
 
 
