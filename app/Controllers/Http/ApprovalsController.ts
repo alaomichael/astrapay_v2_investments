@@ -6,145 +6,145 @@ import {
   // @ts-ignore
 } from 'App/Helpers/utils'
 
-  // public async update({ request, response }: HttpContextContract) {
-  //   try {
-  //     const { investmentId, userId } = request.qs()
-  //     console.log('Approval query: ', request.qs())
+// public async update({ request, response }: HttpContextContract) {
+//   try {
+//     const { investmentId, userId } = request.qs()
+//     console.log('Approval query: ', request.qs())
 
-  //     let approval = await Approval.query().where({
-  //       investment_id: investmentId,
-  //       user_id: userId,
-  //     })
-  //     console.log(' QUERY RESULT: ', approval)
-  //     let investment = await Investment.query().where({
-  //       id: investmentId,
-  //       user_id: userId,
-  //     })
-  //     if (approval.length < 1 || investment === undefined) {
-  //       return response.status(404).json({ status: 'FAILED', message: 'Not Found,try again.' })
-  //     }
-  //     console.log(' QUERY RESULT for investment: ', investment[0].$original)
+//     let approval = await Approval.query().where({
+//       investment_id: investmentId,
+//       user_id: userId,
+//     })
+//     console.log(' QUERY RESULT: ', approval)
+//     let investment = await Investment.query().where({
+//       id: investmentId,
+//       user_id: userId,
+//     })
+//     if (approval.length < 1 || investment === undefined) {
+//       return response.status(404).json({ status: 'FAILED', message: 'Not Found,try again.' })
+//     }
+//     console.log(' QUERY RESULT for investment: ', investment[0].$original)
 
-  //     if (approval.length > 0) {
-  //       console.log('Investment approval Selected for Update line 160:', approval)
-  //       if (approval) {
-  //         approval[0].approvalStatus = request.input('approvalStatus')
-  //           ? request.input('approvalStatus')
-  //           : approval[0].approvalStatus
-  //         approval[0].remark = request.input('remark')
-  //           ? request.input('remark')
-  //           : approval[0].remark
-  //         if (approval) {
-  //           let newStatus
-  //           await approval[0].save()
-  //           console.log('Update Approval Request line 171:', approval)
-  //           if (
-  //             approval[0].requestType === 'start_investment' &&
-  //             approval[0].approvalStatus === 'approved'
-  //           ) {
-  //             newStatus = 'initiated'
-  //             investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             // Save the updated investment
-  //             await investment[0].save()
-  //           } else if (
-  //             approval[0].requestType === 'terminate investment' &&
-  //             approval[0].approvalStatus === 'approved'
-  //           ) {
-  //             // newStatus = 'terminated'
-  //             // investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             investment[0].isPayoutAuthorized = true
-  //             investment[0].isTerminationAuthorized = true
-  //             // Calculate the Total Amount to payout by pro-rata
-  //             let startDate = investment[0].startDate
-  //             let currentDate = new Date().toISOString()
-  //             let daysOfInvestment = await investmentDuration(startDate, currentDate)
-  //             let expectedDuration = investment[0].duration
-  //             let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
-  //             let amountInvested = investment[0].amount
-  //             if (parseInt(expectedDuration) > daysOfInvestment) {
-  //               // Pro-rata the Interest Due on Investment
-  //               let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
-  //               let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
-  //               let formerTotalAmountToPayout = investment[0].totalAmountToPayout
-  //               console.log(
-  //                 'Former Total Amount Due for payout if Matured is, line 203: ',
-  //                 formerTotalAmountToPayout
-  //               )
-  //               investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
-  //               // Save the updated investment
-  //               await investment[0].save()
-  //               let newTotalAmountToPayout = investment[0].totalAmountToPayout
-  //               console.log(
-  //                 'Total Amount Due for payout due to Termination, line 211: ',
-  //                 newTotalAmountToPayout
-  //               )
-  //             }
-  //           } else if (
-  //             approval[0].requestType === 'payout investment' &&
-  //             approval[0].approvalStatus === 'approved'
-  //           ) {
-  //             // newStatus = 'payout'
-  //             // investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             investment[0].isPayoutAuthorized = true
-  //             investment[0].isTerminationAuthorized = true
-  //             // Save the updated investment
-  //             await investment[0].save()
-  //           } else if (
-  //             approval[0].requestType === 'start_investment' &&
-  //             approval[0].approvalStatus === 'declined'
-  //           ) {
-  //             newStatus = 'initiated'
-  //             investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             // Save the updated investment
-  //             await investment[0].save()
-  //           } else if (
-  //             approval[0].requestType === 'terminate investment' &&
-  //             approval[0].approvalStatus === 'declined'
-  //           ) {
-  //             // newStatus = 'active'
-  //             // investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             investment[0].isPayoutAuthorized = false
-  //             investment[0].isTerminationAuthorized = false
-  //             // Save the updated investment
-  //             await investment[0].save()
-  //           } else if (
-  //             approval[0].requestType === 'payout investment' &&
-  //             approval[0].approvalStatus === 'declined'
-  //           ) {
-  //             // newStatus = 'active'
-  //             // investment[0].status = newStatus
-  //             investment[0].approvalStatus = approval[0].approvalStatus
-  //             investment[0].isPayoutAuthorized = false
-  //             investment[0].isTerminationAuthorized = false
-  //             // Save the updated investment
-  //             await investment[0].save()
-  //           }
-  //           // Update Investment data
-  //           console.log(' Updated investment line 259: ', investment[0].$original)
-  //           // send to user
-  //           return response
-  //             .status(200)
-  //             .json({ status: 'OK', data: approval.map((inv) => inv.$original) })
-  //         }
-  //         return // 422
-  //       } else {
-  //         return response.status(304).json({ status: 'FAILED', data: approval })
-  //       }
-  //     } else {
-  //       return response
-  //         .status(404)
-  //         .json({ status: 'FAILED', message: 'No data match your query parameters' })
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  //   // return // 401
-  // }
+//     if (approval.length > 0) {
+//       console.log('Investment approval Selected for Update line 160:', approval)
+//       if (approval) {
+//         approval[0].approvalStatus = request.input('approvalStatus')
+//           ? request.input('approvalStatus')
+//           : approval[0].approvalStatus
+//         approval[0].remark = request.input('remark')
+//           ? request.input('remark')
+//           : approval[0].remark
+//         if (approval) {
+//           let newStatus
+//           await approval[0].save()
+//           console.log('Update Approval Request line 171:', approval)
+//           if (
+//             approval[0].requestType === 'start_investment' &&
+//             approval[0].approvalStatus === 'approved'
+//           ) {
+//             newStatus = 'initiated'
+//             investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             // Save the updated investment
+//             await investment[0].save()
+//           } else if (
+//             approval[0].requestType === 'terminate investment' &&
+//             approval[0].approvalStatus === 'approved'
+//           ) {
+//             // newStatus = 'terminated'
+//             // investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             investment[0].isPayoutAuthorized = true
+//             investment[0].isTerminationAuthorized = true
+//             // Calculate the Total Amount to payout by pro-rata
+//             let startDate = investment[0].startDate
+//             let currentDate = new Date().toISOString()
+//             let daysOfInvestment = await investmentDuration(startDate, currentDate)
+//             let expectedDuration = investment[0].duration
+//             let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
+//             let amountInvested = investment[0].amount
+//             if (parseInt(expectedDuration) > daysOfInvestment) {
+//               // Pro-rata the Interest Due on Investment
+//               let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
+//               let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
+//               let formerTotalAmountToPayout = investment[0].totalAmountToPayout
+//               console.log(
+//                 'Former Total Amount Due for payout if Matured is, line 203: ',
+//                 formerTotalAmountToPayout
+//               )
+//               investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
+//               // Save the updated investment
+//               await investment[0].save()
+//               let newTotalAmountToPayout = investment[0].totalAmountToPayout
+//               console.log(
+//                 'Total Amount Due for payout due to Termination, line 211: ',
+//                 newTotalAmountToPayout
+//               )
+//             }
+//           } else if (
+//             approval[0].requestType === 'payout investment' &&
+//             approval[0].approvalStatus === 'approved'
+//           ) {
+//             // newStatus = 'payout'
+//             // investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             investment[0].isPayoutAuthorized = true
+//             investment[0].isTerminationAuthorized = true
+//             // Save the updated investment
+//             await investment[0].save()
+//           } else if (
+//             approval[0].requestType === 'start_investment' &&
+//             approval[0].approvalStatus === 'declined'
+//           ) {
+//             newStatus = 'initiated'
+//             investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             // Save the updated investment
+//             await investment[0].save()
+//           } else if (
+//             approval[0].requestType === 'terminate investment' &&
+//             approval[0].approvalStatus === 'declined'
+//           ) {
+//             // newStatus = 'active'
+//             // investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             investment[0].isPayoutAuthorized = false
+//             investment[0].isTerminationAuthorized = false
+//             // Save the updated investment
+//             await investment[0].save()
+//           } else if (
+//             approval[0].requestType === 'payout investment' &&
+//             approval[0].approvalStatus === 'declined'
+//           ) {
+//             // newStatus = 'active'
+//             // investment[0].status = newStatus
+//             investment[0].approvalStatus = approval[0].approvalStatus
+//             investment[0].isPayoutAuthorized = false
+//             investment[0].isTerminationAuthorized = false
+//             // Save the updated investment
+//             await investment[0].save()
+//           }
+//           // Update Investment data
+//           console.log(' Updated investment line 259: ', investment[0].$original)
+//           // send to user
+//           return response
+//             .status(200)
+//             .json({ status: 'OK', data: approval.map((inv) => inv.$original) })
+//         }
+//         return // 422
+//       } else {
+//         return response.status(304).json({ status: 'FAILED', data: approval })
+//       }
+//     } else {
+//       return response
+//         .status(404)
+//         .json({ status: 'FAILED', message: 'No data match your query parameters' })
+//     }
+//   } catch (error) {
+//     console.error(error)
+//   }
+//   // return // 401
+// }
 
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Approval from "App/Models/Approval";
@@ -202,7 +202,7 @@ export default class ApprovalsController {
         console.log("investment line 75 ===================");
         console.log(investment);
         // if ((investment == null || investment == undefined) && (linkAccount == null || linkAccount == undefined)) return response.json({ status: "FAILED", data: [] });
-       if (investment) {
+        if (investment) {
           let approvalWithInvestmentDetails = {
             ...approval.$original,
             investmentDetails: investment.$original,
@@ -210,7 +210,7 @@ export default class ApprovalsController {
           console.log("approvalWithInvestmentDetails line 218 ===================");
           console.log(approvalWithInvestmentDetails);
           approvalArray.push(approvalWithInvestmentDetails);
-        } 
+        }
         // approvalArray.push(approval);
         // console.log("approvalArray line 125 ===================");
         // console.log(approvalArray);
@@ -256,7 +256,7 @@ export default class ApprovalsController {
       // });
       // const payload: any = await request.validate({ schema: approvalSchema });
       const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy, remark,
-        } = request.body();
+      } = request.body();
       const payload: ApprovalType = {
         walletId: walletId,
         investmentId: investmentId,
@@ -516,18 +516,35 @@ export default class ApprovalsController {
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = "investment_approved"//approval.approvalStatus;
-
+          // Data to send for transfer of fund
+          let { amount, lng, lat, investmentRequestReference,
+            firstName, lastName,
+            walletId,
+            phone,
+            email,
+            rfiCode } = record;
+          let senderName = `${firstName} ${lastName}`;
+          let senderAccountNumber = walletId;
+          let senderAccountName = senderName;
+          let senderPhoneNumber = phone;
+          let senderEmail = email;
           // Send to the endpoint for debit of wallet
-          // let debitUserWalletForInvestment = await debitUserWallet()
-          // // if successful 
-          // if (debitUserWalletForInvestment.statusCode == 200 ){
-          //   // update the investment details
-          //   record.status = 'active'
-          //   record.approvalStatus = 'approved'
-          //   record.startDate = DateTime.now() //.toISODate()
-          //   record.payoutDate = DateTime.now().plus({ days: record.duration })
+          let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+            senderName,
+            senderAccountNumber,
+            senderAccountName,
+            senderPhoneNumber,
+            senderEmail,
+            rfiCode)
+          // if successful 
+          if (debitUserWalletForInvestment.statusCode == 200) {
+            // update the investment details
+            record.status = 'active'
+            record.approvalStatus = 'approved'
+            record.startDate = DateTime.now() //.toISODate()
+            record.payoutDate = DateTime.now().plus({ days: record.duration })
 
-          // }
+          }
 
           // Save the updated record
           // await record.save();
