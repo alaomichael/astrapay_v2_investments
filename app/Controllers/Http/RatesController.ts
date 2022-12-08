@@ -13,7 +13,7 @@ export default class RatesController {
       investmentType,
       rolloverCode,
       status,
-      productName,
+      typeName,
       interestRate,
     } = request.qs()
     console.log('Rate query line 19: ', request.qs())
@@ -54,10 +54,10 @@ export default class RatesController {
       })
     }
 
-    if (productName) {
+    if (typeName) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.productName!.includes(productName)
+        return rate.typeName!.includes(typeName)
       })
     }
     if (status) {
@@ -95,7 +95,7 @@ export default class RatesController {
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const rateSchema = schema.create({
-      productName: schema.string({ escape: true }, [rules.maxLength(20)]),
+      typeName: schema.string({ escape: true }, [rules.maxLength(20)]),
       lowestAmount: schema.number(),
       highestAmount: schema.number(),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
@@ -140,23 +140,23 @@ export default class RatesController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { productName, rateId } = request.qs()
+      const { typeName, rateId } = request.qs()
       console.log('Rate query: ', request.qs())
       // let rate = await Rate.query().where({
-      //   product_name: request.input('productName'),
+      //   type_name: request.input('typeName'),
       //   id: request.input('rateId'),
       // })
       let rate = await Rate.query().where({
-        product_name: productName,
+        type_name: typeName,
         id: rateId,
       })
       console.log(' QUERY RESULT: ', rate)
       if (rate.length > 0) {
         console.log('Investment rate Selected for Update:', rate)
         if (rate) {
-          rate[0].productName = request.input('newProductName')
+          rate[0].typeName = request.input('newProductName')
             ? request.input('newProductName')
-            : rate[0].productName
+            : rate[0].typeName
           rate[0].lowestAmount = request.input('lowestAmount')
             ? request.input('lowestAmount')
             : rate[0].lowestAmount
@@ -211,14 +211,14 @@ export default class RatesController {
 
   public async destroy({ request, response }: HttpContextContract) {
     // let id = request.input('rateId')
-    const { productName, rateId } = request.qs()
+    const { typeName, rateId } = request.qs()
     console.log('Rate query: ', request.qs())
     // let rate = await Rate.query().where({
-    //   product_name: request.input('productName'),
+    //   type_name: request.input('typeName'),
     //   id: request.input('rateId'),
     // })
     let rate = await Rate.query().where({
-      product_name: productName,
+      type_name: typeName,
       id: rateId,
     })
     console.log(' QUERY RESULT: ', rate)
@@ -226,7 +226,7 @@ export default class RatesController {
     if (rate.length > 0) {
       rate = await Rate.query()
         .where({
-          product_name: productName,
+          type_name: typeName,
           id: rateId,
         })
         .delete()

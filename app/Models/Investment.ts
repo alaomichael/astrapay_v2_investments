@@ -1,8 +1,10 @@
 import  RfiRecord  from './RfiRecord';
 import { DateTime } from 'luxon'
-import { column, beforeCreate, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, belongsTo, BelongsTo, HasOne, hasOne, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
+import Approval from './Approval';
+import Timeline from './Timeline';
 // import User from './User'
 
 /**
@@ -145,6 +147,12 @@ string
 
   @belongsTo(() => RfiRecord, { localKey: 'rfiRecordId' })
   public rfiRecord: BelongsTo<typeof RfiRecord>
+
+  @hasOne(() => Approval, { localKey: "id" })
+  public approvals: HasOne<typeof Approval>;
+
+  @hasMany(() => Timeline, { localKey: "id" })
+  public timelines: HasMany<typeof Timeline>;
 
   @beforeCreate()
   public static assignUuid(investment: Investment) {

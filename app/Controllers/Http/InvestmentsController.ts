@@ -31,6 +31,8 @@ import CreateInvestmentValidator from 'App/Validators/CreateInvestmentValidator'
 import { InvestmentType } from 'App/Services/types/investment_type'
 import InvestmentsServices from 'App/Services/InvestmentsServices'
 import TimelinesServices from 'App/Services/TimelinesServices'
+import TypesServices from 'App/Services/TypesServices'
+import ApprovalsServices from 'App/Services/ApprovalsServices'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
@@ -999,6 +1001,7 @@ export default class InvestmentsController {
     await request.validate(CreateInvestmentValidator);
     const investmentsService = new InvestmentsServices();
     const timelineService = new TimelinesServices();
+    const typesService = new TypesServices();
     // const user = await auth.authenticate()
     // const investmentSchema = schema.create({
     //   amount: schema.number(),
@@ -1065,9 +1068,17 @@ export default class InvestmentsController {
       ' The Rate return for RATE line 541: ',
       await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
     )
-    let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-    console.log(' Rate return line 684 : ', rate)
-    if (rate === undefined || rate.length < 1) {
+    // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+    let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
+    
+    let rate;
+    if (investmentTypeDetails){
+      let { interestRate } = investmentTypeDetails;
+      rate = interestRate;
+    }
+    
+    console.log(' Rate return line 1079 : ', rate)
+    if (rate === undefined) {
       return response.status(400).json({
         status: 'FAILED',
         message: 'no investment rate matched your search, please try again.',
@@ -1156,15 +1167,38 @@ export default class InvestmentsController {
     // let approvalIsAutomated = false
     if (approvalIsAutomated === false) {
       // Send Approval Request to Admin
-      let approval = await approvalRequest(userId, investmentId, requestType)
-      console.log(' Approval request return line 938 : ', approval)
-      if (approval === undefined) {
-        return response.status(400).json({
-          status: 'FAILED',
-          message: 'investment approval request was not successful, please try again.',
-          data: [],
-        })
-      }
+      // let approval = await approvalRequest(userId, investmentId, requestType)
+      // console.log(' Approval request return line 938 : ', approval)
+      // if (approval === undefined) {
+      //   return response.status(400).json({
+      //     status: 'FAILED',
+      //     message: 'investment approval request was not successful, please try again.',
+      //     data: [],
+      //   })
+      // }
+                      const approvalsService = new ApprovalsServices()
+                let approvalObject;
+
+                // TODO: Send to the Admin for approval
+                // update approvalObject
+                approvalObject = {
+                    walletId: investment.walletId,
+                    investmentId: investment.id,
+                    userId: investment.userId,
+                    requestType: "start_investment",
+                    approvalStatus: investment.approvalStatus,
+                    assignedTo: "",//investment.assignedTo,
+                  processedBy: "",//investment.processedBy,
+                    // remark: "",
+                };
+                // console.log("ApprovalRequest object line 1194:", approvalObject);
+                // check if the approval request is not existing
+                let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
+                if (!approvalRequestIsExisting) {
+                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                    console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+                }
+
     } else if (approvalIsAutomated === true) {
       // TODO
       // Send Investment Payload To Transaction Service
