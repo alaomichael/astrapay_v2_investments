@@ -13,7 +13,7 @@ const { URLSearchParams } = require('url');
 // const randomstring = require("randomstring");
 
 export const debitUserWallet = async function debitUserWallet(
-    amount,lng, lat, investmentRequestReference,
+    amount, lng, lat, investmentRequestReference,
     senderName,
     senderAccountNumber,
     senderAccountName,
@@ -36,7 +36,7 @@ export const debitUserWallet = async function debitUserWallet(
         // console.log("The ASTRAPAY API customerReference @ debitUserWallet", customerReference);
 
         // let batchPaymentId = randomstring.generate(10);
-    
+
         const settingsService = new SettingServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
 
@@ -58,7 +58,7 @@ export const debitUserWallet = async function debitUserWallet(
         // let approvalIsAutomated = false
         // console.log("currencyCode setting line 77:", currencyCode);
         // console.log("loanServiceChargeAccount setting line 78:", loanServiceChargeAccount);
-       
+
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
@@ -128,16 +128,17 @@ export const debitUserWallet = async function debitUserWallet(
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        // console.log("The ASTRAPAY API response @ debitUserWallet line 114: ", response);
-        // console.log("The ASTRAPAY API response data @ debitUserWallet line 115: ", response.data);
-//  && response.data.amountTransfered === CHARGE
-debugger
+        console.log("The ASTRAPAY API response @ debitUserWallet line 114: ", response1);
+        debugger
+        console.log("The ASTRAPAY API response data @ debitUserWallet line 115: ", response1.data);
+        //  && response.data.amountTransfered === CHARGE
+        debugger
         if (response1.data.statusCode == 200) {
- // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
+            // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
             debugger
-// Authorize Transaction
+            // Authorize Transaction
             let { batchId } = response1.data.transactions[0];
-            let headers =  {
+            let headers = {
                 'correlation-id': '68678989IO09',
                 'signature': '5DJJI56UTUTJGGHI97979789GJFIR8589549',
                 'client-app': 'OCTANTIS_MOBILE',
@@ -145,8 +146,8 @@ debugger
                 'lat': lat,
                 'ofi-code': 'S8',
                 'user-principal': '58699700JJK'
-  };
-         const payload = {
+            };
+            const payload = {
                 "batchId": batchId,
                 "action": "AUTHORIZED",
                 "authorizations": [
@@ -166,8 +167,8 @@ debugger
             debugger
             if (response.data.statusCode == 200) {
                 debugger
-            return response.data;
-        }
+                return response.data;
+            }
         } else {
             return;
         }
@@ -175,10 +176,11 @@ debugger
         console.error(error.response.data.errorCode);
         console.error(error.response.data.errorMessage);
         console.error(error.message);
-      if (error.response == undefined) {
-        return { status: "FAILED TO DEBIT WALLET", message: error.message }
-      } else {
-        return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
-    }}
+        if (error.response == undefined) {
+            return { status: "FAILED TO DEBIT WALLET", message: error.message }
+        } else {
+            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+        }
+    }
 
 }

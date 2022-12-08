@@ -154,7 +154,7 @@ export default class ApprovalsServices {
                 timelineObject = {
                     id: uuid(),
                     action: "investment request approval updated",
-                    investmentId: selectedInvestmentRequest.investmentId,
+                    investmentId: selectedInvestmentRequest.id,
                     userId: selectedInvestmentRequest.userId,
                     walletId: selectedInvestmentRequest.walletId,
                     // @ts-ignore
