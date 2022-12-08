@@ -19,7 +19,7 @@ export const debitUserWallet = async function debitUserWallet(
     senderAccountName,
     senderPhoneNumber,
     senderEmail,
-       rfiCode
+    rfiCode
 ): Promise<any> {
     // connect to Okra
     try {
@@ -43,6 +43,7 @@ export const debitUserWallet = async function debitUserWallet(
         // Get Rfi Record
         const rfiRecordsService = new RfiRecordsServices();
         const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
+        debugger
         // console.log("Admin setting line 71 @ debitUserWallet:", settings);
         //  get the loan currency
         // @ts-ignore
@@ -123,7 +124,7 @@ export const debitUserWallet = async function debitUserWallet(
                 }
             ]
         }
-
+        debugger
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
@@ -133,7 +134,7 @@ export const debitUserWallet = async function debitUserWallet(
 debugger
         if (response1.data.statusCode == 200) {
  // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
- 
+            debugger
 // Authorize Transaction
             let { batchId } = response1.data.transactions[0];
             let headers =  {
@@ -164,6 +165,7 @@ debugger
             )
             debugger
             if (response.data.statusCode == 200) {
+                debugger
             return response.data;
         }
         } else {

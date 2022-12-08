@@ -118,7 +118,7 @@ export default class ApprovalsServices {
         try {
             let saveApproval = await selectedApproval.merge(updateApproval)
             await saveApproval.save();
-            debugger
+            // debugger
             const investmentService = new InvestmentsServices();
             const selectedInvestmentRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
             const timelineService = new TimelinesServices();
