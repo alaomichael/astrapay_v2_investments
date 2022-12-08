@@ -24,7 +24,7 @@ export default class CreateTypeValidator extends BaseValidator {
         quantityAvailableForIssue: schema.number.optional(),
         // fixedCharge: schema.number.optional(),
         // ratedCharge: schema.number.optional(),
-        availableTypes: schema.array.optional().members(
+        availableTypes: schema.array().members(
             schema.string(),
         ),
 
