@@ -84,6 +84,9 @@ export default class Investments extends BaseSchema {
       table.string('date_payout_was_done').nullable().index()
       table.float('lng').unsigned().nullable()
       table.float('lat').unsigned().nullable()
+      table.string("processed_by", 255).notNullable().defaultTo("automation").index();
+      table.string("approved_by", 255).notNullable().defaultTo("automation").index();
+      table.string("assigned_to", 255).notNullable().defaultTo("automation").index();
       table.timestamp('created_at', { useTz: true }).index()
       table.timestamp('updated_at', { useTz: true })
 

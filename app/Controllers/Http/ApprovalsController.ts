@@ -572,8 +572,9 @@ export default class ApprovalsController {
             metadata: ``,
           };
           // console.log("Timeline object line 551:", timelineObject);
-          let newTimeline = await timelineService.createTimeline(timelineObject);
-          console.log("new Timeline object line 553:", newTimeline);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 553:", newTimeline);
           // update record
 
           // Send Details to notification service

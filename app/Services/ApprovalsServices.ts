@@ -17,7 +17,7 @@ export default class ApprovalsServices {
             const approval = await Approval.create(terminateApproval)
             const timelineService = new TimelinesServices();
             const investmentService = new InvestmentsServices();
-                        let timelineObject;
+            let timelineObject;
             // change timeline messsage based on the requestType
             if (approval.requestType === "start_investment") {
                 let investmentId = approval.investmentId;
@@ -134,8 +134,9 @@ export default class ApprovalsServices {
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "investment_approved" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_approved";
-                    selectedInvestmentRequestUpdate.remark = saveApproval.remark;
+                    // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // update the record
+                    // TODO: handle remark
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
@@ -144,8 +145,8 @@ export default class ApprovalsServices {
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "investment_declined" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_declined";
-                    selectedInvestmentRequestUpdate.remark = saveApproval.remark;
-
+                    // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
+                    // TODO: handle remark
                     // update the record
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                 }
@@ -153,13 +154,13 @@ export default class ApprovalsServices {
                 timelineObject = {
                     id: uuid(),
                     action: "investment request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: selectedApproval.userId,
-                    walletId: selectedApproval.walletId,
+                    investmentId: selectedInvestmentRequest.investmentId,
+                    userId: selectedInvestmentRequest.userId,
+                    walletId: selectedInvestmentRequest.walletId,
                     // @ts-ignore
-                    message: `${selectedApproval.firstName} investment request approval record has just been updated.`,
+                    message: `${selectedInvestmentRequest.firstName} investment request approval record has just been updated.`,
                     createdAt: DateTime.now(),
-                    metadata: `request type : ${selectedApproval.requestType}`,
+                    metadata: `request type : ${selectedInvestmentRequest.requestType}`,
                 };
                 // console.log("Timeline object line 408:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
@@ -280,7 +281,7 @@ export default class ApprovalsServices {
             predicate = predicate + "investment_id=?";
             params.push(queryFields.investmentId)
         }
-              if (queryFields.requestType) {
+        if (queryFields.requestType) {
             predicateExists()
             predicate = predicate + "request_type=?";
             params.push(queryFields.requestType)

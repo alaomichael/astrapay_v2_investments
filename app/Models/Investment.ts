@@ -138,7 +138,14 @@ export default class Investment extends AppBaseModel {
 
   @column()
   public lat: string
-string
+
+  @column({})
+  public approvedBy: string
+
+  @column({})
+  public assignedTo: string
+
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

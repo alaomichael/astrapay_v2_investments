@@ -32,5 +32,7 @@ export default class CreateInvestmentValidator extends BaseValidator {
         // processedBy: schema.string.optional(),
         lng: schema.string(),
         lat: schema.string(),
+        assignedTo: schema.string.optional(),
+        approvedBy: schema.string.optional(),
     });
 }

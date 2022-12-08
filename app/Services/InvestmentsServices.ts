@@ -6032,11 +6032,21 @@ export default class InvestmentsServices {
             predicate = predicate + "current_lga=?"
             params.push(queryFields.currentLGA)
         }
-
+//  assignedTo, approvedBy,
         if (queryFields.processedBy) {
             predicateExists()
             predicate = predicate + "processed_by=?"
             params.push(queryFields.processedBy)
+        }
+        if (queryFields.assignedTo) {
+            predicateExists()
+            predicate = predicate + "assigned_to=?"
+            params.push(queryFields.assignedTo)
+        }
+        if (queryFields.approvedBy) {
+            predicateExists()
+            predicate = predicate + "approved_by=?"
+            params.push(queryFields.approvedBy)
         }
         if (queryFields.status) {
 
