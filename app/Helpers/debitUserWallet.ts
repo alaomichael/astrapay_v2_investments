@@ -12,7 +12,7 @@ const { URLSearchParams } = require('url');
 const randomstring = require("randomstring");
 
 export const debitUserWallet = async function debitUserWallet(
-    walletId, customerId, charge, narration
+    walletId, customerId, charge, narration,lng,lat
 ): Promise<any> {
     // connect to Okra
     try {
@@ -21,9 +21,15 @@ export const debitUserWallet = async function debitUserWallet(
         console.log("customerId,@ debitUserWallet line 20", customerId);
         console.log("charge,@ debitUserWallet line 21", charge);
 
-        const headers = {
-            "Token": ASTRAPAY_BEARER_TOKEN
-        }
+        const headers : {
+            "correlation-id": '68678989IO09',
+            "signature": '5DJJI56UTUTJGGHI97979789GJFIR8589549',
+            "client-app": 'OCTANTIS_MOBILE',
+            "lng": lng,
+            "lat": lat,
+            "ofi-code": 'S8',
+            "user-principal": '58699700JJK'
+        },
 
         //         {
         //             "accountBank": "WALLET",
@@ -77,21 +83,6 @@ export const debitUserWallet = async function debitUserWallet(
         // let approvalIsAutomated = false
         // console.log("currencyCode setting line 77:", currencyCode);
         // console.log("loanServiceChargeAccount setting line 78:", loanServiceChargeAccount);
-
-        // const payload2 = {
-        //     "accountBank": "WALLET",
-        //     "accountNumber": "ACC-0000000094",
-        //     "amount": CHARGE,
-        //     "beneficiaryName": "Alaka Adam",
-        //     "currency": "NGN",
-        //     "customerId": "08144964388",
-        //     "walletId": "ACC-0000000094",
-        //     "debitCurrency": "NGN",
-        //     "narration": narration,
-        //     "senderId": "08144964388",
-        //     "batchPaymentId": batchPaymentId,
-        //     "customerReference": customerReference
-        // }
 
         const payload = {
             "accountBank": `${ACCOUNT_BANK}`,

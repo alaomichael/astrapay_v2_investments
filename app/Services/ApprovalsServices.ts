@@ -28,13 +28,13 @@ export default class ApprovalsServices {
                 // update timeline
                 timelineObject = {
                     id: uuid(),
-                    action: "investment request approval terminated",
+                    action: "investment request approval created",
                     investmentId: approval.investmentId,
                     userId: investmentDetails.userId,
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
-                    message: `${investmentDetails.firstName} investment request approval record has just been terminated.`,
-                    terminatedAt: DateTime.now(),
+                    message: `${investmentDetails.firstName} investment request approval record has just been created.`,
+                    createdAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
                 // console.log("Timeline object line 285:", timelineObject);
@@ -133,7 +133,7 @@ export default class ApprovalsServices {
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "investment_approved" //saveApproval.approvalStatus;
-                    selectedInvestmentRequestUpdate.status = "investment_number_pending";
+                    selectedInvestmentRequestUpdate.status = "investment_approved";
                     selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // update the record
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
@@ -152,13 +152,13 @@ export default class ApprovalsServices {
                 // update timeline
                 timelineObject = {
                     id: uuid(),
-                    action: "investment opening request approval updated",
+                    action: "investment request approval updated",
                     investmentId: saveApproval.investmentId,
                     userId: selectedApproval.userId,
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
-                    message: `${selectedApproval.firstName} investment opening request approval record has just been updated.`,
-                    terminatedAt: DateTime.now(),
+                    message: `${selectedApproval.firstName} investment request approval record has just been updated.`,
+                    createdAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
                 // console.log("Timeline object line 408:", timelineObject);
@@ -201,7 +201,7 @@ export default class ApprovalsServices {
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
                     message: `${selectedApproval.firstName} investment termination request approval record has just been updated.`,
-                    terminatedAt: DateTime.now(),
+                    createdAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
                 // console.log("Timeline object line 408:", timelineObject);
@@ -305,10 +305,10 @@ export default class ApprovalsServices {
             predicate = predicate + "remark=?";
             params.push(queryFields.remark)
         }
-        if (queryFields.terminatedAt) {
+        if (queryFields.createdAt) {
             predicateExists()
             predicate = predicate + "terminated_at=?";
-            params.push(queryFields.terminatedAt)
+            params.push(queryFields.createdAt)
         }
 
         if (queryFields.updatedAt) {

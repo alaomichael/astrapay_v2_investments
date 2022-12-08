@@ -243,6 +243,46 @@ export default class InvestmentsController {
     }
   }
 
+  public async showByUserId({ params, request, response, }: HttpContextContract) {
+    console.log("ACCOUNT OPENING params line 236: ", params);
+    const { userId } = request.params();
+    console.log("ACCOUNT OPENING params userId line 238: ", userId);
+    try {
+      const investmentsService = new InvestmentsServices();
+      let investments = await investmentsService.getInvestmentsByUserId(userId);
+      console.log("Investments result :", investments);
+      if (investments && investments.length > 0) {
+        let investmentWithPreloadedData = investments.map((investment) => {
+          return investment;
+        });
+        return response
+          .status(200)
+          .json({ status: "OK", data: investmentWithPreloadedData });
+      } else {
+        return response
+          .json({ status: "OK", data: [] });
+      }
+    } catch (error) {
+      console.log("Error line 478", error.messages);
+      console.log("Error line 479", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+    }
+  }
+
+
   public async showPayouts({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
     try {

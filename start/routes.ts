@@ -67,8 +67,11 @@ Route.group(() => {
     Route.get("investments/types", "TypesController.index");
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
+    Route.get('investments/users/:userId', 'InvestmentsController.showByUserId')
     Route.get('admin/investments/:investmentId', 'InvestmentsController.showByInvestmentId')
     Route.get('investments/:investmentId', 'InvestmentsController.showByInvestmentId')
+    
+    
 
     // Route.get('investments/:userId', 'InvestmentsController.show')
 
@@ -83,7 +86,7 @@ Route.group(() => {
     Route.put('admin/investments/rates', 'RatesController.update')
     // Route.put('admin/investments/taxes', 'TaxesController.update')
     // Route.put('admin/investments/taxrecords', 'TaxRecordsController.update')
-    Route.put('admin/investments/approvals', 'ApprovalsController.update')
+    Route.put('admin/investments/approvals/:id', 'ApprovalsController.update')
     Route.put('admin/investments', 'InvestmentsController.update')
     Route.put('investments', 'InvestmentsController.update')
     Route.put('admin/investments/rfi_records', 'RfiRecordsController.update')

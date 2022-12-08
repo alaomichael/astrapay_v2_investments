@@ -1,3 +1,4 @@
+import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import Investment from 'App/Models/Investment'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import {
@@ -267,7 +268,7 @@ export default class ApprovalsController {
         // remark: remark,
       }
 
-      console.log("Admin remark =================", remark);
+      // console.log("Admin remark =================", remark);
       // const approval = await approvalsService.createApproval(payload);
       // const setting = await investmentsService.createInvestment(payload);
 
@@ -406,7 +407,7 @@ export default class ApprovalsController {
       await request.validate(UpdateApprovalValidator);
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
-      console.log("Approval query: ", request.qs());
+      // console.log("Approval query: ", request.qs());
       const { approvalStatus, assignedTo, processedBy, remark } = request.body();
 
       // check if the request is not existing
@@ -454,11 +455,11 @@ export default class ApprovalsController {
       if (approval.investmentId != null) {
         investmentId = approval.investmentId;
         record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-        debugger
+        // debugger
       }
       // console.log(" idToSearch RESULT ===============================: ", idToSearch);
       // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
-      console.log(" record RESULT ===============================: ", record);
+      // console.log(" record RESULT ===============================: ", record);
 
       // debugger
       if (!approval || record == undefined || !record) {
@@ -466,7 +467,7 @@ export default class ApprovalsController {
           .status(404)
           .json({ status: "FAILED", message: "Not Found,try again." });
       }
-      console.log(" QUERY RESULT for record: ", record.$original);
+      // console.log(" QUERY RESULT for record: ", record.$original);
 
       if (approval) {
         console.log("Investment approval Selected for Update line 481:", approval);
@@ -486,15 +487,15 @@ export default class ApprovalsController {
         // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
         // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
         // payload.remark = remark !== undefined ? remark : approval.remark;
-        console.log("Admin remark line 498 ==================== ", approval.remark);
-        console.log("Admin remark line 499 ========*******************=========== ", remark);
+        // console.log("Admin remark line 498 ==================== ", approval.remark);
+        // console.log("Admin remark line 499 ========*******************=========== ", remark);
         approval = await approvalsService.updateApproval(approval, payload);
-        console.log("Approval updated: ", approval);
+        // console.log("Approval updated: ", approval);
         let newStatus;
         await approval.save();
         console.log("Update Approval Request line 504:", approval);
-        let { id, firstName, currencyCode, surname, email } = record;
-        console.log("Surname: ", surname)
+        let { id, firstName, currencyCode, lastName, email } = record;
+        console.log("Surname: ", lastName)
         console.log("CurrencyCode: ", currencyCode)
         // debugger
         // let { email } = contactDetails;
@@ -502,19 +503,31 @@ export default class ApprovalsController {
         let timelineObject;
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status == "submitted") {
+        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved") { //&& record.status == "submitted"
           console.log("Approval for investment request processing: ===========================================>")
           // newStatus = "submitted";
           newStatus = "approved"; //'pending_account_number_generation'; 
           record.status = newStatus;
           record.requestType = "start_investment";
-          record.remark = approval.remark;
+          // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = "investment_approved"//approval.approvalStatus;
+
+          // Send to the endpoint for debit of wallet
+          // let debitUserWalletForInvestment = await debitUserWallet()
+          // // if successful 
+          // if (debitUserWalletForInvestment.statusCode == 200 ){
+          //   // update the investment details
+          //   record.status = 'active'
+          //   record.approvalStatus = 'approved'
+          //   record.startDate = DateTime.now() //.toISODate()
+          //   record.payoutDate = DateTime.now().plus({ days: record.duration })
+
+          // }
 
           // Save the updated record
           // await record.save();
@@ -535,7 +548,7 @@ export default class ApprovalsController {
             walletId: walletIdToSearch,// walletId, 
             userId: userIdToSearch,// userId,
             // @ts-ignore
-            message: `${firstName}, your investment request has been approved, please wait while the account number is been generated and updated, thank you.`,
+            message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -562,13 +575,13 @@ export default class ApprovalsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
-        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status == "submitted") {
+        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
           newStatus = "Investment_declined";
           record.status = newStatus;
           record.approvalStatus = "Investment_declined"; //approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.remark = approval.remark;
+          // record.remark = approval.remark;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           // Save the updated record
@@ -622,7 +635,7 @@ export default class ApprovalsController {
           record.approvalStatus = approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.remark = approval.remark;
+          // record.remark = approval.remark;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           // update record
@@ -671,7 +684,7 @@ export default class ApprovalsController {
           record.approvalStatus = approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.remark = approval.remark;
+          // record.remark = approval.remark;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           // Save the updated record
