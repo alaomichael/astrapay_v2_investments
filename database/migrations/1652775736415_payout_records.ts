@@ -9,6 +9,10 @@ export default class PayoutRecords extends BaseSchema {
       table.text('user_id').unsigned().notNullable().index()
       table.text('investment_id').unsigned().notNullable().index()
       table.string('wallet_id').unsigned().nullable().index()
+      table.string("first_name", 225).notNullable().index();
+      table.string("last_name", 225).notNullable().index();
+      table.string("phone", 225).notNullable().index();
+      table.string("email", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
       table.string('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
@@ -18,7 +22,7 @@ export default class PayoutRecords extends BaseSchema {
 
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
-      table.jsonb('wallet_holder_details').notNullable().index()
+      // table.jsonb('wallet_holder_details').notNullable().index()
       table.float('lng').unsigned().nullable().index()
       table.float('lat').unsigned().nullable().index()
       table.float('interest_rate').unsigned().nullable()
@@ -37,7 +41,7 @@ export default class PayoutRecords extends BaseSchema {
       table.boolean('is_payout_successful').notNullable().defaultTo(true).index()
       table.string('approval_status', 255).notNullable().defaultTo('approved').index()
       table.string('status', 255).notNullable().index()
-      table.jsonb('timeline').nullable().index()
+      // table.jsonb('timeline').nullable().index()
       table.text('certificate_url').nullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').notNullable().index()
@@ -55,7 +59,7 @@ export default class PayoutRecords extends BaseSchema {
           'rollover_target',
           'rollover_done',
           'investment_type',
-          'wallet_holder_details',
+          // 'wallet_holder_details',
           'lng',
           'lat',
           'start_date',

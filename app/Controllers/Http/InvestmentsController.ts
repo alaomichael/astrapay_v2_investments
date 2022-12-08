@@ -36,78 +36,103 @@ import ApprovalsServices from 'App/Services/ApprovalsServices'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
-  public async index({ params, request, response }: HttpContextContract) {
-    console.log('INVESTMENT params: ', params)
-    const { search, limit, requestType, userId, investmentId, status } = request.qs()
-    console.log('INVESTMENT query: ', request.qs())
-    const count = await Investment.query().where('currency_code', 'NGN').getCount()
-    console.log('INVESTMENT count: ', count)
-    // let settings = await Setting.query().where({ currency_code: 'NGN' })
-    // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
-    // const investment = await Investment.query().offset(0).limit(1)
-    const investment = (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
-    // console.log('INVESTMENT before sorting line 40: ', investment)
-    // let newArray = investment.map((investment) => {return investment.$original})
-    let sortedInvestments = investment.map((investment) => {
-      return investment.$original
-    })
-    // console.log('INVESTMENT newArray sorting: ', newArray)
-    console.log('INVESTMENT before sorting: ', sortedInvestments)
-    if (search) {
-      sortedInvestments = sortedInvestments.filter((investment) => {
-        // @ts-ignore
-        // console.log(' Sorted :', investment.walletHolderDetails.lastName!.startsWith(search))
-        // @ts-ignore
-        return investment.walletHolderDetails.lastName!.startsWith(search)
-      })
-    }
-    if (requestType) {
-      sortedInvestments = sortedInvestments.filter((investment) => {
-        // @ts-ignore
-        return investment.requestType.startsWith(requestType)
-      })
-    }
-    if (status) {
-      sortedInvestments = sortedInvestments.filter((investment) => {
-        // @ts-ignore
-        return investment.status.includes(status)
-      })
-    }
+  // public async index({ params, request, response }: HttpContextContract) {
+  //   console.log('INVESTMENT params: ', params)
+  //   const { search, limit, requestType, userId, investmentId, status } = request.qs()
+  //   console.log('INVESTMENT query: ', request.qs())
+  //   const count = await Investment.query().where('currency_code', 'NGN').getCount()
+  //   console.log('INVESTMENT count: ', count)
+  //   // let settings = await Setting.query().where({ currency_code: 'NGN' })
+  //   // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
+  //   // const investment = await Investment.query().offset(0).limit(1)
+  //   const investment = (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
+  //   // console.log('INVESTMENT before sorting line 40: ', investment)
+  //   // let newArray = investment.map((investment) => {return investment.$original})
+  //   let sortedInvestments = investment.map((investment) => {
+  //     return investment.$original
+  //   })
+  //   // console.log('INVESTMENT newArray sorting: ', newArray)
+  //   console.log('INVESTMENT before sorting: ', sortedInvestments)
+  //   if (search) {
+  //     sortedInvestments = sortedInvestments.filter((investment) => {
+  //       // @ts-ignore
+  //       // console.log(' Sorted :', investment.lastName!.startsWith(search))
+  //       // @ts-ignore
+  //       return investment.lastName!.startsWith(search)
+  //     })
+  //   }
+  //   if (requestType) {
+  //     sortedInvestments = sortedInvestments.filter((investment) => {
+  //       // @ts-ignore
+  //       return investment.requestType.startsWith(requestType)
+  //     })
+  //   }
+  //   if (status) {
+  //     sortedInvestments = sortedInvestments.filter((investment) => {
+  //       // @ts-ignore
+  //       return investment.status.includes(status)
+  //     })
+  //   }
 
-    if (userId) {
-      sortedInvestments = sortedInvestments.filter((investment) => {
-        // @ts-ignore
-        return investment.userId === userId
-      })
-    }
-    if (investmentId) {
-      sortedInvestments = sortedInvestments.filter((investment) => {
-        // @ts-ignore
-        return investment.id === investmentId
-      })
-    }
-    if (limit) {
-      sortedInvestments = sortedInvestments.slice(0, Number(limit))
-    }
+  //   if (userId) {
+  //     sortedInvestments = sortedInvestments.filter((investment) => {
+  //       // @ts-ignore
+  //       return investment.userId === userId
+  //     })
+  //   }
+  //   if (investmentId) {
+  //     sortedInvestments = sortedInvestments.filter((investment) => {
+  //       // @ts-ignore
+  //       return investment.id === investmentId
+  //     })
+  //   }
+  //   if (limit) {
+  //     sortedInvestments = sortedInvestments.slice(0, Number(limit))
+  //   }
+  //   if (sortedInvestments.length < 1) {
+  //     return response.status(200).json({
+  //       status: 'FAILED',
+  //       message: 'no investment matched your search',
+  //       data: [],
+  //     })
+  //   }
+  //   // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
+  //   // console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
+  //   // @ts-ignore
+  //   Event.emit('list:investments', {
+  //     id: investment[0].id,
+  //     // @ts-ignore
+  //     email: investment[0].email,
+  //   })
+  //   // return investment
+  //   console.log(' SORTED INVESTMENT line 78' + sortedInvestments)
+  //   return response.status(200).json(sortedInvestments)
+  // }
+
+  public async index({ params, request, response }: HttpContextContract) {
+    console.log("investments params: ", params);
+    console.log("investments query: ", request.qs());
+    const investmentsService = new InvestmentsServices();
+
+    console.log("investments query line 108: ", request.qs());
+    const investments = await investmentsService.getInvestments(request.qs());
+    console.log("investments query line 110: ", investments);
+    let sortedInvestments = investments;
+
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
-        status: 'FAILED',
-        message: 'no investment matched your search',
+        status: "FAILED",
+        message: "no investment request matched your search",
         data: [],
-      })
+      });
     }
-    // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
-    // console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
-    // @ts-ignore
-    Event.emit('list:investments', {
-      id: investment[0].id,
-      // @ts-ignore
-      email: investment[0].walletHolderDetails.email,
-    })
-    // return investment
-    console.log(' SORTED INVESTMENT line 78' + sortedInvestments)
-    return response.status(200).json(sortedInvestments)
+    // return recommendation(s)
+    return response.status(200).json({
+      status: "OK",
+      data: sortedInvestments,
+    });
   }
+
 
   public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -126,7 +151,7 @@ export default class InvestmentsController {
         if (search) {
           sortedInvestments = sortedInvestments.filter((investment) => {
             // @ts-ignore
-            return investment.walletHolderDetails.lastName!.startsWith(search)
+            return investment.lastName!.startsWith(search)
           })
         }
         if (requestType) {
@@ -188,9 +213,12 @@ export default class InvestmentsController {
     console.log('INVESTMENT params: ', params)
     const { investmentId } = request.params()
     try {
-      let investment = await Investment.query()
-        .where({ id: investmentId })
-        .first()
+      const investmentsService = new InvestmentsServices();
+      let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+      console.log("Investment result :", investment);
+      // let investment = await Investment.query()
+      //   .where({ id: investmentId })
+      //   .first()
       // .with('timeline')
       // .orderBy('timeline', 'desc')
       // .fetch()
@@ -229,9 +257,9 @@ export default class InvestmentsController {
       if (search) {
         sortedPayouts = sortedPayouts.filter((payout) => {
           // @ts-ignore
-          // console.log(' Sorted :', payout.walletHolderDetails.lastName!.includes(search))
+          // console.log(' Sorted :', payout.lastName!.includes(search))
           // @ts-ignore
-          return payout.walletHolderDetails.lastName!.startsWith(search)
+          return payout.lastName!.startsWith(search)
         })
       }
       if (userId) {
@@ -363,7 +391,7 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment activated',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment has just been activated.`,
+          message: `${investment[0].firstName} investment has just been activated.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -447,7 +475,7 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment declined',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment has just been declined.`,
+          message: `${investment[0].firstName} investment has just been declined.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -547,15 +575,15 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment terminated',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment has just been terminated.`,
+          message: `${investment[0].firstName} investment has just been terminated.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         console.log('Timeline object line 529:', timelineObject)
         //  Push the new object to the array
         // timeline = investment[0].timeline
-        timeline.push(timelineObject)
-        console.log('Timeline object line 533:', timeline)
+        // timeline.push(timelineObject)
+        // console.log('Timeline object line 533:', timeline)
         // stringify the timeline array
         // investment[0].timeline = JSON.stringify(timeline)
         // Save
@@ -601,15 +629,15 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment termination declined',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment termination has just been declined.`,
+          message: `${investment[0].firstName} investment termination has just been declined.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         console.log('Timeline object line 583:', timelineObject)
         //  Push the new object to the array
         // timeline = investment[0].timeline
-        timeline.push(timelineObject)
-        console.log('Timeline object line 587:', timeline)
+        // timeline.push(timelineObject)
+        // console.log('Timeline object line 587:', timeline)
         // stringify the timeline array
         // investment[0].timeline = JSON.stringify(timeline)
         // Save
@@ -694,7 +722,7 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment payout approved',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
+          message: `${investment[0].firstName} investment has just been approved for payout.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -748,7 +776,7 @@ export default class InvestmentsController {
           id: uuid(),
           action: 'investment payout declined',
           // @ts-ignore
-          message: `${investment[0].walletHolderDetails.firstName} investment payout has just been declined.`,
+          message: `${investment[0].firstName} investment payout has just been declined.`,
           createdAt: DateTime.now(),
           meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -953,7 +981,7 @@ export default class InvestmentsController {
                   id: uuid(),
                   action: 'investment updated',
                   // @ts-ignore
-                  message: `${investment[0].walletHolderDetails.firstName} investment has just been updated.`,
+                  message: `${investment[0].firstName} investment has just been updated.`,
                   createdAt: DateTime.now(),
                   meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
                 }
@@ -1092,8 +1120,8 @@ export default class InvestmentsController {
     // @ts-ignore
     payload.isRequestSent = true;
     const investment = await investmentsService.createInvestment(payload);
-    console.log("New account request line 1082: ", investment);
-    // console.log("The new newAccountRequest data:", newAccountRequest);
+    console.log("New investment request line 1082: ", investment);
+    // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
 
     // const newInvestment = request.all() as Partial<Investment>
     // const investment = await Investment.create(newInvestment)
@@ -1236,7 +1264,7 @@ export default class InvestmentsController {
         return response.json({
           status: 'FAILED',
           message: 'Investment was not successfully sent to Transaction Service, please try again.',
-          data: investment.$original,
+          data: investment,
         })
       }
     }
@@ -1257,7 +1285,7 @@ export default class InvestmentsController {
       id: newInvestmentId,
       email: newInvestmentEmail,
     })
-    return response.status(201).json({ status: 'OK', data: investment.$original })
+    return response.status(201).json({ status: 'OK', data: investment })
   }
 
   public async approve({ request, response }: HttpContextContract) {
@@ -1506,7 +1534,7 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout initiated',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
+                message: `${investment[0].firstName} investment has just been sent for payout processing.`,
                 createdAt: DateTime.now(),
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1540,7 +1568,7 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout initiated',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
+                message: `${investment[0].firstName} investment has just been sent for payout processing.`,
                 createdAt: DateTime.now(),
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1572,7 +1600,7 @@ export default class InvestmentsController {
             //   id: uuid(),
             //   action: 'investment payout initiated',
             //   // @ts-ignore
-            //   message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing.`,
+            //   message: `${investment[0].firstName} investment has just been sent for payout processing.`,
             //   createdAt: payout.createdAt,
             //   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             // }
@@ -1639,7 +1667,7 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout approved',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
+                message: `${investment[0].firstName} investment has just been approved for payout.`,
                 createdAt: payout.createdAt,
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1672,7 +1700,7 @@ export default class InvestmentsController {
                 id: uuid(),
                 action: 'investment payout approved',
                 // @ts-ignore
-                message: `${investment[0].walletHolderDetails.firstName} investment has just been approved for payout.`,
+                message: `${investment[0].firstName} investment has just been approved for payout.`,
                 createdAt: DateTime.now(),
                 meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
@@ -1706,7 +1734,7 @@ export default class InvestmentsController {
             //   id: uuid(),
             //   action: 'investment payout initiated',
             //   // @ts-ignore
-            //   message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payout processing`,
+            //   message: `${investment[0].firstName} investment has just been sent for payout processing`,
             //   createdAt: payout.createdAt,
             //   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             // }
@@ -1852,7 +1880,7 @@ export default class InvestmentsController {
             id: uuid(),
             action: 'investment termination initiated',
             // @ts-ignore
-            message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing.`,
+            message: `${investment[0].firstName} investment has just been sent for termination processing.`,
             createdAt: DateTime.now(),
             meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
           }
@@ -2042,7 +2070,7 @@ export default class InvestmentsController {
                   id: uuid(),
                   action: 'investment payment initiated',
                   // @ts-ignore
-                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing.`,
+                  message: `${investment[0].firstName} investment has just been sent for payment processing.`,
                   createdAt: DateTime.now(),
                   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                 }
@@ -2086,7 +2114,7 @@ export default class InvestmentsController {
                   id: uuid(),
                   action: 'investment termination initiated',
                   // @ts-ignore
-                  message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for termination processing.`,
+                  message: `${investment[0].firstName} investment has just been sent for termination processing.`,
                   createdAt: DateTime.now(),
                   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                 }
@@ -2243,7 +2271,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'investment payment approval initiated',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing approval.`,
+                        message: `${investment[0].firstName} investment has just been sent for payment processing approval.`,
                         createdAt: DateTime.now(),
                         meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
@@ -2292,7 +2320,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'investment payout initiated',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} investment has just been sent for payment processing.`,
+                        message: `${investment[0].firstName} investment has just been sent for payment processing.`,
                         createdAt: DateTime.now(),
                         meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
@@ -2405,14 +2433,14 @@ export default class InvestmentsController {
                   //   // @ts-ignore
                   //   investment.totalAmountToPayout = investment.amount + amountDueOnPayout
                   //   // @ts-ignore
-                  //   investment.walletId = investment.walletHolderDetails.investorFundingWalletId
+                  //   investment.walletId = investment.investorFundingWalletId
                   //   await investment.save()
                   //   console.log('The new Reinvestment, line 2345 :', investment)
 
                   //   await investment.save()
                   //   let newInvestmentId = investment.id
                   //   // @ts-ignore
-                  //   let newInvestmentEmail = investment.walletHolderDetails.email
+                  //   let newInvestmentEmail = investment.email
 
                   //   // Send Investment Initiation Message to Queue
 
@@ -2439,7 +2467,7 @@ export default class InvestmentsController {
                   //       id: uuid(),
                   //       action: 'investment initiated',
                   //       // @ts-ignore
-                  //       message: `${investment.walletHolderDetails.firstName} investment has just been sent for activation approval.`,
+                  //       message: `${investment.firstName} investment has just been sent for activation approval.`,
                   //       createdAt: DateTime.now(),
                   //       meta: `amount invested: ${investment.amount}, request type : ${requestType}`,
                   //     }
@@ -2482,7 +2510,7 @@ export default class InvestmentsController {
                   //         id: uuid(),
                   //         action: 'investment activated',
                   //         // @ts-ignore
-                  //         message: `${investment.walletHolderDetails.firstName} investment has just been activated.`,
+                  //         message: `${investment.firstName} investment has just been activated.`,
                   //         createdAt: DateTime.now(),
                   //         meta: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                   //       }
@@ -2577,7 +2605,7 @@ export default class InvestmentsController {
                           id: uuid(),
                           action: 'matured investment payout',
                           // @ts-ignore
-                          message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                          message: `${investment[0].firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
                           meta: `amount invested: ${investment[0].amount},amount paid: ${investment[0].interestDueOnInvestment + investment[0].amount
                             }, request type : ${investment[0].requestType}`,
@@ -2635,7 +2663,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'matured investment payout',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                        message: `${investment[0].firstName} payment on investment has just been sent.`,
                         createdAt: DateTime.now(),
                         meta: `amount reinvested: ${investment[0].amount},amount paid: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
@@ -2702,7 +2730,7 @@ export default class InvestmentsController {
                           id: uuid(),
                           action: 'matured investment payout',
                           // @ts-ignore
-                          message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+                          message: `${investment[0].firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
                           meta: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                         }
@@ -2762,7 +2790,7 @@ export default class InvestmentsController {
                         id: uuid(),
                         action: 'matured investment payout',
                         // @ts-ignore
-                        message: `${investment[0].walletHolderDetails.firstName} payment for matured investment has just been sent.`,
+                        message: `${investment[0].firstName} payment for matured investment has just been sent.`,
                         createdAt: DateTime.now(),
                         meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment[0].requestType}`,
                       }
@@ -2962,7 +2990,7 @@ export default class InvestmentsController {
               id: uuid(),
               action: 'terminated investment payout',
               // @ts-ignore
-              message: `${investment[0].walletHolderDetails.firstName} payment on investment has just been sent.`,
+              message: `${investment[0].firstName} payment on investment has just been sent.`,
               createdAt: DateTime.now(),
               meta: `amount invested: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             }
@@ -3029,7 +3057,7 @@ export default class InvestmentsController {
         let investmentId = investment.id
         let totalAmountToPayout = investment.totalAmountToPayout
         // @ts-ignore
-        let phone = investment.walletHolderDetails.phone
+        let phone = investment.phone
         console.log('Unsuccessful transaction, line 2903')
         return response.json({
           status: 'FAILED',
@@ -3044,7 +3072,7 @@ export default class InvestmentsController {
           },
         })
       }
-      // Update Account status
+      // Update Investment status
 
       let {
         id,
@@ -3192,7 +3220,7 @@ export default class InvestmentsController {
         id: uuid(),
         action: 'investment payout has been done ',
         // @ts-ignore
-        message: `${investment.walletHolderDetails.firstName} payment on investment has just been made.`,
+        message: `${investment.firstName} payment on investment has just been made.`,
         createdAt: DateTime.now(),
         meta: `amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
       }

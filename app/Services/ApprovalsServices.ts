@@ -12,9 +12,9 @@ import InvestmentsServices from './InvestmentsServices'
 Database.query()
 
 export default class ApprovalsServices {
-    public async createApproval(createApproval: ApprovalType): Promise<Approval> {
+    public async createApproval(terminateApproval: ApprovalType): Promise<Approval> {
         try {
-            const approval = await Approval.create(createApproval)
+            const approval = await Approval.create(terminateApproval)
             const timelineService = new TimelinesServices();
             const investmentService = new InvestmentsServices();
                         let timelineObject;
@@ -28,13 +28,13 @@ export default class ApprovalsServices {
                 // update timeline
                 timelineObject = {
                     id: uuid(),
-                    action: "investment request approval created",
+                    action: "investment request approval terminated",
                     investmentId: approval.investmentId,
                     userId: investmentDetails.userId,
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
-                    message: `${investmentDetails.firstName} investment request approval record has just been created.`,
-                    createdAt: DateTime.now(),
+                    message: `${investmentDetails.firstName} investment request approval record has just been terminated.`,
+                    terminatedAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
                 // console.log("Timeline object line 285:", timelineObject);
@@ -120,11 +120,7 @@ export default class ApprovalsServices {
             await saveApproval.save();
             debugger
             const investmentService = new InvestmentsServices();
-            const investmentService = new AccountsServices();
             const selectedInvestmentRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
-            const investmentLinkingService = new LinkAccountsServices();
-            const tokenService = new TokensServices();
-            const cardService = new CardsServices()
             const timelineService = new TimelinesServices();
             let timelineObject;
             // change timeline messsage based on the requestType
@@ -162,183 +158,56 @@ export default class ApprovalsServices {
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
                     message: `${selectedApproval.firstName} investment opening request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
+                    terminatedAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
                 // console.log("Timeline object line 408:", timelineObject);
-                let newTimeline = await timelineService.createTimeline(timelineObject);
-                console.log("new Timeline object line 410:", newTimeline);
-            } else if (saveApproval.requestType === "create_investment") {
-                const selectedAccountCreationRequest = await investmentService.getAccountByAccountId(saveApproval.investmentId);
-                debugger
+                await timelineService.createTimeline(timelineObject);
+                // let newTimeline = await timelineService.createTimeline(timelineObject);
+                // console.log("new Timeline object line 410:", newTimeline);
+            } else if (saveApproval.requestType === "terminate_investment") {
+                const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
                 // update status based on admin action
                 if (saveApproval.approvalStatus === "approved") {
                     // update the neccesary field
-                    console.log("selectedAccountCreationRequest ========================================================")
-                    console.log(selectedAccountCreationRequest)
-                    let selectedAccountCreationRequestUpdate = selectedAccountCreationRequest;
-                    selectedAccountCreationRequestUpdate.approvalStatus = "investment_creation_approved" //saveApproval.approvalStatus;
-                    selectedAccountCreationRequestUpdate.status = "investment_creation_completed";
-                    // selectedAccountCreationRequestUpdate.remark = saveApproval.remark;
+                    console.log("selectedInvestmentTerminationRequest ========================================================")
+                    console.log(selectedInvestmentTerminationRequest)
+                    let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_approved" //saveApproval.approvalStatus;
+                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_completed";
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
                     // update the record
                     debugger
-                    await investmentService.updateInvestment(selectedAccountCreationRequest, selectedAccountCreationRequestUpdate);
+                    await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
-                    console.log("selectedAccountCreationRequest ========================================================")
-                    console.log(selectedAccountCreationRequest)
-                    let selectedAccountCreationRequestUpdate = selectedAccountCreationRequest;
-                    selectedAccountCreationRequestUpdate.approvalStatus = "investment_creation_declined" //saveApproval.approvalStatus;
-                    selectedAccountCreationRequestUpdate.status = "investment_creation_declined";
-                    // selectedAccountCreationRequestUpdate.remark = saveApproval.remark;
+                    console.log("selectedInvestmentTerminationRequest ========================================================")
+                    console.log(selectedInvestmentTerminationRequest)
+                    let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_declined" //saveApproval.approvalStatus;
+                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_declined";
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
-                    await investmentService.updateAccount(selectedAccountCreationRequest, selectedAccountCreationRequestUpdate);
+                    await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
                 }
                 // update timeline
                 timelineObject = {
                     id: uuid(),
-                    action: "investment creation request approval updated",
+                    action: "investment termination request approval updated",
                     investmentId: saveApproval.investmentId,
                     userId: selectedApproval.userId,
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
-                    message: `${selectedApproval.firstName} investment creation request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
+                    message: `${selectedApproval.firstName} investment termination request approval record has just been updated.`,
+                    terminatedAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
                 // console.log("Timeline object line 408:", timelineObject);
-                let newTimeline = await timelineService.createTimeline(timelineObject);
-                console.log("new Timeline object line 410:", newTimeline);
-            } else if (saveApproval.requestType === "link_investment") {
-                // get the request by request id
-                const selectedAccountLinkingRequest = await investmentLinkingService.getLinkAccountByLinkAccountId(saveApproval.linkAccountId);
-                // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
-                    // update the neccesary field
-                    console.log("selectedAccountLinkingRequest ========================================================")
-                    console.log(selectedAccountLinkingRequest)
-                    let selectedAccountLinkingRequestUpdate = selectedAccountLinkingRequest;
-                    selectedAccountLinkingRequestUpdate.approvalStatus = "investment_linking_approved" //saveApproval.approvalStatus;
-                    selectedAccountLinkingRequestUpdate.status = "investment_number_linked";
-                    selectedAccountLinkingRequestUpdate.remark = saveApproval.remark;
-                    // update the record
-                    await investmentLinkingService.updateLinkAccount(selectedAccountLinkingRequest, selectedAccountLinkingRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
-                    // update the neccesary field
-                    console.log("selectedAccountLinkingRequest ========================================================")
-                    console.log(selectedAccountLinkingRequest)
-                    let selectedAccountLinkingRequestUpdate = selectedAccountLinkingRequest;
-                    selectedAccountLinkingRequestUpdate.approvalStatus = "investment_linking_declined" //saveApproval.approvalStatus;
-                    selectedAccountLinkingRequestUpdate.status = "investment_linking_declined";
-                    selectedAccountLinkingRequestUpdate.remark = saveApproval.remark;
-
-                    // update the record
-                    await investmentLinkingService.updateLinkAccount(selectedAccountLinkingRequest, selectedAccountLinkingRequestUpdate);
-                }
-                let { userId, walletId, requestType } = saveApproval.$original;
-                // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "investment linking request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: userId,
-                    walletId: walletId,
-                    // @ts-ignore
-                    message: `${selectedAccountLinkingRequest.firstName} investment linking request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${requestType}`,
-                };
-                // console.log("Timeline object line 246:", timelineObject);
-                let newTimeline = await timelineService.createTimeline(timelineObject);
-                console.log("new Timeline object line 248:", newTimeline);
-            } else if (saveApproval.requestType === "token_request") {
-                // get the request by request id
-                const selectedTokenRequest = await tokenService.getTokenByTokenId(saveApproval.tokenId);
-                let selectedTokenRequestUpdate = selectedTokenRequest;
-                // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
-                    // update the neccesary field
-                    console.log("selectedAccountLinkingRequest ========================================================")
-                    console.log(selectedTokenRequest)
-                    // let selectedTokenRequestUpdate = selectedTokenRequest;
-                    selectedTokenRequestUpdate.approvalStatus = "token_request_approved" //saveApproval.approvalStatus;
-                    selectedTokenRequestUpdate.status = "token_request_approved";
-                    selectedTokenRequestUpdate.remark = saveApproval.remark;
-                    // update the record
-                    await tokenService.updateToken(selectedTokenRequest, selectedTokenRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
-                    // update the neccesary field
-                    console.log("selectedAccountLinkingRequest ========================================================")
-                    console.log(selectedTokenRequest)
-                    // let selectedTokenRequestUpdate = selectedTokenRequest;
-                    selectedTokenRequestUpdate.approvalStatus = "token_request_declined" //saveApproval.approvalStatus;
-                    selectedTokenRequestUpdate.status = "token_request_declined";
-                    selectedTokenRequestUpdate.remark = saveApproval.remark;
-
-                    // update the record
-                    await tokenService.updateToken(selectedTokenRequest, selectedTokenRequestUpdate);
-                }
-                let { userId, walletId, requestType } = saveApproval.$original;
-                // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "token request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: userId,
-                    walletId: walletId,
-                    // @ts-ignore
-                    message: `${selectedTokenRequest.firstName} token request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${requestType}`,
-                };
-                // console.log("Timeline object line 300:", timelineObject);
-                let newTimeline = await timelineService.createTimeline(timelineObject);
-                console.log("new Timeline object line 302:", newTimeline);
-            } else if (saveApproval.requestType === "card_request") {
-                // get the request by request id
-                const selectedCardRequest = await cardService.getCardByCardId(saveApproval.cardId);
-                let selectedCardRequestUpdate = selectedCardRequest;
-                // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
-                    // update the neccesary field
-                    console.log("selectedCardRequest ========================================================")
-                    console.log(selectedCardRequest)
-                    // let selectedCardRequestUpdate = selectedTokenRequest;
-                    selectedCardRequestUpdate.approvalStatus = "card_request_approved" //saveApproval.approvalStatus;
-                    selectedCardRequestUpdate.status = "card_request_approved";
-                    selectedCardRequestUpdate.remark = saveApproval.remark;
-                    // update the record
-                    await cardService.updateCard(selectedCardRequest, selectedCardRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
-                    // update the neccesary field
-                    console.log("selectedCardRequest ========================================================")
-                    console.log(selectedCardRequest)
-                    // let selectedCardRequestUpdate = selectedTokenRequest;
-                    selectedCardRequestUpdate.approvalStatus = "token_request_declined" //saveApproval.approvalStatus;
-                    selectedCardRequestUpdate.status = "token_request_declined";
-                    selectedCardRequestUpdate.remark = saveApproval.remark;
-
-                    // update the record
-                    await tokenService.updateToken(selectedCardRequest, selectedCardRequestUpdate);
-                }
-                let { userId, walletId, requestType } = saveApproval.$original;
-                // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "card request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: userId,
-                    walletId: walletId,
-                    // @ts-ignore
-                    message: `${selectedTokenRequest.firstName} card request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${requestType}`,
-                };
-                // console.log("Timeline object line 481:", timelineObject);
-                let newTimeline = await timelineService.createTimeline(timelineObject);
-                console.log("new Timeline object line 483:", newTimeline);
+                await timelineService.createTimeline(timelineObject);
+                // let newTimeline = await timelineService.createTimeline(timelineObject);
+                // console.log("new Timeline object line 410:", newTimeline);
             }
             return saveApproval
         } catch (error) {
@@ -436,10 +305,10 @@ export default class ApprovalsServices {
             predicate = predicate + "remark=?";
             params.push(queryFields.remark)
         }
-        if (queryFields.createdAt) {
+        if (queryFields.terminatedAt) {
             predicateExists()
-            predicate = predicate + "created_at=?";
-            params.push(queryFields.createdAt)
+            predicate = predicate + "terminated_at=?";
+            params.push(queryFields.terminatedAt)
         }
 
         if (queryFields.updatedAt) {

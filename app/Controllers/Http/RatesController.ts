@@ -154,9 +154,9 @@ export default class RatesController {
       if (rate.length > 0) {
         console.log('Investment rate Selected for Update:', rate)
         if (rate) {
-          rate[0].typeName = request.input('newProductName')
+          rate[0].productName = request.input('newProductName')
             ? request.input('newProductName')
-            : rate[0].typeName
+            : rate[0].productName
           rate[0].lowestAmount = request.input('lowestAmount')
             ? request.input('lowestAmount')
             : rate[0].lowestAmount
