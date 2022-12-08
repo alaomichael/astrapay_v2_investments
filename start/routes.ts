@@ -80,7 +80,7 @@ Route.group(() => {
     // PUT ROUTES
     Route.put('investments/payouts', 'InvestmentsController.payout')
     Route.put('investments/terminates', 'InvestmentsController.payout')
-    Route.put('admin/investments/settings', 'SettingsController.update')
+    Route.put('admin/investments/settings/:id', 'SettingsController.update')
     Route.put('admin/investments/terminates', 'InvestmentsController.payout')
     Route.put('admin/investments/payouts', 'InvestmentsController.payout')
     Route.put('admin/investments/rates', 'RatesController.update')
