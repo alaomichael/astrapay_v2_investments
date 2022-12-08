@@ -50,7 +50,7 @@ export const debitUserWallet = async function debitUserWallet(
         let beneficiaryAccountNumber = fundingWalletId;
         let beneficiaryAccountName = rfiName;
         // @ts-ignore
-        let { phone, email, rfiName } = rfiRecords
+        let { phone, email } = rfiRecords
         let beneficiaryEmail = email;
         let beneficiaryPhoneNumber = phone;
         let beneficiaryName = rfiName;

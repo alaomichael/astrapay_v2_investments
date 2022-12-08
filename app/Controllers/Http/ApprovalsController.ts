@@ -536,8 +536,10 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
+            debugger
           // if successful 
           if (debitUserWalletForInvestment.statusCode == 200) {
+            debugger
             // update the investment details
             record.status = 'active'
             record.approvalStatus = 'approved'
