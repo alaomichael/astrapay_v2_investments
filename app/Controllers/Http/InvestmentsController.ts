@@ -1516,7 +1516,7 @@ export default class InvestmentsController {
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
       // console.log('Investment Info, line 1322: ', investment)
       debugger
-      if (investment) {
+      if (investment && investment.$original.status == "active") {
         console.log('investment search data :', investment.$original)
         let { rfiCode } = investment.$original;
         // @ts-ignore
@@ -1598,6 +1598,7 @@ export default class InvestmentsController {
             investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
             investment.requestType = requestType
             investment.status = "matured"
+            investment.approvalStatus = 'pending'
 
             // update timeline
             timelineObject = {
@@ -1645,8 +1646,6 @@ export default class InvestmentsController {
 
             // }
 
-            // investment.status = 'active'
-            investment.approvalStatus = 'pending'
             // await investment.save()
             let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // send for update
@@ -1682,7 +1681,7 @@ export default class InvestmentsController {
           console.log('Investment data after payout request line 1683:', investment)
           return response.status(200).json({
             status: 'OK',
-            data: investment.map((inv) => inv.$original),
+            data: investment//.map((inv) => inv.$original),
           })
           // END
         }
