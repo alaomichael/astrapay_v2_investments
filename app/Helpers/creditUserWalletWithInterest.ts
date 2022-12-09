@@ -12,7 +12,7 @@ const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 // const randomstring = require("randomstring");
 
-export const debitUserWallet = async function debitUserWallet(
+export const creditUserWalletWithInterest = async function creditUserWalletWithInterest(
     amount, lng, lat, investmentRequestReference,
     senderName,
     senderAccountNumber,
@@ -24,16 +24,16 @@ export const debitUserWallet = async function debitUserWallet(
     // connect to Okra
     try {
         // let userWalletId = walletId;
-        // console.log("userWalletId,@ debitUserWallet line 19", userWalletId);
-        // console.log("customerId,@ debitUserWallet line 20", customerId);
-        // console.log("charge,@ debitUserWallet line 21", charge);
+        // console.log("userWalletId,@ creditUserWalletWithInterest line 19", userWalletId);
+        // console.log("customerId,@ creditUserWalletWithInterest line 20", customerId);
+        // console.log("charge,@ creditUserWalletWithInterest line 21", charge);
 
         // let generateRandomNumber = Math.random().toString(36).substring(12);
-        // console.log("The ASTRAPAY API random number @ debitUserWallet", generateRandomNumber);
+        // console.log("The ASTRAPAY API random number @ creditUserWalletWithInterest", generateRandomNumber);
 
         // let customerReference = randomstring.generate();
         // >> "XwPp9xazJ0ku5CZnlmgAx2Dld8SHkAeT"
-        // console.log("The ASTRAPAY API customerReference @ debitUserWallet", customerReference);
+        // console.log("The ASTRAPAY API customerReference @ creditUserWalletWithInterest", customerReference);
 
         // let batchPaymentId = randomstring.generate(10);
 
@@ -44,10 +44,10 @@ export const debitUserWallet = async function debitUserWallet(
         const rfiRecordsService = new RfiRecordsServices();
         const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
         // debugger
-        // console.log("Admin setting line 47 @ debitUserWallet:", settings);
+        // console.log("Admin setting line 47 @ creditUserWalletWithInterest:", settings);
         //  get the loan currency
         // @ts-ignore
-        let { currencyCode, investmentWalletId, payoutWalletId,  rfiName } = settings;
+        let { currencyCode, investmentWalletId, payoutWalletId, rfiName } = settings;
         let beneficiaryAccountNumber = investmentWalletId;
         let beneficiaryAccountName = rfiName;
         // @ts-ignore
@@ -128,14 +128,14 @@ export const debitUserWallet = async function debitUserWallet(
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
+        // console.log("The ASTRAPAY API response @ creditUserWalletWithInterest line 131: ", response1);
         // debugger
-        // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
-        // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
+        // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 133: ", response1.data);
+        // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
-        
+
         if (response1.status == 200) {
-            // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
+            // console.log("The ASTRAPAY API response, @ creditUserWalletWithInterest line 118: ", response.data);
             // debugger
             // Authorize Transaction
             let { batchId } = response1.data.transactions[0];
@@ -165,12 +165,12 @@ export const debitUserWallet = async function debitUserWallet(
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-            
-            console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
-            console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
+
+            console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 169: ", response.data);
+            console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
-            
-            
+
+
             if (response.status == 200) {
                 debugger
                 // return response.data;
@@ -184,9 +184,9 @@ export const debitUserWallet = async function debitUserWallet(
         console.error(error.response.data.errorMessage);
         console.error(error.message);
         if (error.response == undefined) {
-            return { status: "FAILED TO DEBIT WALLET", message: error.message }
+            return { status: "FAILED TO CREDIT WALLET", message: error.message }
         } else {
-            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+            return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
         }
     }
 

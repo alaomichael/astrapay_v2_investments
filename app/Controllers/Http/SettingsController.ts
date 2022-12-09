@@ -24,14 +24,15 @@ export default class SettingsController {
       await request.validate(CreateSettingValidator);
       const settingsService = new SettingServices();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, fundingWalletId, isPayoutAutomated,
-        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
         rfiImageUrl: rfiImageUrl,
         fundingWalletId: fundingWalletId,
         isPayoutAutomated: isPayoutAutomated,
-        fundingSourceTerminal: fundingSourceTerminal,
+        investmentWalletId: investmentWalletId,
+        payoutWalletId: payoutWalletId,
         isInvestmentAutomated: isInvestmentAutomated,
         isRolloverAutomated: isRolloverAutomated,
         // investmentType: investmentType,
@@ -81,21 +82,22 @@ export default class SettingsController {
       const settingsService = new SettingServices();
       const { id } = request.params();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, fundingWalletId, isPayoutAutomated,
-        fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
         rfiImageUrl: rfiImageUrl,
         fundingWalletId: fundingWalletId,
         isPayoutAutomated: isPayoutAutomated,
-        fundingSourceTerminal: fundingSourceTerminal,
+        investmentWalletId: investmentWalletId,
+        payoutWalletId: payoutWalletId,
         isInvestmentAutomated: isInvestmentAutomated,
         isRolloverAutomated: isRolloverAutomated,
         // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
       }
-      console.log("Request body validation line 74", payload);
+      console.log("Request body validation line 100", payload);
       // get setting by id
       const selectedSetting = await settingsService.getSettingBySettingId(id);
       console.log(" Selected Setting ==============================");
@@ -122,7 +124,7 @@ export default class SettingsController {
         data: setting
       });
     } catch (error) {
-            console.log("Error line 111", error.messages);
+      console.log("Error line 111", error.messages);
       console.log("Error line 112", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
@@ -167,7 +169,7 @@ export default class SettingsController {
       // .send("Setting Deleted.");
     }
     catch (error) {
-          console.log("Error line 147", error.messages);
+      console.log("Error line 147", error.messages);
       console.log("Error line 148", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)

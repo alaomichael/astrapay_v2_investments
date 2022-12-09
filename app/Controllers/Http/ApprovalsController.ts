@@ -408,8 +408,8 @@ export default class ApprovalsController {
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy, remark } = request.body();
-
+      const { approvalStatus, assignedTo, processedBy,  } = request.body();
+// remark
       // check if the request is not existing
       let approval;
       let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)

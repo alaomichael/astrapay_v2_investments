@@ -19,7 +19,10 @@ export default class Setting extends AppBaseModel {
   public rfiImageUrl: string
 
   @column()
-  public fundingWalletId: string
+  public investmentWalletId: string
+
+  @column()
+  public payoutWalletId: string
 
   @column()
   public isPayoutAutomated: boolean

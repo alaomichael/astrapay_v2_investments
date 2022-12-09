@@ -20,7 +20,10 @@ export default class CreateSettingValidator extends BaseValidator {
             })]
         ),
         rfiImageUrl: schema.string(),
-        fundingWalletId: schema.string({ escape: true },),
+        investmentWalletId: schema.string({ escape: true },),
+        payoutWalletId: schema.string({ escape: true },),
+        // investment_wallet_id
+        // payout_wallet_id
         isPayoutAutomated: schema.boolean(),
         fundingSourceTerminal: schema.string({ escape: true },),
         isInvestmentAutomated: schema.boolean(),

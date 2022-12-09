@@ -158,35 +158,37 @@ export default class SettingsServices {
             params.push(queryFields.rfiImageUrl)
         }
 
-        if (queryFields.fundingWalletId) {
+        if (queryFields.investmentWalletId) {
             predicateExists()
-            predicate = predicate + "funding_wallet_id=?";
-            // queryFields.fundingWalletId = queryFields.isBvnVerificationAutomated == "true" ? 1 : 0;
-            params.push(queryFields.fundingWalletId)
+            predicate = predicate + "investment_wallet_id=?";
+            params.push(queryFields.investmentWalletId)
+        }
+        if (queryFields.payoutWalletId) {
+            predicateExists()
+            predicate = predicate + "payout_wallet_id=?";
+            params.push(queryFields.payoutWalletId)
         }
         if (queryFields.isPayoutAutomated) {
             predicateExists()
             predicate = predicate + "is_payout_automated=?";
-            // queryFields.isPayoutAutomated = queryFields.isMultipleAccountAllowed == "true" ? 1 : 0;
             params.push(queryFields.isPayoutAutomated)
         }
 
         if (queryFields.fundingSourceTerminal) {
             predicateExists()
             predicate = predicate + "funding_source_terminal=?";
-            // queryFields.fundingSourceTerminal = queryFields.isAccountOpeningAutomated == "true" ? 1 : 0;
             params.push(queryFields.fundingSourceTerminal)
         }
         if (queryFields.isInvestmentAutomated) {
             predicateExists()
             predicate = predicate + "is_investment_automated=?";
-            // queryFields.isInvestmentAutomated = queryFields.isAtmCardRequestAutomated == "true" ? 1 : 0;
+            // queryFields.isInvestmentAutomated = queryFields.isInvestmentAutomated == "true" ? 1 : 0;
             params.push(queryFields.isInvestmentAutomated)
         }
         if (queryFields.isRolloverAutomated) {
             predicateExists()
             predicate = predicate + "is_rollover_automated=?";
-            // queryFields.isTokenRequestAutomated = queryFields.isRolloverAutomated == "true" ? 1 : 0;
+            // queryFields.isRolloverAutomated = queryFields.isRolloverAutomated == "true" ? 1 : 0;
             params.push(queryFields.isRolloverAutomated)
         }
         // if (queryFields.investmentType) {
