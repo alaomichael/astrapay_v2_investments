@@ -113,6 +113,17 @@ export default class ApprovalsServices {
         }
     }
 
+    public async getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId: string, userId: string, walletId: string, requestType: string, approvalStatus: string): Promise<Approval | null> {
+        try {
+            const approval = await Approval.query().where({
+                userId: userId, walletId: walletId, investmentId: investmentId, requestType: requestType, approvalStatus: approvalStatus
+            }).first();
+            return approval;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
 
     public async updateApproval(selectedApproval: any, updateApproval: ApprovalType): Promise<Approval | null> {
         try {

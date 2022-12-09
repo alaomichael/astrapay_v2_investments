@@ -35,7 +35,7 @@ export default class PayoutRecords extends BaseSchema {
       table.timestamp('created_at', { useTz: true })
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
-      table.string('request_type', 255).notNullable().defaultTo('payout investment').index()
+      table.string('request_type', 255).notNullable().defaultTo('payout_investment').index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(true).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(true).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(true).index()

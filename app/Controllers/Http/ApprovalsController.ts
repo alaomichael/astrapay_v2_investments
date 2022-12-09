@@ -82,7 +82,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 //               )
 //             }
 //           } else if (
-//             approval[0].requestType === 'payout investment' &&
+//             approval[0].requestType === 'payout_investment' &&
 //             approval[0].approvalStatus === 'approved'
 //           ) {
 //             // newStatus = 'payout'
@@ -113,7 +113,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 //             // Save the updated investment
 //             await investment[0].save()
 //           } else if (
-//             approval[0].requestType === 'payout investment' &&
+//             approval[0].requestType === 'payout_investment' &&
 //             approval[0].approvalStatus === 'declined'
 //           ) {
 //             // newStatus = 'active'
@@ -410,8 +410,8 @@ export default class ApprovalsController {
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy,  } = request.body();
-// remark
+      const { approvalStatus, assignedTo, processedBy, } = request.body();
+      // remark
       // check if the request is not existing
       let approval;
       let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
@@ -538,10 +538,10 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
-            debugger
+          debugger
           // if successful 
           if (debitUserWalletForInvestment.status == 200) {
-            
+
             // update the investment details
             record.status = 'active'
             record.approvalStatus = 'approved'

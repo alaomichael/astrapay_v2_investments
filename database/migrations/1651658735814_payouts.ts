@@ -40,7 +40,7 @@ export default class Payouts extends BaseSchema {
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
       // table.jsonb('wallet_holder_details').notNullable().index()
-      
+
       table.float('lng').unsigned().nullable().index()
       table.float('lat').unsigned().nullable().index()
       table.float('interest_rate').unsigned().nullable()
@@ -53,7 +53,7 @@ export default class Payouts extends BaseSchema {
       table.timestamp('created_at', { useTz: true })
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
-      table.string('request_type', 255).notNullable().defaultTo('payout investment').index()
+      table.string('request_type', 255).notNullable().defaultTo('payout_investment').index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
