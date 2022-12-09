@@ -67,6 +67,8 @@ Route.group(() => {
     Route.get("investments/types", "TypesController.index");
     Route.get("investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
+    Route.get("admin/investments/matured_investments", "InvestmentsController.collateMaturedInvestment");
+    // collateMaturedInvestment
     
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/users/:userId', 'InvestmentsController.showByUserId')

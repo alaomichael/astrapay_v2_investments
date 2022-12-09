@@ -555,12 +555,12 @@ export default class ApprovalsController {
           // await record.save();
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          console.log(" Current log, line 532 :", currentInvestment);
+          // console.log(" Current log, line 532 :", currentInvestment);
           // send for update
           let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           console.log(" Current log, line 535 :", updatedInvestment);
 
-          console.log("Updated record Status line 537: ", record);
+          // console.log("Updated record Status line 537: ", record);
 
           // update timeline
           timelineObject = {
