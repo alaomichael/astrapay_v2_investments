@@ -33,6 +33,7 @@ import InvestmentsServices from 'App/Services/InvestmentsServices'
 import TimelinesServices from 'App/Services/TimelinesServices'
 import TypesServices from 'App/Services/TypesServices'
 import ApprovalsServices from 'App/Services/ApprovalsServices'
+import SettingsServices from 'App/Services/SettingsServices'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
@@ -431,6 +432,9 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment activated',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been activated.`,
           createdAt: DateTime.now(),
@@ -516,10 +520,13 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment declined',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been declined.`,
           createdAt: DateTime.now(),
-          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 429:', timelineObject)
         // //  Push the new object to the array
@@ -615,10 +622,13 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment terminated',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been terminated.`,
           createdAt: DateTime.now(),
-          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 529:', timelineObject)
         //  Push the new object to the array
@@ -670,10 +680,13 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment termination declined',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment termination has just been declined.`,
           createdAt: DateTime.now(),
-          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 583:', timelineObject)
         //  Push the new object to the array
@@ -764,10 +777,13 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment payout approved',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been approved for payout.`,
           createdAt: DateTime.now(),
-          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 676:', timelineObject)
         // //  Push the new object to the array
@@ -819,10 +835,13 @@ export default class InvestmentsController {
         timelineObject = {
           id: uuid(),
           action: 'investment payout declined',
+          investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment payout has just been declined.`,
           createdAt: DateTime.now(),
-          meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 730:', timelineObject)
         // //  Push the new object to the array
@@ -1026,10 +1045,13 @@ export default class InvestmentsController {
                 timelineObject = {
                   id: uuid(),
                   action: 'investment updated',
+                  investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                   // @ts-ignore
                   message: `${investment[0].firstName} investment has just been updated.`,
                   createdAt: DateTime.now(),
-                  meta: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+                  metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
                 }
                 // console.log('Timeline object line 935:', timelineObject)
                 //  Push the new object to the array
@@ -1489,6 +1511,7 @@ export default class InvestmentsController {
       console.log('Investment Info, line 1322: ', investment)
       if (investment.length > 0) {
         console.log('investment search data :', investment[0].$original)
+        let {rfiCode} = investment[0].$original;
         // @ts-ignore
         // let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         // console.log('Is due for payout status :', isDueForPayout)
@@ -1502,8 +1525,10 @@ export default class InvestmentsController {
         let isDueForPayout = await dueForPayout(startDate, duration)
         console.log('Is due for payout status line 1336:', isDueForPayout)
         // let amt = investment[0].amount
-        let settings = await Setting.query().where({ tagName: 'default setting' })
-        console.log('Approval setting line 1339:', settings[0])
+        const settingsService = new SettingsServices();
+        const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+
+        console.log('Approval setting line 1339:', settings)
         if (isDueForPayout) {
           //  START
           let payload = investment[0].$original
@@ -1513,9 +1538,9 @@ export default class InvestmentsController {
           let requestType = 'payout investment'
           // let  approvalStatus = 'approved'
 
-          let approvalIsAutomated = settings[0].isTerminationAutomated
+          let approvalIsAutomated;// = settings.isTerminationAutomated
           let approvalRequestIsExisting
-          if (approvalIsAutomated === false) {
+          if (approvalIsAutomated == undefined || approvalIsAutomated == false) {
             approvalRequestIsExisting = await Approval.query().where({
               investment_id: investmentId,
               user_id: userId,
@@ -1581,7 +1606,9 @@ export default class InvestmentsController {
               timelineObject = {
                 id: uuid(),
                 action: 'investment payout initiated',
-                investmentId: investmentId,
+                investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                 // @ts-ignore
                 message: `${investment[0].firstName} investment has just been sent for payout processing.`,
                 createdAt: DateTime.now(),
@@ -1617,10 +1644,13 @@ export default class InvestmentsController {
               timelineObject = {
                 id: uuid(),
                 action: 'investment payout initiated',
+                investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                 // @ts-ignore
                 message: `${investment[0].firstName} investment has just been sent for payout processing.`,
                 createdAt: DateTime.now(),
-                meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
               // console.log('Timeline object line 1463:', timelineObject)
               await timelineService.createTimeline(timelineObject);
@@ -1650,6 +1680,9 @@ export default class InvestmentsController {
             // timelineObject = {
             //   id: uuid(),
             //   action: 'investment payout initiated',
+            // investmentId: investment[0].id,//id,
+            //     walletId: investment[0].walletId,// walletId, 
+            //     userId: investment[0].userId,// userId,
             //   // @ts-ignore
             //   message: `${investment[0].firstName} investment has just been sent for payout processing.`,
             //   createdAt: payout.createdAt,
@@ -1716,11 +1749,14 @@ export default class InvestmentsController {
               // update timeline
               timelineObject = {
                 id: uuid(),
-                action: 'investment payout approved',
+                action: 'investment payout approved', 
+                investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                 // @ts-ignore
                 message: `${investment[0].firstName} investment has just been approved for payout.`,
                 createdAt: payout.createdAt,
-                meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
               // console.log('Timeline object line 1562:', timelineObject)
               //  Push the new object to the array
@@ -1751,10 +1787,13 @@ export default class InvestmentsController {
               timelineObject = {
                 id: uuid(),
                 action: 'investment payout approved',
+                investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                 // @ts-ignore
                 message: `${investment[0].firstName} investment has just been approved for payout.`,
                 createdAt: DateTime.now(),
-                meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
               }
               // console.log('Timeline object line 1595:', timelineObject)
               //  Push the new object to the array
@@ -1786,10 +1825,13 @@ export default class InvestmentsController {
             // timelineObject = {
             //   id: uuid(),
             //   action: 'investment payout initiated',
+            // investmentId: investment[0].id,//id,
+            //     walletId: investment[0].walletId,// walletId, 
+            //     userId: investment[0].userId,// userId,
             //   // @ts-ignore
             //   message: `${investment[0].firstName} investment has just been sent for payout processing`,
             //   createdAt: payout.createdAt,
-            //   meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+            //   metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             // }
             // console.log('Timeline object line 1380:', timelineObject)
             // //  Push the new object to the array
@@ -1821,8 +1863,8 @@ export default class InvestmentsController {
           let settings = await Setting.query().where({ tagName: 'default setting' })
           console.log('Approval setting line 1241:', settings[0])
           let approvalRequestIsExisting
-          let approvalIsAutomated = settings[0].isTerminationAutomated // isPayoutAutomated
-          if (approvalIsAutomated === false) {
+          let approvalIsAutomated //= settings[0].isTerminationAutomated // isPayoutAutomated
+          if (approvalIsAutomated == undefined || approvalIsAutomated === false) {
             approvalRequestIsExisting = await Approval.query().where({
               investment_id: investmentId,
               user_id: userId,
@@ -1932,10 +1974,13 @@ export default class InvestmentsController {
           timelineObject = {
             id: uuid(),
             action: 'investment termination initiated',
+            investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
             // @ts-ignore
             message: `${investment[0].firstName} investment has just been sent for termination processing.`,
             createdAt: DateTime.now(),
-            meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+            metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
           }
           // console.log('Timeline object line 1509:', timelineObject)
           //  Push the new object to the array
@@ -2123,6 +2168,9 @@ export default class InvestmentsController {
                 timelineObject = {
                   id: uuid(),
                   action: 'investment payment initiated',
+                  investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                   // @ts-ignore
                   message: `${investment[0].firstName} investment has just been sent for payment processing.`,
                   createdAt: DateTime.now(),
@@ -2168,10 +2216,13 @@ export default class InvestmentsController {
                 timelineObject = {
                   id: uuid(),
                   action: 'investment termination initiated',
+                  investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                   // @ts-ignore
                   message: `${investment[0].firstName} investment has just been sent for termination processing.`,
                   createdAt: DateTime.now(),
-                  meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                  metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                 }
                 // console.log('Timeline object line 1740:', timelineObject)
                 //  Push the new object to the array
@@ -2326,10 +2377,13 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'investment payment approval initiated',
+                        investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                         // @ts-ignore
                         message: `${investment[0].firstName} investment has just been sent for payment processing approval.`,
                         createdAt: DateTime.now(),
-                        meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                        metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
                       // console.log('Timeline object line 2168:', timelineObject)
                       //  Push the new object to the array
@@ -2376,10 +2430,13 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'investment payout initiated',
+                        investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                         // @ts-ignore
                         message: `${investment[0].firstName} investment has just been sent for payment processing.`,
                         createdAt: DateTime.now(),
-                        meta: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                        metadata: `amount to payout: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                       }
                       // console.log('Timeline object line 2217:', timelineObject)
                       //  Push the new object to the array
@@ -2524,10 +2581,13 @@ export default class InvestmentsController {
                   //     timelineObject = {
                   //       id: uuid(),
                   //       action: 'investment initiated',
+                //   investmentId: investment[0].id,//id,
+                // walletId: investment[0].walletId,// walletId, 
+                // userId: investment[0].userId,// userId,
                   //       // @ts-ignore
                   //       message: `${investment.firstName} investment has just been sent for activation approval.`,
                   //       createdAt: DateTime.now(),
-                  //       meta: `amount invested: ${investment.amount}, request type : ${requestType}`,
+                  //       metadata: `amount invested: ${investment.amount}, request type : ${requestType}`,
                   //     }
                   //     console.log('Timeline object line 2380:', timelineObject)
                   //     //  Push the new object to the array
@@ -2567,10 +2627,13 @@ export default class InvestmentsController {
                   //       timelineObject = {
                   //         id: uuid(),
                   //         action: 'investment activated',
+                  // investmentId: investment[0].id,//id,
+                  //   walletId: investment[0].walletId,// walletId, 
+                  //     userId: investment[0].userId,// userId,
                   //         // @ts-ignore
                   //         message: `${investment.firstName} investment has just been activated.`,
                   //         createdAt: DateTime.now(),
-                  //         meta: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+                  //         metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                   //       }
                         // console.log('Timeline object line 2422:', timelineObject)
                   //       //  Push the new object to the array
@@ -2608,7 +2671,7 @@ export default class InvestmentsController {
                   //   // END
                   // }
                   let payout
-                  let newTimeline: any[] = []
+                  // let newTimeline: any[] = []
                   let rate
 
                   switch (rolloverType) {
@@ -2663,6 +2726,9 @@ export default class InvestmentsController {
                         timelineObject = {
                           id: uuid(),
                           action: 'matured investment payout',
+                          investmentId: investment[0].id,//id,
+                          walletId: investment[0].walletId,// walletId, 
+                          userId: investment[0].userId,// userId,
                           // @ts-ignore
                           message: `${investment[0].firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
@@ -2722,6 +2788,9 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'matured investment payout',
+                        investmentId: investment[0].id,//id,
+                        walletId: investment[0].walletId,// walletId, 
+                        userId: investment[0].userId,// userId,
                         // @ts-ignore
                         message: `${investment[0].firstName} payment on investment has just been sent.`,
                         createdAt: DateTime.now(),
@@ -2790,10 +2859,13 @@ export default class InvestmentsController {
                         timelineObject = {
                           id: uuid(),
                           action: 'matured investment payout',
+                          investmentId: investment[0].id,//id,
+                          walletId: investment[0].walletId,// walletId, 
+                          userId: investment[0].userId,// userId,
                           // @ts-ignore
                           message: `${investment[0].firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          meta: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+                          metadata: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
                         }
                         // console.log('Timeline object line 2618:', timelineObject)
                         // //  Push the new object to the array
@@ -2851,10 +2923,13 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'matured investment payout',
+                        investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
                         // @ts-ignore
                         message: `${investment[0].firstName} payment for matured investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        meta: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment[0].requestType}`,
+                        metadata: `amount paid: ${investment[0].totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment[0].requestType}`,
                       }
                       // console.log('Timeline object line 2686:', timelineObject)
                       // //  Push the new object to the array
@@ -3052,10 +3127,13 @@ export default class InvestmentsController {
             timelineObject = {
               id: uuid(),
               action: 'terminated investment payout',
+              investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
               // @ts-ignore
               message: `${investment[0].firstName} payment on investment has just been sent.`,
               createdAt: DateTime.now(),
-              meta: `amount invested: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
+              metadata: `amount invested: ${investment[0].totalAmountToPayout}, request type : ${investment[0].requestType}`,
             }
             // console.log('Timeline object line 2850:', timelineObject)
             // //  Push the new object to the array
@@ -3283,11 +3361,14 @@ export default class InvestmentsController {
       // update timeline
       timelineObject = {
         id: uuid(),
-        action: 'investment payout has been done ',
+        action: 'investment payout has been done',
+        investmentId: investment[0].id,//id,
+                walletId: investment[0].walletId,// walletId, 
+                userId: investment[0].userId,// userId,
         // @ts-ignore
         message: `${investment.firstName} payment on investment has just been made.`,
         createdAt: DateTime.now(),
-        meta: `amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+        metadata: `amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
       }
       // console.log('Timeline object line 3065:', timelineObject)
       // //  Push the new object to the array

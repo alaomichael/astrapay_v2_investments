@@ -247,7 +247,7 @@ export default class ApprovalsController {
       // const investmentlogsService = new InvestmentLogsServices();
       const investmentsService = new InvestmentsServices();
       const approvalsService = new ApprovalsServices()
-      const remarksService = new RemarksServices();
+      // const remarksService = new RemarksServices();
       // const approvalSchema = schema.create({
       //     walletId: schema.string(),
       //     investmentId: schema.string(),
@@ -255,7 +255,7 @@ export default class ApprovalsController {
       //     requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       // });
       // const payload: any = await request.validate({ schema: approvalSchema });
-      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy, remark,
+      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy,// remark,
       } = request.body();
       const payload: ApprovalType = {
         walletId: walletId,
@@ -302,30 +302,31 @@ export default class ApprovalsController {
           // await approval.save();
           console.log("The new approval request:", approval);
           console.log("A New approval request has been Created.");
-          if (remark) {
-            for (let index = 0; index < remark.length; index++) {
-              const currentRemark = remark[index];
-              let { field, reason } = currentRemark;
-              let remarksObject = {
-                investmentId: investmentId,
-                field,
-                reason
-              }
-              let remarkIsExisting = await remarksService.getRemarkByFieldAndInvestmentId(field, investmentId)
-              // if it has, update
-              if (remarkIsExisting) {
-                let updatedRemark = await remarksService.updateRemark(remarkIsExisting, remarksObject);
-                console.log("updated Remark object line 245:", updatedRemark);
+          // TODO: Use Remark
+          // if (remark) {
+          //   for (let index = 0; index < remark.length; index++) {
+          //     const currentRemark = remark[index];
+          //     let { field, reason } = currentRemark;
+          //     let remarksObject = {
+          //       investmentId: investmentId,
+          //       field,
+          //       reason
+          //     }
+          //     let remarkIsExisting = await remarksService.getRemarkByFieldAndInvestmentId(field, investmentId)
+          //     // if it has, update
+          //     if (remarkIsExisting) {
+          //       let updatedRemark = await remarksService.updateRemark(remarkIsExisting, remarksObject);
+          //       console.log("updated Remark object line 245:", updatedRemark);
 
-              } else {
-                // if it does not have create new remark
-                let newRemark = await remarksService.createRemark(remarksObject);
-                console.log("new Remark object line 250:", newRemark);
+          //     } else {
+          //       // if it does not have create new remark
+          //       let newRemark = await remarksService.createRemark(remarksObject);
+          //       console.log("new Remark object line 250:", newRemark);
 
-                // create new verification timeline
-              }
-            }
-          }
+          //       // create new verification timeline
+          //     }
+          //   }
+          // }
           // Save approval new status to Database
           // await approval.save();
           //TODO: Send approval Creation Message to Queue
@@ -349,30 +350,31 @@ export default class ApprovalsController {
           approval.requestType = payload.requestType;
           approval.approvalStatus = "pending"; //payload.approvalStatus
           // approval.remark = "";
-          if (remark) {
-            for (let index = 0; index < remark.length; index++) {
-              const currentRemark = remark[index];
-              let { field, reason } = currentRemark;
-              let remarksObject = {
-                investmentId: investmentId,
-                field,
-                reason
-              }
-              let remarkIsExisting = await remarksService.getRemarkByFieldAndInvestmentId(field, investmentId)
-              // if it has, update
-              if (remarkIsExisting) {
-                let updatedRemark = await remarksService.updateRemark(remarkIsExisting, remarksObject);
-                console.log("updated Remark object line 292:", updatedRemark);
+          // TODO: Use Remark
+          // if (remark) {
+          //   for (let index = 0; index < remark.length; index++) {
+          //     const currentRemark = remark[index];
+          //     let { field, reason } = currentRemark;
+          //     let remarksObject = {
+          //       investmentId: investmentId,
+          //       field,
+          //       reason
+          //     }
+          //     let remarkIsExisting = await remarksService.getRemarkByFieldAndInvestmentId(field, investmentId)
+          //     // if it has, update
+          //     if (remarkIsExisting) {
+          //       let updatedRemark = await remarksService.updateRemark(remarkIsExisting, remarksObject);
+          //       console.log("updated Remark object line 292:", updatedRemark);
 
-              } else {
-                // if it does not have create new remark
-                let newRemark = await remarksService.createRemark(remarksObject);
-                console.log("new Remark object line 297:", newRemark);
+          //     } else {
+          //       // if it does not have create new remark
+          //       let newRemark = await remarksService.createRemark(remarksObject);
+          //       console.log("new Remark object line 297:", newRemark);
 
-                // create new verification timeline
-              }
-            }
-          }
+          //       // create new verification timeline
+          //     }
+          //   }
+          // }
 
           await approval.save();
           // @ts-ignore

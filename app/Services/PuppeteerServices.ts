@@ -73,7 +73,7 @@ export default class PuppeteerServices {
         })
         .then(() => {
           console.log('File created')
-          let customer = JSON.parse(JSON.stringify(data?.walletHolderDetails))
+          let customer = JSON.parse(JSON.stringify(data))
           Event.emit('investment::investment_certificate_generated', {
             name: customer.firstName,
             email: customer.email,

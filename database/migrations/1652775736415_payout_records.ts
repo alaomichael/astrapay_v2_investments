@@ -14,7 +14,7 @@ export default class PayoutRecords extends BaseSchema {
       table.string("phone", 225).notNullable().index();
       table.string("email", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
-      table.string('duration', 100).notNullable().index()
+      table.integer('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
       table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
       table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
@@ -23,8 +23,8 @@ export default class PayoutRecords extends BaseSchema {
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
       // table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('lng').unsigned().nullable().index()
-      table.float('lat').unsigned().nullable().index()
+      table.string('lng').nullable().index()
+      table.string('lat').nullable().index()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().notNullable().index()
       table.float('total_amount_paid').unsigned().notNullable().index()
