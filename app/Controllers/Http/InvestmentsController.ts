@@ -1510,7 +1510,8 @@ export default class InvestmentsController {
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       // let investment = await Investment.query().where('id', investmentId)
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-      console.log('Investment Info, line 1322: ', investment)
+      // console.log('Investment Info, line 1322: ', investment)
+      debugger
       if (investment) {
         console.log('investment search data :', investment.$original)
         let { rfiCode } = investment.$original;
@@ -1577,7 +1578,7 @@ export default class InvestmentsController {
               investmentId: investmentId,
               userId: userId,
               requestType: requestType,//"start_investment",
-              approvalStatus: approvalStatus,//"",
+              approvalStatus: "pending",//approvalStatus,//"",
               assignedTo: "",//investment.assignedTo,
               processedBy: "",//investment.processedBy,
               // remark: "",
@@ -1600,6 +1601,13 @@ export default class InvestmentsController {
             payload.investmentId = investmentId
             payload.requestType = requestType
             debugger
+// Check if the user set Rollover
+            if (investment.rollOver == true){
+// check type of rollover
+            } else {
+
+            }
+
             // check if payout request is existing
             let payoutRequestIsExisting = await Payout.query().where({
               investment_id: investmentId,
