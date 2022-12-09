@@ -1500,7 +1500,7 @@ export default class InvestmentsController {
     }
   }
 
-  public async collateMaturedInvestment({ request, response }: HttpContextContract) {
+  public async collateMaturedInvestment01({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
       const investmentsService = new InvestmentsServices();
@@ -1686,6 +1686,34 @@ export default class InvestmentsController {
           // END
         }
       } else {
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // collateMaturedInvestment
+  public async collateMaturedInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.collateMaturedInvestment(request.qs())
+      debugger
+      if (investments){
+          console.log('Investment data after payout request line 1706:', investments)
+        debugger
+          return response.status(200).json({
+            status: 'OK',
+            data: investments//.map((inv) => inv.$original),
+          })
+          // END
+       
+      } else {
+        debugger
         return response.status(404).json({
           status: 'FAILED',
           message: 'no investment matched your search',
