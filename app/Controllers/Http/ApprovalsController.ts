@@ -1,10 +1,10 @@
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
-import Investment from 'App/Models/Investment'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import {
-  investmentDuration,
-  // @ts-ignore
-} from 'App/Helpers/utils'
+// import Investment from 'App/Models/Investment'
+// import { schema, rules } from '@ioc:Adonis/Core/Validator'
+// import {
+//   investmentDuration,
+//   // @ts-ignore
+// } from 'App/Helpers/utils'
 
 // public async update({ request, response }: HttpContextContract) {
 //   try {
@@ -284,13 +284,13 @@ export default class ApprovalsController {
         // let requestIsExisting = await Approval.query().where({
         //     wallet_id: payload.walletId,
         //     user_id: payload.userId,
-        //     Investment_id: payload.investmentId,
+        //     investment_id: payload.investmentId,
         // });
         let requestIsExisting = await approvalsService.getApprovalByInvestmentId(payload.investmentId)
         //  Approval.query().where({
         //     wallet_id: payload.walletId,
         //     user_id: payload.userId,
-        //     Investment_id: payload.investmentId,
+        //     investment_id: payload.investmentId,
         // });
 
         console.log("Existing Approval Request details: ", requestIsExisting);
@@ -545,6 +545,7 @@ export default class ApprovalsController {
             record.approvalStatus = 'approved'
             record.startDate = DateTime.now() //.toISODate()
             record.payoutDate = DateTime.now().plus({ days: record.duration })
+            record.isInvestmentCreated = true
             debugger
           }
 
@@ -596,9 +597,9 @@ export default class ApprovalsController {
             console.log(newNotificationMessage);
           }
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
-          newStatus = "Investment_declined";
+          newStatus = "investment_declined";
           record.status = newStatus;
-          record.approvalStatus = "Investment_declined"; //approval.approvalStatus;
+          record.approvalStatus = "investment_declined"; //approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           // record.remark = approval.remark;
@@ -622,7 +623,7 @@ export default class ApprovalsController {
             walletId: walletIdToSearch,
             userId: userIdToSearch,
             // @ts-ignore
-            message: `${firstName}, your investment request has been declined, thank you.`,
+            message: `${firstName}, your investment request has been declined. Please try again, thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -798,7 +799,7 @@ export default class ApprovalsController {
       console.log("approval query: ", request.qs());
 
       let approval = await Approval.query().where({
-        Investment_id: investmentId,
+        investment_id: investmentId,
         wallet_id: walletId,
         id: approvalId,
       });
@@ -806,7 +807,7 @@ export default class ApprovalsController {
 
       if (approval.length > 0) {
         approval = await Approval.query()
-          .where({ Investment_id: investmentId, wallet_id: walletId, id: approvalId })
+          .where({ investment_id: investmentId, wallet_id: walletId, id: approvalId })
           .delete();
         console.log("Deleted data:", approval);
         return response

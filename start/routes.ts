@@ -65,7 +65,9 @@ Route.group(() => {
     Route.get('admin/investments/rfi_records', 'RfiRecordsController.index')
     Route.get("admin/investments/types", "TypesController.index");
     Route.get("investments/types", "TypesController.index");
+    Route.get("investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
+    
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/users/:userId', 'InvestmentsController.showByUserId')
     Route.get('admin/investments/:investmentId', 'InvestmentsController.showByInvestmentId')
