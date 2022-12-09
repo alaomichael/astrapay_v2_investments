@@ -37,80 +37,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
-  // public async index({ params, request, response }: HttpContextContract) {
-  //   console.log('INVESTMENT params: ', params)
-  //   const { search, limit, requestType, userId, investmentId, status } = request.qs()
-  //   console.log('INVESTMENT query: ', request.qs())
-  //   const count = await Investment.query().where('currency_code', 'NGN').getCount()
-  //   console.log('INVESTMENT count: ', count)
-  //   // let settings = await Setting.query().where({ currency_code: 'NGN' })
-  //   // console.log('Approval setting line 35:', settings[0].isPayoutAutomated)
-  //   // const investment = await Investment.query().offset(0).limit(1)
-  //   const investment = (await Investment.all()) //.sort(function (Investment.timeline.createdAt, Investment.timeline.createdAt) {return Investment.timeline.createdAt-Investment.timeline.createdAt})
-  //   // console.log('INVESTMENT before sorting line 40: ', investment)
-  //   // let newArray = investment.map((investment) => {return investment.$original})
-  //   let sortedInvestments = investment.map((investment) => {
-  //     return investment.$original
-  //   })
-  //   // console.log('INVESTMENT newArray sorting: ', newArray)
-  //   console.log('INVESTMENT before sorting: ', sortedInvestments)
-  //   if (search) {
-  //     sortedInvestments = sortedInvestments.filter((investment) => {
-  //       // @ts-ignore
-  //       // console.log(' Sorted :', investment.lastName!.startsWith(search))
-  //       // @ts-ignore
-  //       return investment.lastName!.startsWith(search)
-  //     })
-  //   }
-  //   if (requestType) {
-  //     sortedInvestments = sortedInvestments.filter((investment) => {
-  //       // @ts-ignore
-  //       return investment.requestType.startsWith(requestType)
-  //     })
-  //   }
-  //   if (status) {
-  //     sortedInvestments = sortedInvestments.filter((investment) => {
-  //       // @ts-ignore
-  //       return investment.status.includes(status)
-  //     })
-  //   }
-
-  //   if (userId) {
-  //     sortedInvestments = sortedInvestments.filter((investment) => {
-  //       // @ts-ignore
-  //       return investment.userId === userId
-  //     })
-  //   }
-  //   if (investmentId) {
-  //     sortedInvestments = sortedInvestments.filter((investment) => {
-  //       // @ts-ignore
-  //       return investment.id === investmentId
-  //     })
-  //   }
-  //   if (limit) {
-  //     sortedInvestments = sortedInvestments.slice(0, Number(limit))
-  //   }
-  //   if (sortedInvestments.length < 1) {
-  //     return response.status(200).json({
-  //       status: 'FAILED',
-  //       message: 'no investment matched your search',
-  //       data: [],
-  //     })
-  //   }
-  //   // console.log('INVESTMENT MAPPING: ',investment.map((inv) => inv.$extras))
-  //   // console.log('INVESTMENT based on sorting & limit: ', sortedInvestments)
-  //   // @ts-ignore
-  //   Event.emit('list:investments', {
-  //     id: investment.id,
-  //     // @ts-ignore
-  //     email: investment.email,
-  //   })
-  //   // return investment
-  //   console.log(' SORTED INVESTMENT line 78' + sortedInvestments)
-  //   return response.status(200).json(sortedInvestments)
-  // }
-
-  public async index({ params, request, response }: HttpContextContract) {
+    public async index({ params, request, response }: HttpContextContract) {
     console.log("investments params: ", params);
     console.log("investments query: ", request.qs());
     const investmentsService = new InvestmentsServices();
@@ -133,7 +60,6 @@ export default class InvestmentsController {
       data: sortedInvestments,
     });
   }
-
 
   public async show({ params, request, response }: HttpContextContract) {
     console.log('INVESTMENT params: ', params)
@@ -1697,7 +1623,7 @@ export default class InvestmentsController {
     }
   }
 
-  // collateMaturedInvestment
+  
   public async collateMaturedInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
@@ -2295,19 +2221,16 @@ export default class InvestmentsController {
   public async processPayment({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
+      const investmentsService = new InvestmentsServices();
+      
       // @ts-ignore
-      let { userId, investmentId } = request.all()
+      let { userId,walletId, investmentId } = request.all()
       console.log(
         'Params for update line 1359: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
       )
-      let investment
-      try {
-        investment = await Investment.query().where({ id: investmentId, user_id: userId })
-      } catch (error) {
-        console.error(error)
-        return response.json({ status: 'FAILED', message: error.message })
-      }
-      if (investment.length > 0) {
+            //  investment = await Investment.query().where({ id: investmentId, user_id: userId })
+    let  investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
+      if (investment) {
         let investmentData = investment
         let rolloverType = investment.rolloverType
         let amount = investment.amount
@@ -2325,25 +2248,37 @@ export default class InvestmentsController {
         console.log('Approval setting line 1568:', settings[0])
         console.log('Investment Info, line 1569: ', investment)
         if (
-          (investment.length > 0 &&
+          (investment &&
+            investment.isPayoutAuthorized === true &&
+            investment.isTerminationAuthorized === true &&
+            investment.requestType === 'payout_investment' &&
+            investment.approvalStatus === 'approved' &&
+            investment.status === 'matured') ||
+          (investment &&
+            investment.isPayoutAuthorized === true &&
+            investment.isTerminationAuthorized === false &&
+            investment.requestType === 'payout_investment' &&
+            investment.approvalStatus === 'approved' &&
+            investment.status === 'matured') ||
+          (investment &&
             investment.isPayoutAuthorized === true &&
             investment.isTerminationAuthorized === true &&
             investment.requestType === 'payout_investment' &&
             investment.approvalStatus === 'approved' &&
             investment.status === 'payout') ||
-          (investment.length > 0 &&
+          (investment &&
             investment.isPayoutAuthorized === true &&
             investment.isTerminationAuthorized === false &&
             investment.requestType === 'payout_investment' &&
             investment.approvalStatus === 'approved' &&
             investment.status === 'payout') ||
-          (investment.length > 0 &&
+          (investment &&
             investment.isPayoutAuthorized === false &&
             investment.isTerminationAuthorized === true &&
             investment.requestType === 'terminate investment' &&
             investment.approvalStatus === 'approved' &&
             investment.status === 'terminated') ||
-          (investment.length > 0 &&
+          (investment &&
             investment.isPayoutAuthorized === true &&
             investment.isTerminationAuthorized === true &&
             investment.requestType === 'terminate investment' &&
@@ -3315,13 +3250,13 @@ export default class InvestmentsController {
                 )
                 return response.status(400).json({
                   status: 'FAILED',
-                  data: investment.map((inv) => inv.$original),
+                  data: investment//.map((inv) => inv.$original),
                 })
               }
               console.log('Investment data after payout line 2785:', investment)
               return response.status(200).json({
                 status: 'OK',
-                data: investment.map((inv) => inv.$original),
+                data: investment//.map((inv) => inv.$original),
               })
             }
           } else {
@@ -3342,20 +3277,20 @@ export default class InvestmentsController {
                   data: [],
                 })
               }
-              console.log('Payout investment data line 2780:', payload)
-              payload.timeline = JSON.stringify(investment.timeline)
-              console.log('Terminated Payout investment data line 2782:', payload)
+              // console.log('Payout investment data line 2780:', payload)
+              // payload.timeline = JSON.stringify(investment.timeline)
+              // console.log('Terminated Payout investment data line 2782:', payload)
 
               const payout = await Payout.create(payload)
               payout.status = 'terminated'
               await payout.save()
               console.log('Terminated Payout investment data line 2787:', payout)
               //  END
-              investment = await Investment.query().where('id', investmentId)
+              // investment = await Investment.query().where('id', investmentId)
               investment.requestType = requestType
               investment.status = 'active'
               investment.approvalStatus = 'pending'
-              await investment.save()
+              // await investment.save()
             } else if (approvalForTerminationIsAutomated === true) {
               // if payout was approved
               // send to transaction service
@@ -3387,14 +3322,14 @@ export default class InvestmentsController {
               // Move the code below to a new function that will check payout approval status and update the transaction
               // START
               // payload.datePayoutWasDone = new Date().toISOString()
-              console.log('Payout investment data line 2825:', payload)
-              payload.timeline = JSON.stringify(investment.timeline)
-              console.log('Terminated Payout investment data line 2827:', payload)
+              // console.log('Payout investment data line 2825:', payload)
+              // payload.timeline = JSON.stringify(investment.timeline)
+              // console.log('Terminated Payout investment data line 2827:', payload)
 
-              let payout = await Payout.create(payload)
-              payout.status = 'terminated'
-              await payout.save()
-              console.log('Terminated Payout investment data line 2832:', payout)
+              // let payout = await Payout.create(payload)
+              // payout.status = 'terminated'
+              // await payout.save()
+              // console.log('Terminated Payout investment data line 2832:', payout)
               //  END
               investment = await Investment.query().where('id', investmentId)
               investment.requestType = requestType
@@ -3427,7 +3362,7 @@ export default class InvestmentsController {
             await investment.save()
             return response.status(200).json({
               status: 'OK',
-              data: investment.map((inv) => inv.$original),
+              data: investment//.map((inv) => inv.$original),
             })
           }
         } else {
@@ -3435,8 +3370,8 @@ export default class InvestmentsController {
             status: 'FAILED',
             message: 'no investment matched your search, or payment has been processed.',
             data: {
-              paymentStatus: investment.map((inv) => inv.$original.status),
-              amountPaid: investment.map((inv) => inv.$original.totalAmountToPayout),
+              paymentStatus: investment.status,//.map((inv) => inv.$original.status),
+              amountPaid: investment.totalAmountToPayout//.map((inv) => inv.$original.totalAmountToPayout),
             },
           })
         }
@@ -3444,7 +3379,7 @@ export default class InvestmentsController {
         console.log('Investment data after search line 2911:', investment)
         return response.status(200).json({
           status: 'FAILED',
-          data: investment.map((inv) => inv.$original),
+          data: investment//.map((inv) => inv.$original),
         })
       }
     } catch (error) {

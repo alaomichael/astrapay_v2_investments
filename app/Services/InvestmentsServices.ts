@@ -350,18 +350,6 @@ export default class InvestmentsServices {
                     await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
-                    //                 }
-                    //             } else {
-                    //                 console.log("No Investment is pending disbursement, line 494");
-                    //                 await trx.commit();
-                    //                 return {
-                    //                     status: "OK",
-                    //                     message: "No Investment is pending disbursement.",
-                    //                 };
-
-                    //             }
-                    //         }
-
                 }
             }
 
@@ -371,7 +359,7 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 510:", error);
+                    console.log("Error line 362:", error);
                     throw error;
                 }
             }
