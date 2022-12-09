@@ -1703,7 +1703,7 @@ export default class InvestmentsController {
     try {
       const investments = await investmentsService.collateMaturedInvestment(request.qs())
       debugger
-      if (investments){
+      if (investments.length > 0){
           console.log('Investment data after payout request line 1706:', investments)
         debugger
           return response.status(200).json({

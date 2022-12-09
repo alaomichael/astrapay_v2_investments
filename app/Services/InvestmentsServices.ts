@@ -91,7 +91,7 @@ export default class InvestmentsServices {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in loan service line 40:", queryParams)
-            let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom,payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
                 // default to last 3 months
@@ -102,6 +102,16 @@ export default class InvestmentsServices {
             if (!updatedAtTo) {
                 queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
                 updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
             }
             // console.log("queryParams line 142 =========================")
             // console.log(queryParams)
@@ -118,22 +128,23 @@ export default class InvestmentsServices {
                 .from('investments')
                 .useTransaction(trx) // 👈
                 .where('status', "active")
-                .where('updated_at', '>=', updatedAtFrom)
-                .where('updated_at', '<=', updatedAtTo)
+                // .where('payout_date', '>=', payoutDateFrom)
+                // .where('payout_date', '<=', payoutDateTo)
                 .offset(offset)
                 .limit(limit)
             // .forUpdate()
 
             // console.log("Loan Info, line 583: ", investments);
             // console.log(responseData)
+            debugger
             if (!responseData) {
-                console.log(`There is no active investment or repayment has been completed. Please, check and try again.`)
-                throw new AppException({ message: `There is no active investment or repayment has been completed. Please, check and try again.`, codeSt: "500" })
+                console.log(`There is no active investment or payout has been completed. Please, check and try again.`)
+                throw new AppException({ message: `There is no active investment or payout has been completed. Please, check and try again.`, codeSt: "500" })
             }
 
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
-                let { userId, investmentId } = investment;//request.all()
+                let { userId, id } = investment;//request.all()
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -142,11 +153,10 @@ export default class InvestmentsServices {
                     // let id = request.input('userId')
                     // let { userId, investmentId } = request.all()
                     // let { userId, investmentId } = investment;//request.all()
-                    console.log(
-                        'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
-                    )
+                    console.log( 'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + id )
                     // let investment = await Investment.query().where('user_id', id).where('id', params.id)
                     // let investment = await Investment.query().where('id', investmentId)
+                    let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 1322: ', investment)
                     debugger
@@ -6448,6 +6458,7 @@ export default class InvestmentsServices {
             predicate = predicate + "updated_at<=?"
             params.push(queryFields.updatedAtTo)
         }
+       
 
         response.sqlQuery = predicate
         response.params = params

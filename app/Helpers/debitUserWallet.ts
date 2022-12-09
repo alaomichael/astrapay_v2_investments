@@ -124,7 +124,7 @@ export const debitUserWallet = async function debitUserWallet(
                 }
             ]
         }
-        debugger
+        // debugger
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
@@ -166,8 +166,8 @@ export const debitUserWallet = async function debitUserWallet(
                 payload, { headers: headers }
             )
             
-            console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
-            console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
+            // console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
+            // console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
             
             
