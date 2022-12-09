@@ -2222,7 +2222,6 @@ export default class InvestmentsController {
     try {
       const timelineService = new TimelinesServices();
       const investmentsService = new InvestmentsServices();
-      
       // @ts-ignore
       let { userId,walletId, investmentId } = request.all()
       console.log(
@@ -2286,6 +2285,7 @@ export default class InvestmentsController {
             investment.status === 'terminated')
         ) {
           console.log('investment search data line 1596 :', investment.$original)
+          debugger
           // @ts-ignore
           // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
           // console.log('Is due for payout status :', isDueForPayout)
@@ -2315,37 +2315,38 @@ export default class InvestmentsController {
               // console.log('Matured Payout investment data line 1235:', payout)
 
               // check if payout request is existing
-              let payoutRequestIsExisting = await Payout.query().where({
-                investment_id: investmentId,
-                user_id: userId,
-              })
-              console.log(
-                'Investment payout Request Is Existing data line 1631:',
-                payoutRequestIsExisting
-              )
-              if (
-                payoutRequestIsExisting.length < 1 &&
-                // investment.requestType !== 'start_investment' &&
-                investment.approvalStatus !== 'pending' &&
-                investment.status !== 'initiated'
-              ) {
-                console.log('Payout investment data line 1781:', payload)
-                payload.timeline = JSON.stringify(investment.timeline)
-                console.log('Payout investment data line 1783:', payload)
+              // let payoutRequestIsExisting = await Payout.query().where({
+              //   investment_id: investmentId,
+              //   user_id: userId,
+              // })
+              // console.log(
+              //   'Investment payout Request Is Existing data line 1631:',
+              //   payoutRequestIsExisting
+              // )
+              
+              // if (
+              //   payoutRequestIsExisting.length < 1 && investment.approvalStatus != 'pending' &&
+              //   investment.status != 'initiated'
+              //   // investment.requestType !== 'start_investment' &&
+                
+              // ) {
+              //   // console.log('Payout investment data line 1781:', payload)
+              //   // payload.timeline = JSON.stringify(investment.timeline)
+              //   // console.log('Payout investment data line 1783:', payload)
 
-                payout = await Payout.create(payload)
-                payout.status = 'payout'
-                await payout.save()
-                console.log('Matured Payout investment data line 1788:', payout)
-              } else {
-                payoutRequestIsExisting[0].requestType = 'payout_investment'
-                payoutRequestIsExisting[0].approvalStatus = 'approved'
-                payoutRequestIsExisting[0].status = 'payout'
-                investment.status = 'payout'
-                // Save
-                await payoutRequestIsExisting[0].save()
-                await investment.save()
-              }
+              //   // payout = await Payout.create(payload)
+              //   // payout.status = 'payout'
+              //   // await payout.save()
+              //   // console.log('Matured Payout investment data line 1788:', payout)
+              // } else {
+              //   payoutRequestIsExisting[0].requestType = 'payout_investment'
+              //   payoutRequestIsExisting[0].approvalStatus = 'approved'
+              //   payoutRequestIsExisting[0].status = 'payout'
+              //   investment.status = 'payout'
+              //   // Save
+              //   await payoutRequestIsExisting[0].save()
+              //   await investment.save()
+              // }
 
               // If payment processing is automated
               let paymentProcessingIsAutomated = settings[0].isPayoutAutomated
