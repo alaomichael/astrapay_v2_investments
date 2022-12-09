@@ -5748,6 +5748,25 @@ export default class InvestmentsServices {
             throw error
         }
     }
+    // getInvestmentByWalletIdAndInvestmentIdAndStatusAndUserIdAndRequestType(walletId,investmentId,status,userId,requestType);
+    public async getInvestmentByWalletIdAndInvestmentIdAndStatusAndUserIdAndRequestType(walletId:string, investmentId:string, status:string, userId:string, requestType:string): Promise<Investment | null> {
+        try {
+            const investment = await Investment.query().where({
+                userId: userId, status: status, walletId: walletId, investmentId: investmentId, requestType: requestType })
+                .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
+                // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("approvals")
+                .orderBy("updated_at", "desc")
+                // .offset(offset)
+                // .limit(limit)
+                .first();
+            return investment;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
 
     public async updateInvestment(selectedInvestment: any, updateInvestment: InvestmentType): Promise<Investment | null> {
         try {
