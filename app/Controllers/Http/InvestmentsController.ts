@@ -2323,7 +2323,7 @@ export default class InvestmentsController {
               //   'Investment payout Request Is Existing data line 1631:',
               //   payoutRequestIsExisting
               // )
-              
+
               // if (
               //   payoutRequestIsExisting.length < 1 && investment.approvalStatus != 'pending' &&
               //   investment.status != 'initiated'
@@ -2423,7 +2423,7 @@ export default class InvestmentsController {
                     data: [],
                   })
                 }
-                investment = await Investment.query().where('id', investmentId)
+                // investment = await Investment.query().where('id', investmentId)
                 investment.requestType = requestType
                 investment.status = 'payout'
                 investment.approvalStatus = 'pending'
