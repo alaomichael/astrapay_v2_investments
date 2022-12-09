@@ -3,6 +3,7 @@ export interface SettingType {
     rfiCode: string,
     rfiImageUrl: string,
     isPayoutAutomated: boolean,
+    fundingSourceTerminal:string,
     investmentWalletId: string,
     payoutWalletId: string,
     isInvestmentAutomated: boolean,
