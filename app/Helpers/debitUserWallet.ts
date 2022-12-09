@@ -43,7 +43,7 @@ export const debitUserWallet = async function debitUserWallet(
         // Get Rfi Record
         const rfiRecordsService = new RfiRecordsServices();
         const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
-        debugger
+        // debugger
         // console.log("Admin setting line 71 @ debitUserWallet:", settings);
         //  get the loan currency
         // @ts-ignore
@@ -65,7 +65,7 @@ export const debitUserWallet = async function debitUserWallet(
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ofi-code": "S8",
+            "ffi-code": "S8",
             "user-principal": "58699700JJK"
         };
 
@@ -128,14 +128,15 @@ export const debitUserWallet = async function debitUserWallet(
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        console.log("The ASTRAPAY API response @ debitUserWallet line 114: ", response1);
-        debugger
-        console.log("The ASTRAPAY API response data @ debitUserWallet line 115: ", response1.data);
+        // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
+        // debugger
+        // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
+        // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
-        debugger
-        if (response1.data.statusCode == 200) {
+        
+        if (response1.status == 200) {
             // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
-            debugger
+            // debugger
             // Authorize Transaction
             let { batchId } = response1.data.transactions[0];
             let headers = {
@@ -164,10 +165,16 @@ export const debitUserWallet = async function debitUserWallet(
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-            debugger
-            if (response.data.statusCode == 200) {
+            
+            console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
+            console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
+            //  && response.data.amountTransfered === CHARGE
+            
+            
+            if (response.status == 200) {
                 debugger
-                return response.data;
+                // return response.data;
+                return response;
             }
         } else {
             return;

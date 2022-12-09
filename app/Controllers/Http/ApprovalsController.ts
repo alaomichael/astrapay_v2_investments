@@ -538,14 +538,14 @@ export default class ApprovalsController {
             rfiCode)
             debugger
           // if successful 
-          if (debitUserWalletForInvestment.statusCode == 200) {
-            debugger
+          if (debitUserWalletForInvestment.status == 200) {
+            
             // update the investment details
             record.status = 'active'
             record.approvalStatus = 'approved'
             record.startDate = DateTime.now() //.toISODate()
             record.payoutDate = DateTime.now().plus({ days: record.duration })
-
+            debugger
           }
 
           // Save the updated record
