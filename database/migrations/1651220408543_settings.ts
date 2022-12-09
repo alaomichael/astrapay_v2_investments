@@ -33,7 +33,6 @@ export default class Settings extends BaseSchema {
       table.index(
         [
           'id',
-          'funding_wallet_id',
           'is_payout_automated',
           'funding_source_terminal',
           'is_investment_automated',
