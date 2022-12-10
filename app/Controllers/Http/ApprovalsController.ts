@@ -895,9 +895,9 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = "rollover"//approval.approvalStatus;
           // Data to send for transfer of fund
-          let {  id, 
+          let { id,
             rolloverDone,
-          // start
+            // start
             lastName,
             firstName,
             walletId,
@@ -915,7 +915,7 @@ export default class ApprovalsController {
             amount,
             duration,
             isRolloverActivated,
-             rolloverType,
+            rolloverType,
             rolloverTarget,
             investmentType,
             tagName,
@@ -925,8 +925,8 @@ export default class ApprovalsController {
             interestRate,
             interestDueOnInvestment,
             // totalAmountToPayout,
-          // end
-          
+            // end
+
           } = record;
           let beneficiaryName = `${firstName} ${lastName}`;
           let beneficiaryAccountNumber = walletId;
@@ -934,7 +934,7 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+          // let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
           let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
 
           // Check if the user set Rollover
@@ -949,15 +949,17 @@ export default class ApprovalsController {
             if (rolloverType == "101") {
               //   '101' = 'rollover principal only',
               // payout interest
-              let creditUserWalletWithPrincipal = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
-                beneficiaryName,
-                beneficiaryAccountNumber,
-                beneficiaryAccountName,
-                beneficiaryEmail,
-                beneficiaryPhoneNumber,
-                rfiCode,
-                descriptionForPrincipal)
-                        // if successful 
+              // TODO: Remove after test
+              let creditUserWalletWithPrincipal = {status:200}
+              // let creditUserWalletWithPrincipal = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
+              //   beneficiaryName,
+              //   beneficiaryAccountNumber,
+              //   beneficiaryAccountName,
+              //   beneficiaryEmail,
+              //   beneficiaryPhoneNumber,
+              //   rfiCode,
+              //   descriptionForInterest)
+              // if successful 
               if (creditUserWalletWithPrincipal.status == 200) {
                 let amountPaidOut = amount + interestDueOnInvestment;
                 // update the investment details
@@ -993,10 +995,10 @@ export default class ApprovalsController {
                   createdAt: DateTime.now(),
                   metadata: ``,
                 };
-                // console.log("Timeline object line 551:", timelineObject);
+                // console.log("Timeline object line 996:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                // console.log("new Timeline object line 553:", newTimeline);
+                // console.log("new Timeline object line 559993:", newTimeline);
                 // update record
 
                 // Send Details to notification service
@@ -1010,7 +1012,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 567:", newNotificationMessage);
+                console.log("newNotificationMessage line 1013:", newNotificationMessage);
                 debugger
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                   console.log("Notification sent successfully");
@@ -1044,12 +1046,13 @@ export default class ApprovalsController {
                 rolloverTarget,
                 investmentType,
                 tagName,
-                interestRate,//: 0,
+                interestRate,
                 interestDueOnInvestment: 0,
                 totalAmountToPayout: 0,
-}
+              }
               let newInvestmentDetails = investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
+              debugger
             } else if (rolloverType == "102") {
               //   '102' = 'rollover principal with interest',
               // create newInvestment
@@ -1257,7 +1260,7 @@ export default class ApprovalsController {
               // }
             }
           }
-         
+
         } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "approved" && record.status !== "terminated") {
           newStatus = 'terminated'
           record.status = newStatus
