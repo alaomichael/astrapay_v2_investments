@@ -6302,27 +6302,33 @@ export default class InvestmentsServices {
         if (queryFields.isTerminationAutomated) {
             predicateExists()
             predicate = predicate + "is_termination_automated=?";
-            queryFields.isTerminationAutomated = queryFields.isTerminationAutomated == "true" ? 1 : 0;
+            // queryFields.isTerminationAutomated = queryFields.isTerminationAutomated == "true" ? 1 : 0;
             params.push(queryFields.isTerminationAutomated)
         }
         if (queryFields.isInvestmentApproved) {
             predicateExists()
             predicate = predicate + "is_investment_approved=?";
-            queryFields.isInvestmentApproved = queryFields.isInvestmentApproved == "true" ? 1 : 0;
+            // queryFields.isInvestmentApproved = queryFields.isInvestmentApproved == "true" ? 1 : 0;
             params.push(queryFields.isInvestmentApproved)
         }
 
         if (queryFields.isDisbursementSuccessful) {
             predicateExists()
             predicate = predicate + "is_disbursement_successful=?";
-            queryFields.isDisbursementSuccessful = queryFields.isDisbursementSuccessful == "true" ? 1 : 0;
+            // queryFields.isDisbursementSuccessful = queryFields.isDisbursementSuccessful == "true" ? 1 : 0;
             params.push(queryFields.isDisbursementSuccessful)
         }
         if (queryFields.isPayoutSuccessful) {
             predicateExists()
             predicate = predicate + "is_payout_successful=?";
-            queryFields.isPayoutSuccessful = queryFields.isPayoutSuccessful == "true" ? 1 : 0;
+            // queryFields.isPayoutSuccessful = queryFields.isPayoutSuccessful == "true" ? 1 : 0;
             params.push(queryFields.isPayoutSuccessful)
+        }
+        if (queryFields.isRolloverActivated) {
+            predicateExists()
+            predicate = predicate + "is_rollover_activated=?";
+            // queryFields.isRolloverActivated = queryFields.isRolloverActivated == "true" ? 1 : 0;
+            params.push(queryFields.isRolloverActivated)
         }
         if (queryFields.requestType) {
             predicateExists()

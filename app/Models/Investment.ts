@@ -109,6 +109,9 @@ export default class Investment extends AppBaseModel {
   @column.dateTime({ autoCreate: false })
   public payoutDate: DateTime
 
+    @column()
+  public isRolloverActivated: boolean
+
   @column()
   public isPayoutAuthorized: boolean
 

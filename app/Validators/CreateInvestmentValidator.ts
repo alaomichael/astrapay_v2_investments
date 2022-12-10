@@ -19,6 +19,7 @@ export default class CreateInvestmentValidator extends BaseValidator {
         amount: schema.number(),
         duration: schema.number(),
         rolloverType: schema.enum(['100', '101', '102', '103']),
+        isRolloverActivated: schema.boolean(),
         rolloverTarget: schema.number(),
         // rolloverDone: schema.number(),
         investmentTypeName: schema.string(),

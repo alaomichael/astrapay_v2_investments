@@ -12,6 +12,7 @@ export interface InvestmentType {
     investorFundingWalletId: string,
     amount: number,
     duration: number,
+    isRolloverActivated: boolean,
     rolloverType: string | any,
     rolloverTarget: number,
     // rolloverDone: number,

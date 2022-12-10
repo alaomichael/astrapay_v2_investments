@@ -1052,7 +1052,7 @@ export default class InvestmentsController {
     const { lastName, firstName,
       walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
       lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
-      rolloverTarget, investmentType, tagName, } = request.body();
+      rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
 
     const payload: InvestmentType = {
       lastName: lastName,
@@ -1071,6 +1071,7 @@ export default class InvestmentsController {
       investorFundingWalletId: investorFundingWalletId,
       amount: amount,
       duration: duration,
+      isRolloverActivated: isRolloverActivated,
       rolloverType: rolloverType,
       rolloverTarget: rolloverTarget,
       investmentType: investmentType,
@@ -2240,7 +2241,7 @@ export default class InvestmentsController {
         let currencyCode = investment.currencyCode
         let isTransactionSentForProcessing
         let payload
-        let payout
+        // let payout
         let timelineObject
         // let timeline
         let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -2537,9 +2538,9 @@ export default class InvestmentsController {
                       payload.approvalStatus !== 'pending' &&
                       payload.status !== 'initiated'
                     ) {
-                      console.log('Payout investment data line 2107:', payload)
-                      payload.timeline = JSON.stringify(investment.timeline)
-                      console.log('Payout investment data line 2109:', payload)
+                      // console.log('Payout investment data line 2107:', payload)
+                      // payload.timeline = JSON.stringify(investment.timeline)
+                      // console.log('Payout investment data line 2109:', payload)
 
                       payout = await Payout.create(payload)
                       payout.status = 'payout'

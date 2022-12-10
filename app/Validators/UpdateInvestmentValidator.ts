@@ -18,6 +18,7 @@ export default class UpdateInvestmentValidator extends BaseValidator {
         investorFundingWalletId: schema.string.optional(),
         amount: schema.number.optional(),
         duration: schema.number.optional(),
+        isRolloverActivated: schema.boolean.optional(),
         rolloverType: schema.enum.optional(['100', '101', '102', '103']),
         rolloverTarget: schema.number.optional(),
         rolloverDone: schema.number.optional(),

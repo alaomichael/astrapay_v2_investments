@@ -71,6 +71,7 @@ export default class Investments extends BaseSchema {
      
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
+      table.boolean('is_rollover_activated').notNullable().defaultTo(false).index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()

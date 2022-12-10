@@ -12,28 +12,28 @@ const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 // const randomstring = require("randomstring");
 
-export const creditUserWalletWithPrincipal = async function creditUserWalletWithPrincipal(
-    amount, lng, lat, investmentRequestReference,
-    senderName,
-    senderAccountNumber,
-    senderAccountName,
-    senderPhoneNumber,
-    senderEmail,
-    rfiCode
+export const creditUserWallet = async function creditUserWallet(
+    amount, lng, lat, investmentId,
+    beneficiaryName,
+    beneficiaryAccountNumber,
+    beneficiaryAccountName,
+    beneficiaryEmail,
+    beneficiaryPhoneNumber,
+    rfiCode, description
 ): Promise<any> {
     // connect to Okra
     try {
         // let userWalletId = walletId;
-        // console.log("userWalletId,@ creditUserWalletWithPrincipal line 19", userWalletId);
-        // console.log("customerId,@ creditUserWalletWithPrincipal line 20", customerId);
-        // console.log("charge,@ creditUserWalletWithPrincipal line 21", charge);
+        // console.log("userWalletId,@ creditUserWallet line 19", userWalletId);
+        // console.log("customerId,@ creditUserWallet line 20", customerId);
+        // console.log("charge,@ creditUserWallet line 21", charge);
 
         // let generateRandomNumber = Math.random().toString(36).substring(12);
-        // console.log("The ASTRAPAY API random number @ creditUserWalletWithPrincipal", generateRandomNumber);
+        // console.log("The ASTRAPAY API random number @ creditUserWallet", generateRandomNumber);
 
         // let customerReference = randomstring.generate();
         // >> "XwPp9xazJ0ku5CZnlmgAx2Dld8SHkAeT"
-        // console.log("The ASTRAPAY API customerReference @ creditUserWalletWithPrincipal", customerReference);
+        // console.log("The ASTRAPAY API customerReference @ creditUserWallet", customerReference);
 
         // let batchPaymentId = randomstring.generate(10);
 
@@ -44,19 +44,19 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
         const rfiRecordsService = new RfiRecordsServices();
         const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
         // debugger
-        // console.log("Admin setting line 47 @ creditUserWalletWithPrincipal:", settings);
+        // console.log("Admin setting line 47 @ creditUserWallet:", settings);
         //  get the loan currency
         // @ts-ignore
         let { currencyCode, investmentWalletId, payoutWalletId, rfiName } = settings;
-        let beneficiaryAccountNumber = investmentWalletId;
-        let beneficiaryAccountName = rfiName;
+        let senderAccountNumber = payoutWalletId;
+        let senderAccountName = rfiName;
         // @ts-ignore
         let { phone, email } = rfiRecords
-        let beneficiaryEmail = email;
-        let beneficiaryPhoneNumber = phone;
-        let beneficiaryName = rfiName;
+        let senderEmail = email;
+        let senderPhoneNumber = phone;
+        let senderName = rfiName;
         // let approvalIsAutomated = false
-        console.log("payoutWalletId setting line 59:", payoutWalletId);
+        console.log("investmentWalletId setting line 59:", investmentWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
 
         const headers = {
@@ -71,7 +71,7 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
 
         const payload = {
             "batchDetail": {
-                "customerReference": investmentRequestReference,
+                "customerReference": investmentId,
                 "currency": "NGN",
                 "customerMetadata": {
                     "cool": "cool"
@@ -79,8 +79,8 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
                 "notifications": [
                     {
                         "channel": "SMS",
-                        "handle": phone,
-                        "recipientName": rfiName,
+                        "handle": beneficiaryPhoneNumber,
+                        "recipientName": beneficiaryName,
                         "eventType": "TRANSACTION_SUCCESS"
                     }
                 ]
@@ -99,15 +99,15 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
             "beneficiaries": [
                 {
                     "amount": amount,
-                    "customerReference": investmentRequestReference,
-                    "beneficiaryName": rfiName,
+                    "customerReference": investmentId,
+                    "beneficiaryName": beneficiaryName,
                     "beneficiaryAccountNumber": beneficiaryAccountNumber,
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
                     "beneficiaryBankId": "S8",
                     "bfiCode": "S8",
-                    "description": ` ${amount} investment for ${senderName}. `,
+                    "description": description,//` ${amount} investment for ${senderName}. `,
                     "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "WALLET_TO_WALLET_TRANSFER",
                     "customerMetadata": {
@@ -128,14 +128,14 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        // console.log("The ASTRAPAY API response @ creditUserWalletWithPrincipal line 131: ", response1);
+        // console.log("The ASTRAPAY API response @ creditUserWallet line 131: ", response1);
         // debugger
-        // console.log("The ASTRAPAY API response data @ creditUserWalletWithPrincipal line 133: ", response1.data);
-        // console.log("The ASTRAPAY API response data @ creditUserWalletWithPrincipal line 134: ", response1.status);
+        // console.log("The ASTRAPAY API response data @ creditUserWallet line 133: ", response1.data);
+        // console.log("The ASTRAPAY API response data @ creditUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
 
         if (response1.status == 200) {
-            // console.log("The ASTRAPAY API response, @ creditUserWalletWithPrincipal line 118: ", response.data);
+            // console.log("The ASTRAPAY API response, @ creditUserWallet line 118: ", response.data);
             // debugger
             // Authorize Transaction
             let { batchId } = response1.data.transactions[0];
@@ -166,8 +166,8 @@ export const creditUserWalletWithPrincipal = async function creditUserWalletWith
                 payload, { headers: headers }
             )
 
-            console.log("The ASTRAPAY API response data @ creditUserWalletWithPrincipal line 169: ", response.data);
-            console.log("The ASTRAPAY API response data @ creditUserWalletWithPrincipal line 170: ", response.status);
+            console.log("The ASTRAPAY API response data @ creditUserWallet line 169: ", response.data);
+            console.log("The ASTRAPAY API response data @ creditUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
 
 
