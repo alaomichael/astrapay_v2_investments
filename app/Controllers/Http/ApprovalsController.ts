@@ -159,7 +159,7 @@ import { ApprovalType } from "App/Services/types/approval_type";
 import ApprovalsServices from "App/Services/ApprovalsServices";
 import UpdateApprovalValidator from "App/Validators/UpdateApprovalValidator";
 import AppException from "App/Exceptions/AppException";
-import { creditUserWallet } from 'App/Helpers/creditUserWalletWithPrincipal';
+import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {

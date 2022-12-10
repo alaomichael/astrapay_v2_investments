@@ -23,6 +23,7 @@ export const debitUserWallet = async function debitUserWallet(
 ): Promise<any> {
     // connect to Okra
     try {
+        let amountConvertedToKobo = amount * 100;
         // let userWalletId = walletId;
         // console.log("userWalletId,@ debitUserWallet line 19", userWalletId);
         // console.log("customerId,@ debitUserWallet line 20", customerId);
@@ -98,7 +99,7 @@ export const debitUserWallet = async function debitUserWallet(
             },
             "beneficiaries": [
                 {
-                    "amount": amount,
+                    "amount": amountConvertedToKobo,
                     "customerReference": investmentRequestReference,
                     "beneficiaryName": rfiName,
                     "beneficiaryAccountNumber": beneficiaryAccountNumber,
@@ -107,7 +108,7 @@ export const debitUserWallet = async function debitUserWallet(
                     "beneficiaryEmail": beneficiaryEmail,
                     "beneficiaryBankId": "S8",
                     "bfiCode": "S8",
-                    "description": ` ${amount} investment for ${senderName}. `,
+                    "description": ` ${currencyCode} ${amount} investment for ${senderName}. `,
                     "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "WALLET_TO_WALLET_TRANSFER",
                     "customerMetadata": {

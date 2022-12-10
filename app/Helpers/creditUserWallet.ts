@@ -21,8 +21,9 @@ export const creditUserWallet = async function creditUserWallet(
     beneficiaryPhoneNumber,
     rfiCode, description
 ): Promise<any> {
-    // connect to Okra
+    
     try {
+        let amountConvertedToKobo = amount * 100;
         // let userWalletId = walletId;
         // console.log("userWalletId,@ creditUserWallet line 19", userWalletId);
         // console.log("customerId,@ creditUserWallet line 20", customerId);
@@ -98,7 +99,7 @@ export const creditUserWallet = async function creditUserWallet(
             },
             "beneficiaries": [
                 {
-                    "amount": amount,
+                    "amount": amountConvertedToKobo,
                     "customerReference": investmentId,
                     "beneficiaryName": beneficiaryName,
                     "beneficiaryAccountNumber": beneficiaryAccountNumber,

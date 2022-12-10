@@ -82,7 +82,7 @@ export default class Investments extends BaseSchema {
       table.text('certificate_url').nullable().index()
 
       // table.timestamp('date_payout_was_done', { useTz: true })
-      table.string('date_payout_was_done').nullable().index()
+      table.date('date_payout_was_done').nullable().index()
       table.float('lng').unsigned().nullable()
       table.float('lat').unsigned().nullable()
       table.string("processed_by", 255).notNullable().defaultTo("automation").index();
