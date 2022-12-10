@@ -158,8 +158,8 @@ export default class Investment extends AppBaseModel {
   @belongsTo(() => RfiRecord, { localKey: 'rfiRecordId' })
   public rfiRecord: BelongsTo<typeof RfiRecord>
 
-  @hasOne(() => Approval, { localKey: "id" })
-  public approvals: HasOne<typeof Approval>;
+  @hasMany(() => Approval, { localKey: "id" })
+  public approvals: HasMany<typeof Approval>;
 
   @hasMany(() => Timeline, { localKey: "id" })
   public timelines: HasMany<typeof Timeline>;

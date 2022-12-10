@@ -74,6 +74,9 @@ export default class InvestmentsServices {
             const queryGetter = await this.queryBuilder(queryParams)
             // debugger;
             let responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
+                // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
                 .offset(offset)
                 .limit(limit)
@@ -5928,7 +5931,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ walletId: walletId, id: id })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .first();
             console.log("Investment search result from service")
             console.log(investment);
@@ -5944,7 +5947,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ walletId: walletId, id: id, status: status })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals").first();
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
             console.log("Investment search result from service")
             console.log(investment);
             return investment;
@@ -5959,7 +5962,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ walletId: walletId })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals").orderBy("updated_at", "desc")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
             // .offset(offset)
             // .limit(limit);
             return investment;
@@ -5974,7 +5977,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ userId: userId })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("updatedAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
             // timelines
             // payoutSchedules
@@ -5995,7 +5998,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ userId: userId, walletId: walletId })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
@@ -6012,7 +6015,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ id: investmentId, userId: userId, walletId: walletId })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
@@ -6029,7 +6032,7 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ userId: userId, status: status })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
@@ -6048,7 +6051,7 @@ export default class InvestmentsServices {
             })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals")
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .orderBy("updated_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
