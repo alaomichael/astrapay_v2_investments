@@ -41,7 +41,7 @@ export default class extends BaseSeeder {
                         // create type for RFI
                         for (let index = 0; index < types.length; index++) {
                             let currentType = types[index];
-                            let { duration } = currentType;
+                            // let { duration } = currentType;
                             // check if type name is existing
                             const type_getter = await Type.findBy('type_name', currentType.typeName)
                             if (!type_getter) {
@@ -68,9 +68,9 @@ export default class extends BaseSeeder {
                                 }
                             } else if (type_getter) {
                                 currentType.rfiRecordId = rfiRecord.id;
-                                                               const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                                console.log(" currentTypeWithOutDurationProperty line 89 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
-                                console.log(" currentType line 90 =============", currentType);
+                                const { duration, ...currentTypeWithOutDurationProperty } = currentType;
+                                console.log(" currentTypeWithOutDurationProperty line 72 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
+                                console.log(" currentType line 73 =============", currentType);
                                 await Type.updateOrCreate(type_getter.$original, currentTypeWithOutDurationProperty);
                                 let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                                 for (let index = 0; index < existingTypeTenure.length; index++) {
@@ -118,7 +118,7 @@ export default class extends BaseSeeder {
                     // await Type.create(currentType)
                     let currentType = types[index];
                     // let { duration } = currentType;
-                    console.log(" currentType Name line 104 =======", currentType.typeName)
+                    // console.log(" currentType Name line 121 =======", currentType.typeName)
                     // check if type name is existing
                     const type_getter = await Type.findBy('type_name', currentType.typeName)
                     if (!type_getter) {
@@ -142,11 +142,11 @@ export default class extends BaseSeeder {
                             await InvestmentTenure.create(tenureObject)
                         }
                     } else if (type_getter) {
-                        // console.log(" currentType.duration line 131 =============", currentType.duration);
+                        // console.log(" currentType.duration line 145 =============", currentType.duration);
                         currentType.rfiRecordId = rfiRecord_getter.id;
                         const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                        console.log(" currentTypeWithOutDurationProperty line 134 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
-                        console.log(" currentType line 135 =============", currentType);
+                        console.log(" currentTypeWithOutDurationProperty line 148 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
+                        console.log(" currentType line 149 =============", currentType);
                         await Type.updateOrCreate(type_getter.$original, currentTypeWithOutDurationProperty);
                         let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                         for (let index = 0; index < existingTypeTenure.length; index++) {
