@@ -1,6 +1,6 @@
 import  RfiRecord  from './RfiRecord';
 import { DateTime } from 'luxon'
-import { column, beforeCreate, belongsTo, BelongsTo, HasOne, hasOne, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
 import Approval from './Approval';

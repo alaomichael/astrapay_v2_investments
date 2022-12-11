@@ -2700,7 +2700,7 @@ export default class InvestmentsController {
                   //   return response.status(201).json({ status: 'OK', data: investment.$original })
                   //   // END
                   // }
-                  let payout
+                  // let payout
                   // let newTimeline: any[] = []
                   let rate
 
@@ -3078,10 +3078,10 @@ export default class InvestmentsController {
               console.log('Terminated Payout investment data line 2787:', payout)
               //  END
               // investment = await Investment.query().where('id', investmentId)
-              investment.requestType = requestType
-              investment.status = 'active'
-              investment.approvalStatus = 'pending'
-              // await investment.save()
+              payload.requestType = requestType
+              payload.status = 'active'
+              payload.approvalStatus = 'pending'
+              await investment.save()
             } else if (approvalForTerminationIsAutomated === true) {
               // if payout was approved
               // send to transaction service
@@ -3122,24 +3122,24 @@ export default class InvestmentsController {
               // await payout.save()
               // console.log('Terminated Payout investment data line 2832:', payout)
               //  END
-              investment = await Investment.query().where('id', investmentId)
-              investment.requestType = requestType
-              investment.status = 'terminated'
-              investment.approvalStatus = 'approved'
-              await investment.save()
-              console.log('Terminated Payout investment data line 2839:', investment)
+              // investment = await Investment.query().where('id', investmentId)
+              payload.requestType = requestType
+              payload.status = 'terminated'
+              payload.approvalStatus = 'approved'
+              await payload.save()
+              console.log('Terminated Payout investment data line 2839:', payload)
             }
             // update timeline
             timelineObject = {
               id: uuid(),
               action: 'terminated investment payout',
-              investmentId: investment.id,//id,
-              walletId: investment.walletId,// walletId, 
-              userId: investment.userId,// userId,
+              investmentId: payload.id,//id,
+              walletId: payload.walletId,// walletId, 
+              userId: payload.userId,// userId,
               // @ts-ignore
-              message: `${investment.firstName} payment on investment has just been sent.`,
+              message: `${payload.firstName} payment on investment has just been sent.`,
               createdAt: DateTime.now(),
-              metadata: `amount invested: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+              metadata: `amount invested: ${payload.totalAmountToPayout}, request type : ${payload.requestType}`,
             }
             // console.log('Timeline object line 2850:', timelineObject)
             // //  Push the new object to the array
@@ -3150,7 +3150,7 @@ export default class InvestmentsController {
             // investment.timeline = JSON.stringify(timeline)
             await timelineService.createTimeline(timelineObject);
             // Save
-            await investment.save()
+            await payload.save()
             return response.status(200).json({
               status: 'OK',
               data: investment//.map((inv) => inv.$original),
