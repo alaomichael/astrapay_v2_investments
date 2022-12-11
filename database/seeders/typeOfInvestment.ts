@@ -50,16 +50,33 @@ export default class extends BaseSeeder {
                                 // @ts-ignore
                                 currentType.createdBy = "seeding";
                                 // @ts-ignore
-                                delete currentType.duration //slice(currentType.duration.length);
-                                await Type.create(currentType)
+                                // @ts-ignore
+                                currentType.createdBy = "seeding";
+                                const { duration, ...currentTypeWithOutDurationProperty } = currentType;
+                                console.log(currentTypeWithOutDurationProperty)
+                                console.log(currentType);
+                                // console.log(" currentType.duration line 114 =============", currentType.duration);
+                                let newInvestmentType = await Type.create(currentTypeWithOutDurationProperty)
+                                for (let index = 0; index < currentType.duration.length; index++) {
+                                    const currentDuration = duration[index];
+                                    // create investment type tenure
+                                    let tenureObject = {
+                                        typeId: newInvestmentType.id,
+                                        tenure: currentDuration
+                                    }
+                                    await InvestmentTenure.create(tenureObject)
+                                }
                             } else if (type_getter) {
                                 currentType.rfiRecordId = rfiRecord.id;
-                                await Type.updateOrCreate(type_getter.$original, currentType)
+                                                               const { duration, ...currentTypeWithOutDurationProperty } = currentType;
+                                console.log(" currentTypeWithOutDurationProperty line 89 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
+                                console.log(" currentType line 90 =============", currentType);
+                                await Type.updateOrCreate(type_getter.$original, currentTypeWithOutDurationProperty);
                                 let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                                 for (let index = 0; index < existingTypeTenure.length; index++) {
-                                    const currentExistingTypeTenure = existingTypeTenure[index];
-                                    // delete currentExistingTypeTenure
-                                    console.log("currentExistingTypeTenure =============", currentExistingTypeTenure)
+                                    // const currentExistingTypeTenure = existingTypeTenure[index];
+                                    // TODO: delete currentExistingTypeTenure
+                                    // console.log("currentExistingTypeTenure =============", currentExistingTypeTenure)
                                     // await InvestmentTenure. //truncate(currentExistingTypeTenure)
                                 }
                                 for (let index = 0; index < duration.length; index++) {
@@ -134,7 +151,7 @@ export default class extends BaseSeeder {
                         let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                         for (let index = 0; index < existingTypeTenure.length; index++) {
                             // const currentExistingTypeTenure = existingTypeTenure[index];
-                            // delete currentExistingTypeTenure
+                            // TODO: delete currentExistingTypeTenure
                             // console.log("currentExistingTypeTenure =============", currentExistingTypeTenure)
                             // await InvestmentTenure. //truncate(currentExistingTypeTenure)
                         }
