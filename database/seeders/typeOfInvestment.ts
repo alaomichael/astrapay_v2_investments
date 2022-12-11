@@ -52,6 +52,7 @@ export default class extends BaseSeeder {
                                 // @ts-ignore
                                 // @ts-ignore
                                 currentType.createdBy = "seeding";
+                                // remove the array of duration property from currentType object
                                 const { duration, ...currentTypeWithOutDurationProperty } = currentType;
                                 console.log(currentTypeWithOutDurationProperty)
                                 console.log(currentType);
@@ -68,9 +69,10 @@ export default class extends BaseSeeder {
                                 }
                             } else if (type_getter) {
                                 currentType.rfiRecordId = rfiRecord.id;
+                                 // remove the array of duration property from currentType object
                                 const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                                console.log(" currentTypeWithOutDurationProperty line 72 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
-                                console.log(" currentType line 73 =============", currentType);
+                                // console.log(" currentTypeWithOutDurationProperty line 72 =============", currentTypeWithOutDurationProperty) 
+                                // console.log(" currentType line 73 =============", currentType);
                                 await Type.updateOrCreate(type_getter.$original, currentTypeWithOutDurationProperty);
                                 let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                                 for (let index = 0; index < existingTypeTenure.length; index++) {
@@ -126,10 +128,11 @@ export default class extends BaseSeeder {
                         currentType.rfiCode = rfiRecord_getter.rfiCode;
                         // @ts-ignore
                         currentType.createdBy = "seeding";
+                         // remove the array of duration property from currentType object
                         const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                        console.log(currentTypeWithOutDurationProperty)
-                        console.log(currentType);
-                        // console.log(" currentType.duration line 114 =============", currentType.duration);
+                        // console.log(currentTypeWithOutDurationProperty)
+                        // console.log(currentType);
+                        // console.log(" currentType.duration line 135 =============", currentType.duration);
                         let newInvestmentType = await Type.create(currentTypeWithOutDurationProperty)
 
                         for (let index = 0; index < currentType.duration.length; index++) {
@@ -142,11 +145,12 @@ export default class extends BaseSeeder {
                             await InvestmentTenure.create(tenureObject)
                         }
                     } else if (type_getter) {
-                        // console.log(" currentType.duration line 145 =============", currentType.duration);
+                        // console.log(" currentType.duration line 148 =============", currentType.duration);
                         currentType.rfiRecordId = rfiRecord_getter.id;
+                         // remove the array of duration property from currentType object
                         const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                        console.log(" currentTypeWithOutDurationProperty line 148 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
-                        console.log(" currentType line 149 =============", currentType);
+                        // console.log(" currentTypeWithOutDurationProperty line 152 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
+                        // console.log(" currentType line 153 =============", currentType);
                         await Type.updateOrCreate(type_getter.$original, currentTypeWithOutDurationProperty);
                         let existingTypeTenure = await InvestmentTenure.query().where('type_id', type_getter.$original.id)
                         for (let index = 0; index < existingTypeTenure.length; index++) {
