@@ -2082,7 +2082,8 @@ export default class InvestmentsController {
       )
             //  investment = await Investment.query().where({ id: investmentId, user_id: userId })
     let  investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
-      if (investment) {
+      if (!investment) throw Error(`Investment record with ID: ${investmentId} does not exist. Please try again. Thank you.`)
+    if (investment) {
         let investmentData = investment
         let rolloverType = investment.rolloverType
         let amount = investment.amount
@@ -2198,7 +2199,6 @@ export default class InvestmentsController {
               //   investment.status = 'payout'
               //   // Save
               //   await payoutRequestIsExisting[0].save()
-              //   await investment.save()
               // }
 
               // If payment processing is automated
@@ -2255,7 +2255,6 @@ export default class InvestmentsController {
                 // stringify the timeline array
                 // investment.timeline = JSON.stringify(timeline)
                 await timelineService.createTimeline(timelineObject);
-                await investment.save()
 
                 return response.send({
                   status: 'OK',
@@ -2302,7 +2301,7 @@ export default class InvestmentsController {
                 // stringify the timeline array
                 // investment.timeline = JSON.stringify(timeline)
                 // Save
-                await investment.save()
+               
 
                 // TODO
                 // Update with the appropriate endpoint and data
@@ -2367,53 +2366,13 @@ export default class InvestmentsController {
                   console.log('Approval setting line 2081:', settings[0])
                   if (rolloverDone >= rolloverTarget) {
                     let payload = investmentData
-                    let payout
                     let investmentId = payload.id
                     userId = payload.userId
                     let requestType = 'payout_investment'
                     amountToPayoutNow = amount + investmentData.interestDueOnInvestment
                     // Send Investment Initiation Message to Queue
                     payload = investmentData
-                    console.log('Payout investment data line 2091:', payload)
-                    // check if payout request is existing
-                    let payoutRequestIsExisting = await Payout.query().where({
-                      investment_id: investmentId,
-                      user_id: userId,
-                    })
-                    console.log(
-                      'Investment payout Request Is Existing data line 2098:',
-                      payoutRequestIsExisting
-                    )
-                    if (
-                      payoutRequestIsExisting.length < 1 &&
-                      // investment.requestType !== 'start_investment' &&
-                      payload.approvalStatus !== 'pending' &&
-                      payload.status !== 'initiated'
-                    ) {
-                      // console.log('Payout investment data line 2107:', payload)
-                      // payload.timeline = JSON.stringify(investment.timeline)
-                      // console.log('Payout investment data line 2109:', payload)
-
-                      payout = await Payout.create(payload)
-                      payout.status = 'payout'
-                      payout.isPayoutAuthorized = investment.isPayoutAuthorized
-                      payout.isTerminationAuthorized = investment.isTerminationAuthorized
-
-                      await payout.save()
-                      console.log('Matured Payout investment data line 2117:', payout)
-                    } else {
-                      payoutRequestIsExisting[0].requestType = investment.requestType
-                      payoutRequestIsExisting[0].isPayoutAuthorized =
-                        investment.isPayoutAuthorized
-                      payoutRequestIsExisting[0].isTerminationAuthorized =
-                        investment.isTerminationAuthorized
-                      payoutRequestIsExisting[0].status = 'payout'
-                      // investment
-                      payload.status = 'payout'
-                      //  Save
-                      await payoutRequestIsExisting[0].save()
-                      await payload.save()
-                    }
+                    
 
                     let isPayoutAutomated = settings[0].isPayoutAutomated
                     if (isPayoutAutomated === false) {
@@ -2446,13 +2405,17 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'investment payment approval initiated',
-                        investmentId: investment.id,//id,
-                        walletId: investment.walletId,// walletId, 
-                        userId: investment.userId,// userId,
                         // @ts-ignore
-                        message: `${investment.firstName} investment has just been sent for payment processing approval.`,
+                        investmentId: investmentData.id,//id,
+                        // @ts-ignore
+                        walletId: investmentData.walletId,// walletId, 
+                        // @ts-ignore
+                        userId: investmentData.userId,// userId,
+                        // @ts-ignore
+                        message: `${investmentData.firstName} investment has just been sent for payment processing approval.`,
                         createdAt: DateTime.now(),
-                        metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                        // @ts-ignore
+                        metadata: `amount to payout: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                       }
                       // console.log('Timeline object line 2168:', timelineObject)
                       //  Push the new object to the array
@@ -2462,14 +2425,13 @@ export default class InvestmentsController {
                       // stringify the timeline array
                       await timelineService.createTimeline(timelineObject);
                       // investment.timeline = JSON.stringify(timeline)
-                      // Save
-                      await investment.save()
+                      
 
                       return response.send({
                         status: 'OK',
                         message:
                           'Rollover target has been reached or exceeded, and the investment details has been sent to admin for payout approval.',
-                        data: investment.$original,
+                        data: investmentData.$original,
                       })
                     } else {
                       try {
@@ -2499,13 +2461,13 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'investment payout initiated',
-                        investmentId: investment.id,//id,
-                        walletId: investment.walletId,// walletId, 
-                        userId: investment.userId,// userId,
+                        investmentId: investmentData.id,//id,
+                        walletId: investmentData.walletId,// walletId, 
+                        userId: investmentData.userId,// userId,
                         // @ts-ignore
-                        message: `${investment.firstName} investment has just been sent for payment processing.`,
+                        message: `${investmentData.firstName} investment has just been sent for payment processing.`,
                         createdAt: DateTime.now(),
-                        metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                        metadata: `amount to payout: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                       }
                       // console.log('Timeline object line 2217:', timelineObject)
                       //  Push the new object to the array
@@ -2515,14 +2477,13 @@ export default class InvestmentsController {
                       await timelineService.createTimeline(timelineObject);
                       // stringify the timeline array
                       // investment.timeline = JSON.stringify(timeline)
-                      // Save
-                      await investment.save()
+                     
 
                       return response.send({
                         status: 'OK',
                         message:
                           'Rollover target has been reached or exceeded, and payout of the sum total of your principal and interest has been initiated.',
-                        data: investment.$original,
+                        data: investmentData.$original,
                       })
                     }
                   }
@@ -2747,26 +2708,19 @@ export default class InvestmentsController {
                     case '101':
                       //'101' = 'rollover principal only',
                       amountToBeReinvested = amount
-                      payloadDuration = investment.duration
-                      payloadInvestmentType = investment.investmentType
-                      amountToPayoutNow = investment.interestDueOnInvestment
+                      payloadDuration = investmentData.duration
+                      payloadInvestmentType = investmentData.investmentType
+                      amountToPayoutNow = investmentData.interestDueOnInvestment
                       // investment.amount = amountToBeReinvested
-                      investment.totalAmountToPayout = amountToPayoutNow
+                      investmentData.totalAmountToPayout = amountToPayoutNow
                       rolloverDone = rolloverDone + 1
-                      investment.rolloverTarget = rolloverTarget
-                      investment.rolloverDone = rolloverDone
-                      await investment.save()
+                      investmentData.rolloverTarget = rolloverTarget
+                      investmentData.rolloverDone = rolloverDone
+                    
                       investmentData = investment
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Payout investment data line 2475:', payload)
-                      payload.timeline = JSON.stringify(investment.timeline)
                       console.log('Matured Payout investment data line 2477:', payload)
-
-                      payout = await Payout.create(payload)
-                      payout.status = 'payout'
-                      await payout.save()
-                      console.log('Matured Payout investment data line 2482:', payout)
 
                       // send payment details to transction service
 
@@ -2795,14 +2749,14 @@ export default class InvestmentsController {
                         timelineObject = {
                           id: uuid(),
                           action: 'matured investment payout',
-                          investmentId: investment.id,//id,
-                          walletId: investment.walletId,// walletId, 
-                          userId: investment.userId,// userId,
+                          investmentId: investmentData.id,//id,
+                          walletId: investmentData.walletId,// walletId, 
+                          userId: investmentData.userId,// userId,
                           // @ts-ignore
-                          message: `${investment.firstName} payment on investment has just been sent.`,
+                          message: `${investmentData.firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          metadata: `amount invested: ${investment.amount},amount paid: ${investment.interestDueOnInvestment + investment.amount
-                            }, request type : ${investment.requestType}`,
+                          metadata: `amount invested: ${investmentData.amount},amount paid: ${investmentData.interestDueOnInvestment + investmentData.amount
+                            }, request type : ${investmentData.requestType}`,
                         }
                         await timelineService.createTimeline(timelineObject);
                         // console.log('Timeline object line 2518:', timelineObject)
@@ -2814,7 +2768,7 @@ export default class InvestmentsController {
                         // stringify the timeline array
                         // investment.timeline = JSON.stringify(newTimeline)
                         // Save
-                        await investment.save()
+                      
                         rolloverIsSuccessful = false
                         break
 
@@ -2857,50 +2811,35 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'matured investment payout',
-                        investmentId: investment.id,//id,
-                        walletId: investment.walletId,// walletId, 
-                        userId: investment.userId,// userId,
+                        investmentId: investmentData.id,//id,
+                        walletId: investmentData.walletId,// walletId, 
+                        userId: investmentData.userId,// userId,
                         // @ts-ignore
-                        message: `${investment.firstName} payment on investment has just been sent.`,
+                        message: `${investmentData.firstName} payment on investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        metadata: `amount reinvested: ${investment.amount},amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                        metadata: `amount reinvested: ${investmentData.amount},amount paid: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                       }
                       // console.log('Timeline object line 2554:', timelineObject)
-                      //  Push the new object to the array
-                      // newTimeline = JSON.parse(investment.timeline)
-                      // newTimeline = investment.timeline
-                      // newTimeline.push(timelineObject)
-                      // console.log('Timeline object line 2558:', newTimeline)
-                      // stringify the timeline array
-                      // investment.timeline = JSON.stringify(newTimeline)
+                      
                       await timelineService.createTimeline(timelineObject);
-                      // Save
-                      await investment.save()
+                      
                       rolloverIsSuccessful = true
                       break
                     case '102':
                       // '102' = 'rollover principal plus interest',
-                      amountToBeReinvested = amount + investment.interestDueOnInvestment
-                      payloadDuration = investment.duration
-                      payloadInvestmentType = investment.investmentType
+                      amountToBeReinvested = amount + investmentData.interestDueOnInvestment
+                      payloadDuration = investmentData.duration
+                      payloadInvestmentType = investmentData.investmentType
                       //  investment.amount = amountToBeReinvested
-                      investment.totalAmountToPayout = 0
-                      amountToPayoutNow = investment.totalAmountToPayout
+                      investmentData.totalAmountToPayout = 0
+                      amountToPayoutNow = investmentData.totalAmountToPayout
                       rolloverDone = rolloverDone + 1
-                      investment.rolloverTarget = rolloverTarget
-                      investment.rolloverDone = rolloverDone
-                      await investment.save()
+                      investmentData.rolloverTarget = rolloverTarget
+                      investmentData.rolloverDone = rolloverDone
+                     
                       investmentData = investment
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Payout investment data line 2578:', payload)
-                      payload.timeline = JSON.stringify(investment.timeline)
-                      console.log('Matured Payout investment data line 2580:', payload)
-                      payout = await Payout.create(payload)
-                      payout.status = 'payout'
-                      await payout.save()
-                      console.log('Matured Payout investment data line 2584:', payout)
-
                       // send payment details to transction service
 
                       // Send Notification

@@ -921,7 +921,7 @@ export default class ApprovalsController {
             tagName,
             // interestRate: 0,
             // interestDueOnInvestment: 0,
-            // totalAmountToPayout: 0,
+            totalAmountToPayout,
             interestRate,
             interestDueOnInvestment,
             // totalAmountToPayout,
@@ -950,15 +950,15 @@ export default class ApprovalsController {
               //   '101' = 'rollover principal only',
               // payout interest
               // TODO: Remove after test
-              let creditUserWalletWithPrincipal = {status:200}
-              // let creditUserWalletWithPrincipal = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
-              //   beneficiaryName,
-              //   beneficiaryAccountNumber,
-              //   beneficiaryAccountName,
-              //   beneficiaryEmail,
-              //   beneficiaryPhoneNumber,
-              //   rfiCode,
-              //   descriptionForInterest)
+              // let creditUserWalletWithPrincipal = {status:200}
+              let creditUserWalletWithPrincipal = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
+                beneficiaryName,
+                beneficiaryAccountNumber,
+                beneficiaryAccountName,
+                beneficiaryEmail,
+                beneficiaryPhoneNumber,
+                rfiCode,
+                descriptionForInterest)
               // if successful 
               if (creditUserWalletWithPrincipal.status == 200) {
                 let amountPaidOut = amount + interestDueOnInvestment;
@@ -1258,6 +1258,77 @@ export default class ApprovalsController {
               //     console.log(newNotificationMessage);
               //   }
               // }
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment rollover",
+                investmentId: investmentId,//id,
+                walletId: walletIdToSearch,// walletId, 
+                userId: userIdToSearch,// userId,
+                // @ts-ignore
+                message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 996:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 559993:", newTimeline);
+              // update record
+
+              // Send Details to notification service
+              let subject = "AstraPay Investment Rollover";
+              let message = `
+                ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
+
+                Please check your account. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              console.log("newNotificationMessage line 1291:", newNotificationMessage);
+              debugger
+              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessage.message !== "Success") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessage);
+              }
+            
+            // create new investment
+            let newInvestmentPayload = {
+              rolloverDone,
+              // start
+              lastName,
+              firstName,
+              walletId,
+              userId,
+              investmentTypeId,
+              investmentTypeName,
+              rfiCode,
+              currencyCode,
+              lng,
+              lat,
+              rfiRecordId,
+              phone,
+              email,
+              investorFundingWalletId,
+              amount,
+              duration,
+              isRolloverActivated,
+              rolloverType,
+              rolloverTarget,
+              investmentType,
+              tagName,
+              interestRate,
+              interestDueOnInvestment: 0,
+              totalAmountToPayout: 0,
+            }
+              let newInvestmentDetails = investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
+            console.log("newInvestmentDetails ", newInvestmentDetails)
+            debugger
             }
           }
 
