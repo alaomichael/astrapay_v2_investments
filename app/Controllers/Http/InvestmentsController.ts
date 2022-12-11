@@ -2867,13 +2867,13 @@ export default class InvestmentsController {
                         timelineObject = {
                           id: uuid(),
                           action: 'matured investment payout',
-                          investmentId: investment.id,//id,
-                          walletId: investment.walletId,// walletId, 
-                          userId: investment.userId,// userId,
+                          investmentId: investmentData.id,//id,
+                          walletId: investmentData.walletId,// walletId, 
+                          userId: investmentData.userId,// userId,
                           // @ts-ignore
-                          message: `${investment.firstName} payment on investment has just been sent.`,
+                          message: `${investmentData.firstName} payment on investment has just been sent.`,
                           createdAt: DateTime.now(),
-                          metadata: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                          metadata: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                         }
                         // console.log('Timeline object line 2618:', timelineObject)
                         // //  Push the new object to the array
@@ -2884,8 +2884,7 @@ export default class InvestmentsController {
                         // // stringify the timeline array
                         // investment.timeline = JSON.stringify(newTimeline)
                         await timelineService.createTimeline(timelineObject);
-                        // Save
-                        await investment.save()
+                        
                         rolloverIsSuccessful = false
                         break
                         // return response.status(400).json({
@@ -2931,13 +2930,13 @@ export default class InvestmentsController {
                       timelineObject = {
                         id: uuid(),
                         action: 'matured investment payout',
-                        investmentId: investment.id,//id,
-                        walletId: investment.walletId,// walletId, 
-                        userId: investment.userId,// userId,
+                        investmentId: investmentData.id,//id,
+                        walletId: investmentData.walletId,// walletId, 
+                        userId: investmentData.userId,// userId,
                         // @ts-ignore
-                        message: `${investment.firstName} payment for matured investment has just been sent.`,
+                        message: `${investmentData.firstName} payment for matured investment has just been sent.`,
                         createdAt: DateTime.now(),
-                        metadata: `amount paid: ${investment.totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investment.requestType}`,
+                        metadata: `amount paid: ${investmentData.totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investmentData.requestType}`,
                       }
                       // console.log('Timeline object line 2686:', timelineObject)
                       // //  Push the new object to the array
@@ -2949,8 +2948,7 @@ export default class InvestmentsController {
                       // // stringify the timeline array
                       // investment.timeline = JSON.stringify(newTimeline)
                       await timelineService.createTimeline(timelineObject);
-                      // Save
-                      await investment.save()
+                      
                       rolloverIsSuccessful = true
                       break
                     // case '103':
