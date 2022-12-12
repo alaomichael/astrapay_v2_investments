@@ -590,7 +590,7 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
-          // debugger
+          debugger
           // if successful 
           if (debitUserWalletForInvestment.status == 200) {
             // update the investment details
@@ -618,7 +618,7 @@ export default class ApprovalsController {
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 553:", newTimeline);
             // update record
-
+            debugger
             // Send Details to notification service
             let subject = "AstraPay Investment Activation";
             let message = `
@@ -647,7 +647,7 @@ export default class ApprovalsController {
           // console.log(" Current log, line 532 :", currentInvestment);
           // send for update
           let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 535 :", updatedInvestment);
+          console.log(" Current log, line 535 =========:", updatedInvestment);
 
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
           newStatus = "investment_declined";
