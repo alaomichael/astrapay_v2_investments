@@ -42,12 +42,12 @@ const randomstring = require("randomstring");
 export default class InvestmentsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log("investments params: ", params);
-    console.log("investments query: ", request.qs());
+    // console.log("investments query: ", request.qs());
     const investmentsService = new InvestmentsServices();
 
-    console.log("investments query line 108: ", request.qs());
+    // console.log("investments query line 48: ", request.qs());
     const investments = await investmentsService.getInvestments(request.qs());
-    console.log("investments query line 110: ", investments);
+    console.log("investments query line 50: ", investments);
     let sortedInvestments = investments;
 
     if (sortedInvestments.length < 1) {
@@ -65,76 +65,98 @@ export default class InvestmentsController {
   }
 
   public async show({ params, request, response }: HttpContextContract) {
-    console.log('INVESTMENT params: ', params)
-    const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
-      request.qs()
-    console.log('INVESTMENT query: ', request.qs())
     try {
-      let investment = await Investment.query().where('user_id', params.userId)
-      // .orWhere('id', params.id)
-      // .limit()
-      let sortedInvestments = investment.map((investment) => {
-        return investment.$original
-      })
-      if (sortedInvestments.length > 0) {
-        console.log('INVESTMENT before sorting: ', sortedInvestments)
-        if (search) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.lastName!.startsWith(search)
-          })
-        }
-        if (requestType) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.requestType.startsWith(requestType)
-          })
-        }
-        if (status) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.status.includes(status)
-          })
-        }
+      console.log('INVESTMENT params: ', params)
+      // const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
+      //   request.qs()
+      // console.log('INVESTMENT query: ', request.qs())
+      // try {
+      //   let investment = await Investment.query().where('user_id', params.userId)
+      //   // .orWhere('id', params.id)
+      //   // .limit()
+      //   let sortedInvestments = investment.map((investment) => {
+      //     return investment.$original
+      //   })
+      //   if (sortedInvestments.length > 0) {
+      //     console.log('INVESTMENT before sorting: ', sortedInvestments)
+      //     if (search) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.lastName!.startsWith(search)
+      //       })
+      //     }
+      //     if (requestType) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.requestType.startsWith(requestType)
+      //       })
+      //     }
+      //     if (status) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.status.includes(status)
+      //       })
+      //     }
 
-        if (approvalStatus) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.approvalStatus.includes(approvalStatus)
-          })
-        }
-        if (investmentId) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.id === parseInt(investmentId)
-          })
-        }
+      //     if (approvalStatus) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.approvalStatus.includes(approvalStatus)
+      //       })
+      //     }
+      //     if (investmentId) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.id === parseInt(investmentId)
+      //       })
+      //     }
 
-        if (duration) {
-          sortedInvestments = sortedInvestments.filter((investment) => {
-            // @ts-ignore
-            return investment.duration === duration
-          })
-        }
-        if (limit) {
-          sortedInvestments = sortedInvestments.slice(0, Number(limit))
-        }
-        if (sortedInvestments.length < 1) {
-          return response.status(200).json({
-            status: 'FAILED',
-            message: 'no investment matched your search',
-            data: [],
-          })
-        }
+      //     if (duration) {
+      //       sortedInvestments = sortedInvestments.filter((investment) => {
+      //         // @ts-ignore
+      //         return investment.duration === duration
+      //       })
+      //     }
+      //     if (limit) {
+      //       sortedInvestments = sortedInvestments.slice(0, Number(limit))
+      //     }
+      //     if (sortedInvestments.length < 1) {
+      //       return response.status(200).json({
+      //         status: 'FAILED',
+      //         message: 'no investment matched your search',
+      //         data: [],
+      //       })
+      //     }
 
-        return response.status(200).json({ status: 'OK', data: sortedInvestments })
-      } else {
+      //     return response.status(200).json({ status: 'OK', data: sortedInvestments })
+      //   } else {
+      //     return response.status(200).json({
+      //       status: 'FAILED',
+      //       message: 'no investment matched your search',
+      //       data: [],
+      //     })
+      //   }
+      // console.log("investments params: ", params);
+      // console.log("investments query: ", request.qs());
+      const investmentsService = new InvestmentsServices();
+
+      // console.log("investments query line 108: ", request.qs());
+      const investments = await investmentsService.getInvestments(request.qs());
+      // console.log("investments query line 110: ", investments);
+      let sortedInvestments = investments;
+
+      if (sortedInvestments.length < 1) {
         return response.status(200).json({
-          status: 'FAILED',
-          message: 'no investment matched your search',
+          status: "FAILED",
+          message: "no investment request matched your search",
           data: [],
-        })
+        });
       }
+      // return recommendation(s)
+      return response.status(200).json({
+        status: "OK",
+        data: sortedInvestments,
+      });
     } catch (error) {
       console.log(error)
     }
@@ -166,10 +188,26 @@ export default class InvestmentsController {
       })
         .printAsPDF(investment)
         .catch((error) => console.error(error))
-      console.log('Investment Certificate generated, URL, line 197: ', requestUrl)
+      console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
       return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+      console.log("Error line 195", error.messages);
+      console.log("Error line 471969", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
     }
   }
 
@@ -193,8 +231,8 @@ export default class InvestmentsController {
           .json({ status: "OK", data: [] });
       }
     } catch (error) {
-      console.log("Error line 478", error.messages);
-      console.log("Error line 479", error.message);
+      console.log("Error line 218", error.messages);
+      console.log("Error line 219", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -936,13 +974,14 @@ export default class InvestmentsController {
       const { investmentId } = request.all()
       await request.validate(UpdateInvestmentValidator);
       // const typesService = new TypesServices();
-      const { 
+      const {
         walletId, userId,
-        lng, lat,  phone, email, investorFundingWalletId, rolloverType,
+        lng, lat, phone, email, investorFundingWalletId, rolloverType,
         rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
 
-
+      // debugger
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
+      debugger
       if (investment) {
         console.log('Investment Selected for Update line 889:', investment.startDate)
         let isDueForPayout
@@ -953,7 +992,7 @@ export default class InvestmentsController {
           let timelineObject
           try {
             isDueForPayout = await dueForPayout(startDate, duration)
-            debugger
+            // debugger
             // isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
             console.log('Is due for payout status :', isDueForPayout)
             // let newRolloverTarget = request.input('rolloverTarget')
@@ -1004,7 +1043,7 @@ export default class InvestmentsController {
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 // console.log(" Current log, line 1001 :", updatedInvestment);
-debugger
+                debugger
                 // console.log('Update Investment:', investment)
                 // send to user
                 return response.json({

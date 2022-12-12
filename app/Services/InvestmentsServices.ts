@@ -624,7 +624,7 @@ export default class InvestmentsServices {
                                 console.log(" Current log, line 1655 :", updatedInvestment);
                                 debugger
                             } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'paid') {
+                                if (investment.status !== 'paid' || investment.status !== 'completed') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -6335,6 +6335,7 @@ export default class InvestmentsServices {
 
     public async getInvestmentsByIdAndWalletIdAndUserId(investmentId: string, walletId: string, userId: string): Promise<Investment | null> {
         try {
+            // debugger
             const investment = await Investment.query().where({ id: investmentId, userId: userId, walletId: walletId })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
