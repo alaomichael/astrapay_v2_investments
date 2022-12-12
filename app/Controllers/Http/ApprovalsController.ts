@@ -405,6 +405,7 @@ export default class ApprovalsController {
 
   public async update({ request, response, loginUserData }: HttpContextContract) {
     try {
+      console.log("Entering update 408 ==================================")
       // const investmentlogsService = new InvestmentLogsServices();
       const investmentsService = new InvestmentsServices();
       await request.validate(UpdateApprovalValidator);
@@ -416,13 +417,13 @@ export default class ApprovalsController {
       // check if the request is not existing
       let approval;
       let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-      console.log("Existing Approval Request details: ", approvalRequestIsExisting);
+      // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
       if (!approvalRequestIsExisting) {
         //    return error message to user
         // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
         throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
       }
-      console.log(" Login User Data line 430 =========================");
+      console.log(" Login User Data line 426 =========================");
       console.log(loginUserData);
       // TODO: Uncomment to use LoginUserData
       // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
@@ -445,7 +446,7 @@ export default class ApprovalsController {
       // const { investmentId, walletId, userId } = request.qs();
       approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
 
-      console.log(" QUERY RESULT: ", approval);
+      // console.log(" QUERY RESULT: ", approval);
       let walletIdToSearch = approval.walletId
       let userIdToSearch = approval.userId
       let investmentId;
@@ -463,7 +464,7 @@ export default class ApprovalsController {
       // console.log(" idToSearch RESULT ===============================: ", idToSearch);
       // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
       // console.log(" record RESULT ===============================: ", record);
-
+      console.log("check approval record 467 ==================================")
       // debugger
       if (!approval || record == undefined || !record) {
         return response
@@ -473,7 +474,7 @@ export default class ApprovalsController {
       // console.log(" QUERY RESULT for record: ", record.$original);
 
       if (approval) {
-        console.log("Investment approval Selected for Update line 481:", approval);
+        console.log("Investment approval Selected for Update line 477:");
         let payload: ApprovalType = {
           walletId: approval.walletId,
           investmentId: approval.investmentId,
@@ -495,8 +496,8 @@ export default class ApprovalsController {
         approval = await approvalsService.updateApproval(approval, payload);
         // console.log("Approval updated: ", approval);
         let newStatus;
-        await approval.save();
-        console.log("Update Approval Request line 504:", approval);
+        // await approval.save();
+        // console.log("Update Approval Request line 504:", approval);
         let { id, firstName, currencyCode, lastName, email } = record;
         console.log("Surname: ", lastName)
         console.log("CurrencyCode: ", currencyCode)
@@ -507,7 +508,7 @@ export default class ApprovalsController {
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
         if (approval.requestType === "start_investment" && approval.approvalStatus === "approved") { //&& record.status == "submitted"
-          console.log("Approval for investment request processing: ===========================================>")
+          console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
           newStatus = "approved"; //'pending_account_number_generation'; 
           record.status = newStatus;
@@ -563,7 +564,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
           let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 567:", newNotificationMessage);
+          // console.log("newNotificationMessage line 567:", newNotificationMessage);
           if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessage.message !== "Success") {
@@ -583,14 +584,19 @@ export default class ApprovalsController {
           // let senderPhoneNumber = phone;
           // let senderEmail = email;
           // Send to the endpoint for debit of wallet
-          console.log("before calling debitWallet",+ amount + lng + lat + investmentRequestReference +
+          console.log("before calling debitWallet", amount + lng + lat + investmentRequestReference           
+           );
+          console.log("before calling debitWallet",
             senderName +
             senderAccountNumber +
-            senderAccountName +
+            senderAccountName 
+            )
+          console.log("before calling debitWallet",
             senderPhoneNumber +
             senderEmail +
             rfiCode);
-            debugger
+            // debugger
+          console.log("Calling debit wallet line 599 ==================================")
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
             senderName,
             senderAccountNumber,
@@ -598,7 +604,8 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
-          debugger
+          // debugger
+          console.log("debitUserWalletForInvestment reponse data 608 ==================================",debitUserWalletForInvestment)
           // if successful 
           if (debitUserWalletForInvestment.status == 200) {
             // update the investment details
@@ -1506,6 +1513,7 @@ export default class ApprovalsController {
             data: approval//.map((inv) => inv.$original),
           });
       } else {
+        console.log("Entering update 1515 ==================================")
         return response
           .status(404)
           .json({
