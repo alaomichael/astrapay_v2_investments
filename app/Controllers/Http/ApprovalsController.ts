@@ -995,7 +995,7 @@ export default class ApprovalsController {
           // '100' = 'no rollover',
           //   '101' = 'rollover principal only',
           //   '102' = 'rollover principal with interest',
-          if ((isRolloverActivated == true && rolloverType !== "100" && status !== "completed") || (isRolloverActivated == true && rolloverType !== "100" && status !== "rollover")) {
+          if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")) {
           // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
             // check type of rollover
             if (rolloverType == "101") {
@@ -1028,10 +1028,10 @@ export default class ApprovalsController {
                 // await record.save();
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                // console.log(" Current log, line 532 :", currentInvestment);
+                // console.log(" Current log, line 1031 :", currentInvestment);
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                console.log(" Current log, line 535 :", updatedInvestment);
+                console.log(" Current log, line 1034 :", updatedInvestment);
 
                 // console.log("Updated record Status line 537: ", record);
 

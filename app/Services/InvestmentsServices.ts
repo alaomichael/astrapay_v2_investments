@@ -462,7 +462,7 @@ export default class InvestmentsServices {
 
             // console.log("Loan Info, line 583: ", investments);
             // console.log(responseData)
-            debugger
+            // debugger
             if (!responseData) {
                 console.log(`There is no active investment or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no active investment or payout has been completed. Please, check and try again.`, codeSt: "500" })
@@ -485,7 +485,7 @@ export default class InvestmentsServices {
                     let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 1322: ', investment)
-                    debugger
+                    // debugger
                     if (investment && investment.$original.status == "active") {
                         console.log('investment search data :', investment.$original)
                         let { rfiCode } = investment.$original;
@@ -596,7 +596,7 @@ export default class InvestmentsServices {
                                 // console.log('Payout investment data line 1380:', payload)
                                 payload.investmentId = investmentId
                                 payload.requestType = requestType
-                                debugger
+                                // debugger
                                 // Check if the user set Rollover
                                 // "rolloverType": "101",
                                 // "rolloverTarget": 3,
@@ -622,7 +622,7 @@ export default class InvestmentsServices {
                                 // await investmentsService.updateInvestment(record, investment);
                                 let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 console.log(" Current log, line 1655 :", updatedInvestment);
-                                debugger
+                                // debugger
                             } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'paid' || investment.status !== 'completed') {
                                     // update status of investment

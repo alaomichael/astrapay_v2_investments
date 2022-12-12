@@ -175,7 +175,8 @@ export default class InvestmentsController {
       // .orderBy('timeline', 'desc')
       // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
-      const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
+      const certurl = Env.get('CERTIFICATE_URL')
+      const requestUrl = `${certurl}/${investment.id}`
       // await new PuppeteerServices(requestUrl, {
       //   paperFormat: 'a3',
       //   fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
@@ -1074,7 +1075,26 @@ export default class InvestmentsController {
           .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
-      console.error(error)
+      // console.error(error)
+      // console.error('update investment Error :', error)
+      // return response.json({ status: 'FAILED', data: error.message, hint: error.messages })
+      console.log("Error line 1080", error.messages);
+      console.log("Error line 1081", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
     // return // 401
   }
@@ -1171,12 +1191,32 @@ export default class InvestmentsController {
           .json({ status: 'FAILED', message: 'No data match your query parameters' })
       }
     } catch (error) {
-      console.error(error)
+      // console.error(error)
+      // console.error('update investment by investmentId Error :', error)
+      // return response.json({ status: 'FAILED', data: error.message })
+      console.log("Error line 1196", error.messages);
+      console.log("Error line 1197", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
     // return // 401
   }
 
   public async store({ request, response }: HttpContextContract) {
+    try {
     await request.validate(CreateInvestmentValidator);
     const investmentsService = new InvestmentsServices();
     const timelineService = new TimelinesServices();
@@ -1510,6 +1550,10 @@ export default class InvestmentsController {
       email: newInvestmentEmail,
     })
     return response.status(201).json({ status: 'OK', data: investment })
+  } catch(error) {
+    console.error('update investment by investmentId Error :', error)
+    return response.json({ status: 'FAILED', data: error.message })
+  }
   }
 
   public async approve({ request, response }: HttpContextContract) {
@@ -1854,10 +1898,10 @@ export default class InvestmentsController {
     const investmentsService = new InvestmentsServices();
     try {
       const investments = await investmentsService.collateMaturedInvestment(request.qs())
-      debugger
+      // debugger
       if (investments.length > 0) {
-        console.log('Investment data after payout request line 1706:', investments)
-        debugger
+        // console.log('Investment data after payout request line 1706:', investments)
+        // debugger
         return response.status(200).json({
           status: 'OK',
           data: investments//.map((inv) => inv.$original),
@@ -1865,7 +1909,7 @@ export default class InvestmentsController {
         // END
 
       } else {
-        debugger
+        // debugger
         return response.status(404).json({
           status: 'FAILED',
           message: 'no investment matched your search',
@@ -1891,7 +1935,7 @@ export default class InvestmentsController {
       // let investment = await Investment.query().where('id', investmentId)
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
       // console.log('Investment Info, line 1322: ', investment)
-      debugger
+      // debugger
       if (investment) {
         console.log('investment search data :', investment.$original)
         let { rfiCode } = investment.$original;
