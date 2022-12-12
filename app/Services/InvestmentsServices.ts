@@ -30,7 +30,7 @@ import { sendNotification } from 'App/Helpers/sendNotification';
 // import RepaidInvestmentsServices from './RepaidInvestmentsServices';
 // import PayoutDefaultersServices from './PayoutDefaultersServices';
 // import { recoverInvestmentFromUserMainWallet } from 'App/Helpers/recoverInvestmentFromUserMainWallet';
-// const randomstring = require("randomstring");
+const randomstring = require("randomstring");
 // const Env = require("@ioc:Adonis/Core/Env");
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
 // const CHARGE = Env.get("SERVICE_CHARGE");
@@ -68,7 +68,6 @@ export default class InvestmentsServices {
             const timelineService = new TimelinesServices();
             const typesService = new TypesServices();
 
-
             payload.amount = amountToInvest;
             let payloadAmount = payload.amount;
             let payloadDuration = payload.duration;
@@ -76,7 +75,7 @@ export default class InvestmentsServices {
             // let payloadinvestmentTypeId = payload.investmentTypeId;
             let { investmentTypeId, rfiCode, walletId, userId, firstName, } = payload;
             console.log(
-                ' The Rate return for RATE line 541: ',
+                ' The Rate return for RATE line 79: ',
                 await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
             )
             // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
@@ -88,7 +87,7 @@ export default class InvestmentsServices {
                 rate = interestRate;
             }
 
-            console.log(' Rate return line 1079 : ', rate)
+            console.log(' Rate return line 91 : ', rate)
             if (rate === undefined) {
                 // return {
                 //     status: 'FAILED',
@@ -121,7 +120,7 @@ export default class InvestmentsServices {
             // @ts-ignore
             // investment.walletId = investorFundingWalletId
             // await investment.save()
-            console.log('The new investment:', investment)
+            // console.log('The new investment:', investment)
 
             // TODO
             // Send Investment Payload To Transaction Service
@@ -231,7 +230,7 @@ export default class InvestmentsServices {
                     senderPhoneNumber,
                     senderEmail,
                     rfiCode)
-                debugger
+                // debugger
                
                 // before
 
@@ -308,7 +307,7 @@ export default class InvestmentsServices {
                 investment.startDate = DateTime.now() //.toISODate()
                 investment.payoutDate = DateTime.now().plus({ days: investment.duration })
                 investment.isInvestmentCreated = true
-                debugger
+                // debugger
 
                 // Save the updated record
                 // await record.save();

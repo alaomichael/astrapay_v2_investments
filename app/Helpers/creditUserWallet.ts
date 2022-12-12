@@ -125,7 +125,7 @@ export const creditUserWallet = async function creditUserWallet(
                 }
             ]
         }
-        debugger
+        // debugger
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
@@ -173,7 +173,7 @@ export const creditUserWallet = async function creditUserWallet(
 
 
             if (response.status == 200) {
-                debugger
+                // debugger
                 // return response.data;
                 return response;
             }
