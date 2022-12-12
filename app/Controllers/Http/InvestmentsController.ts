@@ -176,7 +176,7 @@ export default class InvestmentsController {
       // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
       const certurl = Env.get('CERTIFICATE_URL')
-      const requestUrl = `${certurl}/${investment.id}`
+      const requestUrl = `${certurl}/certificates/${investment.id}`
       // await new PuppeteerServices(requestUrl, {
       //   paperFormat: 'a3',
       //   fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
@@ -190,11 +190,20 @@ export default class InvestmentsController {
         .printAsPDF(investment)
         .catch((error) => console.error(error))
       console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
+      investment.certificateUrl = requestUrl;
+      // Save
+      // update record
+      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+      // console.log(" Current log, line 197 :", currentInvestment);
+      // send for update
+      let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+      console.log(" Current log, line 200 :", updatedInvestment);
+      debugger
       return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
       // console.log(error)
-      console.log("Error line 195", error.messages);
-      console.log("Error line 471969", error.message);
+      console.log("Error line 205", error.messages);
+      console.log("Error line 206", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -1362,6 +1371,7 @@ export default class InvestmentsController {
     // console.log('Approval setting line 910:', settings[0])
     const settingsService = new SettingsServices();
     const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+    debugger
     if (!settings) {
       throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
     }
