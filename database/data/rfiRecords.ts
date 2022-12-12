@@ -1,7 +1,7 @@
 export const rfiRecords = [
     {
-        rfiName: "Lion Bank",
-        rfiCode: "001",
+        rfiName: "Sigma Octantis",
+        rfiCode: "S8",
         phone: "07033680599",
         phone2: "07033680598",
         email: "devmichaelalao@gmail.com",
@@ -10,12 +10,12 @@ export const rfiRecords = [
         address: "65, adebiyi street"
 
     },
-     {
+    {
         bankName: "King Bank",
         bankCode: "002",
         phone: "07033680597",
         phone2: "07033680596",
-        email: "contactleomax2@gmail.com",
+        email: "contactleomax@gmail.com",
         website: "www.source2.unsplash.com",
         imageUrl: "https://source2.unsplash.com/random/?banks/",
         address: "65b, adebiyi street"

@@ -1,7 +1,7 @@
 export const settings = [
 {
-        rfiName: "Lion Bank",
-        rfiCode: "001",
+        rfiName: "Sigma Octantis",
+        rfiCode: "S8",
         rfiImageUrl: "http://www.rfi-image.com/01",
         fundingSourceTerminal: "sagami",
         investmentWalletId: "SIGWALLET_166922392334423",
