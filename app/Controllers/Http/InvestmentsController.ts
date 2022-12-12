@@ -37,6 +37,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
+import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
@@ -175,8 +176,8 @@ export default class InvestmentsController {
       // .orderBy('timeline', 'desc')
       // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
-      const certurl = Env.get('CERTIFICATE_URL')
-      const requestUrl = `${certurl}/certificates/${investment.id}`
+      const certUrl = Env.get('CERTIFICATE_URL')
+      const requestUrl = `${certUrl}/certificates/${investment.id}`
       // await new PuppeteerServices(requestUrl, {
       //   paperFormat: 'a3',
       //   fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
@@ -191,9 +192,10 @@ export default class InvestmentsController {
         .catch((error) => console.error(error))
       console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
       investment.certificateUrl = requestUrl;
+
       // Save
       // update record
-      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, investment.walletId, investment.userId);
       // console.log(" Current log, line 197 :", currentInvestment);
       // send for update
       let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
@@ -1371,7 +1373,7 @@ export default class InvestmentsController {
     // console.log('Approval setting line 910:', settings[0])
     const settingsService = new SettingsServices();
     const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
-    debugger
+    // debugger
     if (!settings) {
       throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
     }
@@ -1462,7 +1464,7 @@ export default class InvestmentsController {
         senderPhoneNumber,
         senderEmail,
         rfiCode)
-      debugger
+      // debugger
       // if successful 
       if (debitUserWalletForInvestment.status == 200) {
 

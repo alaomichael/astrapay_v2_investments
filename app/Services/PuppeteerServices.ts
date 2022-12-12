@@ -9,6 +9,7 @@ import { getPrintServerBaseUrl /* isProduction */ } from 'App/Helpers/utils'
 import Event from '@ioc:Adonis/Core/Event'
 // import Subscription from 'App/Models/Subscription'
 import Investment from 'App/Models/Investment'
+import Mail from '@ioc:Adonis/Addons/Mail'
 interface PrintOptions {
   paperFormat?: PaperFormat
   fileName: string
@@ -45,8 +46,8 @@ export default class PuppeteerServices {
 
     // 1. Create PDF from URL
     // await page.goto("http://192.168.88.18:3000/")
-    // await page.goto('http://example.com/')
-    await page.goto(this.url)
+    await page.goto('http://example.com')
+    // await page.goto(this.url)
     // await page.setContent("<h1>Hello World !</h1>")
 
     /* if (isProduction) {
@@ -71,14 +72,22 @@ export default class PuppeteerServices {
           printBackground: true,
           margin: { left: '20px', right: '20px', top: '20px', bottom: '20px' },
         })
-        .then(() => {
+        .then(async () => {
           console.log('File created')
           let customer = JSON.parse(JSON.stringify(data))
-          Event.emit('investment::investment_certificate_generated', {
-            name: customer.firstName,
-            email: customer.email,
-            filePath: filePath,
-          })
+          // Event.emit('investment::investment_certificate_generated', {
+          //   name: customer.firstName,
+          //   email: customer.email,
+          //   filePath: filePath,
+          // })
+          await Mail.send((message) => {
+            message
+              .from("mail.astrapolaris.com", "Sig oct") // Sender Email
+              .to("devmichaelalao@gmail.com") // Receiver Email
+              .subject("Congratulations")
+              .htmlView("emails/welcome", { firstName: "Michael" })
+              .attach(filePath);
+          });
         })
         .catch((error) => {
           Logger.error('Error at PuppeteerServices.printAsPDF > page.pdf(): %j', error)
