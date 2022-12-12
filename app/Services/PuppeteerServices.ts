@@ -6,10 +6,11 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import path from 'path'
 import createDirectory from 'App/Helpers/CreateDirectory'
 import { getPrintServerBaseUrl /* isProduction */ } from 'App/Helpers/utils'
-import Event from '@ioc:Adonis/Core/Event'
+// import Event from '@ioc:Adonis/Core/Event'
 // import Subscription from 'App/Models/Subscription'
 import Investment from 'App/Models/Investment'
 import Mail from '@ioc:Adonis/Addons/Mail'
+import { sendNotification } from 'App/Helpers/sendNotification'
 interface PrintOptions {
   paperFormat?: PaperFormat
   fileName: string
@@ -38,6 +39,7 @@ export default class PuppeteerServices {
 
   public async printAsPDF(data: Investment) {
     const ctx = HttpContext.get() 
+    let { email,firstName } = data
 
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--headless', '--disable-gpu', '--window-size=1920x1080'],
@@ -74,7 +76,7 @@ export default class PuppeteerServices {
         })
         .then(async () => {
           console.log('File created')
-          let customer = JSON.parse(JSON.stringify(data))
+          // let customer = JSON.parse(JSON.stringify(data))
           // Event.emit('investment::investment_certificate_generated', {
           //   name: customer.firstName,
           //   email: customer.email,
@@ -88,6 +90,29 @@ export default class PuppeteerServices {
               .htmlView("emails/welcome", { firstName: "Michael" })
               .attach(filePath);
           });
+
+          // Send Details to notification service
+          let subject = "AstraPay Investment Certificate";
+          let message = `
+                ${firstName} this is to inform you, that your Investment certificate has been generated.
+
+          You can visit this link ${this.url} to download it.
+
+                Please wait while the investment is being activated. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          console.log("newNotificationMessage line 107:", newNotificationMessage);
+          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessage.message !== "Success") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessage);
+          }
+
+
         })
         .catch((error) => {
           Logger.error('Error at PuppeteerServices.printAsPDF > page.pdf(): %j', error)

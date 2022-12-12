@@ -37,7 +37,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
-import Mail from '@ioc:Adonis/Addons/Mail'
+// import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
 
 export default class InvestmentsController {
