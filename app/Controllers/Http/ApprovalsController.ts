@@ -952,6 +952,8 @@ export default class ApprovalsController {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessage);
             }
+          } else {
+            throw Error();
           }
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollover") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")

@@ -57,7 +57,7 @@ export const debitUserWallet = async function debitUserWallet(
         let beneficiaryPhoneNumber = phone;
         let beneficiaryName = rfiName;
         // let approvalIsAutomated = false
-        console.log("payoutWalletId setting line 59:", payoutWalletId);
+        console.log("payoutWalletId setting line 60:", payoutWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
 
         const headers = {
@@ -176,11 +176,14 @@ export const debitUserWallet = async function debitUserWallet(
                 // debugger
                 // return response.data;
                 return response;
+            } else {
+                throw Error(response);
             }
         } else {
             throw Error(response1);
         }
     } catch (error) {
+        console.error(error);
         console.error(error.response.data.errorCode);
         console.error(error.response.data.errorMessage);
         console.error(error.message);

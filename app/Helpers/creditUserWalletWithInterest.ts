@@ -175,11 +175,14 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 debugger
                 // return response.data;
                 return response;
+            } else {
+                throw Error(response);
             }
         } else {
-            return;
+            throw Error(response1);
         }
     } catch (error) {
+        console.error(error);
         console.error(error.response.data.errorCode);
         console.error(error.response.data.errorMessage);
         console.error(error.message);

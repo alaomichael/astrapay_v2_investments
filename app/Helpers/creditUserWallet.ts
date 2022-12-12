@@ -178,7 +178,9 @@ export const creditUserWallet = async function creditUserWallet(
                 return response;
             }
         } else {
-            return;
+            // return;
+            
+            throw Error();
         }
     } catch (error) {
         console.error(error.response.data.errorCode);
