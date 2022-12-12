@@ -583,6 +583,14 @@ export default class ApprovalsController {
           // let senderPhoneNumber = phone;
           // let senderEmail = email;
           // Send to the endpoint for debit of wallet
+          console.log("before calling debitWallet",+ amount + lng + lat + investmentRequestReference +
+            senderName +
+            senderAccountNumber +
+            senderAccountName +
+            senderPhoneNumber +
+            senderEmail +
+            rfiCode);
+            debugger
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
             senderName,
             senderAccountNumber,

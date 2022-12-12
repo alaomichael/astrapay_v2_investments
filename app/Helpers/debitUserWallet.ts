@@ -129,7 +129,7 @@ export const debitUserWallet = async function debitUserWallet(
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
+        console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
         // debugger
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
