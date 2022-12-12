@@ -8,9 +8,9 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
-import PuppeteerServices from 'App/Services/PuppeteerServices'
+// import PuppeteerServices from 'App/Services/PuppeteerServices'
 // import { string } from '@ioc:Adonis/Core/Helpers'
-import Env from '@ioc:Adonis/Core/Env'
+// import Env from '@ioc:Adonis/Core/Env'
 // const axios = require('axios').default
 
 // const API_URL = Env.get('API_URL')
@@ -176,22 +176,22 @@ export default class InvestmentsController {
       // .orderBy('timeline', 'desc')
       // .fetch()
       if (!investment) return response.status(404).json({ status: 'FAILED' })
-      const certUrl = Env.get('CERTIFICATE_URL')
-      const requestUrl = `${certUrl}/certificates/${investment.id}`
+      // const certUrl = Env.get('CERTIFICATE_URL')
+      // const requestUrl = `${certUrl}/certificates/${investment.id}`
       // await new PuppeteerServices(requestUrl, {
       //   paperFormat: 'a3',
       //   fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
       // })
       //   .printAsPDF(investment)
       //   .catch((error) => console.error(error))
-      await new PuppeteerServices(requestUrl, {
-        paperFormat: 'a4',
-        fileName: `${Math.random() * 7}_${investment.id}`,
-      })
-        .printAsPDF(investment)
-        .catch((error) => console.error(error))
-      console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
-      investment.certificateUrl = requestUrl;
+      // await new PuppeteerServices(requestUrl, {
+      //   paperFormat: 'a4',
+      //   fileName: `${Math.random() * 7}_${investment.id}`,
+      // })
+      //   .printAsPDF(investment)
+      //   .catch((error) => console.error(error))
+      // console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
+      // investment.certificateUrl = requestUrl;
 
       // Save
       // update record
@@ -447,16 +447,16 @@ export default class InvestmentsController {
         //  return response.status(200).json({ status: 'OK', data: investment.$original })
 
         // END
-        const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
-        await new PuppeteerServices(requestUrl, {
-          paperFormat: 'a3',
-          fileName: `${investment[0].requestType}_${investment[0].id}`,
-        })
-          .printAsPDF(investment[0])
-          .catch((error) => console.error(error))
-        console.log('Investment Certificate generated, URL, line 378: ', requestUrl)
-        // save the certicate url
-        investment[0].certificateUrl = requestUrl
+        // const requestUrl = Env.get('CERTIFICATE_URL') //+ investment.id
+        // await new PuppeteerServices(requestUrl, {
+        //   paperFormat: 'a3',
+        //   fileName: `${investment[0].requestType}_${investment[0].id}`,
+        // })
+        //   .printAsPDF(investment[0])
+        //   .catch((error) => console.error(error))
+        // console.log('Investment Certificate generated, URL, line 378: ', requestUrl)
+        // // save the certicate url
+        // investment[0].certificateUrl = requestUrl
         await investment[0].save()
         return response.json({
           status: 'OK',
