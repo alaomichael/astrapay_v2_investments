@@ -500,7 +500,7 @@ export default class ApprovalsController {
         // console.log("Update Approval Request line 504:", approval);
         let { id, firstName, currencyCode, lastName, email } = record;
         console.log("Surname: ", lastName)
-        console.log("CurrencyCode: ", currencyCode)
+        // console.log("CurrencyCode: ", currencyCode)
         // debugger
         // let { email } = contactDetails;
         // let email = email;
@@ -653,6 +653,9 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
             // debugger
+          }else {
+            console.log("debitUserWalletForInvestment reponse data 657 ==================================", debitUserWalletForInvestment)
+            throw Error();
           }
 
           // Save the updated record
@@ -661,8 +664,9 @@ export default class ApprovalsController {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 532 :", currentInvestment);
           // send for update
-          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 535 =========:", updatedInvestment);
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 535 =========:", updatedInvestment);
 
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
           newStatus = "investment_declined";
@@ -679,8 +683,9 @@ export default class ApprovalsController {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 587 :", currentInvestment);
           // send for update
-          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 590 :", updatedInvestment);
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 590 :", updatedInvestment);
 
           console.log("Updated record Status line 592: ", record);
           // update timeline
@@ -696,8 +701,9 @@ export default class ApprovalsController {
             metadata: ``,
           };
           // console.log("Timeline object line 605:", timelineObject);
-          let newTimeline = await timelineService.createTimeline(timelineObject);
-          console.log("new Timeline object line 607:", newTimeline);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 607:", newTimeline);
 
           // Send Details to notification service
           let subject = "AstraPay Investment Declined";
@@ -783,8 +789,9 @@ export default class ApprovalsController {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 532 :", currentInvestment);
             // send for update
-            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            console.log(" Current log, line 535 :", updatedInvestment);
+            await investmentsService.updateInvestment(currentInvestment, record);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            // console.log(" Current log, line 535 :", updatedInvestment);
 
             // console.log("Updated record Status line 537: ", record);
 
@@ -817,7 +824,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 567:", newNotificationMessage);
+            // console.log("newNotificationMessage line 567:", newNotificationMessage);
             // debugger
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
@@ -1117,7 +1124,7 @@ export default class ApprovalsController {
                 interestDueOnInvestment: 0,
                 totalAmountToPayout: 0,
               }
-              let newInvestmentDetails = investmentsService.createNewInvestment(newInvestmentPayload, amount)
+              let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
               debugger
             } else if (rolloverType == "102") {
@@ -1393,7 +1400,7 @@ export default class ApprovalsController {
               interestDueOnInvestment: 0,
               totalAmountToPayout: 0,
             }
-              let newInvestmentDetails = investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
+              let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
             console.log("newInvestmentDetails ", newInvestmentDetails)
             debugger
             }

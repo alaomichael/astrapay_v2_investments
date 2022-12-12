@@ -178,7 +178,7 @@ export const debitUserWallet = async function debitUserWallet(
                 return response;
             }
         } else {
-            return;
+            throw Error(response1);
         }
     } catch (error) {
         console.error(error.response.data.errorCode);

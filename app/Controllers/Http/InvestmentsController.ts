@@ -168,7 +168,7 @@ export default class InvestmentsController {
     try {
       const investmentsService = new InvestmentsServices();
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-      console.log("Investment result :", investment);
+      // console.log("Investment result :", investment);
       // let investment = await Investment.query()
       //   .where({ id: investmentId })
       //   .first()
