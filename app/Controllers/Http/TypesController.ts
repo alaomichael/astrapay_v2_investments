@@ -336,9 +336,9 @@ export default class TypesController {
             } else if (type) {
                 console.log("Type Selected for Update line 273:", type);
                 let formerTypeTenures;
-               const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
-                   features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
-                   interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment,  } = request.body();
+                const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
+                    features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
+                    interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, } = request.body();
                 const payload: TypeType = {
                     rfiRecordId: rfiRecordId,
                     typeName: typeName,
@@ -364,7 +364,7 @@ export default class TypesController {
                     maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
                 }
 
-     // update the data
+                // update the data
                 // TODO: Uncomment to use loginAdminFullName
                 // payload.createdBy = createdBy !== undefined ? createdBy : loginAdminFullName;
                 // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
@@ -375,8 +375,8 @@ export default class TypesController {
                 let formerTypeTagName = type.tagName;
                 let formerTypeDescription = type.description;
                 let formerTypeCurrencyCode = type.currencyCode;
-                let formerTypeFixedCharge = type.fixedCharge;
-                let formerTypeRatedCharge = type.ratedCharge;
+                // let formerTypeFixedCharge = type.fixedCharge;
+                // let formerTypeRatedCharge = type.ratedCharge;
                 let formerTypeLowestAmount = type.lowestAmount;
                 let formerTypeHighestAmount = type.highestAmount;
                 let formerTypeInterestRate = type.interestRate;
@@ -394,7 +394,7 @@ export default class TypesController {
                     const typeTenureDelete = tenuresService.deleteRelatedTenure(typeId);
                     console.log("Type tenure deleted: ", typeTenureDelete);
                     // create new type tenure/duration
-                     typeTenure = tenuresService.createTenure(duration, typeId);
+                    typeTenure = tenuresService.createTenure(duration, typeId);
                     console.log("The new investment tenure:", typeTenure);
                 }
 
@@ -409,15 +409,13 @@ export default class TypesController {
                 firstName = "Super Admin";
                 let subject = "AstraPay Investment Type Updated";
                 let message = `
-                This is to inform you, that your investment type has been updated.
+                This is to inform you, that your investment type has been updated by "loginAdminFullName".
                 Former investment type details are as follows:
 
                 Type Name: ${formerTypeName}
                 Type Tag Name: ${formerTypeTagName}
                 Type Description: ${formerTypeDescription}
                 Type Currency Code: ${formerTypeCurrencyCode}
-                Type Fixed Charge: ${formerTypeFixedCharge}
-                Type Rated Charge: ${formerTypeRatedCharge}
                 Type Lowest Amount: ${formerTypeLowestAmount}
                 Type Highest Amount: ${formerTypeHighestAmount}
                 Type Interest Rate: ${formerTypeInterestRate}
@@ -431,8 +429,6 @@ export default class TypesController {
                 Type Tag Name: ${type.tagName}
                 Type Description: ${type.description}
                 Type Currency Code: ${type.currencyCode}
-                Type Fixed Charge: ${type.fixedCharge}
-                Type Rated Charge: ${type.ratedCharge}
                 Type Lowest Amount: ${type.lowestAmount}
                 Type Highest Amount: ${type.highestAmount}
                 Type Interest Rate: ${type.interestRate}
@@ -464,6 +460,151 @@ export default class TypesController {
         } catch (error) {
             console.log("Error line 327", error.messages);
             console.log("Error line 328", error.message);
+            if (error.code === 'E_APP_EXCEPTION') {
+                console.log(error.codeSt)
+                let statusCode = error.codeSt ? error.codeSt : 500
+                return response.status(parseInt(statusCode)).json({
+                    status: "FAILED",
+                    message: error.messages,
+                    hint: error.message
+                });
+            }
+            return response.status(500).json({
+                status: "FAILED",
+                message: error.messages,
+                hint: error.message
+            });
+        }
+    }
+
+    public async updateInterestRate({ request, response, loginUserData }: HttpContextContract) {
+        try {
+            await request.validate(UpdateTypeValidator);
+            const typesService = new TypesServices()
+            // const tenuresService = new TenuresServices();
+            const { typeId, } = request.params();
+            console.log("Type query: ", request.qs());
+            // check if the request is not existing
+            let type;
+            let typeRequestIsExisting = await typesService.getTypeByTypeId(typeId)
+            // console.log("Existing Type Request details: ", typeRequestIsExisting);
+            if (!typeRequestIsExisting) {
+                //    return error message to user
+                // throw new Error(`Type Request with Id: ${id} does not exist, please check and try again.`);
+                throw new AppException({ message: `Type Request with Id: ${typeId} does not exist, please check and try again.`, codeSt: "404" })
+            }
+            console.log(" Login User Data line 248 =========================");
+            console.log(loginUserData);
+            // TODO: Uncomment to use LoginUserData
+            // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+            // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
+            // console.log(" Login User Data line 967 =========================");
+            // console.log(loginUserData);
+            // console.log(" Login User Roles line 969 =========================");
+            // console.log(loginUserData.roles);
+            // let { roles, biodata } = loginUserData;
+
+            // console.log("Admin roles , line 973 ==================")
+            // console.log(roles)
+            // // @ts-ignore
+            // let { fullName } = biodata;
+            // let loginAdminFullName = fullName;
+            // console.log("Login Admin FullName, line 978 ==================")
+            // console.log(loginAdminFullName)
+            type = typeRequestIsExisting //await typesService.getTypeByTypeId(id);
+            console.log(" QUERY RESULT: ", type);
+            if (!type) {
+                return response
+                    .status(404)
+                    .json({ status: "FAILED", message: "Not Found,try again." });
+            } else if (type) {
+                console.log("Type Selected for Update line 273:", type);
+                const { interestRate, } = request.body();
+
+
+                // const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
+                //     features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
+                //     interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, } = request.body();
+                // const payload: TypeType = {
+                //     rfiRecordId: rfiRecordId,
+                //     typeName: typeName,
+                //     quantityIssued: quantityIssued,
+                //     quantityAvailableForIssue: quantityAvailableForIssue,
+                //     availableTypes: availableTypes,
+                //     currencyCode: currencyCode,
+                //     isAutomated: isAutomated,
+                //     features: features,
+                //     requirements: requirements,
+                //     lng: lng,
+                //     lat: lat,
+                //     tagName: tagName,
+                //     rfiCode: rfiCode,
+                //     status: status,
+                //     createdBy: createdBy,
+                //     lowestAmount: lowestAmount,
+                //     highestAmount: highestAmount,
+                //     description: description,
+                //     interestRate: interestRate,
+                //     isRolloverAllowed: isRolloverAllowed,
+                //     minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
+                //     maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
+                // }
+
+                // update the data
+                // TODO: Uncomment to use loginAdminFullName
+                // payload.createdBy = createdBy !== undefined ? createdBy : loginAdminFullName;
+                // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
+                // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
+                // payload.remark = remark !== undefined ? remark : type.remark;
+                // Former Type Details
+                let formerTypeInterestRate = type.interestRate;
+                // type = await typesService.updateType(type, payload);
+                let updatedInterestRate = await typesService.updateTypeInterestRate(type, interestRate);
+                // console.log("Type updated: ", type);
+                // await type.save();
+                console.log("Update Type Request line 562:", updatedInterestRate);
+                debugger
+                // Send Details to notification service
+                let email, firstName;
+                email = SUPER_ADMIN_EMAIL_ADDRESS;
+                firstName = "Super Admin";
+                let subject = "AstraPay Investment Type Updated";
+                let message = `
+                This is to inform you, that your investment type INTEREST RATE has been updated by "loginAdminFullName".
+                Former investment type details are as follows:
+
+                Type Interest Rate: ${formerTypeInterestRate}
+
+================================================================**********=============================================================================**********=============================================================================
+                New Investment type details are as follows:
+
+                Type Interest Rate: ${type.interestRate}
+
+                Please check your investment type.
+
+                Thank you.
+
+                AstraPay Investment.`;
+                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                console.log("newNotificationMessage line 586:", newNotificationMessage);
+                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                    console.log("Notification sent successfully");
+                } else if (newNotificationMessage.message !== "Success") {
+                    console.log("Notification NOT sent successfully");
+                    console.log(newNotificationMessage);
+                }
+
+                // send to user
+                return response
+                    .status(200)
+                    .json({
+                        status: "OK",
+                        data: type//.map((inv) => inv.$original),
+                    });
+            }
+        } catch (error) {
+            console.log("Error line 603", error.messages);
+            console.log("Error line 604", error.message);
             if (error.code === 'E_APP_EXCEPTION') {
                 console.log(error.codeSt)
                 let statusCode = error.codeSt ? error.codeSt : 500

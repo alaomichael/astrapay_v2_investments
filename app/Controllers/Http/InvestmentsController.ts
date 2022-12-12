@@ -930,16 +930,20 @@ export default class InvestmentsController {
   public async update({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
-      let investment = await Investment.query().where({
-        user_id: request.input('userId'),
-        id: request.input('investmentId'),
-      })
-      if (investment.length > 0) {
-        console.log('Investment Selected for Update line 889:', investment[0].startDate)
+      const investmentsService = new InvestmentsServices();
+      // let investment = await Investment.query().where({
+      //   user_id: request.input('userId'),
+      //   id: request.input('investmentId'),
+      // })
+      const { investmentId } = request.params()
+      const { walletId, userId } = request.all()
+      let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId,walletId,userId)
+      if (investment) {
+        console.log('Investment Selected for Update line 889:', investment.startDate)
         let isDueForPayout
-        if (investment[0].startDate !== null) {
-          let createdAt = investment[0].createdAt
-          let duration = investment[0].duration
+        if (investment.startDate !== null) {
+          let createdAt = investment.createdAt
+          let duration = investment.duration
           // let timeline
           let timelineObject
           try {
@@ -951,58 +955,48 @@ export default class InvestmentsController {
             // Restrict update to timed/fixed deposit only
             if (
               investment &&
-              investment[0].investmentType !== 'debenture' &&
+              investment.investmentType !== 'debenture' &&
               isDueForPayout === false &&
               newRolloverTarget <= 5
             ) {
               // investment.amount = request.input('amount')
-              investment[0].rolloverTarget = newRolloverTarget
-              investment[0].rolloverType = newRolloverType
+              investment.rolloverTarget = newRolloverTarget
+              investment.rolloverType = newRolloverType
               // investment.investmentType = request.input('investmentType')
-              // Todo
-              // Update Timeline
-              // Retrieve the current timeline
-
-              // Turn Timeline string to json
-
-              // push the update to the array
-
-              // Turn Timeline json to string
-
-              // save the timeline to the investment object
-
               if (investment) {
                 // update timeline
                 timelineObject = {
                   id: uuid(),
                   action: 'investment updated',
-                  investmentId: investment[0].id,//id,
-                  walletId: investment[0].walletId,// walletId, 
-                  userId: investment[0].userId,// userId,
+                  investmentId: investment.id,//id,
+                  walletId: investment.walletId,// walletId, 
+                  userId: investment.userId,// userId,
                   // @ts-ignore
-                  message: `${investment[0].firstName} investment has just been updated.`,
+                  message: `${investment.firstName} investment has just been updated.`,
                   createdAt: DateTime.now(),
-                  metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+                  metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                 }
                 // console.log('Timeline object line 935:', timelineObject)
                 //  Push the new object to the array
-                // timeline = investment.timeline
-                // timeline.push(timelineObject)
                 await timelineService.createTimeline(timelineObject);
-                // console.log('Timeline object line 939:', timeline)
-                // stringify the timeline array
-                // investment.timeline = JSON.stringify(timeline)
                 // Save
-                await investment[0].save()
-                console.log('Update Investment:', investment)
+                // update record
+                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                // console.log(" Current log, line 1346 :", currentInvestment);
+                // send for update
+                let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                console.log(" Current log, line 1349 :", updatedInvestment);
+
+                // console.log('Update Investment:', investment)
                 // send to user
-                return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
+                return response.json({ status: 'OK', data: investment//.map((inv) => inv.$original) 
+              })
               }
               return // 422
             } else {
               return response.status(400).json({
                 status: 'FAILED',
-                data: investment.map((inv) => inv.$original),
+                data: investment,//.map((inv) => inv.$original),
                 message:
                   'please check your investment type, and note the rollover target cannot be more than 5 times',
               })
@@ -1012,7 +1006,8 @@ export default class InvestmentsController {
             return response.json({ status: 'FAILED', data: error.message })
           }
         } else {
-          return response.json({ status: 'FAILED', data: investment.map((inv) => inv.$original) })
+          return response.json({ status: 'FAILED', data: investment//.map((inv) => inv.$original) 
+        })
         }
       } else {
         return response

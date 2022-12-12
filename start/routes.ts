@@ -94,6 +94,8 @@ Route.group(() => {
     Route.put('admin/investments', 'InvestmentsController.update')
     Route.put('investments', 'InvestmentsController.update')
     Route.put('admin/investments/rfi_records', 'RfiRecordsController.update')
+    // updateInterestRate
+    Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
     Route.put("admin/investments/types/:typeId", "TypesController.update");
    
 

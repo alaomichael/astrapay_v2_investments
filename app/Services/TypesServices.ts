@@ -124,6 +124,20 @@ export default class TypesServices {
             throw error
         }
     }
+    // updateTypeInterestRate(type, interestRate);
+    public async updateTypeInterestRate(selectedType: any, interestRate: number): Promise<Type | null> {
+        try {
+            selectedType.interestRate = interestRate;
+            let newPayload = selectedType;
+            debugger
+            let saveType = await selectedType.merge(newPayload)
+            await saveType.save();
+            return saveType
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
 
     public async deleteType(selectedType: any): Promise<Type | null> {
         try {

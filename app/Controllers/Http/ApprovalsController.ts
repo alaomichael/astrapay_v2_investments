@@ -1343,12 +1343,12 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 639 :", currentInvestment);
+          // console.log(" Current log, line 1346 :", currentInvestment);
           // send for update
           let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 642 :", updatedInvestment);
+          console.log(" Current log, line 1349 :", updatedInvestment);
 
-          console.log("Updated record Status line 644: ", record);
+          // console.log("Updated record Status line 1351: ", record);
           // update timeline
           timelineObject = {
             id: uuid(),
