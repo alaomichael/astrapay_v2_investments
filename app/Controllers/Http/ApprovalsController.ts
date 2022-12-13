@@ -958,8 +958,8 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollover") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
-          newStatus = "rollover"; //'pending_account_number_generation'; 
-          record.status = newStatus;
+          // newStatus = "rollover"; //'pending_account_number_generation'; 
+          // record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
@@ -1019,7 +1019,7 @@ export default class ApprovalsController {
           // '100' = 'no rollover',
           //   '101' = 'rollover principal only',
           //   '102' = 'rollover principal with interest',
-          if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")) {
+          if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured")) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
           // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
             // check type of rollover
             if (rolloverType == "101") {

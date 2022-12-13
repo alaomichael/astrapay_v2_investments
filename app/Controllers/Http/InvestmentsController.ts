@@ -1333,7 +1333,7 @@ export default class InvestmentsController {
     // await user.related('investments').save(investment)
     // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
 
-    investment.interestRate = rate
+    investment.interestRate = rate * (investment.duration/360);
     // investment.rolloverDone = payload.rolloverDone
 
     // When the Invest has been approved and activated

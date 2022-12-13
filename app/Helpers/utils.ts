@@ -119,7 +119,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
     }
     let interestDue
     let interestDueDaily
-    interestDue = amount * (rate/100)
+    interestDue = amount * (duration/360) * (rate/100)
     interestDueDaily = interestDue / duration
     let day = 'day'
     if (duration > 1) {
