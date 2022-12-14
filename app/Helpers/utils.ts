@@ -158,11 +158,11 @@ const interestDueOnPayout = (amount, rate, duration) => {
     let interestDueDaily
     let decPl = 2;
     interestDue = (duration / 360) * (rate / 100);
-    debugger
+    // debugger
     interestDue = amount * interestDue;
-    debugger
+    // debugger
     interestDue = Number(interestDue.toFixed(decPl));
-    debugger
+    // debugger
     // interestDue = getDecimalPlace(interestDue,decPl);
     interestDueDaily = interestDue / duration
     let day = 'day'

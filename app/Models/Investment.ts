@@ -1,4 +1,4 @@
-import  RfiRecord  from './RfiRecord';
+import RfiRecord from './RfiRecord';
 import { DateTime } from 'luxon'
 import { column, beforeCreate, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
@@ -109,7 +109,19 @@ export default class Investment extends AppBaseModel {
   @column.dateTime({ autoCreate: false })
   public payoutDate: DateTime
 
-    @column()
+  @column()
+  public isRolloverSuspended: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public rolloverReactivationDate: DateTime
+
+  @column()
+  public isPayoutSuspended: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public payoutReactivationDate: DateTime
+
+  @column()
   public isRolloverActivated: boolean
 
   @column()
@@ -117,7 +129,7 @@ export default class Investment extends AppBaseModel {
 
   @column()
   public isTerminationAuthorized: boolean
-  
+
   @column()
   public isPayoutSuccessful: boolean
 

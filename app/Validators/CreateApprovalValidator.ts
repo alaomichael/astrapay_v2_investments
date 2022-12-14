@@ -20,5 +20,9 @@ export default class CreateApprovalValidator extends BaseValidator {
                 reason: schema.string(),
             })),
         processedBy: schema.string.optional(),
+        isRolloverSuspended: schema.boolean.optional(),
+        rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
+        isPayoutSuspended: schema.boolean.optional(),
+        payoutReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
     });
 }

@@ -201,7 +201,7 @@ export default class InvestmentsController {
       // send for update
       let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
       console.log(" Current log, line 200 :", updatedInvestment);
-      debugger
+      // debugger
       return response.status(200).json({ status: 'OK', data: investment.$original })
     } catch (error) {
       // console.log(error)
@@ -990,11 +990,14 @@ export default class InvestmentsController {
       const {
         walletId, userId,
         lng, lat, phone, email, investorFundingWalletId, rolloverType,
-        rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
+        rolloverTarget, investmentType, tagName, isRolloverActivated, isRolloverSuspended,
+        rolloverReactivationDate,
+        isPayoutSuspended,
+        payoutReactivationDate, } = request.body();
 
       // debugger
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
-      debugger
+      // debugger
       if (investment) {
         console.log('Investment Selected for Update line 889:', investment.startDate)
         let isDueForPayout
@@ -1049,6 +1052,10 @@ export default class InvestmentsController {
                 investment.tagName = tagName;
                 investment.phone = phone;
                 investment.email = email;
+                investment.isRolloverSuspended = isRolloverSuspended;
+                investment.rolloverReactivationDate = rolloverReactivationDate;
+                investment.isPayoutSuspended = isPayoutSuspended;
+                investment.payoutReactivationDate = payoutReactivationDate;
                 // Save
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1056,7 +1063,7 @@ export default class InvestmentsController {
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 // console.log(" Current log, line 1001 :", updatedInvestment);
-                debugger
+                // debugger
                 // console.log('Update Investment:', investment)
                 // send to user
                 return response.json({
@@ -1293,9 +1300,9 @@ export default class InvestmentsController {
 
 
       // console.log('Payload line 1010  :', payload)
-      let payloadAmount = payload.amount
-      let payloadDuration = payload.duration
-      let payloadInvestmentType = payload.investmentType
+      // let payloadAmount = payload.amount
+      // let payloadDuration = payload.duration
+      // let payloadInvestmentType = payload.investmentType
       // console.log(
       //   ' The Rate return for RATE line 541: ',
       //   await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
@@ -1305,7 +1312,34 @@ export default class InvestmentsController {
 
       let rate;
       if (investmentTypeDetails) {
-        let { interestRate } = investmentTypeDetails;
+        let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
+        if (status !== "active") {
+          return response.status(422).json({
+            status: 'FAILED',
+            message: `The investment type you selected is ${status} , please select another one and try again.`,
+          })
+        }
+        if (amount < lowestAmount  || amount > highestAmount) {
+          let message
+          if (amount < lowestAmount){
+            message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
+          } else if(amount > highestAmount){
+            message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
+          }
+        
+          return response.status(422).json({
+            status: 'FAILED',
+            message: message,
+          })
+        }
+        if (investmentTenures.includes(duration) === false){
+          return response.status(404).json({
+            status: 'FAILED',
+            message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`,
+          })
+        }
+        console.log("investmentTenures.includes(duration) line 1341 =======",investmentTenures.includes(duration))
+        debugger
         rate = interestRate;
       }
 
@@ -1351,12 +1385,12 @@ export default class InvestmentsController {
       investment.interestDueOnInvestment = amountDueOnPayout
       // @ts-ignore
       investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-      debugger
+      // debugger
       // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
       // @ts-ignore
       // investment.walletId = investorFundingWalletId
       // await investment.save()
-      console.log('The new investment:', investment)
+      // console.log('The new investment:', investment)
 
       // TODO
       // Send Investment Payload To Transaction Service
@@ -1489,8 +1523,9 @@ export default class InvestmentsController {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
           // console.log(" Current log, line 1276 :", currentInvestment);
           // send for update
-          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-          console.log(" Current log, line 1279 :", updatedInvestment);
+          await investmentsService.updateInvestment(currentInvestment, investment);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+          // console.log(" Current log, line 1279 :", updatedInvestment);
 
           // console.log("Updated record Status line 1281: ", record);
 
@@ -1737,7 +1772,7 @@ export default class InvestmentsController {
       // let investment = await Investment.query().where('id', investmentId)
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
       // console.log('Investment Info, line 1322: ', investment)
-      debugger
+      // debugger
       if (investment && investment.$original.status == "active") {
         console.log('investment search data :', investment.$original)
         let { rfiCode } = investment.$original;
@@ -1848,7 +1883,7 @@ export default class InvestmentsController {
             // console.log('Payout investment data line 1380:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
-            debugger
+            // debugger
             // Check if the user set Rollover
             // "rolloverType": "101",
             // "rolloverTarget": 3,
@@ -1874,7 +1909,7 @@ export default class InvestmentsController {
             // await investmentsService.updateInvestment(record, investment);
             let updatedInvestment = await investmentsService.updateInvestment(record, investment);
             console.log(" Current log, line 1655 :", updatedInvestment);
-            debugger
+            // debugger
           } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
             if (investment.status !== 'paid') {
               // update status of investment
@@ -2050,7 +2085,7 @@ export default class InvestmentsController {
             // console.log('Payout investment data line 1380:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
-            debugger
+            // debugger
             // Check if the user set Rollover
             // "rolloverType": "101",
             // "rolloverTarget": 3,
