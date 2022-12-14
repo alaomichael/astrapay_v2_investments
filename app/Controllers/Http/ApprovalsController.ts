@@ -605,6 +605,14 @@ export default class ApprovalsController {
             record.isInvestmentCreated = true
             // console.log("Updated record Status line 537: ", record);
 
+            // update record
+            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+            // console.log(" Current log, line 610 :", currentInvestment);
+            // send for update
+            await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 614 =========:", updatedInvestment);
+
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -643,15 +651,57 @@ export default class ApprovalsController {
             }
             // debugger
           } else {
-            console.log("debitUserWalletForInvestment reponse data 657 ==================================", debitUserWalletForInvestment)
-            throw Error();
+            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+            // console.log(" Current log, line 532 :", currentInvestment);
+            // send for update
+            await investmentsService.updateInvestment(currentInvestment, record);
+
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment activation failed",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId, 
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 551:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 553:", newTimeline);
+            // update record
+            // debugger
+            // Send Details to notification service
+            let subject = "AstraPay Investment Activation Failed";
+            let message = `
+                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            console.log("newNotificationMessage line 678:", newNotificationMessage);
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 535 =========:", updatedInvestment);
+            console.log("debitUserWalletForInvestment reponse data 688 ==================================", debitUserWalletForInvestment)
+            throw Error(debitUserWalletForInvestment);
           }
 
           // Save the updated record
           // await record.save();
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 532 :", currentInvestment);
+          // console.log(" Current log, line 696 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
@@ -1407,7 +1457,7 @@ export default class ApprovalsController {
                 beneficiaryEmail,
                 beneficiaryPhoneNumber,
                 rfiCode,
-                descriptionForInterest)
+                descriptionForPrincipal)
               // if successful 
               if (creditUserWalletWithPrincipal.status == 200) {
                 let amountPaidOut = amount;

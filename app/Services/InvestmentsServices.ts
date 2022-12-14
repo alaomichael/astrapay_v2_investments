@@ -100,10 +100,19 @@ export default class InvestmentsServices {
                     }
                     throw new AppException({ message: `${message}`, codeSt: "422" })
                 }
-                if (investmentTenures.includes(duration) === false) {
-                    throw new AppException({ message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`, codeSt: "404" })
+                // if (investmentTenures.includes(duration) === false) {
+                //     throw new AppException({ message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`, codeSt: "404" })
+                // }
+                let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
+                // let isTenureExisting = investmentTenures.find(o =>{
+                //   console.log(' o.$original return line 1349 : ', o.$original.tenure)
+                //   return o.$original.tenure.toString() == duration.toString();
+                // })
+                // console.log(' IsTenureExisting return line 111 : ', isTenureExisting)
+                //  debugger
+                if (isTenureExisting == false || isTenureExisting == undefined) {
+                   throw new AppException({ message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`, codeSt: "404" })
                 }
-                console.log("investmentTenures.includes(duration) line 106 =======", investmentTenures.includes(duration))
                 debugger
                 rate = interestRate;
             }

@@ -1332,18 +1332,25 @@ export default class InvestmentsController {
             message: message,
           })
         }
-        if (investmentTenures.includes(duration) === false){
+        let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
+        // let isTenureExisting = investmentTenures.find(o =>{
+        //   console.log(' o.$original return line 1349 : ', o.$original.tenure)
+        //   return o.$original.tenure.toString() == duration.toString();
+        // })
+        console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
+      //  debugger
+        if (isTenureExisting == false || isTenureExisting == undefined){
+          // debugger
           return response.status(404).json({
             status: 'FAILED',
             message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`,
           })
         }
-        console.log("investmentTenures.includes(duration) line 1341 =======",investmentTenures.includes(duration))
-        debugger
         rate = interestRate;
+        // debugger
       }
 
-      console.log(' Rate return line 1079 : ', rate)
+      console.log(' Rate return line 1365 : ', rate)
       if (rate === undefined) {
         return response.status(400).json({
           status: 'FAILED',
@@ -1351,14 +1358,14 @@ export default class InvestmentsController {
           data: [],
         })
       }
-      console.log('Payload line 1043  :', payload)
+      console.log('Payload line 1373  :', payload)
       // const investment = await Investment.create(payload)
       // @ts-ignore
       payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
       // @ts-ignore
       payload.isRequestSent = true;
       const investment = await investmentsService.createInvestment(payload);
-      // console.log("New investment request line 1082: ", investment);
+      // console.log("New investment request line 1380: ", investment);
       // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
 
       // const newInvestment = request.all() as Partial<Investment>
@@ -1411,7 +1418,7 @@ export default class InvestmentsController {
       let investmentId = investment.id
       // let requestType = 'start_investment'
       // let settings = await Setting.query().where({ rfiCode: rfiCode })
-      // console.log('Approval setting line 910:', settings[0])
+      // console.log('Approval setting line 1433:', settings[0])
       const settingsService = new SettingsServices();
       const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
       // debugger
