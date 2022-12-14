@@ -37,6 +37,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
+import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
 
@@ -1228,305 +1229,311 @@ export default class InvestmentsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-    await request.validate(CreateInvestmentValidator);
-    const investmentsService = new InvestmentsServices();
-    const timelineService = new TimelinesServices();
-    const typesService = new TypesServices();
-    // const user = await auth.authenticate()
-    // const investmentSchema = schema.create({
-    //   amount: schema.number(),
-    //   rolloverType: schema.enum(['100', '101', '102']),
-    //   rolloverTarget: schema.number([rules.range(0, 5)]),
-    //   rolloverDone: schema.number([rules.range(0, 5)]),
-    //   investmentType: schema.enum(['fixed', 'debenture']),
-    //   duration: schema.string({ escape: true }, [rules.maxLength(4)]),
-    //   userId: schema.string(),
-    //   tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
-    //   currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-    //   long: schema.number(),
-    //   lat: schema.number(),
-    //   firstName: schema.string(),
-    //   lastName: schema.string(),
-    //   email: schema.string([rules.email()]),
-    //   phone: schema.number(),
-    //   investorFundingWalletId: schema.string(),
-    // })
-    // const payload: any = await request.validate({ schema: investmentSchema })
+      await request.validate(CreateInvestmentValidator);
+      const investmentsService = new InvestmentsServices();
+      const timelineService = new TimelinesServices();
+      const typesService = new TypesServices();
+      // const user = await auth.authenticate()
+      // const investmentSchema = schema.create({
+      //   amount: schema.number(),
+      //   rolloverType: schema.enum(['100', '101', '102']),
+      //   rolloverTarget: schema.number([rules.range(0, 5)]),
+      //   rolloverDone: schema.number([rules.range(0, 5)]),
+      //   investmentType: schema.enum(['fixed', 'debenture']),
+      //   duration: schema.string({ escape: true }, [rules.maxLength(4)]),
+      //   userId: schema.string(),
+      //   tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
+      //   currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
+      //   long: schema.number(),
+      //   lat: schema.number(),
+      //   firstName: schema.string(),
+      //   lastName: schema.string(),
+      //   email: schema.string([rules.email()]),
+      //   phone: schema.number(),
+      //   investorFundingWalletId: schema.string(),
+      // })
+      // const payload: any = await request.validate({ schema: investmentSchema })
 
-    const { lastName, firstName,
-      walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
-      lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
-      rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
+      const { lastName, firstName,
+        walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
+        lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
+        rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
 
-    const payload: InvestmentType = {
-      lastName: lastName,
-      firstName: firstName,
-      walletId: walletId,
-      userId: userId,
-      investmentTypeId: investmentTypeId,
-      investmentTypeName: investmentTypeName,
-      rfiCode: rfiCode,
-      currencyCode: currencyCode,
-      lng: lng,
-      lat: lat,
-      rfiRecordId: rfiRecordId,
-      phone: phone,
-      email: email,
-      investorFundingWalletId: investorFundingWalletId,
-      amount: amount,
-      duration: duration,
-      isRolloverActivated: isRolloverActivated,
-      rolloverType: rolloverType,
-      rolloverTarget: rolloverTarget,
-      investmentType: investmentType,
-      tagName: tagName,
-      interestRate: 0,
-      interestDueOnInvestment: 0,
-      totalAmountToPayout: 0,
-      // isPayoutSuccessful: false,
-      // requestType: '',
-      // approvalStatus: '',
-      // status: '',
-      // datePayoutWasDone: new DateTime
-    }
-
-
-    console.log('Payload line 1010  :', payload)
-    let payloadAmount = payload.amount
-    let payloadDuration = payload.duration
-    let payloadInvestmentType = payload.investmentType
-    console.log(
-      ' The Rate return for RATE line 541: ',
-      await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-    )
-    // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-    let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
-
-    let rate;
-    if (investmentTypeDetails) {
-      let { interestRate } = investmentTypeDetails;
-      rate = interestRate;
-    }
-
-    console.log(' Rate return line 1079 : ', rate)
-    if (rate === undefined) {
-      return response.status(400).json({
-        status: 'FAILED',
-        message: 'no investment rate matched your search, please try again.',
-        data: [],
-      })
-    }
-    console.log('Payload line 1043  :', payload)
-    // const investment = await Investment.create(payload)
-    // @ts-ignore
-    payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
-    // @ts-ignore
-    payload.isRequestSent = true;
-    const investment = await investmentsService.createInvestment(payload);
-    console.log("New investment request line 1082: ", investment);
-    // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
-
-    // const newInvestment = request.all() as Partial<Investment>
-    // const investment = await Investment.create(newInvestment)
-    // return response.OK(investment)
-    // The code below only work when there is auth
-    // await user.related('investments').save(investment)
-    // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
-
-    investment.interestRate = rate * (investment.duration/360);
-    // investment.rolloverDone = payload.rolloverDone
-
-    // When the Invest has been approved and activated
-    // let amount = investment.amount
-    let investmentDuration = investment.duration
-    let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
-    // @ts-ignore
-    investment.interestDueOnInvestment = amountDueOnPayout
-    // @ts-ignore
-    investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-
-    // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
-    // @ts-ignore
-    // investment.walletId = investorFundingWalletId
-    await investment.save()
-    console.log('The new investment:', investment)
-
-    // TODO
-    // Send Investment Payload To Transaction Service
-    // let sendToTransactionService //= new SendToTransactionService(investment)
-    // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-    // UPDATE Investment Status based on the response from Transaction Service
-    // let duration = Number(investment.duration)
-    // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
-    // let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
-    // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
-    // console.log('Updated Payout Date: ' + updatedPayoutDate)
-    // Save Investment new status to Database
-    // await investment.save()
-    // Send Investment Initiation Message to Queue
-
-    // check if Approval is set to Auto, from Setting Controller
-    // let userId = investment.userId
-    let investmentId = investment.id
-    // let requestType = 'start_investment'
-    // let settings = await Setting.query().where({ rfiCode: rfiCode })
-    // console.log('Approval setting line 910:', settings[0])
-    const settingsService = new SettingsServices();
-    const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
-    // debugger
-    if (!settings) {
-      throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
-    }
-    // let timeline: any[] = []
-    //  create a new object for the timeline
-    let timelineObject = {
-      id: uuid(),
-      investmentId: investmentId,
-      walletId: walletId,
-      userId: userId,
-      action: 'investment initiated',
-      // @ts-ignore
-      message: `${firstName} just initiated an investment.`,
-      createdAt: investment.createdAt,
-      metadata: `duration: ${investment.duration}`,
-    }
-    console.log('Timeline object line 923:', timelineObject)
-    await timelineService.createTimeline(timelineObject);
-    // let newTimeline = await timelineService.createTimeline(timelineObject);
-    // console.log('Timeline object line 927:', newTimeline)
-
-    // stringify the timeline array
-    // investment.timeline = JSON.stringify(timeline)
-    // await investment.save()
-
-    //  Check if investment activation is automated
-    let approvalIsAutomated = settings.isInvestmentAutomated
-    // let approvalIsAutomated = false
-    if (approvalIsAutomated === false) {
-      // Send Approval Request to Admin
-      // let approval = await approvalRequest(userId, investmentId, requestType)
-      // console.log(' Approval request return line 938 : ', approval)
-      // if (approval === undefined) {
-      //   return response.status(400).json({
-      //     status: 'FAILED',
-      //     message: 'investment approval request was not successful, please try again.',
-      //     data: [],
-      //   })
-      // }
-      const approvalsService = new ApprovalsServices()
-      let approvalObject;
-
-      // TODO: Send to the Admin for approval
-      // update approvalObject
-      approvalObject = {
-        walletId: investment.walletId,
-        investmentId: investment.id,
-        userId: investment.userId,
-        requestType: "start_investment",
-        approvalStatus: investment.approvalStatus,
-        assignedTo: "",//investment.assignedTo,
-        processedBy: "",//investment.processedBy,
-        // remark: "",
-      };
-      // console.log("ApprovalRequest object line 1194:", approvalObject);
-      // check if the approval request is not existing
-      let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
-      if (!approvalRequestIsExisting) {
-        let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-        console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+      const payload: InvestmentType = {
+        lastName: lastName,
+        firstName: firstName,
+        walletId: walletId,
+        userId: userId,
+        investmentTypeId: investmentTypeId,
+        investmentTypeName: investmentTypeName,
+        rfiCode: rfiCode,
+        currencyCode: currencyCode,
+        lng: lng,
+        lat: lat,
+        rfiRecordId: rfiRecordId,
+        phone: phone,
+        email: email,
+        investorFundingWalletId: investorFundingWalletId,
+        amount: amount,
+        duration: duration,
+        isRolloverActivated: isRolloverActivated,
+        rolloverType: rolloverType,
+        rolloverTarget: rolloverTarget,
+        investmentType: investmentType,
+        tagName: tagName,
+        interestRate: 0,
+        interestDueOnInvestment: 0,
+        totalAmountToPayout: 0,
+        // isPayoutSuccessful: false,
+        // requestType: '',
+        // approvalStatus: '',
+        // status: '',
+        // datePayoutWasDone: new DateTime
       }
 
-    } else if (approvalIsAutomated === true) {
+
+      // console.log('Payload line 1010  :', payload)
+      let payloadAmount = payload.amount
+      let payloadDuration = payload.duration
+      let payloadInvestmentType = payload.investmentType
+      // console.log(
+      //   ' The Rate return for RATE line 541: ',
+      //   await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+      // )
+      // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+      let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
+
+      let rate;
+      if (investmentTypeDetails) {
+        let { interestRate } = investmentTypeDetails;
+        rate = interestRate;
+      }
+
+      console.log(' Rate return line 1079 : ', rate)
+      if (rate === undefined) {
+        return response.status(400).json({
+          status: 'FAILED',
+          message: 'no investment rate matched your search, please try again.',
+          data: [],
+        })
+      }
+      console.log('Payload line 1043  :', payload)
+      // const investment = await Investment.create(payload)
+      // @ts-ignore
+      payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
+      // @ts-ignore
+      payload.isRequestSent = true;
+      const investment = await investmentsService.createInvestment(payload);
+      // console.log("New investment request line 1082: ", investment);
+      // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
+
+      // const newInvestment = request.all() as Partial<Investment>
+      // const investment = await Investment.create(newInvestment)
+      // return response.OK(investment)
+      // The code below only work when there is auth
+      // await user.related('investments').save(investment)
+      // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
+      let decPl = 2;
+      let interestRateByDuration = rate * (Number(investment.duration) / 360);
+      console.log(`Interest rate by Investment duration for ${duration} day(s), @ utils line 1338:`, interestRateByDuration)
+      // convert to decimal places
+      // interestRateByDuration = Number(getDecimalPlace(interestRateByDuration, decPl))
+      interestRateByDuration = Number(interestRateByDuration.toFixed(decPl));
+      console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ InvestmentController line 1342:`, interestRateByDuration);
+      investment.interestRate = interestRateByDuration;
+      // investment.rolloverDone = payload.rolloverDone
+
+      // When the Invest has been approved and activated
+      // let amount = investment.amount
+      let investmentDuration = investment.duration
+      let amountDueOnPayout = await interestDueOnPayout(amount, rate, investmentDuration)
+      // @ts-ignore
+      investment.interestDueOnInvestment = amountDueOnPayout
+      // @ts-ignore
+      investment.totalAmountToPayout = investment.amount + amountDueOnPayout
+      debugger
+      // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
+      // @ts-ignore
+      // investment.walletId = investorFundingWalletId
+      // await investment.save()
+      console.log('The new investment:', investment)
+
       // TODO
       // Send Investment Payload To Transaction Service
-      // let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+      // let sendToTransactionService //= new SendToTransactionService(investment)
       // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-      // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-      // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-      investment.approvalStatus = "investment_approved"//approval.approvalStatus;
-      // Data to send for transfer of fund
-      let { amount, lng, lat, investmentRequestReference,
-        firstName, lastName,
-        walletId, userId,
-        phone,
-        email,
-        rfiCode } = investment;
-      let senderName = `${firstName} ${lastName}`;
-      let senderAccountNumber = walletId;
-      let senderAccountName = senderName;
-      let senderPhoneNumber = phone;
-      let senderEmail = email;
-      // Send to the endpoint for debit of wallet
-      let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
-        senderName,
-        senderAccountNumber,
-        senderAccountName,
-        senderPhoneNumber,
-        senderEmail,
-        rfiCode)
+      // UPDATE Investment Status based on the response from Transaction Service
+      // let duration = Number(investment.duration)
+      // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
+      // let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
+      // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
+      // console.log('Updated Payout Date: ' + updatedPayoutDate)
+      // Save Investment new status to Database
+      // await investment.save()
+      // Send Investment Initiation Message to Queue
+
+      // check if Approval is set to Auto, from Setting Controller
+      // let userId = investment.userId
+      let investmentId = investment.id
+      // let requestType = 'start_investment'
+      // let settings = await Setting.query().where({ rfiCode: rfiCode })
+      // console.log('Approval setting line 910:', settings[0])
+      const settingsService = new SettingsServices();
+      const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
       // debugger
-      // if successful 
-      if (debitUserWalletForInvestment.status == 200) {
+      if (!settings) {
+        throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
+      }
+      // let timeline: any[] = []
+      //  create a new object for the timeline
+      let timelineObject = {
+        id: uuid(),
+        investmentId: investmentId,
+        walletId: walletId,
+        userId: userId,
+        action: 'investment initiated',
+        // @ts-ignore
+        message: `${firstName} just initiated an investment.`,
+        createdAt: investment.createdAt,
+        metadata: `duration: ${investment.duration}`,
+      }
+      console.log('Timeline object line 923:', timelineObject)
+      await timelineService.createTimeline(timelineObject);
+      // let newTimeline = await timelineService.createTimeline(timelineObject);
+      // console.log('Timeline object line 927:', newTimeline)
 
-        // update the investment details
-        investment.status = 'active'
-        investment.approvalStatus = 'approved'
-        investment.startDate = DateTime.now() //.toISODate()
-        investment.payoutDate = DateTime.now().plus({ days: investment.duration })
-        investment.isInvestmentCreated = true
-        debugger
+      // stringify the timeline array
+      // investment.timeline = JSON.stringify(timeline)
+      // await investment.save()
 
-        // Save the updated record
-        // await record.save();
-        // update record
-        let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-        // console.log(" Current log, line 1276 :", currentInvestment);
-        // send for update
-        let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-        console.log(" Current log, line 1279 :", updatedInvestment);
+      //  Check if investment activation is automated
+      let approvalIsAutomated = settings.isInvestmentAutomated
+      // let approvalIsAutomated = false
+      if (approvalIsAutomated === false) {
+        // Send Approval Request to Admin
+        // let approval = await approvalRequest(userId, investmentId, requestType)
+        // console.log(' Approval request return line 938 : ', approval)
+        // if (approval === undefined) {
+        //   return response.status(400).json({
+        //     status: 'FAILED',
+        //     message: 'investment approval request was not successful, please try again.',
+        //     data: [],
+        //   })
+        // }
+        const approvalsService = new ApprovalsServices()
+        let approvalObject;
 
-        // console.log("Updated record Status line 1281: ", record);
-
-        // update timeline
-        timelineObject = {
-          id: uuid(),
-          action: "investment approved",
-          investmentId: investmentId,//id,
-          walletId: walletId,// walletId, 
-          userId: userId,// userId,
-          // @ts-ignore
-          message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
-          createdAt: DateTime.now(),
-          metadata: ``,
+        // TODO: Send to the Admin for approval
+        // update approvalObject
+        approvalObject = {
+          walletId: investment.walletId,
+          investmentId: investment.id,
+          userId: investment.userId,
+          requestType: "start_investment",
+          approvalStatus: investment.approvalStatus,
+          assignedTo: "",//investment.assignedTo,
+          processedBy: "",//investment.processedBy,
+          // remark: "",
         };
-        // console.log("Timeline object line 551:", timelineObject);
-        await timelineService.createTimeline(timelineObject);
-        // let newTimeline = await timelineService.createTimeline(timelineObject);
-        // console.log("new Timeline object line 553:", newTimeline);
-        // update record
-        // Activate the investment
-        // investment.requestType = requestType
-        // investment.status = 'active'
-        // investment.approvalStatus = 'approved'
-        // investment.startDate = DateTime.now() //.toISODate()
-        // investment.payoutDate = DateTime.now().plus({ days: investmentDuration })
-        timelineObject = {
-          id: uuid(),
-          investmentId: investmentId,
-          userId: userId,
-          walletId: walletId,
-          action: 'investment activated',
-          // @ts-ignore
-          message: `${firstName} investment has just been activated.`,
-          createdAt: investment.startDate,
-          metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
+        // console.log("ApprovalRequest object line 1194:", approvalObject);
+        // check if the approval request is not existing
+        let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
+        if (!approvalRequestIsExisting) {
+          let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+          console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
         }
-        // console.log('Timeline object line 1004:', timelineObject)
-        await timelineService.createTimeline(timelineObject);
 
-        // Send Details to notification service
-        let subject = "AstraPay Investment Approval";
-        let message = `
+      } else if (approvalIsAutomated === true) {
+        // TODO
+        // Send Investment Payload To Transaction Service
+        // let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
+        // console.log(' Feedback from Transaction service: ', sendToTransactionService)
+        // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+        // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+        investment.approvalStatus = "investment_approved"//approval.approvalStatus;
+        // Data to send for transfer of fund
+        let { amount, lng, lat, investmentRequestReference,
+          firstName, lastName,
+          walletId, userId,
+          phone,
+          email,
+          rfiCode } = investment;
+        let senderName = `${firstName} ${lastName}`;
+        let senderAccountNumber = walletId;
+        let senderAccountName = senderName;
+        let senderPhoneNumber = phone;
+        let senderEmail = email;
+        // Send to the endpoint for debit of wallet
+        let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+          senderName,
+          senderAccountNumber,
+          senderAccountName,
+          senderPhoneNumber,
+          senderEmail,
+          rfiCode)
+        // debugger
+        // if successful 
+        if (debitUserWalletForInvestment.status == 200) {
+
+          // update the investment details
+          investment.status = 'active'
+          investment.approvalStatus = 'approved'
+          investment.startDate = DateTime.now() //.toISODate()
+          investment.payoutDate = DateTime.now().plus({ days: investment.duration })
+          investment.isInvestmentCreated = true
+          debugger
+
+          // Save the updated record
+          // await record.save();
+          // update record
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+          // console.log(" Current log, line 1276 :", currentInvestment);
+          // send for update
+          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+          console.log(" Current log, line 1279 :", updatedInvestment);
+
+          // console.log("Updated record Status line 1281: ", record);
+
+          // update timeline
+          timelineObject = {
+            id: uuid(),
+            action: "investment approved",
+            investmentId: investmentId,//id,
+            walletId: walletId,// walletId, 
+            userId: userId,// userId,
+            // @ts-ignore
+            message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
+            createdAt: DateTime.now(),
+            metadata: ``,
+          };
+          // console.log("Timeline object line 551:", timelineObject);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 553:", newTimeline);
+          // update record
+          // Activate the investment
+          // investment.requestType = requestType
+          // investment.status = 'active'
+          // investment.approvalStatus = 'approved'
+          // investment.startDate = DateTime.now() //.toISODate()
+          // investment.payoutDate = DateTime.now().plus({ days: investmentDuration })
+          timelineObject = {
+            id: uuid(),
+            investmentId: investmentId,
+            userId: userId,
+            walletId: walletId,
+            action: 'investment activated',
+            // @ts-ignore
+            message: `${firstName} investment has just been activated.`,
+            createdAt: investment.startDate,
+            metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
+          }
+          // console.log('Timeline object line 1004:', timelineObject)
+          await timelineService.createTimeline(timelineObject);
+
+          // Send Details to notification service
+          let subject = "AstraPay Investment Approval";
+          let message = `
                 ${firstName} this is to inform you, that your Investment request, has been approved.
 
                 Please wait while the investment is being activated. 
@@ -1534,38 +1541,45 @@ export default class InvestmentsController {
                 Thank you.
 
                 AstraPay Investment.`;
-        let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-        console.log("newNotificationMessage line 1338:", newNotificationMessage);
-        if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-          console.log("Notification sent successfully");
-        } else if (newNotificationMessage.message !== "Success") {
-          console.log("Notification NOT sent successfully");
-          console.log(newNotificationMessage);
+          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          console.log("newNotificationMessage line 1338:", newNotificationMessage);
+          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessage.message !== "Success") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessage);
+          }
         }
       }
+
+      // Testing
+      // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
+      // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
+      // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+      // console.log('Testing Payout Date: ' + testingPayoutDate)
+
+      // Save update to database
+      // await investment.save()
+      // update record
+      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+      // console.log(" Current log, line 1564 :", currentInvestment);
+      // send for update
+      let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+      console.log(" Current log, line 1567 :", updatedInvestment);
+
+      let newInvestmentId = investment.id
+      // Send to Notificaation Service
+      // @ts-ignore
+      let newInvestmentEmail = email
+      Event.emit('new:investment', {
+        id: newInvestmentId,
+        email: newInvestmentEmail,
+      })
+      return response.status(201).json({ status: 'OK', data: investment })
+    } catch (error) {
+      console.error('update investment by investmentId Error :', error)
+      return response.json({ status: 'FAILED', data: error.message })
     }
-
-    // Testing
-    // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
-    // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
-    // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-    // console.log('Testing Payout Date: ' + testingPayoutDate)
-
-    // Save update to database
-    await investment.save()
-    let newInvestmentId = investment.id
-    // Send to Notificaation Service
-    // @ts-ignore
-    let newInvestmentEmail = email
-    Event.emit('new:investment', {
-      id: newInvestmentId,
-      email: newInvestmentEmail,
-    })
-    return response.status(201).json({ status: 'OK', data: investment })
-  } catch(error) {
-    console.error('update investment by investmentId Error :', error)
-    return response.json({ status: 'FAILED', data: error.message })
-  }
   }
 
   public async approve({ request, response }: HttpContextContract) {

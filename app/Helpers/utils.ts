@@ -110,6 +110,43 @@ const generateRate = (amount, duration, investment_type) => {
 // generateRate(198, '752', 'fixed')
 
 // generateRate(1000, '300', 'debenture')
+// Get decimal place
+const getDecimalPlace = (n, r = 2) => {
+  let valueToReturn;
+  const numToSeparate = n; //12345;
+  // const arrayOfDigits = Array.from(String(numToSeparate), Number);
+  // console.log(arrayOfDigits);   //[1,2,3,4,5]
+  const arrayOfDigits02 = numToSeparate.toString().split("");
+  // console.log(arrayOfDigits02);
+  let indexOfDecimalPoint = arrayOfDigits02.indexOf(".");
+  // console.log(indexOfDecimalPoint);
+  // console.log(arrayOfDigits02[indexOfDecimalPoint + r + 2]);
+  // console.log(arrayOfDigits02[indexOfDecimalPoint + r + 3]);
+  if (arrayOfDigits02[indexOfDecimalPoint + r + 1] >= 4 && arrayOfDigits02[indexOfDecimalPoint + r + 2] >= 4 && arrayOfDigits02[indexOfDecimalPoint + r + 3] >= 5) {
+    // console.log("The value of the first next digit is", n.toString()[indexOfDecimalPoint + r + 1]);
+    // console.log("The value of the next digit is", n.toString()[indexOfDecimalPoint + r + 2]);
+    // console.log("The value of the next digit after the one above is", n.toString()[indexOfDecimalPoint + r + 3]);
+    let valueToAdd = 1 * 10 ** (-(r)); // eg 0.0001;
+    console.log(valueToAdd);
+    valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r);
+    // console.log("valueToReturn line 132 ================");
+    // console.log(valueToReturn);
+    // console.log("valueToReturn.toString()[r] line 134 ================");
+    // console.log(valueToReturn.toString()[r]);
+    if ((r == 1 && valueToReturn.toString()[r] != undefined) || (valueToAdd <= 0.01 && valueToReturn.toString()[r] < 5)) {
+      valueToReturn = valueToReturn + valueToAdd;
+      // console.log("valueToReturn line 138 ================");
+      // console.log(valueToReturn);
+      valueToReturn = Number(valueToReturn.toFixed(r));
+      // console.log("valueToReturn line 141 ================");
+      // console.log(valueToReturn);
+    }
+  } else {
+    valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r)
+  }
+  console.log(n + ' rounded to ' + r + ' decimal places is ' + valueToReturn);
+  return valueToReturn
+}
 
 // Generate Return on Investment
 const interestDueOnPayout = (amount, rate, duration) => {
@@ -119,18 +156,25 @@ const interestDueOnPayout = (amount, rate, duration) => {
     }
     let interestDue
     let interestDueDaily
-    interestDue = amount * (duration/360) * (rate/100)
+    let decPl = 2;
+    interestDue = (duration / 360) * (rate / 100);
+    debugger
+    interestDue = amount * interestDue;
+    debugger
+    interestDue = Number(interestDue.toFixed(decPl));
+    debugger
+    // interestDue = getDecimalPlace(interestDue,decPl);
     interestDueDaily = interestDue / duration
     let day = 'day'
     if (duration > 1) {
       day = 'days'
     }
-    console.log(
-      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    )
-    console.log(
-      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    )
+    // console.log(
+    //   `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
+    // )
+    // console.log(
+    //   `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
+    // )
     return resolve(interestDue)
   })
 }
