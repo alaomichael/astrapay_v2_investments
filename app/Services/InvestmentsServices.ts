@@ -69,31 +69,47 @@ export default class InvestmentsServices {
             const typesService = new TypesServices();
 
             payload.amount = amountToInvest;
-            let payloadAmount = payload.amount;
-            let payloadDuration = payload.duration;
-            let payloadInvestmentType = payload.investmentType;
+            // let payloadAmount = payload.amount;
+            // let payloadDuration = payload.duration;
+            // let payloadInvestmentType = payload.investmentType;
             // let payloadinvestmentTypeId = payload.investmentTypeId;
-            let { investmentTypeId, rfiCode, walletId, userId, firstName, } = payload;
-            console.log(
-                ' The Rate return for RATE line 79: ',
-                await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-            )
+            let { amount, investmentTypeId, rfiCode, walletId, userId, firstName, duration, currencyCode } = payload;
+            // console.log(
+            //     ' The Rate return for RATE line 79: ',
+            //     await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
+            // )
             // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
             let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
 
             let rate;
+            // if (investmentTypeDetails) {
+            //     let { interestRate } = investmentTypeDetails;
+            //     rate = interestRate;
+            // }
             if (investmentTypeDetails) {
-                let { interestRate } = investmentTypeDetails;
+                let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
+                if (status !== "active") {
+                    throw new AppException({ message: `The investment type you selected is ${status} , please select another one and try again.`, codeSt: "422" })
+                }
+                if (amount < lowestAmount || amount > highestAmount) {
+                    let message
+                    if (amount < lowestAmount) {
+                        message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
+                    } else if (amount > highestAmount) {
+                        message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
+                    }
+                    throw new AppException({ message: `${message}`, codeSt: "422" })
+                }
+                if (investmentTenures.includes(duration) === false) {
+                    throw new AppException({ message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`, codeSt: "404" })
+                }
+                console.log("investmentTenures.includes(duration) line 106 =======", investmentTenures.includes(duration))
+                debugger
                 rate = interestRate;
             }
 
             console.log(' Rate return line 91 : ', rate)
             if (rate === undefined) {
-                // return {
-                //     status: 'FAILED',
-                //     message: 'no investment rate matched your search, please try again.',
-                //     data:[]
-                // }
                 throw Error('no investment rate matched your search, please try again.')
             }
             // const investment = await Investment.create(payload)
@@ -103,8 +119,16 @@ export default class InvestmentsServices {
             payload.isRequestSent = true;
             const investment = await investmentsService.createInvestment(payload);
             // console.log("New investment request line 105: ", investment);
+            let decPl = 2;
+            let interestRateByDuration = rate * (Number(investment.duration) / 360);
+            console.log(`Interest rate by Investment duration for ${duration} day(s), @ investmentService line 124:`, interestRateByDuration)
+            // convert to decimal places
+            // interestRateByDuration = Number(getDecimalPlace(interestRateByDuration, decPl))
+            interestRateByDuration = Number(interestRateByDuration.toFixed(decPl));
+            console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ investmentService line 127:`, interestRateByDuration);
+            investment.interestRate = interestRateByDuration;
             debugger
-            investment.interestRate = rate
+            // investment.interestRate = rate
             // investment.rolloverDone = payload.rolloverDone
 
             // When the Invest has been approved and activated
