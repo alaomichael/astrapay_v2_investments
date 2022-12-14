@@ -593,7 +593,7 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
-          // debugger
+          debugger
           // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
           // if successful 
           if (debitUserWalletForInvestment.status == 200) {
@@ -650,9 +650,9 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
             // debugger
-          } else {
+          } else if (debitUserWalletForInvestment.status !== 200) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-            // console.log(" Current log, line 532 :", currentInvestment);
+            // console.log(" Current log, line 655 :", currentInvestment);
             // send for update
             await investmentsService.updateInvestment(currentInvestment, record);
 
@@ -673,7 +673,7 @@ export default class ApprovalsController {
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 553:", newTimeline);
             // update record
-            // debugger
+            debugger
             // Send Details to notification service
             let subject = "AstraPay Investment Activation Failed";
             let message = `
@@ -694,6 +694,7 @@ export default class ApprovalsController {
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 535 =========:", updatedInvestment);
             console.log("debitUserWalletForInvestment reponse data 688 ==================================", debitUserWalletForInvestment)
+            debugger
             throw Error(debitUserWalletForInvestment);
           }
 
