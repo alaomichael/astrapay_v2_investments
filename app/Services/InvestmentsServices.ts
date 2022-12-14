@@ -644,8 +644,9 @@ export default class InvestmentsServices {
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
                                 // await investmentsService.updateInvestment(record, investment);
-                                let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                console.log(" Current log, line 1655 :", updatedInvestment);
+                                 await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 1655 :", updatedInvestment);
                                 // debugger
                             } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'paid' || investment.status !== 'completed') {
@@ -6261,7 +6262,8 @@ export default class InvestmentsServices {
             const investment = await Investment.query().where({ id: id })
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                // .preload("payoutInvestments", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
+                // .orderBy("updated_at", "desc")
                 .first();
             console.log("Investment search result from service")
             console.log(investment);

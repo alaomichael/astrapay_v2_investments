@@ -202,7 +202,7 @@ export default class InvestmentsController {
       let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
       console.log(" Current log, line 200 :", updatedInvestment);
       // debugger
-      return response.status(200).json({ status: 'OK', data: investment.$original })
+      return response.status(200).json({ status: 'OK', data: investment })
     } catch (error) {
       // console.log(error)
       console.log("Error line 205", error.messages);
@@ -2151,19 +2151,14 @@ export default class InvestmentsController {
             // timeline.push(timelineObject)
             // console.log('Timeline object line 1566:', timeline)
             await timelineService.createTimeline(timelineObject);
-            // stringify the timeline array
-            // investment.timeline = JSON.stringify(timeline)
-            // Save
-            await investment.save()
-            // stringify the timeline array
             // Save
             await investment.save()
           }
 
-          console.log('Investment data after payout request line 1392:', investment)
+          // console.log('Investment data after payout request line 1392:', investment)
           return response.status(200).json({
             status: 'OK',
-            data: investment.map((inv) => inv.$original),
+            data: investment//.map((inv) => inv.$original),
           })
           // END
         } else {
