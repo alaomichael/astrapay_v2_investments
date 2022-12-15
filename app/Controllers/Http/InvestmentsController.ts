@@ -1680,7 +1680,7 @@ export default class InvestmentsController {
             walletId: walletId,// walletId, 
             userId: userId,// userId,
             // @ts-ignore
-            message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
+            message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -2217,6 +2217,7 @@ export default class InvestmentsController {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
       debugger
+      debugger
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
@@ -2238,6 +2239,7 @@ export default class InvestmentsController {
       console.error(error)
       console.log("Error line 2052", error.messages);
       console.log("Error line 2053", error.message);
+      debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500

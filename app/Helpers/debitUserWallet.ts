@@ -130,7 +130,7 @@ export const debitUserWallet = async function debitUserWallet(
             payload, { headers: headers }
         )
         console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
-        // debugger
+        debugger
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
@@ -180,14 +180,17 @@ export const debitUserWallet = async function debitUserWallet(
                 throw Error(response);
             }
         } else {
+            console.log("The ASTRAPAY API response @ debitUserWallet line 183: ", response1.code);
+            debugger
             throw Error(response1);
         }
     } catch (error) {
         console.error(error);
-        console.error(error.response.data.errorCode);
-        console.error(error.response.data.errorMessage);
-        console.error(error.message);
-        console.error(error.data);
+        console.error("debitUserWallet method line 187",error.response.data.errorCode);
+        console.error("debitUserWallet method line 188",error.response.data.errorMessage);
+        console.error("debitUserWallet method line 189",error.message);
+        console.error("debitUserWallet method line 190",error.data);
+        // code: 'ETIMEDOUT',
         if (error.response == undefined) {
             debugger
             return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.data.errorCode, errorMessage: error.data.errorMessage }

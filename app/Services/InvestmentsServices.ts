@@ -340,7 +340,7 @@ export default class InvestmentsServices {
                     //     walletId: walletId,// walletId, 
                     //     userId: userId,// userId,
                     //     // @ts-ignore
-                    //     message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
+                    //     message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
                     //     createdAt: DateTime.now(),
                     //     metadata: ``,
                     // };
@@ -403,8 +403,8 @@ export default class InvestmentsServices {
                 queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
             }
 
-            console.log(" updatedAtFrom line 66 ==============================================================");
-            console.log(queryParams);
+            // console.log(" updatedAtFrom line 406 ==============================================================");
+            // console.log(queryParams);
             // debugger;
             const queryGetter = await this.queryBuilder(queryParams)
             // debugger;
@@ -491,12 +491,12 @@ export default class InvestmentsServices {
                     // let id = request.input('userId')
                     // let { userId, investmentId } = request.all()
                     // let { userId, investmentId } = investment;//request.all()
-                    console.log('Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + id)
+                    console.log('Params for update line 494: ' + ' userId: ' + userId + ', investmentId: ' + id)
                     // let investment = await Investment.query().where('user_id', id).where('id', params.id)
                     // let investment = await Investment.query().where('id', investmentId)
                     let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-                    // console.log('Investment Info, line 1322: ', investment)
+                    // console.log('Investment Info, line 499: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "active") {
                         console.log('investment search data :', investment.$original)
@@ -508,10 +508,10 @@ export default class InvestmentsServices {
                         // TESTING
                         let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         let duration = 4
-                        console.log('Time investment was started line 163: ', startDate)
+                        console.log('Time investment was started line 511: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 166:', isDueForPayout)
+                        console.log('Is due for payout status line 514:', isDueForPayout)
                         // let amt = investment.amount
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -519,7 +519,7 @@ export default class InvestmentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 1339:', settings)
+                        console.log('Approval setting line 522:', settings)
                         if (isDueForPayout) {
                             //  START
                             let payload = investment.$original
@@ -884,6 +884,7 @@ export default class InvestmentsServices {
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
                             // Send to the endpoint for debit of wallet
+                            debugger
                             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
                                 senderName,
                                 senderAccountNumber,
@@ -1033,6 +1034,7 @@ export default class InvestmentsServices {
                     console.error(error)
                     console.log("Error line 1030", error.messages);
                     console.log("Error line 1031", error.message);
+                    debugger
                     await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
@@ -6730,7 +6732,7 @@ export default class InvestmentsServices {
 
         response.sqlQuery = predicate
         response.params = params
-        console.log(response)
+        // console.log(response)
         return response
     }
 }

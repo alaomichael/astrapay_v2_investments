@@ -347,6 +347,7 @@ export default class ApprovalsController {
 
       if (approval) {
         console.log("Investment approval Selected for Update line 477:");
+        
         let payload: ApprovalType = {
           walletId: approval.walletId,
           investmentId: approval.investmentId,
@@ -380,7 +381,7 @@ export default class ApprovalsController {
         let timelineObject;
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved") { //&& record.status == "submitted"
+        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status === "initiated" ) { //&& record.status == "submitted"
           console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
           newStatus = "investment_approved"; //'pending_account_number_generation'; 
@@ -427,7 +428,7 @@ export default class ApprovalsController {
             walletId: walletIdToSearch,// walletId, 
             userId: userIdToSearch,// userId,
             // @ts-ignore
-            message: `${firstName}, your investment request has been approved, please wait while the investment is started. Thank you.`,
+            message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -442,7 +443,7 @@ export default class ApprovalsController {
           let message = `
                 ${firstName} this is to inform you, that your Investment request, has been approved.
 
-                Please wait while the investment is being started. 
+                Please wait while the investment is being activated. 
 
                 Thank you.
 
@@ -565,7 +566,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 678:", newNotificationMessage);
+            console.log("newNotificationMessage line 569:", newNotificationMessage);
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessage.message !== "Success") {
@@ -575,13 +576,11 @@ export default class ApprovalsController {
 
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 535 =========:", updatedInvestment);
-            console.log("debitUserWalletForInvestment reponse data 688 ==================================", debitUserWalletForInvestment)
+            console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
             debugger
             throw Error(debitUserWalletForInvestment);
           }
-
-
-        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
+        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status === "initiated" ) { // && record.status == "submitted"
           newStatus = "investment_rejected";
           record.status = newStatus;
           record.approvalStatus = approval.approvalStatus;// "investment_declined"; //approval.approvalStatus;
@@ -637,7 +636,7 @@ export default class ApprovalsController {
             console.log(newNotificationMessage);
           }
 
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing: ===========================================>")
           // newStatus = "submitted";
           newStatus = "approved"; //'pending_account_number_generation'; 
@@ -868,7 +867,7 @@ export default class ApprovalsController {
           } else {
             throw Error();
           }
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollovered") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollovered" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation'; 
@@ -1430,7 +1429,7 @@ export default class ApprovalsController {
             }
           }
 
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspended") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspended" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
@@ -1721,6 +1720,14 @@ export default class ApprovalsController {
             console.log(newNotificationMessage);
           }
 
+        } else {
+          console.log("Entering no record for update 1725 ==================================")
+          return response
+            .status(404)
+            .json({
+              status: "FAILED",
+              message: "No approval data match your query parameters",
+            });
         }
         // Update Investment data
         // console.log(" Updated record line 733: ", record.$original);
@@ -1732,12 +1739,12 @@ export default class ApprovalsController {
             data: approval//.map((inv) => inv.$original),
           });
       } else {
-        console.log("Entering update 1515 ==================================")
+        console.log("Entering update 1743 ==================================")
         return response
           .status(404)
           .json({
             status: "FAILED",
-            message: "No data match your query parameters",
+            message: "No approval data match your query parameters",
           });
       }
     } catch (error) {
@@ -1757,9 +1764,7 @@ export default class ApprovalsController {
         message: error.messages,
         hint: error.message
       });
-
     }
-
   }
 
   public async destroy({ request, response }: HttpContextContract) {
