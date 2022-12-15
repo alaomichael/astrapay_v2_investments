@@ -48,7 +48,7 @@ export const debitUserWallet = async function debitUserWallet(
         // console.log("Admin setting line 47 @ debitUserWallet:", settings);
         //  get the loan currency
         // @ts-ignore
-        let { currencyCode, investmentWalletId, payoutWalletId,  rfiName } = settings;
+        let { currencyCode, investmentWalletId, payoutWalletId, rfiName } = settings;
         let beneficiaryAccountNumber = investmentWalletId;
         let beneficiaryAccountName = rfiName;
         // @ts-ignore
@@ -134,7 +134,7 @@ export const debitUserWallet = async function debitUserWallet(
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
-        
+
         if (response1.status == 200) {
             // console.log("The ASTRAPAY API response, @ debitUserWallet line 118: ", response.data);
             // debugger
@@ -166,12 +166,12 @@ export const debitUserWallet = async function debitUserWallet(
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-            
+
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
-            
-            
+
+
             if (response.status == 200) {
                 // debugger
                 // return response.data;
@@ -187,9 +187,12 @@ export const debitUserWallet = async function debitUserWallet(
         console.error(error.response.data.errorCode);
         console.error(error.response.data.errorMessage);
         console.error(error.message);
+        console.error(error.data);
         if (error.response == undefined) {
-            return { status: "FAILED TO DEBIT WALLET", message: error.message }
+            debugger
+            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.data.errorCode, errorMessage: error.data.errorMessage }
         } else {
+            debugger
             return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
         }
     }
