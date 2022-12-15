@@ -23,9 +23,9 @@ export default class extends BaseSchema {
         .nullable()
         .index()
 
-      table.string("action", 100).notNullable().index();
-      table.string("message", 255).nullable();
-      table.string("metadata", 255).nullable();
+      table.text("action").notNullable().index();
+      table.text("message").nullable();
+      table.text("metadata").nullable();
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

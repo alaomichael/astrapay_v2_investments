@@ -578,7 +578,13 @@ export default class ApprovalsController {
           // console.log(" Current log, line 535 =========:", updatedInvestment);
             console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
             debugger
-            throw Error(debitUserWalletForInvestment);
+            // throw Error(debitUserWalletForInvestment);
+            return response
+              .status(599)
+              .json({
+                status: debitUserWalletForInvestment.status,
+                message: debitUserWalletForInvestment.message,
+              });
           }
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status === "initiated" ) { // && record.status == "submitted"
           newStatus = "investment_rejected";
@@ -1749,20 +1755,38 @@ export default class ApprovalsController {
       }
     } catch (error) {
       console.log("Error line 1750", error.messages);
-      console.log("Error line 1751", error.message);
+      console.log("Error line 1751", error.code);
+      console.log("Error line 1752", error.message);
+      // let { status, message,messages,errorCode,errorMessage} = error;
+      let { message, messages, } = error;
+      debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
         return response.status(parseInt(statusCode)).json({
           status: "FAILED",
-          message: error.messages,
-          hint: error.message
+          // message: error.messages,
+          // hint: error.message
+          message: messages,
+          hint: message
+        });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          // message: error.messages,
+          // hint: error.message
+          message: messages,
+          hint: message
         });
       }
       return response.status(500).json({
         status: "FAILED",
-        message: error.messages,
-        hint: error.message
+        // message: error.messages,
+        // hint: error.message
+        message: messages,
+        hint: message
       });
     }
   }

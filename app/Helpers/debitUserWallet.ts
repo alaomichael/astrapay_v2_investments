@@ -129,8 +129,8 @@ export const debitUserWallet = async function debitUserWallet(
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
-        console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
-        debugger
+        // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
+        // debugger
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
@@ -163,14 +163,15 @@ export const debitUserWallet = async function debitUserWallet(
                     }
                 ]
             }
+
+            // debugger
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-
+            // debugger
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
-
 
             if (response.status == 200) {
                 // debugger
@@ -181,22 +182,31 @@ export const debitUserWallet = async function debitUserWallet(
             }
         } else {
             console.log("The ASTRAPAY API response @ debitUserWallet line 183: ", response1.code);
-            debugger
+            // debugger
             throw Error(response1);
+            // return response1;
         }
     } catch (error) {
-        console.error(error);
-        console.error("debitUserWallet method line 187",error.response.data.errorCode);
-        console.error("debitUserWallet method line 188",error.response.data.errorMessage);
-        console.error("debitUserWallet method line 189",error.message);
-        console.error("debitUserWallet method line 190",error.data);
+        console.error("debitUserWallet method line 191", error);
+        // console.error("debitUserWallet method line 187",error.response.data.errorCode);
+        // console.error("debitUserWallet method line 188",error.response.data.errorMessage);
+        // console.error("debitUserWallet method line 189",error.message);
+        // console.error("debitUserWallet method line 190",error.data);
+        debugger
         // code: 'ETIMEDOUT',
         if (error.response == undefined) {
+            console.error("debitUserWallet method line 199",error.data);
+            console.error("debitUserWallet method line 200", error.code);
+            console.error("debitUserWallet method line 201", error.errorMessage);
             debugger
-            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.data.errorCode, errorMessage: error.data.errorMessage }
+            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.code, errorMessage: error.errorMessage }
         } else {
+            console.error("debitUserWallet method line 204", error.response.data);
+            console.error("debitUserWallet method line 205", error.response.code);
+            console.error("debitUserWallet method line 206", error.response.errorMessage);
             debugger
-            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+            // return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+            return { status: "FAILED TO DEBIT WALLET", message: error.message, errorCode: error.response.data.code, errorMessage: error.response.data.errorMessage }
         }
     }
 

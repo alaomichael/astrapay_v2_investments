@@ -2217,7 +2217,7 @@ export default class InvestmentsController {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
       debugger
-      debugger
+      
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
@@ -2236,7 +2236,8 @@ export default class InvestmentsController {
         })
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      debugger
       console.log("Error line 2052", error.messages);
       console.log("Error line 2053", error.message);
       debugger
@@ -2248,7 +2249,16 @@ export default class InvestmentsController {
           message: error.messages,
           hint: error.message
         });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
       }
+
       return response.status(500).json({
         status: "FAILED",
         message: error.messages,

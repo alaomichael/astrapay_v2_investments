@@ -884,7 +884,7 @@ export default class InvestmentsServices {
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
                             // Send to the endpoint for debit of wallet
-                            debugger
+                            // debugger
                             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
                                 senderName,
                                 senderAccountNumber,
@@ -906,7 +906,7 @@ export default class InvestmentsServices {
 
                                 // update record
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                debugger
+                                // debugger
                                 // console.log(" Current log, line 610 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
@@ -952,9 +952,9 @@ export default class InvestmentsServices {
                                 // debugger
                             } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined ) {
                                 console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
-                                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                 debugger
-                                // console.log(" Current log, line 1010 :", currentInvestment);
+                                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                                                // console.log(" Current log, line 1010 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
 
@@ -975,7 +975,7 @@ export default class InvestmentsServices {
                                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                                 // console.log("new Timeline object line 553:", newTimeline);
                                 // update record
-                                debugger
+                                // debugger
                                 // Send Details to notification service
                                 let subject = "AstraPay Investment Activation Failed";
                                 let message = `
@@ -997,7 +997,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 1051 =========:", updatedInvestment);
                                 console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
                                 debugger
-                                throw Error(debitUserWalletForInvestment);
+                                // throw Error(debitUserWalletForInvestment);
+                                throw Error(debitUserWalletForInvestment.message);
                             }
 
                             // Save the updated record
@@ -1031,9 +1032,11 @@ export default class InvestmentsServices {
                         }
                     }
                 } catch (error) {
-                    console.error(error)
+                    console.log(error)
+                    // debugger
                     console.log("Error line 1030", error.messages);
                     console.log("Error line 1031", error.message);
+                    console.log("Error line 1032", error.message.message);
                     debugger
                     await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
