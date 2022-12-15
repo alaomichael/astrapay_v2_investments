@@ -512,16 +512,27 @@ export default class ApprovalsController {
         if (approval.requestType === "start_investment" && approval.approvalStatus === "approved") { //&& record.status == "submitted"
           console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
-          newStatus = "approved"; //'pending_account_number_generation'; 
+          newStatus = "investment_approved"; //'pending_account_number_generation'; 
           record.status = newStatus;
           record.requestType = "start_investment";
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
           record.approvalStatus = approval.approvalStatus; // "investment_approved"//approval.approvalStatus;
+
+          // Save the updated record
+          // await record.save();
+          // update record
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+          // console.log(" Current log, line 696 :", currentInvestment);
+          // send for update
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 535 =========:", updatedInvestment);
+
 
           // console.log("Updated record Status line 537: ", record);
           // Data to send for transfer of fund
@@ -596,10 +607,10 @@ export default class ApprovalsController {
           debugger
           // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
           // if successful 
-          if (debitUserWalletForInvestment.status == 200) {
+          if (debitUserWalletForInvestment.status == 200 ) {
             // update the investment details
             record.status = 'active'
-            record.approvalStatus = 'approved'
+            // record.approvalStatus = 'approved'
             record.startDate = DateTime.now() //.toISODate()
             record.payoutDate = DateTime.now().plus({ days: record.duration })
             record.isInvestmentCreated = true
@@ -650,7 +661,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
             // debugger
-          } else if (debitUserWalletForInvestment.status !== 200) {
+          } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined ) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 655 :", currentInvestment);
             // send for update
@@ -698,15 +709,6 @@ export default class ApprovalsController {
             throw Error(debitUserWalletForInvestment);
           }
 
-          // Save the updated record
-          // await record.save();
-          // update record
-          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 696 :", currentInvestment);
-          // send for update
-          await investmentsService.updateInvestment(currentInvestment, record);
-          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          // console.log(" Current log, line 535 =========:", updatedInvestment);
 
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined") { // && record.status == "submitted"
           newStatus = "investment_rejected";
@@ -774,8 +776,8 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
           record.approvalStatus = approval.approvalStatus; //"investment_approved"//approval.approvalStatus;
           // Data to send for transfer of fund
           let { amount, lng, lat, id,

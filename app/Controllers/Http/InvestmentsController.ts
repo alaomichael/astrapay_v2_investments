@@ -1989,6 +1989,34 @@ export default class InvestmentsController {
     }
   }
 
+  // 
+  public async activateApprovedInvestment({ request, response, loginUserData }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
+      debugger
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+        return response.status(200).json({
+          status: 'OK',
+          data: investments,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
   public async payout({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
