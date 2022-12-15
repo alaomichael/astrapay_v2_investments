@@ -19,7 +19,7 @@ export default class extends BaseSeeder {
                 await RfiRecord.create(rfiRecord)
                     .then(async (rfiRecord) => {
                         // console.log(generalVerificationRequirement)
-                        console.log(rfiRecord)
+                        // console.log(rfiRecord)
                         // Then create settings for each (Registered Financial Institution, RFI) or Rfi record
                         // check if the rfi/RFI is already created
                         for (let index = 0; index < settings.length; index++) {
@@ -49,13 +49,10 @@ export default class extends BaseSeeder {
                                 currentType.rfiCode = rfiRecord.rfiCode;
                                 // @ts-ignore
                                 currentType.createdBy = "seeding";
-                                // @ts-ignore
-                                // @ts-ignore
-                                currentType.createdBy = "seeding";
                                 // remove the array of duration property from currentType object
                                 const { duration, ...currentTypeWithOutDurationProperty } = currentType;
                                 console.log(currentTypeWithOutDurationProperty)
-                                console.log(currentType);
+                                // console.log(currentType);
                                 // console.log(" currentType.duration line 114 =============", currentType.duration);
                                 let newInvestmentType = await Type.create(currentTypeWithOutDurationProperty)
                                 for (let index = 0; index < currentType.duration.length; index++) {
@@ -69,6 +66,9 @@ export default class extends BaseSeeder {
                                 }
                             } else if (type_getter) {
                                 currentType.rfiRecordId = rfiRecord.id;
+                                currentType.rfiCode = rfiRecord.rfiCode;
+                                // @ts-ignore
+                                currentType.createdBy = "seeding";
                                  // remove the array of duration property from currentType object
                                 const { duration, ...currentTypeWithOutDurationProperty } = currentType;
                                 // console.log(" currentTypeWithOutDurationProperty line 72 =============", currentTypeWithOutDurationProperty) 
@@ -115,10 +115,7 @@ export default class extends BaseSeeder {
 
                 // create type for RFI
                 for (let index = 0; index < types.length; index++) {
-                    // let currentType = types[index];
-                    // currentType.rfiRecordId = rfiRecord_getter.id;
-                    // await Type.create(currentType)
-                    let currentType = types[index];
+                                        let currentType = types[index];
                     // let { duration } = currentType;
                     // console.log(" currentType Name line 121 =======", currentType.typeName)
                     // check if type name is existing
@@ -147,6 +144,9 @@ export default class extends BaseSeeder {
                     } else if (type_getter) {
                         // console.log(" currentType.duration line 148 =============", currentType.duration);
                         currentType.rfiRecordId = rfiRecord_getter.id;
+                        currentType.rfiCode = rfiRecord_getter.rfiCode;
+                        // @ts-ignore
+                        currentType.createdBy = "seeding";
                          // remove the array of duration property from currentType object
                         const { duration, ...currentTypeWithOutDurationProperty } = currentType;
                         // console.log(" currentTypeWithOutDurationProperty line 152 =============", currentTypeWithOutDurationProperty) // {name: 'Wisdom Geek'};
