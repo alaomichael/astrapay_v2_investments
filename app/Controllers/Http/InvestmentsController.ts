@@ -37,7 +37,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
-import { getDecimalPlace } from 'App/Helpers/utils_02'
+// import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
 
@@ -161,6 +161,23 @@ export default class InvestmentsController {
       });
     } catch (error) {
       console.log(error)
+      console.log("Error line 164", error.messages);
+      console.log("Error line 165", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
   public async showByInvestmentId({ params, request, response }: HttpContextContract) {
@@ -325,6 +342,23 @@ export default class InvestmentsController {
       })
     } catch (error) {
       console.log(error)
+      console.log("Error line 345", error.messages);
+      console.log("Error line 346", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -377,7 +411,24 @@ export default class InvestmentsController {
           //  investment = await investmentsService.getInvestmentByWalletIdAndInvestmentIdAndStatusAndUserIdAndRequestType(walletId,investmentId,status,userId,requestType);
         } catch (error) {
           console.error(error)
-          return response.json({ status: 'FAILED', message: error.message })
+          // return response.json({ status: 'FAILED', message: error.message })
+          console.log("Error line 415", error.messages);
+          console.log("Error line 416", error.message);
+          if (error.code === 'E_APP_EXCEPTION') {
+            console.log(error.codeSt)
+            let statusCode = error.codeSt ? error.codeSt : 500
+            return response.status(parseInt(statusCode)).json({
+              status: "FAILED",
+              message: error.messages,
+              hint: error.message
+            });
+          }
+          return response.status(500).json({
+            status: "FAILED",
+            message: error.messages,
+            hint: error.message
+          });
+
         }
         console.log('INVESTMENT DATA line 305: ', investment)
         if (investment.length < 1) {
@@ -478,7 +529,24 @@ export default class InvestmentsController {
           })
         } catch (error) {
           console.error(error)
-          return response.json({ status: 'FAILED', message: error.message })
+          // return response.json({ status: 'FAILED', message: error.message })
+          console.log("Error line 533", error.messages);
+          console.log("Error line 534", error.message);
+          if (error.code === 'E_APP_EXCEPTION') {
+            console.log(error.codeSt)
+            let statusCode = error.codeSt ? error.codeSt : 500
+            return response.status(parseInt(statusCode)).json({
+              status: "FAILED",
+              message: error.messages,
+              hint: error.message
+            });
+          }
+          return response.status(500).json({
+            status: "FAILED",
+            message: error.messages,
+            hint: error.message
+          });
+
         }
         console.log('The declined investment line 239: ', investment)
         if (investment.length < 1) {
@@ -940,6 +1008,23 @@ export default class InvestmentsController {
     //       }
     //     } catch (error) {
     //       console.error(error)
+    // console.log("Error line 750", error.messages);
+    // console.log("Error line 751", error.message);
+    // if (error.code === 'E_APP_EXCEPTION') {
+    //   console.log(error.codeSt)
+    //   let statusCode = error.codeSt ? error.codeSt : 500
+    //   return response.status(parseInt(statusCode)).json({
+    //     status: "FAILED",
+    //     message: error.messages,
+    //     hint: error.message
+    //   });
+    // }
+    // return response.status(500).json({
+    //   status: "FAILED",
+    //   message: error.messages,
+    //   hint: error.message
+    // });
+
     //     }
     //   }
 
@@ -976,6 +1061,23 @@ export default class InvestmentsController {
     //   }
     // } catch (error) {
     //   console.error(error)
+    //  console.log("Error line 750", error.messages);
+    //   console.log("Error line 751", error.message);
+    //   if (error.code === 'E_APP_EXCEPTION') {
+    //     console.log(error.codeSt)
+    //     let statusCode = error.codeSt ? error.codeSt : 500
+    //     return response.status(parseInt(statusCode)).json({
+    //       status: "FAILED",
+    //       message: error.messages,
+    //       hint: error.message
+    //     });
+    //   }
+    //   return response.status(500).json({
+    //     status: "FAILED",
+    //     message: error.messages,
+    //     hint: error.message
+    //   });
+
     // }
   }
 
@@ -1081,7 +1183,24 @@ export default class InvestmentsController {
             }
           } catch (error) {
             console.error('Is due for payout status Error :', error)
-            return response.json({ status: 'FAILED', data: error.message })
+            // return response.json({ status: 'FAILED', data: error.message })
+            console.log("Error line 1187", error.messages);
+            console.log("Error line 1188", error.message);
+            if (error.code === 'E_APP_EXCEPTION') {
+              console.log(error.codeSt)
+              let statusCode = error.codeSt ? error.codeSt : 500
+              return response.status(parseInt(statusCode)).json({
+                status: "FAILED",
+                message: error.messages,
+                hint: error.message
+              });
+            }
+            return response.status(500).json({
+              status: "FAILED",
+              message: error.messages,
+              hint: error.message
+            });
+
           }
         } else {
           return response.json({
@@ -1196,7 +1315,24 @@ export default class InvestmentsController {
             }
           } catch (error) {
             console.error('Is due for payout status Error :', error)
-            return response.json({ status: 'FAILED', data: error.message })
+            // return response.json({ status: 'FAILED', data: error.message })
+            console.log("Error line 1319", error.messages);
+            console.log("Error line 1320", error.message);
+            if (error.code === 'E_APP_EXCEPTION') {
+              console.log(error.codeSt)
+              let statusCode = error.codeSt ? error.codeSt : 500
+              return response.status(parseInt(statusCode)).json({
+                status: "FAILED",
+                message: error.messages,
+                hint: error.message
+              });
+            }
+            return response.status(500).json({
+              status: "FAILED",
+              message: error.messages,
+              hint: error.message
+            });
+
           }
         } else {
 
@@ -1620,7 +1756,24 @@ export default class InvestmentsController {
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {
       console.error('update investment by investmentId Error :', error)
-      return response.json({ status: 'FAILED', data: error.message })
+      // return response.json({ status: 'FAILED', data: error.message })
+      console.log("Error line 1760", error.messages);
+      console.log("Error line 1761", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -1678,6 +1831,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 1834", error.messages);
+      console.log("Error line 1835", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
     // return // 401
   }
@@ -1761,6 +1931,23 @@ export default class InvestmentsController {
       })
     } catch (error) {
       console.log(error)
+      console.log("Error line 1750", error.messages);
+      console.log("Error line 1751", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -1958,6 +2145,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 1978", error.messages);
+      console.log("Error line 1979", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -1986,6 +2190,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 2193", error.messages);
+      console.log("Error line 2194", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -1993,7 +2214,7 @@ export default class InvestmentsController {
   public async activateApprovedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
-      if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
       debugger
       if (investments.length > 0) {
@@ -2015,6 +2236,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 2052", error.messages);
+      console.log("Error line 2053", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
   public async payout({ request, response }: HttpContextContract) {
@@ -2354,6 +2592,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 2408", error.messages);
+      console.log("Error line 2409", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 
@@ -2509,6 +2764,7 @@ export default class InvestmentsController {
                     message: 'The transaction was not sent successfully.',
                     error: error.message,
                   })
+                  
                 }
                 // Update with the appropriate endpoint and data
                 isTransactionSentForProcessing = true
@@ -3461,6 +3717,23 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.error(error)
+      console.log("Error line 3533", error.messages);
+      console.log("Error line 3534", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 

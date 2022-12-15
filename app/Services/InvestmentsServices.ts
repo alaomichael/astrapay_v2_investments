@@ -14,7 +14,7 @@ import TimelinesServices from './TimelinesServices';
 import TypesServices from './TypesServices';
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import { sendNotification } from 'App/Helpers/sendNotification';
-import { creditUserWallet } from 'App/Helpers/creditUserWallet';
+// import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 const randomstring = require("randomstring");
 // const Env = require("@ioc:Adonis/Core/Env");
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
@@ -771,7 +771,7 @@ export default class InvestmentsServices {
 
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
-                let { id ,userId,walletdId} = investment;//request.all()
+                let { id,} = investment;//request.all()
                 try {
                     console.log("Entering update 777 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -817,10 +817,11 @@ export default class InvestmentsServices {
                     // approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
 
                     // console.log(" QUERY RESULT: ", approval);
-                    let walletIdToSearch = investment.walletId
-                    let userIdToSearch = investment.userId
+                    let walletIdToSearch = investment.wallet_id
+                    let userIdToSearch = investment.user_id
                     let investmentId;
                     let record;
+                    // debugger
                     // console.log("investmentId line 824 ===================================", approval.investmentId)
                     // console.log("linkAccountId line 825 ===================================", approval.linkAccountId)
                     // console.log("tokenId line 826 ===================================", approval.tokenId)
@@ -828,6 +829,7 @@ export default class InvestmentsServices {
                     // console.log("accountId line 828 ===================================", approval.accountId)
                     if (id != null) {
                         investmentId = id;
+                        // debugger
                         record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                         // debugger
                     }
@@ -861,7 +863,7 @@ export default class InvestmentsServices {
                         let timelineObject;
                         // console.log("Approval.requestType: ===========================================>", approval.requestType)
                         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                        if (investment.status === "investment_approved" && investment.requestType === "start_investment" && investment.approvalStatus === "approved") { //&& record.status == "submitted"
+                        if (record.status === "investment_approved" && record.requestType === "start_investment" && record.approvalStatus === "approved") { //&& record.status == "submitted"
                             console.log("Activation for investment request processing line 867: ===========================================>")
                             // TODO: Uncomment to use loginAdminFullName
                             // record.processedBy = loginAdminFullName;
@@ -872,8 +874,7 @@ export default class InvestmentsServices {
                             // console.log("Updated record Status line 537: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName,
-                                walletId,
+                                firstName, lastName,userId,walletId,
                                 phone,
                                 email,
                                 rfiCode } = record;
@@ -904,6 +905,7 @@ export default class InvestmentsServices {
 
                                 // update record
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                debugger
                                 // console.log(" Current log, line 610 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
@@ -948,8 +950,9 @@ export default class InvestmentsServices {
                                 }
                                 // debugger
                             } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined ) {
-                                console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletdId} for investment activation, line 1009 ============`);
+                                console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                debugger
                                 // console.log(" Current log, line 1010 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
@@ -1000,23 +1003,26 @@ export default class InvestmentsServices {
                             // await record.save();
                             // update record
                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                            // console.log(" Current log, line 1061 :", currentInvestment);
+                            debugger
+                            // console.log(" Current log, line 1007 :", currentInvestment);
                             // send for update
                             await investmentsService.updateInvestment(currentInvestment, record);
                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                            // console.log(" Current log, line 1065 =========:", updatedInvestment);
+                            // console.log(" Current log, line 1011 =========:", updatedInvestment);
 
                         }
                         // Update Investment data
-                        // console.log(" Updated record line 733: ", record.$original);
+                        // console.log(" Updated record line 1015: ", record.$original);
+                        let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                        debugger
                         // send to user
                         await trx.commit();
                         return {
                             status: 'OK',
-                            data: investment,
+                            data: currentInvestment,
                         }
                     } else {
-                        // console.log("Entering no data 1777 ==================================")
+                        // console.log("Entering no data 1023 ==================================")
                         return {
                             status: 'FAILED',
                             message: 'no investment matched your search',
@@ -1025,8 +1031,8 @@ export default class InvestmentsServices {
                     }
                 } catch (error) {
                     console.error(error)
-                    console.log("Error line 330", error.messages);
-                    console.log("Error line 331", error.message);
+                    console.log("Error line 1030", error.messages);
+                    console.log("Error line 1031", error.message);
                     await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
@@ -1039,7 +1045,7 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 362:", error);
+                    console.log("Error line 1046 =====================:", error);
                     throw error;
                 }
             }

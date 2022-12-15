@@ -1,151 +1,4 @@
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
-// import Investment from 'App/Models/Investment'
-// import { schema, rules } from '@ioc:Adonis/Core/Validator'
-// import {
-//   investmentDuration,
-//   // @ts-ignore
-// } from 'App/Helpers/utils'
-
-// public async update({ request, response }: HttpContextContract) {
-//   try {
-//     const { investmentId, userId } = request.qs()
-//     console.log('Approval query: ', request.qs())
-
-//     let approval = await Approval.query().where({
-//       investment_id: investmentId,
-//       user_id: userId,
-//     })
-//     console.log(' QUERY RESULT: ', approval)
-//     let investment = await Investment.query().where({
-//       id: investmentId,
-//       user_id: userId,
-//     })
-//     if (approval.length < 1 || investment === undefined) {
-//       return response.status(404).json({ status: 'FAILED', message: 'Not Found,try again.' })
-//     }
-//     console.log(' QUERY RESULT for investment: ', investment[0].$original)
-
-//     if (approval.length > 0) {
-//       console.log('Investment approval Selected for Update line 160:', approval)
-//       if (approval) {
-//         approval[0].approvalStatus = request.input('approvalStatus')
-//           ? request.input('approvalStatus')
-//           : approval[0].approvalStatus
-//         approval[0].remark = request.input('remark')
-//           ? request.input('remark')
-//           : approval[0].remark
-//         if (approval) {
-//           let newStatus
-//           await approval[0].save()
-//           console.log('Update Approval Request line 171:', approval)
-//           if (
-//             approval[0].requestType === 'start_investment' &&
-//             approval[0].approvalStatus === 'approved'
-//           ) {
-//             newStatus = 'initiated'
-//             investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             // Save the updated investment
-//             await investment[0].save()
-//           } else if (
-//             approval[0].requestType === 'terminate investment' &&
-//             approval[0].approvalStatus === 'approved'
-//           ) {
-//             // newStatus = 'terminated'
-//             // investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             investment[0].isPayoutAuthorized = true
-//             investment[0].isTerminationAuthorized = true
-//             // Calculate the Total Amount to payout by pro-rata
-//             let startDate = investment[0].startDate
-//             let currentDate = new Date().toISOString()
-//             let daysOfInvestment = await investmentDuration(startDate, currentDate)
-//             let expectedDuration = investment[0].duration
-//             let expectedInterestOnMaturity = investment[0].interestDueOnInvestment
-//             let amountInvested = investment[0].amount
-//             if (parseInt(expectedDuration) > daysOfInvestment) {
-//               // Pro-rata the Interest Due on Investment
-//               let interestDuePerDay = expectedInterestOnMaturity / parseInt(expectedDuration)
-//               let newInterestDueToTermination = daysOfInvestment * interestDuePerDay
-//               let formerTotalAmountToPayout = investment[0].totalAmountToPayout
-//               console.log(
-//                 'Former Total Amount Due for payout if Matured is, line 203: ',
-//                 formerTotalAmountToPayout
-//               )
-//               investment[0].totalAmountToPayout = amountInvested + newInterestDueToTermination
-//               // Save the updated investment
-//               await investment[0].save()
-//               let newTotalAmountToPayout = investment[0].totalAmountToPayout
-//               console.log(
-//                 'Total Amount Due for payout due to Termination, line 211: ',
-//                 newTotalAmountToPayout
-//               )
-//             }
-//           } else if (
-//             approval[0].requestType === 'payout_investment' &&
-//             approval[0].approvalStatus === 'approved'
-//           ) {
-//             // newStatus = 'payout'
-//             // investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             investment[0].isPayoutAuthorized = true
-//             investment[0].isTerminationAuthorized = true
-//             // Save the updated investment
-//             await investment[0].save()
-//           } else if (
-//             approval[0].requestType === 'start_investment' &&
-//             approval[0].approvalStatus === 'declined'
-//           ) {
-//             newStatus = 'initiated'
-//             investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             // Save the updated investment
-//             await investment[0].save()
-//           } else if (
-//             approval[0].requestType === 'terminate investment' &&
-//             approval[0].approvalStatus === 'declined'
-//           ) {
-//             // newStatus = 'active'
-//             // investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             investment[0].isPayoutAuthorized = false
-//             investment[0].isTerminationAuthorized = false
-//             // Save the updated investment
-//             await investment[0].save()
-//           } else if (
-//             approval[0].requestType === 'payout_investment' &&
-//             approval[0].approvalStatus === 'declined'
-//           ) {
-//             // newStatus = 'active'
-//             // investment[0].status = newStatus
-//             investment[0].approvalStatus = approval[0].approvalStatus
-//             investment[0].isPayoutAuthorized = false
-//             investment[0].isTerminationAuthorized = false
-//             // Save the updated investment
-//             await investment[0].save()
-//           }
-//           // Update Investment data
-//           console.log(' Updated investment line 259: ', investment[0].$original)
-//           // send to user
-//           return response
-//             .status(200)
-//             .json({ status: 'OK', data: approval.map((inv) => inv.$original) })
-//         }
-//         return // 422
-//       } else {
-//         return response.status(304).json({ status: 'FAILED', data: approval })
-//       }
-//     } else {
-//       return response
-//         .status(404)
-//         .json({ status: 'FAILED', message: 'No data match your query parameters' })
-//     }
-//   } catch (error) {
-//     console.error(error)
-//   }
-//   // return // 401
-// }
-
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Approval from "App/Models/Approval";
 import Event from "@ioc:Adonis/Core/Event";
@@ -223,8 +76,8 @@ export default class ApprovalsController {
         // data: sortedApprovals.map((approval) => approval.$original),
       });
     } catch (error) {
-      console.log("Error line 135", error.messages);
-      console.log("Error line 136", error.message);
+      console.log("Error line 79", error.messages);
+      console.log("Error line 80", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -396,10 +249,28 @@ export default class ApprovalsController {
       }
     } catch (error) {
       console.error(error);
-      return response.status(404).json({
+      // return response.status(404).json({
+      //   status: "FAILED",
+      //   message: "your approval request was not successful, please try again.",
+      // });
+      console.log("Error line 256", error.messages);
+      console.log("Error line 257", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
         status: "FAILED",
-        message: "your approval request was not successful, please try again.",
+        message: error.messages,
+        hint: error.message
       });
+
+
     }
   }
 
@@ -997,7 +868,7 @@ export default class ApprovalsController {
           } else {
             throw Error();
           }
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollover") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollovered") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation'; 
@@ -1559,7 +1430,7 @@ export default class ApprovalsController {
             }
           }
 
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspended") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
@@ -1870,8 +1741,8 @@ export default class ApprovalsController {
           });
       }
     } catch (error) {
-      console.log("Error line 750", error.messages);
-      console.log("Error line 751", error.message);
+      console.log("Error line 1750", error.messages);
+      console.log("Error line 1751", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -1918,11 +1789,28 @@ export default class ApprovalsController {
       }
     } catch (error) {
       console.log(error);
-      console.error(error.messages);
-      return response.status(404).json({
+      // console.error(error.messages);
+      // return response.status(404).json({
+      //   status: "FAILED",
+      //   message: error.messages.errors,
+      // });
+      console.log("Error line 1796", error.messages);
+      console.log("Error line 1797", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
         status: "FAILED",
-        message: error.messages.errors,
+        message: error.messages,
+        hint: error.message
       });
+
     }
   }
 }
