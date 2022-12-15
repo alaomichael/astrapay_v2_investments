@@ -892,7 +892,7 @@ export default class InvestmentsServices {
                                 senderPhoneNumber,
                                 senderEmail,
                                 rfiCode)
-                            debugger
+                            // debugger
                             // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
                             // if successful 
                             if (debitUserWalletForInvestment.status == 200) {
@@ -952,7 +952,7 @@ export default class InvestmentsServices {
                                 // debugger
                             } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined ) {
                                 console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
-                                debugger
+                                // debugger
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                                                 // console.log(" Current log, line 1010 :", currentInvestment);
                                 // send for update
@@ -985,7 +985,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                console.log("newNotificationMessage line 678:", newNotificationMessage);
+                                console.log("newNotificationMessage line 988:", newNotificationMessage);
                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                     console.log("Notification sent successfully");
                                 } else if (newNotificationMessage.message !== "Success") {
@@ -996,9 +996,13 @@ export default class InvestmentsServices {
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                 // console.log(" Current log, line 1051 =========:", updatedInvestment);
                                 console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
-                                debugger
+                                // debugger
                                 // throw Error(debitUserWalletForInvestment);
-                                throw Error(debitUserWalletForInvestment.message);
+                                throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                // return {
+                                //         status: "FAILED",//debitUserWalletForInvestment.status,
+                                //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                                //     };
                             }
 
                             // Save the updated record
@@ -1036,10 +1040,10 @@ export default class InvestmentsServices {
                     // debugger
                     console.log("Error line 1030", error.messages);
                     console.log("Error line 1031", error.message);
-                    console.log("Error line 1032", error.message.message);
+                    // console.log("Error line 1032", error.message);
                     debugger
                     await trx.rollback()
-                    console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
+                    console.log(`Error line 1046, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }

@@ -2237,7 +2237,7 @@ export default class InvestmentsController {
       }
     } catch (error) {
       console.log(error)
-      debugger
+      // debugger
       console.log("Error line 2052", error.messages);
       console.log("Error line 2053", error.message);
       debugger
@@ -2251,7 +2251,15 @@ export default class InvestmentsController {
         });
       } else if (error.code === 'ETIMEDOUT') {
         console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
         return response.status(parseInt(statusCode)).json({
           status: "FAILED",
           message: error.messages,

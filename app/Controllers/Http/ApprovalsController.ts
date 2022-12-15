@@ -476,7 +476,7 @@ export default class ApprovalsController {
             senderPhoneNumber,
             senderEmail,
             rfiCode)
-          debugger
+          // debugger
           // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
           // if successful 
           if (debitUserWalletForInvestment.status == 200 ) {
@@ -556,7 +556,7 @@ export default class ApprovalsController {
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 553:", newTimeline);
             // update record
-            debugger
+            // debugger
             // Send Details to notification service
             let subject = "AstraPay Investment Activation Failed";
             let message = `
@@ -566,7 +566,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 569:", newNotificationMessage);
+            // console.log("newNotificationMessage line 569:", newNotificationMessage);
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessage.message !== "Success") {
@@ -576,14 +576,14 @@ export default class ApprovalsController {
 
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 535 =========:", updatedInvestment);
-            console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
-            debugger
+            // console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
+            // debugger
             // throw Error(debitUserWalletForInvestment);
             return response
-              .status(599)
+              .status(504)
               .json({
-                status: debitUserWalletForInvestment.status,
-                message: debitUserWalletForInvestment.message,
+                status: "FAILED",//debitUserWalletForInvestment.status,
+                message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
               });
           }
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status === "initiated" ) { // && record.status == "submitted"
@@ -1772,7 +1772,7 @@ export default class ApprovalsController {
         });
       } else if (error.code === 'ETIMEDOUT') {
         console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
+        let statusCode = error.codeSt ? error.codeSt : 504
         return response.status(parseInt(statusCode)).json({
           status: "FAILED",
           // message: error.messages,
