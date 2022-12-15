@@ -2172,11 +2172,19 @@ export default class InvestmentsController {
       const investments = await investmentsService.collateMaturedInvestment(request.qs())
       // debugger
       if (investments.length > 0) {
-        // console.log('Investment data after payout request line 1706:', investments)
+        // console.log('Investment data after payout request line 2000:', investments)
         // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          debugger
+        }
         return response.status(200).json({
           status: 'OK',
-          data: investments//.map((inv) => inv.$original),
+          data: investmentArray,//.map((inv) => inv.$original),
         })
         // END
 
@@ -2221,9 +2229,17 @@ export default class InvestmentsController {
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          debugger
+        }
         return response.status(200).json({
           status: 'OK',
-          data: investments,//.map((inv) => inv.$original),
+          data: investmentArray,//.map((inv) => inv.$original),
         })
         // END
 

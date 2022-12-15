@@ -1060,7 +1060,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 516:", loanArray);
+            // console.log("Response data in loan service, line 1063:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
