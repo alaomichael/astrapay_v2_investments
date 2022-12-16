@@ -1455,14 +1455,14 @@ export default class InvestmentsController {
             message: `The investment type you selected is ${status} , please select another one and try again.`,
           })
         }
-        if (amount < lowestAmount  || amount > highestAmount) {
+        if (amount < lowestAmount || amount > highestAmount) {
           let message
-          if (amount < lowestAmount){
+          if (amount < lowestAmount) {
             message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
-          } else if(amount > highestAmount){
+          } else if (amount > highestAmount) {
             message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
           }
-        
+
           return response.status(422).json({
             status: 'FAILED',
             message: message,
@@ -1474,8 +1474,8 @@ export default class InvestmentsController {
         //   return o.$original.tenure.toString() == duration.toString();
         // })
         console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
-      //  debugger
-        if (isTenureExisting == false || isTenureExisting == undefined){
+        //  debugger
+        if (isTenureExisting == false || isTenureExisting == undefined) {
           // debugger
           return response.status(404).json({
             status: 'FAILED',
@@ -1627,7 +1627,10 @@ export default class InvestmentsController {
         // console.log(' Feedback from Transaction service: ', sendToTransactionService)
         // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
         // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-        investment.approvalStatus = "investment_approved"//approval.approvalStatus;
+        investment.status = 'investment_approved';
+        investment.approvalStatus = "approved"; //approval.approvalStatus;
+        investment.requestType = "start_investment";
+
         // Data to send for transfer of fund
         let { amount, lng, lat, investmentRequestReference,
           firstName, lastName,
@@ -1640,6 +1643,52 @@ export default class InvestmentsController {
         let senderAccountName = senderName;
         let senderPhoneNumber = phone;
         let senderEmail = email;
+        // update record
+        let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+        debugger
+        // console.log(" Current log, line 1649 :", currentInvestment);
+        // send for update
+        await investmentsService.updateInvestment(currentInvestment, investment);
+        // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+        // console.log(" Current log, line 1653 =========:", updatedInvestment);
+
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: "investment approved",
+          investmentId: investmentId,//id,
+          walletId: walletId,// walletId, 
+          userId: userId,// userId,
+          // @ts-ignore
+          message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+          createdAt: DateTime.now(),
+          metadata: ``,
+        };
+        // console.log("Timeline object line 1667:", timelineObject);
+        await timelineService.createTimeline(timelineObject);
+        // let newTimeline = await timelineService.createTimeline(timelineObject);
+        // console.log("new Timeline object line 1670:", newTimeline);
+        // update record
+
+        // Send Details to notification service
+        let subject = "AstraPay Investment Approval";
+        let message = `
+                ${firstName} this is to inform you, that your Investment request, has been approved.
+
+                Please wait while the investment is being activated. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+        let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+        // console.log("newNotificationMessage line 1684:", newNotificationMessage);
+        if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          console.log("Notification sent successfully");
+        } else if (newNotificationMessage.message !== "Success") {
+          console.log("Notification NOT sent successfully");
+          console.log(newNotificationMessage);
+        }
+
         // Send to the endpoint for debit of wallet
         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
           senderName,
@@ -1675,12 +1724,12 @@ export default class InvestmentsController {
           // update timeline
           timelineObject = {
             id: uuid(),
-            action: "investment approved",
+            action: "investment activation",
             investmentId: investmentId,//id,
             walletId: walletId,// walletId, 
             userId: userId,// userId,
             // @ts-ignore
-            message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+            message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -1689,44 +1738,78 @@ export default class InvestmentsController {
           // let newTimeline = await timelineService.createTimeline(timelineObject);
           // console.log("new Timeline object line 553:", newTimeline);
           // update record
-          // Activate the investment
-          // investment.requestType = requestType
-          // investment.status = 'active'
-          // investment.approvalStatus = 'approved'
-          // investment.startDate = DateTime.now() //.toISODate()
-          // investment.payoutDate = DateTime.now().plus({ days: investmentDuration })
-          timelineObject = {
-            id: uuid(),
-            investmentId: investmentId,
-            userId: userId,
-            walletId: walletId,
-            action: 'investment activated',
-            // @ts-ignore
-            message: `${firstName} investment has just been activated.`,
-            createdAt: investment.startDate,
-            metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
-          }
-          // console.log('Timeline object line 1004:', timelineObject)
-          await timelineService.createTimeline(timelineObject);
-
+          // debugger
           // Send Details to notification service
-          let subject = "AstraPay Investment Approval";
+          let subject = "AstraPay Investment Activation";
           let message = `
-                ${firstName} this is to inform you, that your Investment request, has been approved.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
-                Please wait while the investment is being activated. 
+                Please check your device. 
 
                 Thank you.
 
                 AstraPay Investment.`;
           let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 1338:", newNotificationMessage);
+          console.log("newNotificationMessage line 1753:", newNotificationMessage);
           if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessage.message !== "Success") {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
+            // debugger
+        } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+          // console.log(" Current log, line 1763 :", currentInvestment);
+          // send for update
+          await investmentsService.updateInvestment(currentInvestment, investment);
+
+          // update timeline
+          timelineObject = {
+            id: uuid(),
+            action: "investment activation failed",
+            investmentId: investmentId,//id,
+            walletId: walletId,// walletId, 
+            userId: userId,// userId,
+            // @ts-ignore
+            message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+            createdAt: DateTime.now(),
+            metadata: ``,
+          };
+          // console.log("Timeline object line 1779:", timelineObject);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 1782:", newTimeline);
+          // update record
+          // debugger
+          // Send Details to notification service
+          let subject = "AstraPay Investment Activation Failed";
+          let message = `
+                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+
+                Thank you.
+
+                AstraPay Investment.`;
+          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 1794:", newNotificationMessage);
+          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessage.message !== "Success") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessage);
+          }
+
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 535 =========:", updatedInvestment);
+          // console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
+          // debugger
+          // throw Error(debitUserWalletForInvestment);
+          return response
+            .status(504)
+            .json({
+              status: "FAILED",//debitUserWalletForInvestment.status,
+              message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+            });
         }
       }
 
@@ -1740,10 +1823,10 @@ export default class InvestmentsController {
       // await investment.save()
       // update record
       let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-      // console.log(" Current log, line 1564 :", currentInvestment);
+      // console.log(" Current log, line 1774 :", currentInvestment);
       // send for update
       let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-      console.log(" Current log, line 1567 :", updatedInvestment);
+      console.log(" Current log, line 1777 :", updatedInvestment);
 
       let newInvestmentId = investment.id
       // Send to Notificaation Service
@@ -2180,7 +2263,7 @@ export default class InvestmentsController {
           let { id, wallet_id, user_id } = currentInvestment;
           currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
           investmentArray.push(currentInvestment);
-          debugger
+          // debugger
         }
         return response.status(200).json({
           status: 'OK',
@@ -2225,7 +2308,7 @@ export default class InvestmentsController {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
       debugger
-      
+
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
@@ -2291,6 +2374,81 @@ export default class InvestmentsController {
 
     }
   }
+
+  public async payoutMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
+      debugger
+
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          debugger
+        }
+        return response.status(200).json({
+          status: 'OK',
+          data: investmentArray,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      // debugger
+      console.log("Error line 2052", error.messages);
+      console.log("Error line 2053", error.message);
+      debugger
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
+  
   public async payout({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
@@ -2800,7 +2958,7 @@ export default class InvestmentsController {
                     message: 'The transaction was not sent successfully.',
                     error: error.message,
                   })
-                  
+
                 }
                 // Update with the appropriate endpoint and data
                 isTransactionSentForProcessing = true
