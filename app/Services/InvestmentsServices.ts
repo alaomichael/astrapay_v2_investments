@@ -638,11 +638,11 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 1655 :", updatedInvestment);
                                 // debugger
                             } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'paid' || investment.status !== 'completed') {
+                                if (investment.status !== 'completed' && investment.status == 'active') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
-                                    investment.status = 'payout_investment'
+                                    investment.status = 'matured'
                                     investment.isPayoutAuthorized = true
                                     investment.isTerminationAuthorized = true
                                     // Save
@@ -651,7 +651,27 @@ export default class InvestmentsServices {
                                     // send for update
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                    // console.log(" Current log, line 1672 :", updatedInvestment);
+                                    // console.log(" Current log, line 654 :", updatedInvestment);
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: 'investment payout initiated',
+                                        investmentId: investment.id,//id,
+                                        walletId: investment.walletId,// walletId, 
+                                        userId: investment.userId,// userId,
+                                        // @ts-ignore
+                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                                    }
+                                    // console.log('Timeline object line 667:', timelineObject)
+                                    //  Push the new object to the array
+                                    // timeline = investment.timeline
+                                    // timeline.push(timelineObject)
+                                    // console.log('Timeline object line 671:', timeline)
+                                    // stringify the timeline array
+                                    await timelineService.createTimeline(timelineObject);
+
                                 }
                                 // Send notification
                                 // await investment.save()
@@ -659,10 +679,10 @@ export default class InvestmentsServices {
                                 // send for update
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                // console.log(" Current log, line 1680 :", updatedInvestment);
+                                // console.log(" Current log, line 680 :", updatedInvestment);
                             }
 
-                            console.log('Investment data after payout request line 314:', investment)
+                            // console.log('Investment data after payout request line 685:', investment)
                             await trx.commit();
                             return {
                                 status: 'OK',
@@ -1121,8 +1141,9 @@ export default class InvestmentsServices {
                 .from('investments')
                 .useTransaction(trx) // 👈
                 .where('status', "matured")
-                .where('request_type', "start_investment")
-                .where('approval_status', "approved")
+                .where('request_type', "payout_investment")
+                .where('approval_status', "pending")
+                .orWhere('approval_status', "approved")
                 .where('payout_date', '<=', selectedDate)
                 .offset(offset)
                 .limit(limit)
@@ -1240,8 +1261,14 @@ export default class InvestmentsServices {
                         console.log('Is due for payout status line 1240:', isDueForPayout)
                         debugger
                         if (isDueForPayout === true) {
-                            if (record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved") { //&& record.status == "submitted"
+                            //                          record.isPayoutAuthorized === true,
+                            //   record.isPayoutSuspended === false,
+                            // payoutReactivationDate: null,
+                            if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                record.isPayoutSuspended === false ) || ( record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
+                                record.isPayoutSuspended === false )) {
                                 console.log("Approval for investment payout processing: ===========================================>")
+                               
                                 // TODO: Uncomment to use loginAdminFullName
                                 // record.processedBy = loginAdminFullName;
                                 // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
@@ -1256,9 +1283,9 @@ export default class InvestmentsServices {
                                 // record.isInvestmentApproved = true;
                                 // TODO: Uncomment to use loginAdminFullName
                                 // record.processedBy = loginAdminFullName;
-                                record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                // record.approvalStatus = approval.approvalStatus; 
+                                // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
+                                // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                record.approvalStatus = "approved"; //approval.approvalStatus; 
                                 // Data to send for transfer of fund
                                 let { amount, lng, lat, id,
                                     firstName, lastName,
@@ -1274,6 +1301,8 @@ export default class InvestmentsServices {
                                 // Send to the endpoint for debit of wallet
                                 let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
                                 let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+
+                                // Payout Principal
                                 let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
                                     beneficiaryName,
                                     beneficiaryAccountNumber,
@@ -1282,6 +1311,8 @@ export default class InvestmentsServices {
                                     beneficiaryPhoneNumber,
                                     rfiCode,
                                     descriptionForPrincipal)
+
+                                // Payout Interest
                                 let creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
                                     beneficiaryName,
                                     beneficiaryAccountNumber,
@@ -1290,7 +1321,7 @@ export default class InvestmentsServices {
                                     beneficiaryPhoneNumber,
                                     rfiCode,
                                     descriptionForInterest)
-                                // debugger
+                                debugger
                                 // if successful 
                                 if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                     let amountPaidOut = amount + interestDueOnInvestment;
@@ -1356,6 +1387,7 @@ export default class InvestmentsServices {
                                     }
                                     // commit transaction and changes to database
                                     await trx.commit();
+                                    debugger
                                 } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                     let amountPaidOut = amount
                                     // update the investment details
@@ -1373,8 +1405,9 @@ export default class InvestmentsServices {
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 1369 :", currentInvestment);
                                     // send for update
-                                    let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                    console.log(" Current log, line 1372 :", updatedInvestment);
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1372 :", updatedInvestment);
 
                                     // console.log("Updated record Status line 1374: ", record);
 
@@ -1417,6 +1450,7 @@ export default class InvestmentsServices {
                                     }
                                     // commit transaction and changes to database
                                     await trx.commit();
+                                    debugger
                                 } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                     let amountPaidOut = interestDueOnInvestment
                                     // update the investment details
@@ -1434,8 +1468,9 @@ export default class InvestmentsServices {
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 1428 :", currentInvestment);
                                     // send for update
-                                    let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                    console.log(" Current log, line 1431 :", updatedInvestment);
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1431 :", updatedInvestment);
 
                                     // console.log("Updated record Status line 1433: ", record);
 
@@ -1478,11 +1513,21 @@ export default class InvestmentsServices {
                                     }
                                     // commit transaction and changes to database
                                     await trx.commit();
+                                    debugger
                                 } else {
+                                    console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
+                                    // update record
+                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                    // console.log(" Current log, line 1484 :", currentInvestment);
+                                    // send for update
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1488 :", updatedInvestment);
+                                    debugger
                                     throw Error();
                                 }
                             } else {
-                                // console.log("Entering no data 1023 ==================================")
+                                // console.log("Entering no data 1492 ==================================")
                                 return {
                                     status: 'FAILED',
                                     message: 'no investment matched your search',
@@ -1500,12 +1545,12 @@ export default class InvestmentsServices {
                 } catch (error) {
                     console.log(error)
                     // debugger
-                    console.log("Error line 1487", error.messages);
-                    console.log("Error line 1488", error.message);
-                    // console.log("Error line 1489", error.message);
+                    console.log("Error line 1520", error.messages);
+                    console.log("Error line 1511", error.message);
+                    // console.log("Error line 1512", error.message);
                     debugger
                     await trx.rollback()
-                    console.log(`Error line 1492, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
+                    console.log(`Error line 1515, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }
@@ -1516,7 +1561,7 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 1046 =====================:", error);
+                    console.log("Error line 1526 =====================:", error);
                     throw error;
                 }
             }

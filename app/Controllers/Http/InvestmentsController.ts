@@ -2379,11 +2379,11 @@ export default class InvestmentsController {
     const investmentsService = new InvestmentsServices();
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
+      const investments = await investmentsService.payoutMaturedInvestment(request.qs(), loginUserData)
       debugger
 
       if (investments.length > 0) {
-        // console.log('Investment data after payout request line 2000:', investments)
+        // console.log('Investment data after payout request line 2386:', investments)
         // debugger
         let investmentArray: any[] = [];
         for (let index = 0; index < investments.length; index++) {

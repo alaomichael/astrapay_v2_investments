@@ -1621,7 +1621,7 @@ export default class ApprovalsController {
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1597 :", updatedInvestment);
 
-        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "approved" && record.status == "active") {
+        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "approved" && record.status == "active" && record.investmentType === "fixed") {
           newStatus = 'terminated'
           record.status = newStatus
           record.approvalStatus = approval.approvalStatus;
@@ -1671,7 +1671,7 @@ export default class ApprovalsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
-        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "declined" && record.status == "active") {
+        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "declined" && record.status == "active" && record.investmentType === "fixed") {
           // newStatus = 'active'
           // record.status = newStatus
           record.approvalStatus = approval.approvalStatus;
