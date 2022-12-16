@@ -242,12 +242,13 @@ export default class InvestmentsController {
   }
 
   public async showByUserId({ params, request, response, }: HttpContextContract) {
-    console.log("ACCOUNT OPENING params line 236: ", params);
+    console.log("Investment params line 236: ", params);
     const { userId } = request.params();
-    console.log("ACCOUNT OPENING params userId line 238: ", userId);
+    console.log("Investment params userId line 238: ", userId);
     try {
       const investmentsService = new InvestmentsServices();
-      let investments = await investmentsService.getInvestmentsByUserId(userId);
+      // let investments = await investmentsService.getInvestmentsByUserId(userId);
+     let investments = await investmentsService.getInvestmentsByUserIdWithQuery(userId,request.qs());
       console.log("Investments result :", investments);
       if (investments && investments.length > 0) {
         let investmentWithPreloadedData = investments.map((investment) => {
@@ -1645,7 +1646,7 @@ export default class InvestmentsController {
         let senderEmail = email;
         // update record
         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-        debugger
+        // debugger
         // console.log(" Current log, line 1649 :", currentInvestment);
         // send for update
         await investmentsService.updateInvestment(currentInvestment, investment);
@@ -1707,8 +1708,7 @@ export default class InvestmentsController {
           investment.startDate = DateTime.now() //.toISODate()
           investment.payoutDate = DateTime.now().plus({ days: investment.duration })
           investment.isInvestmentCreated = true
-          debugger
-
+          // debugger
           // Save the updated record
           // await record.save();
           // update record
@@ -1757,7 +1757,7 @@ export default class InvestmentsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
-            // debugger
+          // debugger
         } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
           // console.log(" Current log, line 1763 :", currentInvestment);
@@ -1811,6 +1811,7 @@ export default class InvestmentsController {
               message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
             });
         }
+
       }
 
       // Testing
@@ -1845,6 +1846,22 @@ export default class InvestmentsController {
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
         return response.status(parseInt(statusCode)).json({
           status: "FAILED",
           message: error.messages,
@@ -2448,7 +2465,7 @@ export default class InvestmentsController {
     }
   }
 
-  
+
   public async payout({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
