@@ -521,7 +521,8 @@ export default class InvestmentsServices {
                         }
 
                         console.log('Approval setting line 522:', settings)
-                        let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
+                        // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
+                        let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
                             //  START
                             let payload = investment.$original
@@ -716,7 +717,7 @@ export default class InvestmentsServices {
                                     }
 
                                 }
-                                                                // await investment save()
+                                // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
                                 await investmentsService.updateInvestment(record, investment);
@@ -1178,14 +1179,14 @@ export default class InvestmentsServices {
             } else {
                 selectedDate = currentDate;
             }
-
+            // debugger
             let responseData = await Database
                 .from('investments')
                 .useTransaction(trx) // 👈
                 .where('status', "matured")
                 .where('request_type', "payout_investment")
-                .where('approval_status', "pending")
-                .orWhere('approval_status', "approved")
+                // .orWhere('approval_status', "pending")
+                .where('approval_status', "approved")
                 .where('payout_date', '<=', selectedDate)
                 .offset(offset)
                 .limit(limit)
@@ -1194,11 +1195,32 @@ export default class InvestmentsServices {
             // console.log("Investment Info, line 1138: ", investments);
             // console.log(responseData)
             // debugger
-            if (!responseData) {
-                console.log(`There is no approved investment that is yet to be activated or wallet has been successfully credited. Please, check and try again.`)
-                throw new AppException({ message: `There is no approved investment that is yet to be activated or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
-            }
 
+            // if (responseData.length < 1) {
+            //     responseData = await Database
+            //         .from('investments')
+            //         .useTransaction(trx) // 👈
+            //         .where('status', "matured")
+            //         .where('request_type', "payout_investment")
+            //         .where('approval_status', "pending")
+            //         .where('payout_date', '<=', selectedDate)
+            //         .offset(offset)
+            //         .limit(limit)
+            //     // .forUpdate()
+
+            //     if (responseData.length < 1) {
+            //         console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
+            //         throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
+            //     }
+            // }
+            console.log(" responseData line 1216 ==============")
+            console.log(responseData)
+
+            if (responseData.length < 1) {
+                console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
+                throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
+            }
+            debugger
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
@@ -1600,6 +1622,7 @@ export default class InvestmentsServices {
             for (let index = 0; index < responseData.length; index++) {
                 try {
                     const investment = responseData[index];
+                    debugger
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
@@ -6781,7 +6804,7 @@ export default class InvestmentsServices {
         }
     }
 
-    public async getInvestmentsByUserIdWithQuery(userId: string,queryParams: any): Promise<Investment[] | any> {
+    public async getInvestmentsByUserIdWithQuery(userId: string, queryParams: any): Promise<Investment[] | any> {
         try {
             console.log("Query params in investment service:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
