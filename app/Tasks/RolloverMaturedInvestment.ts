@@ -16,7 +16,7 @@ export default class RolloverMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/7 * * * *' // runs every 7 minutes
+        return '*/8 * * * *' // runs every 8 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**

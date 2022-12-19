@@ -16,7 +16,7 @@ export default class PayoutMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/10 * * * *' // runs every 10 minutes
+        return '*/30 * * * *' // runs every 30 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**
