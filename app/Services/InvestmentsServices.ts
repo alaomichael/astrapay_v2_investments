@@ -207,12 +207,12 @@ export default class InvestmentsServices {
                     processedBy: "",//investment.processedBy,
                     // remark: "",
                 };
-                // console.log("ApprovalRequest object line 197:", approvalObject);
+                // console.log("ApprovalRequest object line 210:", approvalObject);
                 // check if the approval request is not existing
                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
                 if (!approvalRequestIsExisting) {
                     let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                    console.log("new ApprovalRequest object line 199:", newApprovalRequest);
+                    console.log("new ApprovalRequest object line 215:", newApprovalRequest);
                 }
 
             } else if (approvalIsAutomated === true) {
@@ -222,7 +222,7 @@ export default class InvestmentsServices {
                 // console.log(' Feedback from Transaction service: ', sendToTransactionService)
                 investment.approvedBy = investment.approvedBy !== undefined ? investment.approvedBy : "automation"
                 investment.assignedTo = investment.assignedTo !== undefined ? investment.assignedTo : "automation"
-                investment.approvalStatus = "investment_approved"//approval.approvalStatus;
+                // investment.approvalStatus = "approved"//approval.approvalStatus;
                 // Data to send for transfer of fund
                 let { amount, lng, lat, investmentRequestReference,
                     firstName, lastName,
@@ -248,7 +248,7 @@ export default class InvestmentsServices {
                 // before
 
                 // update the investment details
-                investment.status = 'approved'
+                investment.status = 'investment_approved'
                 investment.approvalStatus = 'approved'
                 // investment.startDate = DateTime.now() //.toISODate()
                 // investment.payoutDate = DateTime.now().plus({ days: investment.duration })
@@ -332,22 +332,6 @@ export default class InvestmentsServices {
                     console.log(" Current log, line 344 :", updatedInvestment);
 
                     // console.log("Updated record Status line 1281: ", record);
-
-                    // update timeline
-                    // timelineObject = {
-                    //     id: uuid(),
-                    //     action: "investment approved",
-                    //     investmentId: investmentId,//id,
-                    //     walletId: walletId,// walletId, 
-                    //     userId: userId,// userId,
-                    //     // @ts-ignore
-                    //     message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
-                    //     createdAt: DateTime.now(),
-                    //     metadata: ``,
-                    // };
-                    // console.log("Timeline object line 551:", timelineObject);
-                    // await timelineService.createTimeline(timelineObject);
-
                     timelineObject = {
                         id: uuid(),
                         investmentId: investmentId,
@@ -372,7 +356,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                    console.log("newNotificationMessage line 398:", newNotificationMessage);
+                    // console.log("newNotificationMessage line 398:", newNotificationMessage);
                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                         console.log("Notification sent successfully");
                     } else if (newNotificationMessage.message !== "Success") {
@@ -1073,7 +1057,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                console.log("newNotificationMessage line 633:", newNotificationMessage);
+                                // console.log("newNotificationMessage line 1060:", newNotificationMessage);
                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                     console.log("Notification sent successfully");
                                 } else if (newNotificationMessage.message !== "Success") {
@@ -1085,7 +1069,7 @@ export default class InvestmentsServices {
                                 console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
                                 // debugger
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                // console.log(" Current log, line 1010 :", currentInvestment);
+                                // console.log(" Current log, line 1072 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
 
@@ -1101,10 +1085,10 @@ export default class InvestmentsServices {
                                     createdAt: DateTime.now(),
                                     metadata: ``,
                                 };
-                                // console.log("Timeline object line 551:", timelineObject);
+                                // console.log("Timeline object line 1088:", timelineObject);
                                 await timelineService.createTimeline(timelineObject);
                                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                // console.log("new Timeline object line 553:", newTimeline);
+                                // console.log("new Timeline object line 1091:", newTimeline);
                                 // update record
                                 // debugger
                                 // Send Details to notification service
@@ -1116,7 +1100,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                console.log("newNotificationMessage line 988:", newNotificationMessage);
+                                // console.log("newNotificationMessage line 1103:", newNotificationMessage);
                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                     console.log("Notification sent successfully");
                                 } else if (newNotificationMessage.message !== "Success") {
@@ -1126,7 +1110,7 @@ export default class InvestmentsServices {
 
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                 // console.log(" Current log, line 1051 =========:", updatedInvestment);
-                                console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
+                                // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
                                 // debugger
                                 // throw Error(debitUserWalletForInvestment);
                                 throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
@@ -1767,7 +1751,7 @@ export default class InvestmentsServices {
                 .where('approval_status', "approved")
                 .where('is_rollover_activated', "true")
                 .where('is_rollover_suspended', "false")
-                .where('payout_date', '<=', selectedDate)
+                .where('payout_date', '<=', selectedDate) // where payout date is yesterday or today.
                 .offset(offset)
                 .limit(limit)
             // .forUpdate()
@@ -1797,8 +1781,8 @@ export default class InvestmentsServices {
             console.log(responseData)
 
             if (responseData.length < 1) {
-                console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
-                throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
+                console.log(`There is no approved investment that is matured for rollover. Please, check and try again.`)
+                throw new AppException({ message: `There is no approved investment that is matured for rollover. Please, check and try again.`, codeSt: "404" })
             }
             // debugger
             let investmentArray: any[] = [];

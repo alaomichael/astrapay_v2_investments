@@ -143,7 +143,7 @@ export default class ApprovalsServices {
                     console.log("selectedInvestmentRequest ========================================================")
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
-                    selectedInvestmentRequestUpdate.approvalStatus = "investment_approved" //saveApproval.approvalStatus;
+                    selectedInvestmentRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_approved";
                     // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // update the record
@@ -154,7 +154,7 @@ export default class ApprovalsServices {
                     console.log("selectedInvestmentRequest ========================================================")
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
-                    selectedInvestmentRequestUpdate.approvalStatus = "investment_declined" //saveApproval.approvalStatus;
+                    selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_declined";
                     // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // TODO: handle remark

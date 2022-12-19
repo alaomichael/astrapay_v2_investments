@@ -1750,7 +1750,7 @@ export default class InvestmentsController {
 
                 AstraPay Investment.`;
           let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 1753:", newNotificationMessage);
+          // console.log("newNotificationMessage line 1753:", newNotificationMessage);
           if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessage.message !== "Success") {
