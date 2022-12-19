@@ -520,36 +520,6 @@ export default class TypesController {
             } else if (type) {
                 console.log("Type Selected for Update line 273:", type);
                 const { interestRate, } = request.body();
-
-
-                // const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
-                //     features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
-                //     interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, } = request.body();
-                // const payload: TypeType = {
-                //     rfiRecordId: rfiRecordId,
-                //     typeName: typeName,
-                //     quantityIssued: quantityIssued,
-                //     quantityAvailableForIssue: quantityAvailableForIssue,
-                //     availableTypes: availableTypes,
-                //     currencyCode: currencyCode,
-                //     isAutomated: isAutomated,
-                //     features: features,
-                //     requirements: requirements,
-                //     lng: lng,
-                //     lat: lat,
-                //     tagName: tagName,
-                //     rfiCode: rfiCode,
-                //     status: status,
-                //     createdBy: createdBy,
-                //     lowestAmount: lowestAmount,
-                //     highestAmount: highestAmount,
-                //     description: description,
-                //     interestRate: interestRate,
-                //     isRolloverAllowed: isRolloverAllowed,
-                //     minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
-                //     maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
-                // }
-
                 // update the data
                 // TODO: Uncomment to use loginAdminFullName
                 // payload.createdBy = createdBy !== undefined ? createdBy : loginAdminFullName;

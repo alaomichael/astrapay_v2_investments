@@ -157,6 +157,42 @@ export default class SettingsServices {
             predicate = predicate + "rfi_image_url=?"
             params.push(queryFields.rfiImageUrl)
         }
+        
+        if (queryFields.initiationNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "initiation_notification_email=?"
+            params.push(queryFields.initiationNotificationEmail)
+        }
+        
+        if (queryFields.activationNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "activation_notification_email=?"
+            params.push(queryFields.activationNotificationEmail)
+        }
+        
+        if (queryFields.maturityNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "maturity_notification_email=?"
+            params.push(queryFields.maturityNotificationEmail)
+        }
+        
+        if (queryFields.payoutNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "payout_notification_email=?"
+            params.push(queryFields.payoutNotificationEmail)
+        }
+        
+        if (queryFields.rolloverNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "rollover_notification_email=?"
+            params.push(queryFields.rolloverNotificationEmail)
+        }
+        
+        if (queryFields.liquidationNotificationEmail) {
+            predicateExists()
+            predicate = predicate + "liquidation_notification_email=?"
+            params.push(queryFields.liquidationNotificationEmail)
+        }
 
         if (queryFields.investmentWalletId) {
             predicateExists()

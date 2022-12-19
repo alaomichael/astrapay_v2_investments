@@ -20,6 +20,12 @@ export default class CreateSettingValidator extends BaseValidator {
             })]
         ),
         rfiImageUrl: schema.string(),
+        initiationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        activationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        maturityNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        payoutNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        rolloverNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        liquidationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
         investmentWalletId: schema.string({ escape: true },),
         payoutWalletId: schema.string({ escape: true },),
         // investment_wallet_id

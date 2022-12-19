@@ -9,6 +9,13 @@ export default class Settings extends BaseSchema {
       table.string('rfi_name', 255).notNullable().index()
       table.string('rfi_code', 255).notNullable().index()
       table.string('rfi_image_url', 255).notNullable().index()
+    //   - [ ]  On Setting table add new fields for email of who to notify on investment :  @Michael Alao **Monday**
+      table.string('initiation_notification_email', 255).notNullable().index()
+      table.string('activation_notification_email', 255).notNullable().index()
+      table.string('maturity_notification_email', 255).notNullable().index()
+      table.string('payout_notification_email', 255).notNullable().index()
+      table.string('rollover_notification_email', 255).notNullable().index()
+      table.string('liquidation_notification_email', 255).notNullable().index()
       table.text('investment_wallet_id').unsigned().notNullable().index()
       table.text('payout_wallet_id').unsigned().notNullable().index()
       table.boolean('is_payout_automated').notNullable().defaultTo(false).index()

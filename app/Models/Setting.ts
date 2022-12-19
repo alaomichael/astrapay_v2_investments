@@ -18,6 +18,31 @@ export default class Setting extends AppBaseModel {
   })
   public rfiImageUrl: string
 
+  @column({
+  })
+  public initiationNotificationEmail: string
+
+@column({
+  })
+  public activationNotificationEmail: string
+
+@column({
+  })
+  public maturityNotificationEmail: string
+
+@column({
+  })
+  public payoutNotificationEmail: string
+
+@column({
+  })
+  public rolloverNotificationEmail: string
+
+@column({
+  })
+  public liquidationNotificationEmail: string
+
+
   @column()
   public investmentWalletId: string
 

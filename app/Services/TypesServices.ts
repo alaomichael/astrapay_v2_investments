@@ -129,7 +129,7 @@ export default class TypesServices {
         try {
             selectedType.interestRate = interestRate;
             let newPayload = selectedType;
-            debugger
+            // debugger
             let saveType = await selectedType.merge(newPayload)
             await saveType.save();
             return saveType

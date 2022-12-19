@@ -1140,7 +1140,7 @@ export default class InvestmentsServices {
                             // await record.save();
                             // update record
                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                            debugger
+                            // debugger
                             // console.log(" Current log, line 1007 :", currentInvestment);
                             // send for update
                             await investmentsService.updateInvestment(currentInvestment, record);
@@ -1151,7 +1151,7 @@ export default class InvestmentsServices {
                         // Update Investment data
                         // console.log(" Updated record line 1015: ", record.$original);
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                        debugger
+                        // debugger
                         // send to user
                         await trx.commit();
                         return {
@@ -1172,7 +1172,7 @@ export default class InvestmentsServices {
                     console.log("Error line 1030", error.messages);
                     console.log("Error line 1031", error.message);
                     // console.log("Error line 1032", error.message);
-                    debugger
+                    // debugger
                     await trx.rollback()
                     console.log(`Error line 1046, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;

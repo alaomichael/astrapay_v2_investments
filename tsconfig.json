@@ -44,7 +44,8 @@
       "@adonisjs/lucid",
       "@adonisjs/attachment-lite",
       "@adonisjs/session",
-      "@adonisjs/mail"
+      "@adonisjs/mail",
+      "adonis5-scheduler"
     ]
   }
 }

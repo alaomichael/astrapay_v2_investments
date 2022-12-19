@@ -24,7 +24,9 @@ export default class SettingsController {
       await request.validate(CreateSettingValidator);
       const settingsService = new SettingServices();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
-        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName,
+        initiationNotificationEmail,activationNotificationEmail,maturityNotificationEmail,payoutNotificationEmail,
+        rolloverNotificationEmail,liquidationNotificationEmail, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -38,7 +40,12 @@ export default class SettingsController {
         // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
-        
+        initiationNotificationEmail:initiationNotificationEmail,
+        activationNotificationEmail:activationNotificationEmail,
+        maturityNotificationEmail:maturityNotificationEmail,
+        payoutNotificationEmail:payoutNotificationEmail,
+        rolloverNotificationEmail: rolloverNotificationEmail,
+        liquidationNotificationEmail:liquidationNotificationEmail,
       }
       const setting = await settingsService.createSetting(payload);
 
@@ -83,7 +90,8 @@ export default class SettingsController {
       const settingsService = new SettingServices();
       const { id } = request.params();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
-        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, } = request.body();
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, initiationNotificationEmail,
+        activationNotificationEmail, maturityNotificationEmail,payoutNotificationEmail,rolloverNotificationEmail,liquidationNotificationEmail, } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -97,6 +105,12 @@ export default class SettingsController {
         // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
+        initiationNotificationEmail: initiationNotificationEmail,
+        activationNotificationEmail: activationNotificationEmail,
+        maturityNotificationEmail: maturityNotificationEmail,
+        payoutNotificationEmail: payoutNotificationEmail,
+        rolloverNotificationEmail:  rolloverNotificationEmail,
+        liquidationNotificationEmail:liquidationNotificationEmail,
       }
       console.log("Request body validation line 100", payload);
       // get setting by id
