@@ -1365,7 +1365,7 @@ export default class InvestmentsServices {
 
                             // record.status === "matured" &&
                             //     record.status === "matured" && 
-                            
+
                             if (( record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                 record.isPayoutSuspended === false ) || ( record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false )) {
@@ -1739,15 +1739,17 @@ export default class InvestmentsServices {
                 .offset(offset)
                 .limit(limit)
             // .forUpdate()
-            console.log(" responseData line 1796 ==============")
-            console.log(responseData)
-            debugger
+
+            // console.log(" responseData line 1796 ==============")
+            // console.log(responseData)
+            // debugger
 
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for rollover. Please, check and try again.`)
                 throw new AppException({ message: `There is no approved investment that is matured for rollover. Please, check and try again.`, codeSt: "404" })
             }
             // debugger
+
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
@@ -1850,14 +1852,14 @@ export default class InvestmentsServices {
                         // let timeline
                         let isDueForPayout = await dueForPayout(startDate, duration)
                         console.log('Is due for payout status line 1900:', isDueForPayout)
-                        debugger
+                        // debugger
                         if (isDueForPayout === true) {
                             //                          record.isPayoutAuthorized === true,
                             //   record.isPayoutSuspended === false,
                             // payoutReactivationDate: null,
-                            if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&
-                                record.isRolloverSuspended === false) || (record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isRolloverActivated === true &&
-                                    record.isRolloverSuspended === false)) {
+                            if ( ( record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&
+                                record.isRolloverSuspended === false ) || ( record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isRolloverActivated === true &&
+                                    record.isRolloverSuspended === false ) ) {
                                 // START 
                                 console.log("Approval for investment rollover processing: ===========================================>")
                                 // newStatus = "submitted";
