@@ -1,12 +1,9 @@
 import { BaseTask } from 'adonis5-scheduler/build'
-// import InvestmentsServices from 'App/Services/InvestmentsServices'
-import TypesServices from 'App/Services/TypesServices'
+import InvestmentsServices from 'App/Services/InvestmentsServices'
 import { DateTime } from 'luxon'
 // import axios from 'axios'
-const Env = require("@ioc:Adonis/Core/Env");
-const DEFAULT_INTEREST_RATE = Env.get("DEFAULT_INTEREST_RATE");
 
-export default class ResetInvestmentInterestRate extends BaseTask {
+export default class CollateMaturedInvestment extends BaseTask {
     public static get schedule() {
         // *    *    *    *    *    *
         // ┬    ┬    ┬    ┬    ┬    ┬
@@ -19,7 +16,7 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/20 * * * *' // runs every 20 minutes
+        return '*/5 * * * *' // runs every 5 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**
@@ -33,7 +30,7 @@ export default class ResetInvestmentInterestRate extends BaseTask {
     public async handle() {
         // @ts-ignore
         this.logger.info('Handled')
-        console.log("Scheduler is Running Reset Investment Interest Rate ==============================================")
+        console.log("Scheduler is Running Collate Matured Investment ==============================================")
         // TODO : Update this when going live
         let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
         console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
@@ -43,25 +40,11 @@ export default class ResetInvestmentInterestRate extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        let defaultInterestRate;
-        if (DEFAULT_INTEREST_RATE !== undefined || DEFAULT_INTEREST_RATE !== null){
-            defaultInterestRate = Number(DEFAULT_INTEREST_RATE);
-        }else{
-            defaultInterestRate = 10;
-        }
         console.log("Query params in type service line 42:", queryParams)
-        let typesServices = new TypesServices();
-       let listOfInvestmentType = await typesServices.getTypes(queryParams);   
-        for (let index = 0; index < listOfInvestmentType.length; index++) {
-            const currentInvestmentType = listOfInvestmentType[index];
-           let updatedInterestRate = await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
-            console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
-            console.log(updatedInterestRate!.interestRate);  
-        }
-        
-
-        console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
-        console.log("The ASTRAPAY API Reset Investment Interest Rate response,line 64: ");
-
+        let investmentsServices = new InvestmentsServices();
+        let listOfCollatedMaturedInvestments = await investmentsServices.collateMaturedInvestment(queryParams);
+        // let listOfCollatedMaturedInvestments = await investmentsServices.collateMaturedInvestment(queryParams);  
+        console.log("After AXIOS CALL for Collate Matured Investment ,  ==================================================");
+        console.log("The ASTRAPAY API Collate Matured Investment response,line 47: ", listOfCollatedMaturedInvestments);
     }
 }

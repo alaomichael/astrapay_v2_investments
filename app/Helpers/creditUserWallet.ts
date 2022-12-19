@@ -190,19 +190,19 @@ export const creditUserWallet = async function creditUserWallet(
         // console.error("creditUserWallet method line 188",error.response.data.errorMessage);
         // console.error("creditUserWallet method line 189",error.message);
         // console.error("creditUserWallet method line 190",error.data);
-        debugger
+        // debugger
         // code: 'ETIMEDOUT',
         if (error.response == undefined) {
             console.error("creditUserWallet method line 199", error.data);
             console.error("creditUserWallet method line 200", error.code);
             console.error("creditUserWallet method line 201", error.errorMessage);
-            debugger
+            // debugger
             return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.code, errorMessage: error.errorMessage }
         } else {
             console.error("creditUserWallet method line 204", error.response.data);
             console.error("creditUserWallet method line 205", error.response.code);
             console.error("creditUserWallet method line 206", error.response.errorMessage);
-            debugger
+            // debugger
             // return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
             return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.code, errorMessage: error.response.data.errorMessage }
         }    }

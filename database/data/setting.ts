@@ -13,7 +13,7 @@ export const settings = [
         investmentWalletId: "1234560001",//SIGWALLET_166922392334423",
         payoutWalletId: "1234560001",//SIGWALLET_166922392334423",
         isPayoutAutomated: true,
-        isInvestmentAutomated: false,
+        isInvestmentAutomated: true,
         isRolloverAutomated: true,
         tagName: "default setting",
         currencyCode: "NGN"

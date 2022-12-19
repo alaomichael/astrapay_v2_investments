@@ -40,7 +40,7 @@ export default class TypesServices {
                 .offset(offset)
                 .limit(limit)
 
-            console.log("Response data in type service:", responseData)
+            // console.log("Response data in type service:", responseData)
             return responseData
         } catch (error) {
             console.log(error)

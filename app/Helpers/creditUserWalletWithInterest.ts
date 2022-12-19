@@ -124,7 +124,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 }
             ]
         }
-        debugger
+        // debugger
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )

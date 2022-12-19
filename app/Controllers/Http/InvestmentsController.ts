@@ -2056,7 +2056,7 @@ export default class InvestmentsController {
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
-      debugger
+      // debugger
 
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
@@ -2067,7 +2067,7 @@ export default class InvestmentsController {
           let { id, wallet_id, user_id } = currentInvestment;
           currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
           investmentArray.push(currentInvestment);
-          debugger
+          // debugger
         }
         return response.status(200).json({
           status: 'OK',
@@ -2088,7 +2088,7 @@ export default class InvestmentsController {
       // debugger
       console.log("Error line 2052", error.messages);
       console.log("Error line 2053", error.message);
-      debugger
+      // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -2442,7 +2442,7 @@ export default class InvestmentsController {
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.rolloverMaturedInvestment(request.qs(), loginUserData)
-      debugger
+      // debugger
 
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2386:', investments)
@@ -2453,7 +2453,7 @@ export default class InvestmentsController {
           let { id, wallet_id, user_id } = currentInvestment;
           currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
           investmentArray.push(currentInvestment);
-          debugger
+          // debugger
         }
         return response.status(200).json({
           status: 'OK',
@@ -2472,9 +2472,9 @@ export default class InvestmentsController {
     } catch (error) {
       console.log(error)
       // debugger
-      console.log("Error line 2052", error.messages);
-      console.log("Error line 2053", error.message);
-      debugger
+      console.log("Error line 2472", error.messages);
+      console.log("Error line 2473", error.message);
+      // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -2516,7 +2516,7 @@ export default class InvestmentsController {
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const investments = await investmentsService.payoutMaturedInvestment(request.qs(), loginUserData)
-      debugger
+      // debugger
 
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2386:', investments)
@@ -2527,7 +2527,7 @@ export default class InvestmentsController {
           let { id, wallet_id, user_id } = currentInvestment;
           currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
           investmentArray.push(currentInvestment);
-          debugger
+          // debugger
         }
         return response.status(200).json({
           status: 'OK',
@@ -2548,7 +2548,7 @@ export default class InvestmentsController {
       // debugger
       console.log("Error line 2052", error.messages);
       console.log("Error line 2053", error.message);
-      debugger
+      // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -3010,7 +3010,7 @@ export default class InvestmentsController {
             investment.status === 'terminated')
         ) {
           console.log('investment search data line 1596 :', investment.$original)
-          debugger
+          // debugger
           // @ts-ignore
           // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
           // console.log('Is due for payout status :', isDueForPayout)

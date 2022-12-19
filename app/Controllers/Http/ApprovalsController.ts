@@ -863,7 +863,7 @@ export default class ApprovalsController {
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
             console.log("newNotificationMessage line 567:", newNotificationMessage);
-            debugger
+            // debugger
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessage.message !== "Success") {
@@ -965,7 +965,7 @@ export default class ApprovalsController {
                 record.isPayoutAuthorized = true;
                 record.isPayoutSuccessful = true;
                 record.datePayoutWasDone = DateTime.now();
-                debugger
+                // debugger
 
                 // Save the updated record
                 // await record.save();
@@ -1008,7 +1008,7 @@ export default class ApprovalsController {
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                 console.log("newNotificationMessage line 1013:", newNotificationMessage);
-                debugger
+                // debugger
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                   console.log("Notification sent successfully");
                 } else if (newNotificationMessage.message !== "Success") {
@@ -1047,7 +1047,7 @@ export default class ApprovalsController {
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
-              debugger
+              // debugger
             } else if (rolloverType == "102") {
               //   '102' = 'rollover principal with interest',
               // create newInvestment
@@ -1284,7 +1284,7 @@ export default class ApprovalsController {
                 AstraPay Investment.`;
               let newNotificationMessage = await sendNotification(email, subject, firstName, message);
               console.log("newNotificationMessage line 1291:", newNotificationMessage);
-              debugger
+              // debugger
               if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                 console.log("Notification sent successfully");
               } else if (newNotificationMessage.message !== "Success") {
@@ -1323,7 +1323,7 @@ export default class ApprovalsController {
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
               console.log("newInvestmentDetails ", newInvestmentDetails)
-              debugger
+              // debugger
             } else if (rolloverType == "103") {
               //   '101' = 'rollover principal only',
               // payout interest
@@ -1348,7 +1348,7 @@ export default class ApprovalsController {
                 record.isPayoutAuthorized = true;
                 record.isPayoutSuccessful = true;
                 record.datePayoutWasDone = DateTime.now();
-                debugger
+                // debugger
 
                 // Save the updated record
                 // await record.save();
@@ -1392,7 +1392,7 @@ export default class ApprovalsController {
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                 console.log("newNotificationMessage line 1465:", newNotificationMessage);
-                debugger
+                // debugger
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                   console.log("Notification sent successfully");
                 } else if (newNotificationMessage.message !== "Success") {
@@ -1431,7 +1431,7 @@ export default class ApprovalsController {
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
               console.log("newInvestmentDetails ", newInvestmentDetails)
-              debugger
+              // debugger
             }
           }
 
@@ -1759,7 +1759,7 @@ export default class ApprovalsController {
       console.log("Error line 1752", error.message);
       // let { status, message,messages,errorCode,errorMessage} = error;
       let { message, messages, } = error;
-      debugger
+      // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500

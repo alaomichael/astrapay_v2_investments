@@ -16,7 +16,7 @@ export default class ActivateApprovedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/3 * * * *' // runs every 4 minutes
+        return '*/3 * * * *' // runs every 3 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**

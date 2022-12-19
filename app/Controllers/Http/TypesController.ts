@@ -533,7 +533,7 @@ export default class TypesController {
                 // console.log("Type updated: ", type);
                 // await type.save();
                 console.log("Update Type Request line 562:", updatedInterestRate);
-                debugger
+                // debugger
                 // Send Details to notification service
                 let email, firstName;
                 email = SUPER_ADMIN_EMAIL_ADDRESS;
@@ -556,7 +556,7 @@ export default class TypesController {
 
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 586:", newNotificationMessage);
+                // console.log("newNotificationMessage line 586:", newNotificationMessage);
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                     console.log("Notification sent successfully");
                 } else if (newNotificationMessage.message !== "Success") {

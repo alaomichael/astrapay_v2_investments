@@ -190,7 +190,7 @@ export default class ApprovalsServices {
                     selectedInvestmentTerminationRequestUpdate.status = "investment_termination_completed";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
                     // update the record
-                    debugger
+                    // debugger
                     await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
