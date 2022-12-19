@@ -777,6 +777,73 @@ export default class InvestmentsServices {
         }
     }
 
+    public async sumOfMaturedInvestment(queryParams: any): Promise<Investment | any> {
+        const trx = await Database.transaction();
+        try {
+            // console.log("Query params in loan service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
+
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
+            }
+            // console.log("queryParams line 142 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 149 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 151 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                .useTransaction(trx) // 👈
+                .sum('total_amount_to_payout as totalAmountDueForPayout')
+                .where('status', "matured")
+                .first()
+                // .where('payout_date', '>=', payoutDateFrom)
+                // .where('payout_date', '<=', payoutDateTo)
+                // .offset(offset)
+                // .limit(limit)
+            // .forUpdate()
+
+            // console.log("responseData.totalAmountDueForPayout ",responseData.totalAmountDueForPayout) // prints the sum of the values in the 'column_name' column
+            // console.log("Investment Info, line 583: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no matured investment or payout has been completed. Please, check and try again.`)
+                throw new AppException({ message: `There is no matured investment or payout has been completed. Please, check and try again.`, codeSt: "404" })
+            }
+            return responseData;
+        } catch (error) {
+            console.log(error)
+            await trx.rollback();
+            throw error;
+        }
+    }
+
+
+
     public async activateApprovedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {

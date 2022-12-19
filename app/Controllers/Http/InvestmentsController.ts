@@ -2051,6 +2051,79 @@ export default class InvestmentsController {
     }
   }
 
+  public async activateApprovedInvestment({ request, response, loginUserData }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
+      debugger
+
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          debugger
+        }
+        return response.status(200).json({
+          status: 'OK',
+          data: investmentArray,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      // debugger
+      console.log("Error line 2052", error.messages);
+      console.log("Error line 2053", error.message);
+      debugger
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
   public async collateMaturedInvestment01({ request, response }: HttpContextContract) {
     try {
       const timelineService = new TimelinesServices();
@@ -2265,7 +2338,6 @@ export default class InvestmentsController {
     }
   }
 
-
   public async collateMaturedInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
@@ -2318,28 +2390,18 @@ export default class InvestmentsController {
     }
   }
 
-  // 
-  public async activateApprovedInvestment({ request, response, loginUserData }: HttpContextContract) {
+  public async sumOfMaturedInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
-      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
-      debugger
-
-      if (investments.length > 0) {
+      const investments = await investmentsService.sumOfMaturedInvestment(request.qs())
+      // debugger
+      if (investments) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
-        let investmentArray: any[] = [];
-        for (let index = 0; index < investments.length; index++) {
-          let currentInvestment = investments[index];
-          let { id, wallet_id, user_id } = currentInvestment;
-          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
-          investmentArray.push(currentInvestment);
-          debugger
-        }
+       
         return response.status(200).json({
           status: 'OK',
-          data: investmentArray,//.map((inv) => inv.$original),
+          data: investments,//.map((inv) => inv.$original),
         })
         // END
 
@@ -2352,11 +2414,9 @@ export default class InvestmentsController {
         })
       }
     } catch (error) {
-      console.log(error)
-      // debugger
-      console.log("Error line 2052", error.messages);
-      console.log("Error line 2053", error.message);
-      debugger
+      console.error(error)
+      console.log("Error line 2418", error.messages);
+      console.log("Error line 2419", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
@@ -2365,24 +2425,7 @@ export default class InvestmentsController {
           message: error.messages,
           hint: error.message
         });
-      } else if (error.code === 'ETIMEDOUT') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 504
-        return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
-          message: error.messages,
-          hint: error.message
-        });
-      } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 504
-        return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
-          message: error.messages,
-          hint: error.message
-        });
       }
-
       return response.status(500).json({
         status: "FAILED",
         message: error.messages,
@@ -2391,6 +2434,8 @@ export default class InvestmentsController {
 
     }
   }
+  
+
 
   public async payoutMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
