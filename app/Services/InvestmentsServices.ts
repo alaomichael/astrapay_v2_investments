@@ -1069,24 +1069,24 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 567:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 567:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
 
                                 // START
                                 // console.log('Updated investment Status line 1379: ', investment)
@@ -1162,24 +1162,24 @@ export default class InvestmentsServices {
 
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Payout";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                    //                     let subject = "AstraPay Investment Payout";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 567:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 567:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
 
                                 }
                                 // await investment save()
@@ -1230,7 +1230,7 @@ export default class InvestmentsServices {
                                 //     })
                                 //   }
                                 // }
-                                
+
                                 let approvalObject;
 
                                 // TODO: Send to the Admin for approval
@@ -1295,7 +1295,7 @@ export default class InvestmentsServices {
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'active') {
-                                   
+
                                     // const approvalsService = new ApprovalsServices()
                                     let approvalObject;
 
@@ -1459,7 +1459,7 @@ export default class InvestmentsServices {
                     // debugger
                     if (investment && investment.$original.status == "active") {
                         console.log('investment search data :', investment.$original)
-                        let { rfiCode ,startDate,duration} = investment.$original;
+                        let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
                         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
                         // console.log('Is due for payout status :', isDueForPayout)
@@ -2208,24 +2208,25 @@ export default class InvestmentsServices {
             let responseData = await Database
                 .from('investments')
                 .useTransaction(trx) // 👈
-                .where('status', "matured")
-                .orWhere('status', "completed_with_interest_payout_outstanding")
-                .orWhere('status', "completed_with_principal_payout_outstanding")
-                // .andWhereNot('status', "completed")
-                .where('request_type', "payout_investment")
-                .where('approval_status', "approved")
-                .where('is_rollover_activated', "false")
-                .orWhere('is_rollover_activated', "true")
-                .where('is_rollover_suspended', "false")
-                .where('is_payout_suspended', "false")
-                .where('payout_date', '<=', selectedDate)
+                .where('status', 'matured')
+                .andWhere('request_type', 'payout_investment')
+                .andWhere('approval_status', 'approved')
+                .andWhere('is_payout_successful', 'false')
+                .andWhere('is_rollover_activated', 'false')
+                .andWhere('is_rollover_suspended', 'false')
+                .andWhere('is_payout_suspended', 'false')
+                .andWhere('payout_date', '<=', selectedDate)
                 .offset(offset)
                 .limit(limit)
+            // .orWhere('status', "completed_with_interest_payout_outstanding")
+            // .orWhere('status', "completed_with_principal_payout_outstanding")
+            // .andWhereNot('status', "completed")
+            // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
             console.log(" responseData line 2220 ==============")
             console.log(responseData)
-
+            debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
                 throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
@@ -2317,7 +2318,7 @@ export default class InvestmentsServices {
                         // let newStatus;
                         // await approval.save();
                         // console.log("Update Approval Request line 504:", approval);
-                        let { currencyCode, lastName, startDate,duration } = record;
+                        let { currencyCode, lastName, startDate, duration } = record;
                         // let { currencyCode, lastName, startDate, duration } = record;
                         console.log("Surname: ", lastName)
                         // console.log("CurrencyCode: ", currencyCode)
@@ -2342,9 +2343,9 @@ export default class InvestmentsServices {
                             // record.status === "matured" &&
                             //     record.status === "matured" && 
 
-                            if (( record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
-                                record.isPayoutSuspended === false ) || ( record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
-                                    record.isPayoutSuspended === false )) {
+                            if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
+                                    record.isPayoutSuspended === false)) {
                                 console.log("Approval for investment payout processing: ===========================================>")
 
                                 // TODO: Uncomment to use loginAdminFullName
