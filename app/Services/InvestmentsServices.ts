@@ -2202,8 +2202,9 @@ export default class InvestmentsServices {
                 .from('investments')
                 .useTransaction(trx) // 👈
                 .where('status', "payout_suspended")
+                .where('is_payout_suspended', true)
                 // .where('payout_date', '>=', payoutDateFrom)
-                .where('payout_reactivation_date', '<=', payoutReactivationDate)
+                .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
                 .where('approval_status', "suspend_payout")
                 .offset(offset)
                 .limit(limit)
@@ -2211,12 +2212,12 @@ export default class InvestmentsServices {
 
             // console.log("Loan Info, line 583: ", investments);
             // console.log(responseData)
-            // debugger
+            debugger
             if (!responseData) {
                 console.log(`There is no suspended investment payout or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no suspended investment payout or payout has been completed. Please, check and try again.`, codeSt: "500" })
             }
-
+            debugger
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
