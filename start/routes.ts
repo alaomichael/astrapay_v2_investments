@@ -70,10 +70,10 @@ Route.group(() => {
     Route.get("admin/investments/about_to_be_mature_investments", "InvestmentsController.collateAboutToBeMatureInvestment");
     Route.get("admin/investments/matured_investments", "InvestmentsController.collateMaturedInvestment");
     Route.get("admin/investments/activate_approved_investments", "InvestmentsController.activateApprovedInvestment");
-    Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment");
+    Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment"); 
+    Route.get("admin/investments/retry_failed_payout_of_matured_investment", "InvestmentsController.retryFailedPayoutOfMaturedInvestment"); 
     Route.get("admin/investments/rollover_matured_investments", "InvestmentsController.rolloverMaturedInvestment");
     Route.get("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
-    // collateMaturedInvestment sumOfMaturedInvestment
     Route.get("admin/investments/sum_of_matured_investment", "InvestmentsController.sumOfMaturedInvestment");
     
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
