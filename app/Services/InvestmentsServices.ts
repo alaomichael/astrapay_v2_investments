@@ -2816,7 +2816,7 @@ export default class InvestmentsServices {
                         // let newStatus;
                         // await approval.save();
                         // console.log("Update Approval Request line 504:", approval);
-                        let { currencyCode, lastName, startDate, duration ,status} = record;
+                        let { currencyCode, lastName, startDate, duration, status } = record;
                         // let { currencyCode, lastName, startDate, duration } = record;
                         console.log("Surname: ", lastName)
                         // console.log("CurrencyCode: ", currencyCode)
@@ -2879,8 +2879,8 @@ export default class InvestmentsServices {
                                 let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
                                 let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                 let creditUserWalletWithPrincipal;
-                                let creditUserWalletWithInterest ;
-                                if (status == "completed_with_interest_payout_outstanding"){
+                                let creditUserWalletWithInterest;
+                                if (status == "completed_with_interest_payout_outstanding") {
                                     // Payout Interest
                                     creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
                                         beneficiaryName,
@@ -3019,17 +3019,17 @@ export default class InvestmentsServices {
                                         // debugger
                                     }
                                 }
-                                
+
                                 if (status == "completed_with_principal_payout_outstanding") {
-                                // Payout Principal
-                                 creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
-                                    beneficiaryName,
-                                    beneficiaryAccountNumber,
-                                    beneficiaryAccountName,
-                                    beneficiaryEmail,
-                                    beneficiaryPhoneNumber,
-                                    rfiCode,
-                                    descriptionForPrincipal)
+                                    // Payout Principal
+                                    creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
+                                        beneficiaryName,
+                                        beneficiaryAccountNumber,
+                                        beneficiaryAccountName,
+                                        beneficiaryEmail,
+                                        beneficiaryPhoneNumber,
+                                        rfiCode,
+                                        descriptionForPrincipal)
                                     // if successful 
                                     if (creditUserWalletWithPrincipal.status == 200) {
                                         let amountPaidOut = amount;
@@ -3160,18 +3160,18 @@ export default class InvestmentsServices {
                                     }
                                 }
                                 // debugger
-                                
+
                                 // else {
-                                    // console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
-                                    // update record
-                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                    // console.log(" Current log, line 3168 :", currentInvestment);
-                                    // send for update
-                                    await investmentsService.updateInvestment(currentInvestment, record);
-                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                    // console.log(" Current log, line 3172 :", updatedInvestment);
-                                    // debugger
-                                    // throw Error();
+                                // console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
+                                // update record
+                                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                // console.log(" Current log, line 3168 :", currentInvestment);
+                                // send for update
+                                await investmentsService.updateInvestment(currentInvestment, record);
+                                // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                // console.log(" Current log, line 3172 :", updatedInvestment);
+                                // debugger
+                                // throw Error();
                                 //}
                             } else {
                                 // console.log("Entering no data 3177 ==================================")
@@ -3399,7 +3399,7 @@ export default class InvestmentsServices {
                         console.log('Is due for payout status line 1900:', isDueForPayout)
                         // debugger
                         if (isDueForPayout === true) {
-                            //                          record.isPayoutAuthorized === true,
+                            //   record.isPayoutAuthorized === true,
                             //   record.isPayoutSuspended === false,
                             // payoutReactivationDate: null,
                             if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&

@@ -336,7 +336,7 @@ export default class ApprovalsController {
       // console.log(" idToSearch RESULT ===============================: ", idToSearch);
       // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
       // console.log(" record RESULT ===============================: ", record);
-      console.log("check approval record 467 ==================================")
+      console.log("check approval record 339 ==================================")
       // debugger
       if (!approval || record == undefined || !record) {
         return response
@@ -344,7 +344,7 @@ export default class ApprovalsController {
           .json({ status: "FAILED", message: "Not Found,try again." });
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
-
+      // debugger
       if (approval) {
         console.log("Investment approval Selected for Update line 477:");
 
@@ -873,7 +873,7 @@ export default class ApprovalsController {
           } else {
             throw Error();
           }
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollovered" && record.status === "matured") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation'; 
@@ -1435,7 +1435,7 @@ export default class ApprovalsController {
             }
           }
 
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspended" && record.status === "matured") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
@@ -1727,7 +1727,7 @@ export default class ApprovalsController {
           }
 
         } else {
-          console.log("Entering no record for update 1725 ==================================")
+          console.log("Entering no record for update 1730 ==================================")
           return response
             .status(404)
             .json({
@@ -1745,7 +1745,8 @@ export default class ApprovalsController {
             data: approval//.map((inv) => inv.$original),
           });
       } else {
-        console.log("Entering update 1743 ==================================")
+        console.log("Entering update 1748 ==================================")
+        debugger
         return response
           .status(404)
           .json({
