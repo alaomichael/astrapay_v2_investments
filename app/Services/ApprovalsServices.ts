@@ -149,13 +149,13 @@ export default class ApprovalsServices {
                     // update the record
                     // TODO: handle remark
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus === "rejected") {
                     // update the neccesary field
                     console.log("selectedInvestmentRequest ========================================================")
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
-                    selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
-                    selectedInvestmentRequestUpdate.status = "investment_declined";
+                    selectedInvestmentRequestUpdate.approvalStatus = "rejected" //saveApproval.approvalStatus;
+                    selectedInvestmentRequestUpdate.status = "investment_rejected";
                     // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // TODO: handle remark
                     // update the record
@@ -177,6 +177,71 @@ export default class ApprovalsServices {
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 410:", newTimeline);
+            } else if (saveApproval.requestType === "payout_investment") {
+                const selectedInvestmentPayoutRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
+                // get the request by request id
+                // update status based on admin action
+                if (saveApproval.approvalStatus === "approved") {
+                    // update the neccesary field
+                    console.log("selectedInvestmentPayoutRequest ========================================================")
+                    console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.status = "approved";
+                    // selectedInvestmentPayoutRequestUpdate.remark = saveApproval.remark;
+                    // update the record
+                    // debugger
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                } else if (saveApproval.approvalStatus === "rejected") {
+                    // update the neccesary field
+                    console.log("selectedInvestmentPayoutRequest ========================================================")
+                    console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "investment_payout_rejected" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.status = "investment_payout_rejected";
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
+
+                    // update the record
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                } else if (saveApproval.approvalStatus === "suspend_payout" && saveApproval.isPayoutSuspended === true ) {
+                    // update the neccesary field
+                    console.log("selectedInvestmentPayoutRequest ========================================================")
+                    console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "payout_suspended" //saveApproval.approvalStatus;
+                    // selectedInvestmentPayoutRequestUpdate.status = "payout_suspended";
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
+
+                    // update the record
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                } else if (saveApproval.approvalStatus === "suspend_rollover" && saveApproval.isRolloverSuspended === true ) {
+                    // update the neccesary field
+                    console.log("selectedInvestmentPayoutRequest ========================================================")
+                    console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "rollover_suspended" //saveApproval.approvalStatus;
+                    // selectedInvestmentPayoutRequestUpdate.status = "rollover_suspended";
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
+
+                    // update the record
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                }
+                // update timeline
+                timelineObject = {
+                    id: uuid(),
+                    action: "investment payout request approval updated",
+                    investmentId: saveApproval.investmentId,
+                    userId: selectedApproval.userId,
+                    walletId: selectedApproval.walletId,
+                    // @ts-ignore
+                    message: `${selectedApproval.firstName} investment payout request approval record has just been updated.`,
+                    createdAt: DateTime.now(),
+                    metadata: `request type : ${selectedApproval.requestType}`,
+                };
+                // console.log("Timeline object line 408:", timelineObject);
+                await timelineService.createTimeline(timelineObject);
+                // let newTimeline = await timelineService.createTimeline(timelineObject);
+                // console.log("new Timeline object line 222:", newTimeline);
             } else if (saveApproval.requestType === "terminate_investment") {
                 const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
@@ -192,13 +257,13 @@ export default class ApprovalsServices {
                     // update the record
                     // debugger
                     await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus === "rejected") {
                     // update the neccesary field
                     console.log("selectedInvestmentTerminationRequest ========================================================")
                     console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
-                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_declined" //saveApproval.approvalStatus;
-                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_declined";
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_rejected" //saveApproval.approvalStatus;
+                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_rejected";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record

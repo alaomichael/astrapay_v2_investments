@@ -347,7 +347,7 @@ export default class ApprovalsController {
 
       if (approval) {
         console.log("Investment approval Selected for Update line 477:");
-        
+
         let payload: ApprovalType = {
           walletId: approval.walletId,
           investmentId: approval.investmentId,
@@ -381,7 +381,7 @@ export default class ApprovalsController {
         let timelineObject;
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status === "initiated" ) { //&& record.status == "submitted"
+        if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status === "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
           newStatus = "investment_approved"; //'pending_account_number_generation'; 
@@ -479,7 +479,7 @@ export default class ApprovalsController {
           // debugger
           // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
           // if successful 
-          if (debitUserWalletForInvestment.status == 200 ) {
+          if (debitUserWalletForInvestment.status == 200) {
             // update the investment details
             record.status = 'active'
             // record.approvalStatus = 'approved'
@@ -493,8 +493,8 @@ export default class ApprovalsController {
             // console.log(" Current log, line 610 :", currentInvestment);
             // send for update
             await investmentsService.updateInvestment(currentInvestment, record);
-          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          // console.log(" Current log, line 614 =========:", updatedInvestment);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            // console.log(" Current log, line 614 =========:", updatedInvestment);
 
             // update timeline
             timelineObject = {
@@ -533,7 +533,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
             // debugger
-          } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined ) {
+          } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 655 :", currentInvestment);
             // send for update
@@ -574,8 +574,8 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
 
-          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          // console.log(" Current log, line 535 =========:", updatedInvestment);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            // console.log(" Current log, line 535 =========:", updatedInvestment);
             // console.log("debitUserWalletForInvestment reponse data 579 ==================================", debitUserWalletForInvestment)
             // debugger
             // throw Error(debitUserWalletForInvestment);
@@ -586,7 +586,7 @@ export default class ApprovalsController {
                 message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
               });
           }
-        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status === "initiated" ) { // && record.status == "submitted"
+        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "rejected" && record.status === "initiated") { // && record.status == "submitted"
           newStatus = "investment_rejected";
           record.status = newStatus;
           record.approvalStatus = approval.approvalStatus;// "investment_declined"; //approval.approvalStatus;
@@ -1454,7 +1454,7 @@ export default class ApprovalsController {
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           let { firstName, email, totalAmountToPayout, } = record; // interestDueOnInvestment,
-          
+
           // console.log("Updated record Status line 1439: ", record);
           if (isRolloverSuspended === true) {
             newStatus = "rollover_suspended";
@@ -1671,7 +1671,7 @@ export default class ApprovalsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
-        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "declined" && record.status == "active" && record.investmentType === "fixed") {
+        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "rejected" && record.status == "active" && record.investmentType === "fixed") {
           // newStatus = 'active'
           // record.status = newStatus
           record.approvalStatus = approval.approvalStatus;

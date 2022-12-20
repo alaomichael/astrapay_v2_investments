@@ -2226,7 +2226,7 @@ export default class InvestmentsServices {
 
             console.log(" responseData line 2220 ==============")
             console.log(responseData)
-            debugger
+            // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
                 throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
@@ -2706,7 +2706,7 @@ export default class InvestmentsServices {
             let responseData = await Database
                 .from('investments')
                 .useTransaction(trx) // 👈
-                .orWhere('status', "completed_with_interest_payout_outstanding")
+                .where('status', "completed_with_interest_payout_outstanding")
                 .orWhere('status', "completed_with_principal_payout_outstanding")
                 .andWhere('request_type', 'payout_investment')
                 .andWhere('approval_status', 'approved')
@@ -2722,9 +2722,9 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 2220 ==============")
+            console.log(" responseData line 2725 ==============")
             console.log(responseData)
-            debugger
+            // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
                 throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })

@@ -248,7 +248,7 @@ export default class InvestmentsController {
     try {
       const investmentsService = new InvestmentsServices();
       // let investments = await investmentsService.getInvestmentsByUserId(userId);
-     let investments = await investmentsService.getInvestmentsByUserIdWithQuery(userId,request.qs());
+      let investments = await investmentsService.getInvestmentsByUserIdWithQuery(userId, request.qs());
       console.log("Investments result :", investments);
       if (investments && investments.length > 0) {
         let investmentWithPreloadedData = investments.map((investment) => {
@@ -515,7 +515,7 @@ export default class InvestmentsController {
           status: 'OK',
           data: investment.map((inv) => inv.$original),
         })
-      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'declined') {
+      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'rejected') {
         // investment = await Investment.query()
         //   .where('status', 'initiated')
         //   .where('request_type', requestType)
@@ -549,7 +549,7 @@ export default class InvestmentsController {
           });
 
         }
-        console.log('The declined investment line 239: ', investment)
+        console.log('The rejected investment line 239: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -568,17 +568,17 @@ export default class InvestmentsController {
           })
         }
 
-        // investment.status = 'declined'
+        // investment.status = 'rejected'
         investment[0].approvalStatus = approvals[0].approvalStatus
         // update timeline
         timelineObject = {
           id: uuid(),
-          action: 'investment declined',
+          action: 'investment rejected',
           investmentId: investment[0].id,//id,
           walletId: investment[0].walletId,// walletId, 
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName} investment has just been declined.`,
+          message: `${investment[0].firstName} investment has just been rejected.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -701,13 +701,13 @@ export default class InvestmentsController {
           status: 'OK',
           data: investment.map((inv) => inv.$original),
         })
-      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'declined') {
+      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'rejected') {
         investment = await Investment.query()
           .where('status', 'active')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 323: ', investment)
+        console.log('The rejected investment line 323: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -728,17 +728,17 @@ export default class InvestmentsController {
           })
         }
 
-        // investment.status = 'declined'
+        // investment.status = 'rejected'
         investment[0].approvalStatus = approvals[0].approvalStatus
         // update timeline
         timelineObject = {
           id: uuid(),
-          action: 'investment termination declined',
+          action: 'investment termination rejected',
           investmentId: investment[0].id,//id,
           walletId: investment[0].walletId,// walletId, 
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName} investment termination has just been declined.`,
+          message: `${investment[0].firstName} investment termination has just been rejected.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -856,13 +856,13 @@ export default class InvestmentsController {
           status: 'OK',
           data: investment.map((inv) => inv.$original),
         })
-      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'declined') {
+      } else if (approvals.length > 0 && approvals[0].approvalStatus === 'rejected') {
         investment = await Investment.query()
           .where('status', 'active')
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 698: ', investment)
+        console.log('The rejected investment line 698: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -883,17 +883,17 @@ export default class InvestmentsController {
           })
         }
 
-        // investment.status = 'declined'
+        // investment.status = 'rejected'
         investment[0].approvalStatus = approvals[0].approvalStatus
         // update timeline
         timelineObject = {
           id: uuid(),
-          action: 'investment payout declined',
+          action: 'investment payout rejected',
           investmentId: investment[0].id,//id,
           walletId: investment[0].walletId,// walletId, 
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName} investment payout has just been declined.`,
+          message: `${investment[0].firstName} investment payout has just been rejected.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -2451,7 +2451,7 @@ export default class InvestmentsController {
       if (investments) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger
-       
+
         return response.status(200).json({
           status: 'OK',
           data: investments,//.map((inv) => inv.$original),
@@ -2487,7 +2487,7 @@ export default class InvestmentsController {
 
     }
   }
-  
+
   public async rolloverMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
@@ -2561,7 +2561,7 @@ export default class InvestmentsController {
     }
   }
 
-  
+
   public async payoutMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
