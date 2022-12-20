@@ -76,7 +76,7 @@ export default class InvestmentsServices {
                 duration,
                 // interestRate: 0,
                 // interestDueOnInvestment: 0,
-                interestDueOnInvestment,
+                // interestDueOnInvestment,
                 // end
             } = record;
             // let { amount, investmentTypeId, rfiCode, walletId, userId, firstName, duration, currencyCode } = payload;
@@ -93,7 +93,7 @@ export default class InvestmentsServices {
             //     let { interestRate } = investmentTypeDetails;
             //     rate = interestRate;
             // }
-          
+
             let beneficiaryName = `${firstName} ${lastName}`;
             let beneficiaryAccountNumber = walletId;
             let beneficiaryAccountName = beneficiaryName;
@@ -186,16 +186,16 @@ export default class InvestmentsServices {
                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
                         // update the investment details
-                         //@ts-ignore
+                        //@ts-ignore
                         record.isInvestmentCompleted = true;
-                         //@ts-ignore
+                        //@ts-ignore
                         record.investmentCompletionDate = DateTime.now();
-                         //@ts-ignore
+                        //@ts-ignore
                         record.status = 'completed_with_principal_payout_outstanding';
                         // record.approvalStatus = approval.approvalStatus;//'payout'
-                         //@ts-ignore
+                        //@ts-ignore
                         record.isPayoutAuthorized = true;
-                         //@ts-ignore
+                        //@ts-ignore
                         record.isPayoutSuccessful = false;
                         // record.datePayoutWasDone = DateTime.now();
                         // debugger
@@ -631,7 +631,7 @@ export default class InvestmentsServices {
             }
             // let timeline: any[] = []
             //  create a new object for the timeline
-             timelineObject = {
+            timelineObject = {
                 id: uuid(),
                 investmentId: investmentId,
                 walletId: walletId,
@@ -870,12 +870,512 @@ export default class InvestmentsServices {
                 .offset(offset)
                 .limit(limit)
 
-            console.log("Response data in investment service:", responseData)
+            // console.log("Response data in investment service:", responseData)
             // debugger;
             return responseData
         } catch (error) {
             console.log(error)
             throw error
+        }
+    }
+
+    public async collateAboutToBeMatureInvestment(queryParams: any): Promise<Investment[] | any> {
+        const trx = await Database.transaction();
+        try {
+            // console.log("Query params in loan service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, numberOfDaysFromToday, numberOfDaysBeforeToday } = queryParams;
+
+            if (!numberOfDaysFromToday) {
+                numberOfDaysFromToday = 1; // i.e tomorrow
+            }
+            if (!numberOfDaysBeforeToday) {
+                numberOfDaysBeforeToday = 90; // i.e 3 months
+            }
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months, i.e 90 days
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: numberOfDaysBeforeToday }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: numberOfDaysBeforeToday }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().plus({ days: numberOfDaysFromToday }).toISO();//.toISODate();
+                payoutDateTo = DateTime.now().plus({ days: numberOfDaysFromToday }).toISO();//.toISODate();
+            }
+            // console.log("queryParams line 142 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 149 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 151 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                .useTransaction(trx) // 👈
+                .where('status', "active")
+                // .where('payout_date', '>=', payoutDateFrom)
+                // .where('payout_date', '<=', payoutDateTo)
+                .where('payout_date', '=', payoutDateTo)
+                .offset(offset)
+                .limit(limit)
+            // .forUpdate()
+
+            // console.log("Loan Info, line 583: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no active investment or payout has been completed. Please, check and try again.`)
+                throw new AppException({ message: `There is no active investment or payout has been completed. Please, check and try again.`, codeSt: "500" })
+            }
+
+            let investmentArray: any[] = [];
+            const processInvestment = async (investment) => {
+                let { userId, id } = investment;//request.all()
+                try {
+                    const timelineService = new TimelinesServices();
+                    const investmentsService = new InvestmentsServices();
+                    const approvalsService = new ApprovalsServices()
+                    // let currentDate = DateTime.now().toISO()
+                    // @ts-ignore
+                    // let id = request.input('userId')
+                    // let { userId, investmentId } = request.all()
+                    // let { userId, investmentId } = investment;//request.all()
+                    console.log('Params for update line 494: ' + ' userId: ' + userId + ', investmentId: ' + id)
+                    // let investment = await Investment.query().where('user_id', id).where('id', params.id)
+                    // let investment = await Investment.query().where('id', investmentId)
+                    let investmentId = id;
+                    let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+                    // console.log('Investment Info, line 499: ', investment)
+                    // debugger
+                    if (investment && investment.$original.status == "active") {
+                        console.log('investment search data :', investment.$original)
+                        let { rfiCode, startDate, duration } = investment.$original;
+                        // @ts-ignore
+                        // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
+                        // console.log('Is due for payout status :', isDueForPayout)
+                        // TODO: Change below to real data
+                        // TESTING
+                        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
+                        // let duration = 4
+                        console.log('Time investment was started line 511: ', startDate)
+                        let timelineObject
+                        let isDueForPayout = await dueForPayout(startDate, duration)
+                        console.log('Is due for payout status line 514:', isDueForPayout)
+                        // let amt = investment.amount
+                        const settingsService = new SettingsServices();
+                        const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+                        if (!settings) {
+                            throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
+                        }
+
+                        console.log('Approval setting line 522:', settings)
+                        // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
+                        let { isPayoutAutomated, } = settings;
+                        if (isDueForPayout) {
+                            //  START
+                            let payload = investment.$original
+                            // send to Admin for approval
+                            let userId = payload.userId
+                            let investmentId = payload.id
+                            let walletId = payload.walletId
+                            let approvalStatus = payload.approvalStatus
+                            let requestType = 'payout_investment'
+                            // let  approvalStatus = 'approved'
+                            let { firstName, email } = payload;
+                            let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
+                            // let approvalRequestIsExisting
+                            if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
+                                // approvalRequestIsExisting = await Approval.query().where({
+                                //   investment_id: investmentId,
+                                //   user_id: userId,
+                                //   request_type: requestType,
+                                //   //  approval_status: approvalStatus,
+                                // })
+
+                                // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+                                // if (approvalRequestIsExisting.length < 1) {
+                                //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+                                //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
+                                //   if (approvalRequestIsDone === undefined) {
+                                //     return response.status(400).json({
+                                //       status: 'FAILED',
+                                //       message: 'payout approval request was not successful, please try again.',
+                                //       data: [],
+                                //     })
+                                //   }
+                                // }
+                                const approvalsService = new ApprovalsServices()
+                                let approvalObject;
+
+                                // TODO: Send to the Admin for approval
+                                // update approvalObject
+                                approvalObject = {
+                                    walletId: walletId,
+                                    investmentId: investmentId,
+                                    userId: userId,
+                                    requestType: requestType,//"start_investment",
+                                    approvalStatus: "pending",//approvalStatus,//"",
+                                    assignedTo: "",//investment.assignedTo,
+                                    processedBy: "",//investment.processedBy,
+                                    // remark: "",
+                                };
+                                // console.log("ApprovalRequest object line 1194:", approvalObject);
+                                // check if the approval request is not existing
+                                let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
+                                if (!approvalRequestIsExisting) {
+                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+                                }
+
+                                // investment = await Investment.query().where('id', investmentId)
+                                investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+                                investment.requestType = requestType
+                                investment.status = "matured"
+                                investment.approvalStatus = 'pending'
+
+                                // update timeline
+                                timelineObject = {
+                                    id: uuid(),
+                                    action: 'investment payout initiated',
+                                    investmentId: investment.id,//id,
+                                    walletId: investment.walletId,// walletId, 
+                                    userId: investment.userId,// userId,
+                                    // @ts-ignore
+                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    createdAt: DateTime.now(),
+                                    metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                                }
+                                // console.log('Timeline object line 1429:', timelineObject)
+                                //  Push the new object to the array
+                                // timeline = investment.timeline
+                                // timeline.push(timelineObject)
+                                // console.log('Timeline object line 1433:', timeline)
+                                // stringify the timeline array
+                                await timelineService.createTimeline(timelineObject);
+                                // investment.timeline = JSON.stringify(timeline)
+
+
+                                // Send Details to notification service
+                                let subject = "AstraPay Investment Payout";
+                                let message = `
+                ${firstName} your mature investment has just been sent for payout processing.
+
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+                                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                // console.log("newNotificationMessage line 567:", newNotificationMessage);
+                                // debugger
+                                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    console.log("Notification sent successfully");
+                                } else if (newNotificationMessage.message !== "Success") {
+                                    console.log("Notification NOT sent successfully");
+                                    console.log(newNotificationMessage);
+                                }
+
+                                // START
+                                // console.log('Updated investment Status line 1379: ', investment)
+                                // console.log('Payout investment data line 1380:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // Check if the user set Rollover
+                                // "rolloverType": "101",
+                                // "rolloverTarget": 3,
+                                // "rolloverDone": 0,
+                                // '100' = 'no rollover',
+                                //   '101' = 'rollover principal only',
+                                //   '102' = 'rollover principal with interest',
+                                // if (investment.rolloverTarget > 0 && investment.rolloverTarget > investment.rolloverDone && investment.rolloverType !== "100") {
+                                //   // check type of rollover
+
+                                //   if (investment.rollOverType == "101") {
+
+                                //   } else if (investment.rollOverType == "101") {
+
+                                //   }
+                                // } else {
+
+                                // }
+
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 1655 :", updatedInvestment);
+                                // debugger
+                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
+                                if (investment.status !== 'completed' && investment.status == 'active') {
+                                    // update status of investment
+                                    investment.requestType = requestType
+                                    investment.approvalStatus = 'approved'
+                                    investment.status = 'matured'
+                                    investment.isPayoutAuthorized = true
+                                    investment.isTerminationAuthorized = true
+                                    // Save
+                                    // await investment.save()
+                                    let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                    // send for update
+                                    await investmentsService.updateInvestment(record, investment);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                    // console.log(" Current log, line 654 :", updatedInvestment);
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: 'investment payout initiated',
+                                        investmentId: investment.id,//id,
+                                        walletId: investment.walletId,// walletId, 
+                                        userId: investment.userId,// userId,
+                                        // @ts-ignore
+                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+                                    }
+                                    // console.log('Timeline object line 667:', timelineObject)
+                                    //  Push the new object to the array
+                                    // timeline = investment.timeline
+                                    // timeline.push(timelineObject)
+                                    // console.log('Timeline object line 671:', timeline)
+                                    // stringify the timeline array
+                                    await timelineService.createTimeline(timelineObject);
+
+
+                                    // Send Details to notification service
+                                    let subject = "AstraPay Investment Payout";
+                                    let message = `
+                ${firstName} your mature investment has just been sent for payout processing.
+
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+                                    let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    // console.log("newNotificationMessage line 567:", newNotificationMessage);
+                                    // debugger
+                                    if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessage.message !== "Success") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessage);
+                                    }
+
+                                }
+                                // await investment save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 680 :", updatedInvestment);
+                            }
+
+                            // console.log('Investment data after payout request line 685:', investment)
+                            await trx.commit();
+                            return {
+                                status: 'OK',
+                                data: investment//.map((inv) => inv.$original),
+                            }
+                            // END
+                        } else if (isDueForPayout === false) {
+                            //  START
+                            let payload = investment.$original
+                            // send to Admin for approval
+                            let userId = payload.userId
+                            let investmentId = payload.id
+                            let walletId = payload.walletId
+                            let approvalStatus = payload.approvalStatus
+                            let requestType = 'payout_investment'
+                            // let  approvalStatus = 'approved'
+                            // let { firstName, email } = payload;
+                            let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
+                            // let approvalRequestIsExisting
+                            if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
+                                // approvalRequestIsExisting = await Approval.query().where({
+                                //   investment_id: investmentId,
+                                //   user_id: userId,
+                                //   request_type: requestType,
+                                //   //  approval_status: approvalStatus,
+                                // })
+
+                                // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+                                // if (approvalRequestIsExisting.length < 1) {
+                                //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+                                //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
+                                //   if (approvalRequestIsDone === undefined) {
+                                //     return response.status(400).json({
+                                //       status: 'FAILED',
+                                //       message: 'payout approval request was not successful, please try again.',
+                                //       data: [],
+                                //     })
+                                //   }
+                                // }
+                                
+                                let approvalObject;
+
+                                // TODO: Send to the Admin for approval
+                                // update approvalObject
+                                approvalObject = {
+                                    walletId: walletId,
+                                    investmentId: investmentId,
+                                    userId: userId,
+                                    requestType: requestType,//"start_investment",
+                                    approvalStatus: "pending",//approvalStatus,//"",
+                                    assignedTo: "",//investment.assignedTo,
+                                    processedBy: "",//investment.processedBy,
+                                    // remark: "",
+                                };
+                                // console.log("ApprovalRequest object line 1194:", approvalObject);
+                                // check if the approval request is not existing
+                                let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
+                                if (!approvalRequestIsExisting) {
+                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+                                }
+
+                                // investment = await Investment.query().where('id', investmentId)
+                                investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+                                investment.requestType = requestType
+                                // investment.status = "matured"
+                                // investment.approvalStatus = 'pending'
+
+                                // Send Details to notification service
+                                //                 let subject = "AstraPay Investment Payout";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
+
+                                // Please check your device. 
+
+                                // Thank you.
+
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 567:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
+
+                                // START
+                                // console.log('Updated investment Status line 1379: ', investment)
+                                // console.log('Payout investment data line 1380:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 1655 :", updatedInvestment);
+                                // debugger
+                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
+                                if (investment.status !== 'completed' && investment.status == 'active') {
+                                   
+                                    // const approvalsService = new ApprovalsServices()
+                                    let approvalObject;
+
+                                    // TODO: Send to the Admin for approval
+                                    // update approvalObject
+                                    approvalObject = {
+                                        walletId: walletId,
+                                        investmentId: investmentId,
+                                        userId: userId,
+                                        requestType: requestType,//"start_investment",
+                                        approvalStatus: "pending",//approvalStatus,//"",
+                                        assignedTo: "",//investment.assignedTo,
+                                        processedBy: "",//investment.processedBy,
+                                        // remark: "",
+                                    };
+                                    // console.log("ApprovalRequest object line 1194:", approvalObject);
+                                    // check if the approval request is not existing
+                                    let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
+                                    if (!approvalRequestIsExisting) {
+                                        let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                        console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+                                    }
+
+                                    // investment = await Investment.query().where('id', investmentId)
+                                    investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+                                    investment.requestType = requestType
+                                }
+                                // await investment save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 1347 :", updatedInvestment);
+                            }
+
+                            // console.log('Investment data after payout request line 685:', investment)
+                            await trx.commit();
+                            return {
+                                status: 'OK',
+                                data: investment//.map((inv) => inv.$original),
+                            }
+                            // END
+                        }
+                    } else {
+                        return {
+                            status: 'FAILED',
+                            message: 'no investment matched your search',
+                            data: [],
+                        }
+                        //                 console.log("No Investment is pending disbursement, line 494");
+                        //                 await trx.commit();
+                        //                 return {
+                        //                     status: "OK",
+                        //                     message: "No Investment is pending disbursement.",
+                        //                 };
+                    }
+                } catch (error) {
+                    console.error(error)
+                    console.log("Error line 1353", error.messages);
+                    console.log("Error line 1354", error.message);
+                    await trx.rollback()
+                    console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
+                    throw error;
+                }
+            }
+
+            for (let index = 0; index < responseData.length; index++) {
+                try {
+                    const investment = responseData[index];
+                    await processInvestment(investment);
+                    investmentArray.push(investment);
+                } catch (error) {
+                    console.log("Error line 1367:", error);
+                    throw error;
+                }
+            }
+            // commit transaction and changes to database
+            await trx.commit();
+            // console.log("Response data in loan service, line 516:", loanArray);
+            return investmentArray;
+        } catch (error) {
+            console.log(error)
+            await trx.rollback();
+            throw error;
         }
     }
 
@@ -921,7 +1421,7 @@ export default class InvestmentsServices {
                 .useTransaction(trx) // 👈
                 .where('status', "active")
                 // .where('payout_date', '>=', payoutDateFrom)
-                // .where('payout_date', '<=', payoutDateTo)
+                .where('payout_date', '<=', payoutDateTo)
                 .offset(offset)
                 .limit(limit)
             // .forUpdate()
@@ -1215,7 +1715,7 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 764:", error);
+                    console.log("Error line 1569:", error);
                     throw error;
                 }
             }
@@ -1706,17 +2206,19 @@ export default class InvestmentsServices {
                 .where('status', "matured")
                 .orWhere('status', "completed_with_interest_payout_outstanding")
                 .orWhere('status', "completed_with_principal_payout_outstanding")
+                // .andWhereNot('status', "completed")
                 .where('request_type', "payout_investment")
                 .where('approval_status', "approved")
                 .where('is_rollover_activated', "false")
                 .orWhere('is_rollover_activated', "true")
                 .where('is_rollover_suspended', "false")
+                .where('is_payout_suspended', "false")
                 .where('payout_date', '<=', selectedDate)
                 .offset(offset)
                 .limit(limit)
             // .forUpdate()
 
-            console.log(" responseData line 1216 ==============")
+            console.log(" responseData line 2220 ==============")
             console.log(responseData)
 
             if (responseData.length < 1) {
@@ -1728,7 +2230,7 @@ export default class InvestmentsServices {
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
                 try {
-                    console.log("Entering update 1150 ==================================")
+                    console.log("Entering update 2232 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
@@ -1748,7 +2250,7 @@ export default class InvestmentsServices {
                     //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
                     //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
                     // }
-                    console.log(" Login User Data line 1170 =========================");
+                    console.log(" Login User Data line 2252 =========================");
                     console.log(loginUserData);
                     // TODO: Uncomment to use LoginUserData
                     // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
@@ -1791,7 +2293,7 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 1213 ==================================")
+                    console.log("check approval record 2295 ==================================")
                     // debugger
                     if (record == undefined || !record) {
                         return { status: "FAILED", message: "Not Found,try again." };
@@ -1799,7 +2301,7 @@ export default class InvestmentsServices {
                     // console.log(" QUERY RESULT for record: ", record.$original);
 
                     if (investment) {
-                        console.log("Investment approval Selected for Update line 845:");
+                        console.log("Investment approval Selected for Update line 2303:");
                         // update the data
                         // TODO: Uncomment to use loginAdminFullName
                         // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
@@ -1810,7 +2312,7 @@ export default class InvestmentsServices {
                         // let newStatus;
                         // await approval.save();
                         // console.log("Update Approval Request line 504:", approval);
-                        let { currencyCode, lastName, } = record;
+                        let { currencyCode, lastName, startDate,duration } = record;
                         // let { currencyCode, lastName, startDate, duration } = record;
                         console.log("Surname: ", lastName)
                         // console.log("CurrencyCode: ", currencyCode)
@@ -1819,13 +2321,13 @@ export default class InvestmentsServices {
                         let timelineObject;
                         // console.log("Approval.requestType: ===========================================>", approval.requestType)
                         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                        let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                        let duration = 4
-                        console.log('Time investment was started line 1236: ', startDate)
+                        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
+                        // let duration = 4
+                        console.log('Time investment was started line 2325: ', startDate)
                         // let timelineObject
                         // let timeline
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 1240:', isDueForPayout)
+                        console.log('Is due for payout status line 2329:', isDueForPayout)
                         // debugger
                         if (isDueForPayout === true) {
                             //                          record.isPayoutAuthorized === true,
@@ -1835,9 +2337,9 @@ export default class InvestmentsServices {
                             // record.status === "matured" &&
                             //     record.status === "matured" && 
 
-                            if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
-                                record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
-                                    record.isPayoutSuspended === false)) {
+                            if (( record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                record.isPayoutSuspended === false ) || ( record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
+                                    record.isPayoutSuspended === false )) {
                                 console.log("Approval for investment payout processing: ===========================================>")
 
                                 // TODO: Uncomment to use loginAdminFullName

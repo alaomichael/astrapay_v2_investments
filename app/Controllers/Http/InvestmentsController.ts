@@ -49,7 +49,7 @@ export default class InvestmentsController {
 
     // console.log("investments query line 48: ", request.qs());
     const investments = await investmentsService.getInvestments(request.qs());
-    console.log("investments query line 50: ", investments);
+    // console.log("investments query line 50: ", investments);
     let sortedInvestments = investments;
 
     if (sortedInvestments.length < 1) {
@@ -1487,7 +1487,7 @@ export default class InvestmentsController {
         // debugger
       }
 
-      console.log(' Rate return line 1365 : ', rate)
+      // console.log(' Rate return line 1365 : ', rate)
       if (rate === undefined) {
         return response.status(400).json({
           status: 'FAILED',
@@ -1495,7 +1495,7 @@ export default class InvestmentsController {
           data: [],
         })
       }
-      console.log('Payload line 1373  :', payload)
+      // console.log('Payload line 1373  :', payload)
       // const investment = await Investment.create(payload)
       // @ts-ignore
       payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
@@ -1575,10 +1575,10 @@ export default class InvestmentsController {
         createdAt: investment.createdAt,
         metadata: `duration: ${investment.duration}`,
       }
-      console.log('Timeline object line 923:', timelineObject)
+      // console.log('Timeline object line 1578:', timelineObject)
       await timelineService.createTimeline(timelineObject);
       // let newTimeline = await timelineService.createTimeline(timelineObject);
-      // console.log('Timeline object line 927:', newTimeline)
+      // console.log('Timeline object line 1581:', newTimeline)
 
       // stringify the timeline array
       // investment.timeline = JSON.stringify(timeline)
@@ -1826,8 +1826,9 @@ export default class InvestmentsController {
       let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
       // console.log(" Current log, line 1774 :", currentInvestment);
       // send for update
-      let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-      console.log(" Current log, line 1777 :", updatedInvestment);
+      await investmentsService.updateInvestment(currentInvestment, investment);
+      // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+      // console.log(" Current log, line 1777 :", updatedInvestment);
 
       let newInvestmentId = investment.id
       // Send to Notificaation Service
@@ -2338,6 +2339,58 @@ export default class InvestmentsController {
     }
   }
 
+  public async collateAboutToBeMatureInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.collateAboutToBeMatureInvestment(request.qs())
+      // debugger
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          // debugger
+        }
+        return response.status(200).json({
+          status: 'OK',
+          data: investmentArray,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 2374", error.messages);
+      console.log("Error line 2375", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
   public async collateMaturedInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
@@ -2435,8 +2488,6 @@ export default class InvestmentsController {
     }
   }
   
-
-// rolloverMaturedInvestment
   public async rolloverMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
