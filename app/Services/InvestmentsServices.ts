@@ -154,7 +154,7 @@ export default class InvestmentsServices {
                             walletId: walletId,// walletId, 
                             userId: userId,// userId,
                             // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your device. Thank you.`,
+                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid, because the investment type you selected for your rollover is presently not active, please check your device. Thank you.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -167,7 +167,7 @@ export default class InvestmentsServices {
                         // Send Details to notification service
                         let subject = "AstraPay Investment Payout";
                         let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid, because the investment type you selected for your rollover is presently not active.
 
                 Please check your device. 
 
@@ -233,7 +233,7 @@ export default class InvestmentsServices {
                         // Send Details to notification service
                         let subject = "AstraPay Investment Payout and Rollover";
                         let message = `
-                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
+                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
                 
                 Please check your device. 
 
@@ -307,7 +307,7 @@ export default class InvestmentsServices {
                             walletId: walletId,// walletId, 
                             userId: userId,// userId,
                             // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your device. Thank you.`,
+                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment, please check your device. Thank you.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -320,7 +320,7 @@ export default class InvestmentsServices {
                         // Send Details to notification service
                         let subject = "AstraPay Investment Payout";
                         let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the amount to be rollover is not within the allowed range for this type of investment.
 
                 Please check your device. 
 
@@ -386,7 +386,7 @@ export default class InvestmentsServices {
                         // Send Details to notification service
                         let subject = "AstraPay Investment Payout and Rollover";
                         let message = `
-                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
+                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
                 
                 Please check your device. 
 
@@ -464,7 +464,7 @@ export default class InvestmentsServices {
                             walletId: walletId,// walletId, 
                             userId: userId,// userId,
                             // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your device. Thank you.`,
+                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -477,7 +477,7 @@ export default class InvestmentsServices {
                         // Send Details to notification service
                         let subject = "AstraPay Investment Payout";
                         let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the tenure selected is not available on this type of investment.
 
                 Please check your device. 
 
@@ -541,9 +541,9 @@ export default class InvestmentsServices {
                         // update record
 
                         // Send Details to notification service
-                        let subject = "AstraPay Investment Payout and Rollover";
+                        let subject = "AstraPay Investment Payout Failed";
                         let message = `
-                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
+                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
                 
                 Please check your device. 
 
