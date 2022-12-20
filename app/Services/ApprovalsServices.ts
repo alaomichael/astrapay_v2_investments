@@ -234,14 +234,14 @@ export default class ApprovalsServices {
                     userId: selectedApproval.userId,
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
-                    message: `${selectedApproval.firstName} investment payout request approval record has just been updated.`,
+                    message: `${selectedInvestmentRequest.firstName} investment payout request approval record has just been updated.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
-                // console.log("Timeline object line 408:", timelineObject);
+                // console.log("Timeline object line 241:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                // console.log("new Timeline object line 222:", newTimeline);
+                // console.log("new Timeline object line 244:", newTimeline);
             } else if (saveApproval.requestType === "terminate_investment") {
                 const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
@@ -251,8 +251,10 @@ export default class ApprovalsServices {
                     console.log("selectedInvestmentTerminationRequest ========================================================")
                     console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
-                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_approved" //saveApproval.approvalStatus;
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     selectedInvestmentTerminationRequestUpdate.status = "investment_termination_completed";
+                    // Calculate and deduct the penalty from the accrued interest, before payout
+
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
                     // update the record
                     // debugger
@@ -277,7 +279,7 @@ export default class ApprovalsServices {
                     userId: selectedApproval.userId,
                     walletId: selectedApproval.walletId,
                     // @ts-ignore
-                    message: `${selectedApproval.firstName} investment termination request approval record has just been updated.`,
+                    message: `${selectedInvestmentTerminationRequest.firstName} investment termination request approval record has just been updated.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };

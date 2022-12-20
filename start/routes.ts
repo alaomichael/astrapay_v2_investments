@@ -68,6 +68,7 @@ Route.group(() => {
     Route.get("investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/about_to_be_mature_investments", "InvestmentsController.collateAboutToBeMatureInvestment");
+    Route.get("admin/investments/reactivate_suspended_investment_payout", "InvestmentsController.reactivateSuspendedPayoutInvestment");
     Route.get("admin/investments/matured_investments", "InvestmentsController.collateMaturedInvestment");
     Route.get("admin/investments/activate_approved_investments", "InvestmentsController.activateApprovedInvestment");
     Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment"); 

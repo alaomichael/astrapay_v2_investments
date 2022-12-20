@@ -873,7 +873,7 @@ export default class ApprovalsController {
           } else {
             throw Error();
           }
-        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_rollover" && isRolloverSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation'; 
@@ -1434,6 +1434,66 @@ export default class ApprovalsController {
               // debugger
             }
           }
+
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
+          console.log("Approval for investment rollover processing: ===========================================>")
+          // newStatus = "submitted";
+          // newStatus = "rollover"; //'pending_account_number_generation'; 
+          // record.status = newStatus;
+          record.requestType = "payout_investment";
+          // record.remark = approval.remark;
+          // record.isInvestmentApproved = true;
+          // TODO: Uncomment to use loginAdminFullName
+          // record.processedBy = loginAdminFullName;
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
+          record.isRolloverSuspended = isRolloverSuspended;
+          record.rolloverReactivationDate = rolloverReactivationDate;
+          newStatus = "rollover_suspended";
+          record.status = newStatus;
+          // update timeline
+          timelineObject = {
+            id: uuid(),
+            action: "investment rollover pending",
+            investmentId: investmentId,//id,
+            walletId: walletIdToSearch,// walletId, 
+            userId: userIdToSearch,// userId,
+            // @ts-ignore
+            message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+            createdAt: DateTime.now(),
+            metadata: ``,
+          };
+          // console.log("Timeline object line 1453:", timelineObject);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 1456:", newTimeline);
+          // update record
+
+          // Send Details to notification service
+          let subject = "AstraPay Investment Rollover Pending";
+          let message = `
+              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+
+                Thank you.
+
+                AstraPay Investment.`;
+          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 1468:", newNotificationMessage);
+          // debugger
+          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessage.message !== "Success") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessage);
+          }
+          // update record
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+          // console.log(" Current log, line 1455 :", currentInvestment);
+          // send for update
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 1459 :", updatedInvestment);
 
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
