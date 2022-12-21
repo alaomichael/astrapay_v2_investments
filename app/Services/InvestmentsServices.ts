@@ -1109,6 +1109,7 @@ export default class InvestmentsServices {
                                 // investment.requestType = requestType
                                 // investment.status = "matured"
                                 // investment.approvalStatus = 'pending'
+                                // investment.isPayoutSuspended = false;
 
                                 // update timeline
                                 // timelineObject = {
@@ -1322,6 +1323,7 @@ export default class InvestmentsServices {
                                 // investment.requestType = requestType
                                 // investment.status = "matured"
                                 // investment.approvalStatus = 'pending'
+                                // investment.isPayoutSuspended = false;
 
                                 // Send Details to notification service
                                 //                 let subject = "AstraPay Investment Payout";
@@ -1604,8 +1606,9 @@ export default class InvestmentsServices {
                                 // investment = await Investment.query().where('id', investmentId)
                                 investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                                 investment.requestType = requestType
-                                investment.status = "matured"
-                                investment.approvalStatus = 'pending'
+                                investment.status = "matured";
+                                investment.approvalStatus = 'pending';
+                                investment.isPayoutSuspended = false;
 
                                 // update timeline
                                 timelineObject = {
@@ -2323,13 +2326,13 @@ export default class InvestmentsServices {
                     // let id = request.input('userId')
                     // let { userId, investmentId } = request.all()
                     // let { userId, investmentId } = investment;//request.all()
-                    // console.log('Params for update line 494: ' + ' userId: ' + userId + ', investmentId: ' + id)
+                    // console.log('Params for update line 2326: ' + ' userId: ' + userId + ', investmentId: ' + id)
                     // let investment = await Investment.query().where('user_id', id).where('id', params.id)
                     // let investment = await Investment.query().where('id', investmentId)
                     let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-                    // console.log('Investment Info, line 499: ', investment)
-                    debugger
+                    // console.log('Investment Info, line 2331: ', investment)
+                    // debugger
                     if (investment && investment.$original.status == "payout_suspended") {
                         console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
@@ -2345,7 +2348,7 @@ export default class InvestmentsServices {
                         let isDueForPayout = await dueForPayout(startDate, duration)
                         console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
-                        debugger
+                        // debugger
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
                         if (!settings) {
@@ -2416,6 +2419,7 @@ export default class InvestmentsServices {
                                 investment.requestType = requestType
                                 investment.status = "matured"
                                 investment.approvalStatus = 'pending'
+                                investment.isPayoutSuspended = false;
 
                                 // update timeline
                                 timelineObject = {
@@ -2605,6 +2609,7 @@ export default class InvestmentsServices {
                                 investment.requestType = "start_investment"; //requestType
                                 investment.status = "active"
                                 investment.approvalStatus = 'pending'
+                                investment.isPayoutSuspended = false;
 
                                 // update timeline
                                 timelineObject = {
