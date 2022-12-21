@@ -102,7 +102,6 @@ export default class InvestmentsServices {
             // Send to the endpoint for debit of wallet
             let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
 
-
             if (investmentTypeDetails) {
                 let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
                 if (status !== "active") {
@@ -118,6 +117,8 @@ export default class InvestmentsServices {
                     // if successful 
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -185,6 +186,8 @@ export default class InvestmentsServices {
                         }
                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -271,6 +274,8 @@ export default class InvestmentsServices {
                     // if successful 
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -338,6 +343,8 @@ export default class InvestmentsServices {
                         }
                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -428,6 +435,8 @@ export default class InvestmentsServices {
                     // if successful 
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -495,6 +504,8 @@ export default class InvestmentsServices {
                         }
                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
+                        let decPl = 2;
+                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
                         record.isInvestmentCompleted = true;
@@ -566,7 +577,7 @@ export default class InvestmentsServices {
                 rate = interestRate;
             }
 
-            console.log(' Rate return line 91 : ', rate)
+            // console.log(' Rate return line 568 : ', rate)
             if (rate === undefined) {
                 throw Error('no investment rate matched your search, please try again.')
             }
@@ -576,7 +587,7 @@ export default class InvestmentsServices {
             // @ts-ignore
             payload.isRequestSent = true;
             const investment = await investmentsService.createInvestment(payload);
-            // console.log("New investment request line 105: ", investment);
+            // console.log("New investment request line 578: ", investment);
             let decPl = 2;
             let interestRateByDuration = rate * (Number(investment.duration) / 360);
             console.log(`Interest rate by Investment duration for ${duration} day(s), @ investmentService line 124:`, interestRateByDuration)
@@ -2823,6 +2834,8 @@ export default class InvestmentsServices {
                                 // if successful 
                                 if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                     let amountPaidOut = amount + interestDueOnInvestment;
+                                    let decPl = 2;
+                                    amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                     // update the investment details
                                     record.isInvestmentCompleted = true;
                                     record.investmentCompletionDate = DateTime.now();
@@ -2888,6 +2901,8 @@ export default class InvestmentsServices {
                                     // debugger
                                 } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                     let amountPaidOut = amount
+                                    let decPl = 2;
+                                    amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                     // update the investment details
                                     record.isInvestmentCompleted = true;
                                     record.investmentCompletionDate = DateTime.now();
@@ -2951,6 +2966,8 @@ export default class InvestmentsServices {
                                     // debugger
                                 } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                     let amountPaidOut = interestDueOnInvestment
+                                    let decPl = 2;
+                                    amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                     // update the investment details
                                     record.isInvestmentCompleted = true;
                                     record.investmentCompletionDate = DateTime.now();
@@ -3312,6 +3329,8 @@ export default class InvestmentsServices {
                                     // if successful 
                                     if (creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment;
+                                        let decPl = 2;
+                                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
                                         record.investmentCompletionDate = DateTime.now();
@@ -3375,6 +3394,8 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = interestDueOnInvestment
+                                        let decPl = 2;
+                                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         // record.isInvestmentCompleted = true;
                                         // record.investmentCompletionDate = DateTime.now();
@@ -3452,6 +3473,8 @@ export default class InvestmentsServices {
                                     // if successful 
                                     if (creditUserWalletWithPrincipal.status == 200) {
                                         let amountPaidOut = amount;
+                                        let decPl = 2;
+                                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
                                         record.investmentCompletionDate = DateTime.now();
@@ -3515,6 +3538,8 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                                         let amountPaidOut = amount;
+                                        let decPl = 2;
+                                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         // record.isInvestmentCompleted = true;
                                         // record.investmentCompletionDate = DateTime.now();
@@ -3910,6 +3935,8 @@ export default class InvestmentsServices {
                                         // if successful 
                                         if (creditUserWalletWithInterest.status == 200) {
                                             let amountPaidOut = interestDueOnInvestment;
+                                            let decPl = 2;
+                                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                             // update the investment details
                                             record.isInvestmentCompleted = true;
                                             record.investmentCompletionDate = DateTime.now();
@@ -3971,6 +3998,8 @@ export default class InvestmentsServices {
                                             }
                                         } else if (creditUserWalletWithInterest.status !== 200) {
                                             let amountPaidOut = interestDueOnInvestment;
+                                            let decPl = 2;
+                                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                             // update the investment details
                                             record.isInvestmentCompleted = true;
                                             record.investmentCompletionDate = DateTime.now();
@@ -4067,7 +4096,6 @@ export default class InvestmentsServices {
                                     } else if (rolloverType == "102") {
                                         //   '102' = 'rollover principal with interest',
                                         // Update investment record
-                                        // let amountPaidOut = totalAmountToPayout;
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
                                         record.investmentCompletionDate = DateTime.now();
@@ -4172,6 +4200,8 @@ export default class InvestmentsServices {
                                         // if successful 
                                         if (creditUserWalletWithPrincipal.status == 200) {
                                             let amountPaidOut = amount;
+                                            let decPl = 2;
+                                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                             // update the investment details
                                             record.isInvestmentCompleted = true;
                                             record.investmentCompletionDate = DateTime.now();
@@ -4233,6 +4263,8 @@ export default class InvestmentsServices {
                                             }
                                         } else if (creditUserWalletWithPrincipal.status !== 200) {
                                             let amountPaidOut = amount;
+                                            let decPl = 2;
+                                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                             // update the investment details
                                             record.isInvestmentCompleted = true;
                                             record.investmentCompletionDate = DateTime.now();
