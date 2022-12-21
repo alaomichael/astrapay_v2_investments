@@ -8,6 +8,8 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 import Event from '@ioc:Adonis/Core/Event'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
+const Env = require("@ioc:Adonis/Core/Env");
+const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // import PuppeteerServices from 'App/Services/PuppeteerServices'
 // import { string } from '@ioc:Adonis/Core/Helpers'
 // import Env from '@ioc:Adonis/Core/Env'
@@ -37,6 +39,7 @@ import SettingsServices from 'App/Services/SettingsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
+import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
@@ -1585,8 +1588,16 @@ interestPayoutStatus } = request.body();
       // await investment.save()
 
       //  Check if investment activation is automated
-      let approvalIsAutomated = settings.isInvestmentAutomated
-      // let approvalIsAutomated = false
+      let { isInvestmentAutomated,
+        rfiName,
+        // initiationNotificationEmail,
+        activationNotificationEmail,
+        // maturityNotificationEmail,
+        // payoutNotificationEmail,
+        // rolloverNotificationEmail,
+        // liquidationNotificationEmail,
+      } = settings//.isInvestmentAutomated
+      let approvalIsAutomated = isInvestmentAutomated
       if (approvalIsAutomated === false) {
         // Send Approval Request to Admin
         // let approval = await approvalRequest(userId, investmentId, requestType)
@@ -1744,6 +1755,8 @@ interestPayoutStatus } = request.body();
           let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
+                Your certificate is attached.
+
                 Please check your device. 
 
                 Thank you.
@@ -1756,6 +1769,27 @@ interestPayoutStatus } = request.body();
           } else if (newNotificationMessage.message !== "Success") {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
+          }
+
+          // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+          let recepients = [
+            {
+                "email": email,
+                "name": `${firstName} ${lastName} `
+            },
+            {
+              "email": activationNotificationEmail,
+              "name": `${rfiName} `
+            },
+        ];
+          let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients, );
+          console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
+          debugger
+          if (newNotificationMessageWithPdf.status == 200 || newNotificationMessageWithPdf.message == "messages sent successfully") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessageWithPdf);
           }
           // debugger
         } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
