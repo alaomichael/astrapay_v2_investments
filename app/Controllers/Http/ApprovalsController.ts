@@ -364,13 +364,13 @@ export default class ApprovalsController {
         // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
         // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
         // payload.remark = remark !== undefined ? remark : approval.remark;
-        // console.log("Admin remark line 498 ==================== ", approval.remark);
-        // console.log("Admin remark line 499 ========*******************=========== ", remark);
+        // console.log("Admin remark line 367 ==================== ", approval.remark);
+        // console.log("Admin remark line 368 ========*******************=========== ", remark);
         approval = await approvalsService.updateApproval(approval, payload);
         // console.log("Approval updated: ", approval);
         let newStatus;
         // await approval.save();
-        // console.log("Update Approval Request line 504:", approval);
+        // console.log("Update Approval Request line 373:", approval);
         let { id, firstName, currencyCode, lastName, email } = record;
         console.log("Surname: ", lastName)
 
@@ -642,6 +642,393 @@ export default class ApprovalsController {
             console.log(newNotificationMessage);
           }
 
+        } else if (approval.requestType === "start_investment_rollover" && record.status === "initiated") {
+          // get the request by request id
+          // update status based on admin action
+
+          if (approval.approvalStatus === "approved") {
+            // update the neccesary field
+            // console.log("record ========================================================")
+            // console.log(record)
+            let selectedInvestmentRequestUpdate = record;
+            selectedInvestmentRequestUpdate.approvalStatus = "approved" //approval.approvalStatus;
+            // selectedInvestmentRequestUpdate.status = "investment_approved";
+            // selectedInvestmentRequestUpdate.remark = approval.remark;
+            // update the record
+            // TODO: handle remark
+            await investmentsService.updateInvestment(record, selectedInvestmentRequestUpdate);
+            //  TODO: Debit user wallet to activate the investment
+            // Data to send for transfer of fund
+            let { amount, //lng, lat, investmentRequestReference,
+              firstName, //lastName,
+              walletId, userId,
+              // phone,
+              email,
+              // rfiCode, 
+              currencyCode } = selectedInvestmentRequestUpdate;
+            // let senderName = `${firstName} ${lastName}`;
+            // let senderAccountNumber = walletId;
+            // let senderAccountName = senderName;
+            // let senderPhoneNumber = phone;
+            // let senderEmail = email;
+            // // Send to the endpoint for debit of wallet
+            // let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+            //     senderName,
+            //     senderAccountNumber,
+            //     senderAccountName,
+            //     senderPhoneNumber,
+            //     senderEmail,
+            //     rfiCode)
+            // debugger
+
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment rollover approved",
+              investmentId: investmentId,//id,
+              walletId: walletId,// walletId, 
+              userId: userId,// userId,
+              // @ts-ignore
+              message: `${firstName}, your investment rollover request has been approved, please wait while the investment is activated. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 696:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+
+            // Send Details to notification service
+            let subject = "AstraPay Investment Rollover Approval";
+            let message = `
+                ${firstName} this is to inform you, that your Investment rollover request, has been approved.
+
+                Please wait while the investment is being activated. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 710:", newNotificationMessage);
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+
+            // update record
+            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+            // console.log(" Current log, line 720 :", currentInvestment);
+            // send for update
+            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            // console.log(" Current log, line 723 :", updatedInvestment);
+            // if successful 
+            // if (debitUserWalletForInvestment.status == 200) {
+            // update the investment details
+            selectedInvestmentRequestUpdate.status = 'active'
+            selectedInvestmentRequestUpdate.approvalStatus = 'approved'
+            selectedInvestmentRequestUpdate.startDate = DateTime.now() //.toISODate()
+            selectedInvestmentRequestUpdate.payoutDate = DateTime.now().plus({ days: selectedInvestmentRequestUpdate.duration })
+            selectedInvestmentRequestUpdate.isInvestmentCreated = true
+            // debugger
+
+            // Save the updated record
+            // await record.save();
+            // update record
+            currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+            // console.log(" Current log, line 738 :", currentInvestment);
+            // send for update
+            updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            console.log(" Current log, line 741 :", updatedInvestment);
+
+            // console.log("Updated record Status line 743: ", record);
+            timelineObject = {
+              id: uuid(),
+              investmentId: investmentId,
+              userId: userId,
+              walletId: walletId,
+              action: 'investment rollover activated',
+              // @ts-ignore
+              message: `${firstName} investment rollover has just been activated.`,
+              createdAt: selectedInvestmentRequestUpdate.startDate,
+              metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
+            }
+            // console.log('Timeline object line 755:', timelineObject)
+            await timelineService.createTimeline(timelineObject);
+            // Send Details to notification service
+            subject = "AstraPay Investment Rollover Activation";
+            message = `
+                ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${selectedInvestmentRequestUpdate.startDate} and it will be mature for payout on ${selectedInvestmentRequestUpdate.payoutDate}.
+
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+            newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 768:", newNotificationMessage);
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+
+            currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+            // console.log(" Current log, line 777 :", currentInvestment);
+            // send for update
+            await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+
+          } else if (approval.approvalStatus === "rejected") {
+            // update the neccesary field
+            // console.log("record ========================================================")
+            // console.log(record)
+            let selectedInvestmentRequestUpdate = record;
+            selectedInvestmentRequestUpdate.approvalStatus = "rejected" //approval.approvalStatus;
+            selectedInvestmentRequestUpdate.status = "investment_rollover_rejected";
+            // selectedInvestmentRequestUpdate.remark = approval.remark;
+            // TODO: handle remark
+            // update the record
+            await investmentsService.updateInvestment(record, selectedInvestmentRequestUpdate);
+            let {
+              // start
+              //@ts-ignore
+              id,
+              lastName,
+              firstName,
+              walletId,
+              userId,
+              // investmentTypeId,
+              rfiCode,
+              currencyCode,
+              lng,
+              lat,
+              phone,
+              email,
+              amount,
+              // duration,
+              // interestRate: 0,
+              // interestDueOnInvestment: 0,
+              // interestDueOnInvestment,
+              // end
+            } = record;
+            let beneficiaryName = `${firstName} ${lastName}`;
+            let beneficiaryAccountNumber = walletId;
+            let beneficiaryAccountName = beneficiaryName;
+            let beneficiaryPhoneNumber = phone;
+            let beneficiaryEmail = email;
+            // Send to the endpoint for debit of wallet
+            let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment activation failed",
+              investmentId: investmentId,//id,
+              walletId: walletId,// walletId, 
+              userId: userId,// userId,
+              // @ts-ignore
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 296:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 299:", newTimeline);
+            // update record
+            // debugger
+            // Send Details to notification service
+            let subject = "AstraPay Investment Activation Failed";
+            let message = `
+                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 565:", newNotificationMessage);
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+
+            // Credit the user wallet with the amount to be rollover
+            // Payout the amount that is to be rollover
+            let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
+              beneficiaryName,
+              beneficiaryAccountNumber,
+              beneficiaryAccountName,
+              beneficiaryEmail,
+              beneficiaryPhoneNumber,
+              rfiCode,
+              descriptionForPrincipal)
+            // if successful 
+            if (creditUserWalletWithPrincipal.status == 200) {
+              let amountPaidOut = amount;
+              let decPl = 2;
+              amountPaidOut = Number(amountPaidOut.toFixed(decPl));
+              // update the investment details
+              //@ts-ignore
+              record.isInvestmentCompleted = true;
+              //@ts-ignore
+              record!.investmentCompletionDate = DateTime.now();
+              //@ts-ignore
+              record!.status = 'completed';
+              // record.approvalStatus = approval.approvalStatus;//'payout'
+              //@ts-ignore
+              record!.isPayoutAuthorized = true;
+              //@ts-ignore
+              record!.isPayoutSuccessful = true;
+              //@ts-ignore
+              record!.datePayoutWasDone = DateTime.now();
+              // debugger
+
+              // Save the updated record
+              // await record.save();
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+              // console.log(" Current log, line 608 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 455 :", updatedInvestment);
+
+              // console.log("Updated record Status line 457: ", record);
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment payout",
+                investmentId: id,//id,
+                walletId: walletId,// walletId, 
+                userId: userId,// userId,
+                // @ts-ignore
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 471:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 474:", newTimeline);
+              // update record
+
+              // Send Details to notification service
+              let subject = "AstraPay Investment Payout";
+              let message = `
+                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the tenure selected is not available on this type of investment.
+
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              // console.log("newNotificationMessage line 488:", newNotificationMessage);
+              // debugger
+              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessage.message !== "Success") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessage);
+              }
+            } else if (creditUserWalletWithPrincipal.status !== 200) {
+              let amountPaidOut = amount;
+              let decPl = 2;
+              amountPaidOut = Number(amountPaidOut.toFixed(decPl));
+              // update the investment details
+              //@ts-ignore
+              record.isInvestmentCompleted = true;
+              //@ts-ignore
+              record.investmentCompletionDate = DateTime.now();
+              //@ts-ignore
+              record.status = 'completed_with_principal_payout_outstanding';
+              // record.approvalStatus = approval.approvalStatus;//'payout'
+              //@ts-ignore
+              record.isPayoutAuthorized = true;
+              //@ts-ignore
+              record.isPayoutSuccessful = false;
+              // record.datePayoutWasDone = DateTime.now();
+              // debugger
+
+              // Save the updated record
+              // await record.save();
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+              // console.log(" Current log, line 517 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 521 :", updatedInvestment);
+
+              // console.log("Updated record Status line 523: ", record);
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment rollover and payout failed",
+                investmentId: id,//id,
+                walletId: walletId,// walletId, 
+                userId: userId,// userId,
+                // @ts-ignore
+                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 537:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 540:", newTimeline);
+              // update record
+
+              // Send Details to notification service
+              let subject = "AstraPay Investment Rollover and Payout Failed";
+              let message = `
+                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
+                
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              // console.log("newNotificationMessage line 554:", newNotificationMessage);
+              // debugger
+              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessage.message !== "Success") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessage);
+              }
+            }
+            // console.log("creditUserWalletForInvestment reponse data 321 ==================================", debitUserWalletForInvestment)
+            // debugger
+            // throw Error(creditUserWalletForInvestment);
+            // throw Error(`${creditUserWalletForInvestment.status}, ${creditUserWalletForInvestment.errorCode}`);
+            // return {
+            //         status: "FAILED",//creditUserWalletForInvestment.status,
+            //         message: `${creditUserWalletForInvestment.status}, ${creditUserWalletForInvestment.errorCode}`,
+            //     };
+
+          }
+          // update timeline
+          timelineObject = {
+            id: uuid(),
+            action: "investment request approval updated",
+            investmentId: record.id,
+            userId: record.userId,
+            walletId: record.walletId,
+            // @ts-ignore
+            message: `${record.firstName} investment request approval record has just been updated.`,
+            createdAt: DateTime.now(),
+            metadata: `request type : ${record.requestType}`,
+          };
+          // console.log("Timeline object line 1028:", timelineObject);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 1031:", newTimeline);
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing: ===========================================>")
           // newStatus = "submitted";
@@ -654,7 +1041,7 @@ export default class ApprovalsController {
           // record.processedBy = loginAdminFullName;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
-          record.approvalStatus = approval.approvalStatus; 
+          record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           let { amount, lng, lat, id,
             firstName, lastName,
@@ -1494,6 +1881,268 @@ export default class ApprovalsController {
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1459 :", updatedInvestment);
+
+        } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && isPayoutSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
+          console.log("Approval for investment payout processing suspension: ===========================================>")
+          newStatus = "matured";
+          // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
+          record.status = newStatus;
+          record.requestType = "payout_investment";
+          record.isRolloverSuspended = isRolloverSuspended;
+          record.rolloverReactivationDate = rolloverReactivationDate;
+          record.isPayoutSuspended = isPayoutSuspended;
+          record.payoutReactivationDate = payoutReactivationDate;
+          // record.remark = approval.remark;
+          // record.isInvestmentApproved = true;
+          // TODO: Uncomment to use loginAdminFullName
+          // record.processedBy = loginAdminFullName;
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvalStatus = "approved"; //approval.approvalStatus;
+          // Data to send for transfer of fund
+          let { firstName, email, totalAmountToPayout, } = record; // interestDueOnInvestment,
+
+          // console.log("Updated record Status line 1439: ", record);
+          if (isRolloverSuspended === true) {
+            newStatus = "rollover_suspended";
+            record.status = newStatus;
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment rollover pending",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId, 
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 1453:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 1456:", newTimeline);
+            // update record
+
+            // Send Details to notification service
+            let subject = "AstraPay Investment Rollover Pending";
+            let message = `
+              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1468:", newNotificationMessage);
+            // debugger
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+          } else if (isRolloverSuspended === false) {
+            newStatus = "matured";
+            record.status = newStatus;
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment rollover activated",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId, 
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName} the rollover of your matured investment is activated and will be process for rollover. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 1959:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 1962:", newTimeline);
+            // update record
+
+            // Send Details to notification service
+            let subject = "AstraPay Investment Rollover Activated";
+            let message = `
+              ${firstName} the rollover of your matured investment is activated and will be process for rollover.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1468:", newNotificationMessage);
+            // debugger
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+          }
+
+          if (isPayoutSuspended === true) {
+            newStatus = "payout_suspended";
+            record.status = newStatus;
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment payout pending",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId, 
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 1491:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 1494:", newTimeline);
+            // update record
+
+            // Send Details to notification service
+            let subject = "AstraPay Investment Payout Pending";
+            let message = `
+               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1506:", newNotificationMessage);
+            // debugger
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+          } else if (isPayoutSuspended === false) {
+            newStatus = "matured";
+            record.status = newStatus;
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment payout activation",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId, 
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been activated for payment processing. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 1491:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 1494:", newTimeline);
+            // update record
+
+            // Send Details to notification service
+            let subject = "AstraPay Investment Payout Activation";
+            let message = `
+               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been activated for payment processing.
+
+                Thank you.
+
+                AstraPay Investment.`;
+            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1506:", newNotificationMessage);
+            // debugger
+            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessage.message !== "Success") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessage);
+            }
+          }
+
+          // if (isPayoutSuspended === true && isRolloverSuspended === true) {
+          //   newStatus = "payout_and_rollover_suspended";
+          //   record.status = newStatus;
+          //   // update timeline
+          //   timelineObject = {
+          //     id: uuid(),
+          //     action: "investment payout pending",
+          //     investmentId: investmentId,//id,
+          //     walletId: walletIdToSearch,// walletId, 
+          //     userId: userIdToSearch,// userId,
+          //     // @ts-ignore
+          //     message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+          //     createdAt: DateTime.now(),
+          //     metadata: ``,
+          //   };
+          //   // console.log("Timeline object line 1491:", timelineObject);
+          //   await timelineService.createTimeline(timelineObject);
+          //   // let newTimeline = await timelineService.createTimeline(timelineObject);
+          //   // console.log("new Timeline object line 1494:", newTimeline);
+          //   // update record
+
+          //   // Send Details to notification service
+          //   let subject = "AstraPay Investment Payout Pending";
+          //   let message = `
+          //      ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
+
+          //       Thank you.
+
+          //       AstraPay Investment.`;
+          //   let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          //   // console.log("newNotificationMessage line 1506:", newNotificationMessage);
+          //   // debugger
+          //   if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //     console.log("Notification sent successfully");
+          //   } else if (newNotificationMessage.message !== "Success") {
+          //     console.log("Notification NOT sent successfully");
+          //     console.log(newNotificationMessage);
+          //   }
+
+          //   // Notification for Rollover
+          //   // update timeline
+          //   timelineObject = {
+          //     id: uuid(),
+          //     action: "investment rollover pending",
+          //     investmentId: investmentId,//id,
+          //     walletId: walletIdToSearch,// walletId, 
+          //     userId: userIdToSearch,// userId,
+          //     // @ts-ignore
+          //     message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+          //     createdAt: DateTime.now(),
+          //     metadata: ``,
+          //   };
+          //   // console.log("Timeline object line 1453:", timelineObject);
+          //   await timelineService.createTimeline(timelineObject);
+          //   // let newTimeline = await timelineService.createTimeline(timelineObject);
+          //   // console.log("new Timeline object line 1456:", newTimeline);
+          //   // update record
+
+          //   // Send Details to notification service
+          //   subject = "AstraPay Investment Rollover Pending";
+          //   message = `
+          //     ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+
+          //       Thank you.
+
+          //       AstraPay Investment.`;
+          //   newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          //   // console.log("newNotificationMessage line 1468:", newNotificationMessage);
+          //   // debugger
+          //   if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //     console.log("Notification sent successfully");
+          //   } else if (newNotificationMessage.message !== "Success") {
+          //     console.log("Notification NOT sent successfully");
+          //     console.log(newNotificationMessage);
+          //   }
+
+          // }
+          // update record
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+          // console.log(" Current log, line 1593 :", currentInvestment);
+          // send for update
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 1597 :", updatedInvestment);
 
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
