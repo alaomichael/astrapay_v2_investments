@@ -1905,6 +1905,7 @@ export default class InvestmentsServices {
                 .useTransaction(trx) // 👈
                 .where('status', "investment_approved")
                 .where('request_type', "start_investment")
+                .orWhere('request_type', "start_investment_rollover")
                 .where('approval_status', "approved")
                 // .where('payout_date', '<=', payoutDateTo)
                 .offset(offset)
@@ -2013,7 +2014,7 @@ export default class InvestmentsServices {
                         let timelineObject;
                         // console.log("Approval.requestType: ===========================================>", approval.requestType)
                         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                        if (record.status === "investment_approved" && record.requestType === "start_investment" && record.approvalStatus === "approved") { //&& record.status == "submitted"
+                        if ((record.status === "investment_approved" && record.requestType === "start_investment" && record.approvalStatus === "approved") || (record.status === "investment_approved" && record.requestType === "start_investment_rollover" && record.approvalStatus === "approved")) { //&& record.status == "submitted"
                             console.log("Activation for investment request processing line 2007: ===========================================>")
                             // TODO: Uncomment to use loginAdminFullName
                             // record.processedBy = loginAdminFullName;

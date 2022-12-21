@@ -44,6 +44,28 @@ export default class ApprovalsServices {
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 287:", newTimeline);
+            } else if (approval.requestType === "start_investment_rollover") {
+                let investmentId = approval.investmentId;
+                let investmentDetails;
+                if (investmentId) {
+                    investmentDetails = await investmentService.getInvestmentByInvestmentId(investmentId)
+                }
+                // update timeline
+                timelineObject = {
+                    id: uuid(),
+                    action: "investment request approval created",
+                    investmentId: approval.investmentId,
+                    userId: investmentDetails.userId,
+                    walletId: investmentDetails.walletId,
+                    // @ts-ignore
+                    message: `${investmentDetails.firstName} investment request approval record has just been created.`,
+                    createdAt: DateTime.now(),
+                    metadata: `request type : ${investmentDetails.requestType}`,
+                };
+                // console.log("Timeline object line 285:", timelineObject);
+                await timelineService.createTimeline(timelineObject);
+                // let newTimeline = await timelineService.createTimeline(timelineObject);
+                // console.log("new Timeline object line 287:", newTimeline);
             }
 
             return approval
