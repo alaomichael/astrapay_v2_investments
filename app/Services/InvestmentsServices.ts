@@ -3828,7 +3828,7 @@ export default class InvestmentsServices {
                         // await approval.save();
                         // console.log("Update Approval Request line 3829:", approval);
                         // let { currencyCode, lastName, } = record;
-                        // let { currencyCode, lastName, startDate, duration } = record;
+                        let { startDate, duration } = record;
                         // console.log("Surname: ", lastName)
                         // console.log("CurrencyCode: ", currencyCode)
                         // debugger
