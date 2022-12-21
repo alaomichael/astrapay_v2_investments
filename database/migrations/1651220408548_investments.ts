@@ -82,6 +82,8 @@ export default class Investments extends BaseSchema {
       table.string('request_type', 255).notNullable().defaultTo('start_investment').index()
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
+      table.string('principal_payout_status', 255).notNullable().defaultTo('pending').index()
+      table.string('interest_payout_status', 255).notNullable().defaultTo('pending').index()
       // table.jsonb('timeline').nullable().index()
       table.text('certificate_url').nullable().index()
 

@@ -1096,7 +1096,8 @@ export default class InvestmentsController {
         rolloverTarget, investmentType, tagName, isRolloverActivated, isRolloverSuspended,
         rolloverReactivationDate,
         isPayoutSuspended,
-        payoutReactivationDate, } = request.body();
+        payoutReactivationDate, principalPayoutStatus,
+interestPayoutStatus } = request.body();
 
       // debugger
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
@@ -1159,6 +1160,8 @@ export default class InvestmentsController {
                 investment.rolloverReactivationDate = rolloverReactivationDate;
                 investment.isPayoutSuspended = isPayoutSuspended;
                 investment.payoutReactivationDate = payoutReactivationDate;
+                investment.principalPayoutStatus = principalPayoutStatus;
+                investment.interestPayoutStatus = interestPayoutStatus;
                 // Save
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1401,7 +1404,7 @@ export default class InvestmentsController {
       const { lastName, firstName,
         walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
         lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
-        rolloverTarget, investmentType, tagName, isRolloverActivated, } = request.body();
+        rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus,interestPayoutStatus } = request.body();
 
       const payload: InvestmentType = {
         lastName: lastName,
@@ -1428,11 +1431,8 @@ export default class InvestmentsController {
         interestRate: 0,
         interestDueOnInvestment: 0,
         totalAmountToPayout: 0,
-        // isPayoutSuccessful: false,
-        // requestType: '',
-        // approvalStatus: '',
-        // status: '',
-        // datePayoutWasDone: new DateTime
+        principalPayoutStatus:principalPayoutStatus,
+        interestPayoutStatus:interestPayoutStatus,
       }
 
 

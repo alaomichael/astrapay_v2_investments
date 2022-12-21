@@ -143,6 +143,12 @@ export default class Investment extends AppBaseModel {
   public status: string
 
   @column()
+  public principalPayoutStatus: string
+
+  @column()
+  public interestPayoutStatus: string
+
+  @column()
   public certificateUrl: string
 
   @column.dateTime({ autoCreate: false })

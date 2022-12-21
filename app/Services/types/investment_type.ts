@@ -26,6 +26,8 @@ export interface InvestmentType {
     totalAmountToPayout: number,
     lng: string,
     lat: string,
+    principalPayoutStatus:string,
+    interestPayoutStatus:string,
     // createdAt: DateTime,
     // startDate: DateTime,
     // payoutDate: DateTime,

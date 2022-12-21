@@ -1431,6 +1431,8 @@ export default class ApprovalsController {
                 interestRate,
                 interestDueOnInvestment: 0,
                 totalAmountToPayout: 0,
+                principalPayoutStatus: "pending",
+                interestPayoutStatus: "pending",
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -1707,6 +1709,8 @@ export default class ApprovalsController {
                 interestRate,
                 interestDueOnInvestment: 0,
                 totalAmountToPayout: 0,
+                principalPayoutStatus: "pending",
+                interestPayoutStatus: "pending",
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -1815,6 +1819,8 @@ export default class ApprovalsController {
                 interestRate,
                 interestDueOnInvestment: 0,
                 totalAmountToPayout: 0,
+                principalPayoutStatus: "pending",
+                interestPayoutStatus: "pending",
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
               console.log("newInvestmentDetails ", newInvestmentDetails)
