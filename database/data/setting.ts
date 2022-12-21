@@ -15,6 +15,8 @@ export const settings = [
         isPayoutAutomated: true,
         isInvestmentAutomated: true,
         isRolloverAutomated: true,
+        isAllPayoutSuspended: false,
+        isAllRolloverSuspended: false,
         tagName: "default setting",
         currencyCode: "NGN"
     },

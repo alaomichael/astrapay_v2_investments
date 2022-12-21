@@ -15,7 +15,7 @@ import TypesServices from './TypesServices';
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import { sendNotification } from 'App/Helpers/sendNotification';
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
-// import { creditUserWallet } from 'App/Helpers/creditUserWallet';
+
 const randomstring = require("randomstring");
 // const Env = require("@ioc:Adonis/Core/Env");
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
@@ -692,7 +692,7 @@ export default class InvestmentsServices {
                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
                 if (!approvalRequestIsExisting) {
                     let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                    console.log("new ApprovalRequest object line 215:", newApprovalRequest);
+                    console.log("new ApprovalRequest object line 695:", newApprovalRequest);
                 }
 
             } else if (approvalIsAutomated === true) {
@@ -737,12 +737,12 @@ export default class InvestmentsServices {
                 // await record.save();
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                // console.log(" Current log, line 327 :", currentInvestment);
+                // console.log(" Current log, line 740 :", currentInvestment);
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                console.log(" Current log, line 330 :", updatedInvestment);
+                console.log(" Current log, line 743 :", updatedInvestment);
 
-                // console.log("Updated record Status line 735: ", record);
+                // console.log("Updated record Status line 745: ", record);
 
                 // update timeline
                 timelineObject = {
@@ -756,7 +756,7 @@ export default class InvestmentsServices {
                     createdAt: DateTime.now(),
                     metadata: ``,
                 };
-                // console.log("Timeline object line 551:", timelineObject);
+                // console.log("Timeline object line 759:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
 
                 // Send Details to notification service
@@ -770,7 +770,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 773:", newNotificationMessage);
+                // console.log("newNotificationMessage line 773:", newNotificationMessage);
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                     console.log("Notification sent successfully");
                 } else if (newNotificationMessage.message !== "Success") {
@@ -787,10 +787,10 @@ export default class InvestmentsServices {
 
                 // update record
                 currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                // console.log(" Current log, line 321 :", currentInvestment);
+                // console.log(" Current log, line 790 :", currentInvestment);
                 // send for update
                 updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                // console.log(" Current log, line 324 :", updatedInvestment);
+                // console.log(" Current log, line 793 :", updatedInvestment);
                 // if successful 
                 // // if (debitUserWalletForInvestment.status == 200) {
                     // update the investment details
@@ -807,8 +807,9 @@ export default class InvestmentsServices {
                     currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                     // console.log(" Current log, line 809 :", currentInvestment);
                     // send for update
-                    updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                    console.log(" Current log, line 344 :", updatedInvestment);
+                await investmentsService.updateInvestment(currentInvestment, investment);
+                    // updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                    // console.log(" Current log, line 811 :", updatedInvestment);
 
                     // console.log("Updated record Status line 814: ", record);
                     timelineObject = {
@@ -3566,7 +3567,7 @@ export default class InvestmentsServices {
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
-                                            action: "investment payout",
+                                            action: "investment payout failed",
                                             investmentId: investmentId,//id,
                                             walletId: walletIdToSearch,// walletId, 
                                             userId: userIdToSearch,// userId,
@@ -3743,7 +3744,7 @@ export default class InvestmentsServices {
 
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
-                let { id, startDate, duration } = investment;//request.all()
+                let { id, } = investment;//request.all()
                 try {
                     console.log("Entering update 3748 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();

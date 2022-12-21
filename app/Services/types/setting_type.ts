@@ -14,6 +14,8 @@ export interface SettingType {
     payoutWalletId: string,
     isInvestmentAutomated: boolean,
     isRolloverAutomated: boolean,
+    isAllPayoutSuspended: boolean,
+    isAllRolloverSuspended: boolean,
     // investmentType: string,
     tagName: string,
     currencyCode: string,

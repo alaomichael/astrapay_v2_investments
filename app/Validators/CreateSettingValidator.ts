@@ -34,6 +34,8 @@ export default class CreateSettingValidator extends BaseValidator {
         fundingSourceTerminal: schema.string({ escape: true },),
         isInvestmentAutomated: schema.boolean(),
         isRolloverAutomated: schema.boolean(),
+        isAllPayoutSuspended: schema.boolean(),
+        isAllRolloverSuspended: schema.boolean(),
         // investmentType: schema.string({ escape: true },),
         tagName: schema.string.optional({ escape: true },),
         currencyCode: schema.string(),

@@ -60,6 +60,12 @@ export default class Setting extends AppBaseModel {
 
   @column()
   public isRolloverAutomated: boolean
+  
+  @column()
+  public isAllPayoutSuspended: boolean
+  
+  @column()
+  public isAllRolloverSuspended: boolean
 
   // @column()
   // public investmentType: 'fixed' | 'debenture'

@@ -227,6 +227,20 @@ export default class SettingsServices {
             // queryFields.isRolloverAutomated = queryFields.isRolloverAutomated == "true" ? 1 : 0;
             params.push(queryFields.isRolloverAutomated)
         }
+        // isAllPayoutSuspended: schema.boolean.optional(),
+        //     isAllRolloverSuspended: schema.boolean.optional(),
+        if (queryFields.isAllPayoutSuspended) {
+            predicateExists()
+            predicate = predicate + "is_all_payout_suspended=?";
+            // queryFields.isAllPayoutSuspended = queryFields.isAllPayoutSuspended == "true" ? 1 : 0;
+            params.push(queryFields.isAllPayoutSuspended)
+        }
+        if (queryFields.isAllRolloverSuspended) {
+            predicateExists()
+            predicate = predicate + "is_all_rollover_suspended=?";
+            // queryFields.isAllRolloverSuspended = queryFields.isAllRolloverSuspended == "true" ? 1 : 0;
+            params.push(queryFields.isAllRolloverSuspended)
+        }
         // if (queryFields.investmentType) {
         //     predicateExists()
         //     predicate = predicate + "investment_type=?";

@@ -690,7 +690,6 @@ export default class ApprovalsServices {
                         record.isPayoutSuccessful = false;
                         // record.datePayoutWasDone = DateTime.now();
                         // debugger
-
                         // Save the updated record
                         // await record.save();
                         // update record

@@ -22,6 +22,8 @@ export default class Settings extends BaseSchema {
       table.string('funding_source_terminal', 100).notNullable().index()
       table.boolean('is_investment_automated').notNullable().defaultTo(false).index()
       table.boolean('is_rollover_automated').notNullable().defaultTo(false).index()
+      table.boolean('is_all_payout_suspended').notNullable().defaultTo(false).index()
+      table.boolean('is_all_rollover_suspended').notNullable().defaultTo(false).index()
       // table.boolean('is_termination_automated').notNullable().defaultTo(false).index()
       // table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).nullable()
