@@ -2265,41 +2265,41 @@ export default class InvestmentsServices {
             // const timelineService = new TimelinesServices();
 
             let responseData;
-            if(payoutReactivationDate){
-               responseData  = await Database
-                .from('investments')
-                .useTransaction(trx) // 👈
-                .where('status', "payout_suspended")
-                .where('is_payout_suspended', true)
-                // .where('payout_date', '>=', payoutDateFrom)
-                .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
-                .where('approval_status', "suspend_payout")
-                .offset(offset)
-                .limit(limit)  
+            if (payoutReactivationDate) {
+                responseData = await Database
+                    .from('investments')
+                    .useTransaction(trx) // 👈
+                    .where('status', "payout_suspended")
+                    .where('is_payout_suspended', true)
+                    // .where('payout_date', '>=', payoutDateFrom)
+                    .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
+                    .where('approval_status', "suspend_payout")
+                    .offset(offset)
+                    .limit(limit)
                 debugger
             } else {
-                 responseData  = await Database
-                .from('investments')
-                .useTransaction(trx) // 👈
-                .where('status', "payout_suspended")
-                .where('is_payout_suspended', true)
-                // .where('payout_date', '>=', payoutDateFrom)
-                // .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
-                .where('approval_status', "suspend_payout")
-                .offset(offset)
-                .limit(limit)
+                responseData = await Database
+                    .from('investments')
+                    .useTransaction(trx) // 👈
+                    .where('status', "payout_suspended")
+                    .where('is_payout_suspended', true)
+                    // .where('payout_date', '>=', payoutDateFrom)
+                    // .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
+                    .where('approval_status', "suspend_payout")
+                    .offset(offset)
+                    .limit(limit)
                 debugger
             }
-        //    responseData  = await Database
-        //         .from('investments')
-        //         .useTransaction(trx) // 👈
-        //         .where('status', "payout_suspended")
-        //         .where('is_payout_suspended', true)
-        //         // .where('payout_date', '>=', payoutDateFrom)
-        //         .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
-        //         .where('approval_status', "suspend_payout")
-        //         .offset(offset)
-        //         .limit(limit)
+            //    responseData  = await Database
+            //         .from('investments')
+            //         .useTransaction(trx) // 👈
+            //         .where('status', "payout_suspended")
+            //         .where('is_payout_suspended', true)
+            //         // .where('payout_date', '>=', payoutDateFrom)
+            //         .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
+            //         .where('approval_status', "suspend_payout")
+            //         .offset(offset)
+            //         .limit(limit)
             // .forUpdate()
 
             // console.log("Investment Info, line 2213: ", investments);
@@ -2642,12 +2642,14 @@ export default class InvestmentsServices {
                 .andWhere('request_type', 'payout_investment')
                 .andWhere('approval_status', 'approved')
                 .andWhere('is_payout_successful', 'false')
+                .andWhere('is_payout_suspended', 'false')
                 .andWhere('is_rollover_activated', 'false')
                 .andWhere('is_rollover_suspended', 'false')
-                .andWhere('is_payout_suspended', 'false')
                 .andWhere('payout_date', '<=', selectedDate)
                 .offset(offset)
                 .limit(limit)
+
+            // .andWhere('is_payout_suspended', 'false')
             // .orWhere('status', "completed_with_interest_payout_outstanding")
             // .orWhere('status', "completed_with_principal_payout_outstanding")
             // .andWhereNot('status', "completed")
@@ -3741,9 +3743,9 @@ export default class InvestmentsServices {
 
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
-                let { id, } = investment;//request.all()
+                let { id, startDate, duration } = investment;//request.all()
                 try {
-                    console.log("Entering update 1808 ==================================")
+                    console.log("Entering update 3748 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
@@ -3763,23 +3765,23 @@ export default class InvestmentsServices {
                     //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
                     //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
                     // }
-                    console.log(" Login User Data line 1170 =========================");
+                    console.log(" Login User Data line 3768 =========================");
                     console.log(loginUserData);
                     // TODO: Uncomment to use LoginUserData
                     // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
                     // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 1175 =========================");
+                    // console.log(" Login User Data line 3773 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 1177 =========================");
+                    // console.log(" Login User Roles line 3775 =========================");
                     // console.log(loginUserData.roles);
                     // let { roles, biodata } = loginUserData;
 
-                    // console.log("Admin roles , line 1181 ==================")
+                    // console.log("Admin roles , line 3779 ==================")
                     // console.log(roles)
                     // // @ts-ignore
                     // let { fullName } = biodata;
                     // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 1186 ==================")
+                    // console.log("Login Admin FullName, line 3784 ==================")
                     // console.log(loginAdminFullName)
 
                     const timelineService = new TimelinesServices();
@@ -3792,11 +3794,11 @@ export default class InvestmentsServices {
                     let investmentId;
                     let record;
                     // debugger
-                    // console.log("investmentId line 1199 ===================================", approval.investmentId)
-                    // console.log("linkAccountId line 1200 ===================================", approval.linkAccountId)
-                    // console.log("tokenId line 1201 ===================================", approval.tokenId)
-                    // console.log("cardId line 1202 ===================================", approval.cardId)
-                    // console.log("accountId line 1203 ===================================", approval.accountId)
+                    // console.log("investmentId line 3797 ===================================", approval.investmentId)
+                    // console.log("linkAccountId line 3798 ===================================", approval.linkAccountId)
+                    // console.log("tokenId line 3799 ===================================", approval.tokenId)
+                    // console.log("cardId line 3800 ===================================", approval.cardId)
+                    // console.log("accountId line 3801 ===================================", approval.accountId)
                     if (id != null) {
                         investmentId = id;
                         // debugger
@@ -3806,7 +3808,7 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 1866 ==================================")
+                    console.log("check approval record 3811 ==================================")
                     // debugger
                     if (record == undefined || !record) {
                         return { status: "FAILED", message: "Not Found,try again." };
@@ -3824,7 +3826,7 @@ export default class InvestmentsServices {
                         // console.log("Admin remark line 1881 ========*******************=========== ", remark);
                         // let newStatus;
                         // await approval.save();
-                        // console.log("Update Approval Request line 1884:", approval);
+                        // console.log("Update Approval Request line 3829:", approval);
                         // let { currencyCode, lastName, } = record;
                         // let { currencyCode, lastName, startDate, duration } = record;
                         // console.log("Surname: ", lastName)
@@ -3834,13 +3836,13 @@ export default class InvestmentsServices {
                         let timelineObject;
                         // console.log("Approval.requestType: ===========================================>", approval.requestType)
                         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                        let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                        let duration = 4
-                        console.log('Time investment was started line 1896: ', startDate)
+                        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
+                        // let duration = 4
+                        console.log('Time investment was started line 3841: ', startDate)
                         // let timelineObject
                         // let timeline
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 1900:', isDueForPayout)
+                        console.log('Is due for payout status line 3845:', isDueForPayout)
                         // debugger
                         if (isDueForPayout === true) {
                             //   record.isPayoutAuthorized === true,
@@ -3916,7 +3918,7 @@ export default class InvestmentsServices {
                                 //   '101' = 'rollover principal only',
                                 //   '102' = 'rollover principal with interest',
                                 //   '103' = 'rollover interest only',
-                                if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured" && isRolloverSuspended === false)) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
+                                if (( isRolloverActivated == true && rolloverType !== "100" && status === "matured" && isRolloverSuspended === false )) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
                                     // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
                                     // check type of rollover
                                     if (rolloverType == "101") {
@@ -3971,10 +3973,10 @@ export default class InvestmentsServices {
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
-                                            // console.log("Timeline object line 996:", timelineObject);
+                                            // console.log("Timeline object line 3976:", timelineObject);
                                             await timelineService.createTimeline(timelineObject);
                                             // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                            // console.log("new Timeline object line 559993:", newTimeline);
+                                            // console.log("new Timeline object line 3979:", newTimeline);
                                             // update record
 
                                             // Send Details to notification service
@@ -4014,13 +4016,13 @@ export default class InvestmentsServices {
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 2038 :", currentInvestment);
+                                            // console.log(" Current log, line 4019 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 2042 :", updatedInvestment);
+                                            // console.log(" Current log, line 4023 :", updatedInvestment);
 
-                                            // console.log("Updated record Status line 2044: ", record);
+                                            // console.log("Updated record Status line 4025: ", record);
 
                                             // update timeline
                                             timelineObject = {
@@ -4034,10 +4036,10 @@ export default class InvestmentsServices {
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
-                                            // console.log("Timeline object line 2058:", timelineObject);
+                                            // console.log("Timeline object line 4039:", timelineObject);
                                             await timelineService.createTimeline(timelineObject);
                                             // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                            // console.log("new Timeline object line 2061:", newTimeline);
+                                            // console.log("new Timeline object line 4042:", newTimeline);
                                             // update record
 
                                             // Send Details to notification service
@@ -4051,7 +4053,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                            // console.log("newNotificationMessage line 2075:", newNotificationMessage);
+                                            // console.log("newNotificationMessage line 4056:", newNotificationMessage);
                                             // debugger
                                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                                 console.log("Notification sent successfully");
@@ -4106,11 +4108,11 @@ export default class InvestmentsServices {
                                         record.datePayoutWasDone = DateTime.now();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 2131 :", currentInvestment);
+                                        // console.log(" Current log, line 4111 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 2135 :", updatedInvestment);
+                                        // console.log(" Current log, line 4115 :", updatedInvestment);
 
                                         // create newInvestment
                                         // update timeline
@@ -4125,10 +4127,10 @@ export default class InvestmentsServices {
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
-                                        // console.log("Timeline object line 996:", timelineObject);
+                                        // console.log("Timeline object line 4130:", timelineObject);
                                         await timelineService.createTimeline(timelineObject);
                                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                        // console.log("new Timeline object line 2154:", newTimeline);
+                                        // console.log("new Timeline object line 4133:", newTimeline);
                                         // update record
 
                                         // Send Details to notification service
@@ -4142,7 +4144,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                        // console.log("newNotificationMessage line 2168:", newNotificationMessage);
+                                        // console.log("newNotificationMessage line 4147:", newNotificationMessage);
                                         // debugger
                                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                             console.log("Notification sent successfully");
@@ -4216,13 +4218,13 @@ export default class InvestmentsServices {
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 2188 :", currentInvestment);
+                                            // console.log(" Current log, line 4221 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 2192 :", updatedInvestment);
+                                            // console.log(" Current log, line 4225 :", updatedInvestment);
 
-                                            // console.log("Updated record Status line 2194: ", record);
+                                            // console.log("Updated record Status line 4227: ", record);
 
                                             // update timeline
                                             timelineObject = {
@@ -4236,10 +4238,10 @@ export default class InvestmentsServices {
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
-                                            // console.log("Timeline object line 2208:", timelineObject);
+                                            // console.log("Timeline object line 4241:", timelineObject);
                                             await timelineService.createTimeline(timelineObject);
                                             // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                            // console.log("new Timeline object line 2211:", newTimeline);
+                                            // console.log("new Timeline object line 4244:", newTimeline);
                                             // update record
 
                                             // Send Details to notification service
@@ -4253,7 +4255,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                            // console.log("newNotificationMessage line 2225:", newNotificationMessage);
+                                            // console.log("newNotificationMessage line 4258:", newNotificationMessage);
                                             // debugger
                                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                                 console.log("Notification sent successfully");
@@ -4279,13 +4281,13 @@ export default class InvestmentsServices {
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 2300 :", currentInvestment);
+                                            // console.log(" Current log, line 4284 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 2304 :", updatedInvestment);
+                                            // console.log(" Current log, line 4288 :", updatedInvestment);
 
-                                            // console.log("Updated record Status line 2304: ", record);
+                                            // console.log("Updated record Status line 4290: ", record);
 
                                             // update timeline
                                             timelineObject = {
@@ -4299,10 +4301,10 @@ export default class InvestmentsServices {
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
-                                            // console.log("Timeline object line 2320:", timelineObject);
+                                            // console.log("Timeline object line 4304:", timelineObject);
                                             await timelineService.createTimeline(timelineObject);
                                             // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                            // console.log("new Timeline object line 2323:", newTimeline);
+                                            // console.log("new Timeline object line 4307:", newTimeline);
                                             // update record
 
                                             // Send Details to notification service
@@ -4316,7 +4318,7 @@ export default class InvestmentsServices {
 
                 AstraPay Investment.`;
                                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                                            // console.log("newNotificationMessage line 2337:", newNotificationMessage);
+                                            // console.log("newNotificationMessage line 4321:", newNotificationMessage);
                                             // debugger
                                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                                 console.log("Notification sent successfully");
@@ -4363,13 +4365,13 @@ export default class InvestmentsServices {
                                 }
                                 // update record
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                // console.log(" Current log, line 2384 :", currentInvestment);
+                                // console.log(" Current log, line 4368 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                // console.log(" Current log, line 2388 :", updatedInvestment);
+                                // console.log(" Current log, line 4372 :", updatedInvestment);
                             } else {
-                                // console.log("Entering no data 2390 ==================================")
+                                // console.log("Entering no data 4374 ==================================")
                                 return {
                                     status: 'FAILED',
                                     message: 'no investment matched your search',
@@ -4387,12 +4389,12 @@ export default class InvestmentsServices {
                 } catch (error) {
                     console.log(error)
                     // debugger
-                    console.log("Error line 2407", error.messages);
-                    console.log("Error line 2408", error.message);
-                    // console.log("Error line 2410", error.message);
+                    console.log("Error line 4392", error.messages);
+                    console.log("Error line 4393", error.message);
+                    // console.log("Error line 4394", error.message);
                     // debugger
                     await trx.rollback()
-                    console.log(`Error line 2413, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
+                    console.log(`Error line 4397, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }
@@ -4404,13 +4406,13 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 2425 =====================:", error);
+                    console.log("Error line 4409 =====================:", error);
                     throw error;
                 }
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in investment service, line 1063:", investmentArray);
+            // console.log("Response data in investment service, line 4415:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
