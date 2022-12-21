@@ -732,7 +732,7 @@ export default class InvestmentsServices {
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 console.log(" Current log, line 330 :", updatedInvestment);
 
-                // console.log("Updated record Status line 332: ", record);
+                // console.log("Updated record Status line 735: ", record);
 
                 // update timeline
                 timelineObject = {
@@ -832,6 +832,59 @@ export default class InvestmentsServices {
                         console.log("Notification NOT sent successfully");
                         console.log(newNotificationMessage);
                     }
+                } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
+                    // debugger
+                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                    // console.log(" Current log, line 1072 :", currentInvestment);
+                    // send for update
+                    await investmentsService.updateInvestment(currentInvestment, record);
+
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment activation failed",
+                        investmentId: investmentId,//id,
+                        walletId: walletId,// walletId, 
+                        userId: userId,// userId,
+                        // @ts-ignore
+                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                        createdAt: DateTime.now(),
+                        metadata: ``,
+                    };
+                    // console.log("Timeline object line 855:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                    // console.log("new Timeline object line 858:", newTimeline);
+                    // update record
+                    // debugger
+                    // Send Details to notification service
+                    let subject = "AstraPay Investment Activation Failed";
+                    let message = `
+                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+
+                Thank you.
+
+                AstraPay Investment.`;
+                    let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                    // console.log("newNotificationMessage line 870:", newNotificationMessage);
+                    if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                        console.log("Notification sent successfully");
+                    } else if (newNotificationMessage.message !== "Success") {
+                        console.log("Notification NOT sent successfully");
+                        console.log(newNotificationMessage);
+                    }
+
+                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                    // console.log(" Current log, line 879 =========:", updatedInvestment);
+                    // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
+                    // debugger
+                    // throw Error(debitUserWalletForInvestment);
+                    throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                    // return {
+                    //         status: "FAILED",//debitUserWalletForInvestment.status,
+                    //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                    //     };
                 }
             }
 
@@ -882,7 +935,7 @@ export default class InvestmentsServices {
     public async collateAboutToBeMatureInvestment(queryParams: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, numberOfDaysFromToday, numberOfDaysBeforeToday } = queryParams;
 
             if (!numberOfDaysFromToday) {
@@ -933,7 +986,7 @@ export default class InvestmentsServices {
                 .limit(limit)
             // .forUpdate()
 
-            // console.log("Loan Info, line 583: ", investments);
+            // console.log("Investment Info, line 583: ", investments);
             // console.log(responseData)
             // debugger
             if (!responseData) {
@@ -1374,7 +1427,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 516:", loanArray);
+            // console.log("Response data in investment service, line 516:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -1386,7 +1439,7 @@ export default class InvestmentsServices {
     public async collateMaturedInvestment(queryParams: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -1430,7 +1483,7 @@ export default class InvestmentsServices {
                 .limit(limit)
             // .forUpdate()
 
-            // console.log("Loan Info, line 583: ", investments);
+            // console.log("Investment Info, line 583: ", investments);
             // console.log(responseData)
             // debugger
             if (!responseData) {
@@ -1726,7 +1779,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 516:", loanArray);
+            // console.log("Response data in investment service, line 516:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -1738,7 +1791,7 @@ export default class InvestmentsServices {
     public async sumOfMaturedInvestment(queryParams: any): Promise<Investment | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -1803,7 +1856,7 @@ export default class InvestmentsServices {
     public async activateApprovedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -1951,12 +2004,12 @@ export default class InvestmentsServices {
                         // console.log("Approval.requestType: ===========================================>", approval.requestType)
                         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                         if (record.status === "investment_approved" && record.requestType === "start_investment" && record.approvalStatus === "approved") { //&& record.status == "submitted"
-                            console.log("Activation for investment request processing line 867: ===========================================>")
+                            console.log("Activation for investment request processing line 2007: ===========================================>")
                             // TODO: Uncomment to use loginAdminFullName
                             // record.processedBy = loginAdminFullName;
                             // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                             // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                            // record.approvalStatus = approval.approvalStatus; // "investment_approved"//approval.approvalStatus;
+                            // record.approvalStatus = approval.approvalStatus; 
 
                             // console.log("Updated record Status line 537: ", record);
                             // Data to send for transfer of fund
@@ -2147,7 +2200,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 1063:", investmentArray);
+            // console.log("Response data in investment service, line 1063:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -2159,7 +2212,7 @@ export default class InvestmentsServices {
     public async reactivateSuspendedPayoutInvestment(queryParams: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, payoutReactivationDate } = queryParams;
 
             if (!updatedAtFrom) {
@@ -2187,18 +2240,22 @@ export default class InvestmentsServices {
                 queryParams.payoutReactivationDate = DateTime.now().toISO();//.toISODate();
                 payoutReactivationDate = DateTime.now().toISO();//.toISODate();
             }
-            // console.log("queryParams line 142 =========================")
+
+            // console.log("queryParams line 2190 =========================")
             // console.log(queryParams)
-            // console.log("updatedAtFrom line 149 =========================")
+            // console.log("updatedAtFrom line 2192 =========================")
             // console.log(updatedAtFrom)
-            // console.log("updatedAtTo line 151 =========================")
+            // console.log("updatedAtTo line 2194 =========================")
             // console.log(updatedAtTo)
+
             offset = Number(offset);
             limit = Number(limit);
             //    const settingsService = new SettingsServices();
             // const timelineService = new TimelinesServices();
 
-            let responseData = await Database
+            let responseData;
+            if(payoutReactivationDate){
+               responseData  = await Database
                 .from('investments')
                 .useTransaction(trx) // 👈
                 .where('status', "payout_suspended")
@@ -2207,17 +2264,41 @@ export default class InvestmentsServices {
                 .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
                 .where('approval_status', "suspend_payout")
                 .offset(offset)
+                .limit(limit)  
+                debugger
+            } else {
+                 responseData  = await Database
+                .from('investments')
+                .useTransaction(trx) // 👈
+                .where('status', "payout_suspended")
+                .where('is_payout_suspended', true)
+                // .where('payout_date', '>=', payoutDateFrom)
+                // .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
+                .where('approval_status', "suspend_payout")
+                .offset(offset)
                 .limit(limit)
+                debugger
+            }
+        //    responseData  = await Database
+        //         .from('investments')
+        //         .useTransaction(trx) // 👈
+        //         .where('status', "payout_suspended")
+        //         .where('is_payout_suspended', true)
+        //         // .where('payout_date', '>=', payoutDateFrom)
+        //         .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
+        //         .where('approval_status', "suspend_payout")
+        //         .offset(offset)
+        //         .limit(limit)
             // .forUpdate()
 
-            // console.log("Loan Info, line 583: ", investments);
+            // console.log("Investment Info, line 2213: ", investments);
             // console.log(responseData)
-            debugger
+            // debugger
             if (!responseData) {
                 console.log(`There is no suspended investment payout or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no suspended investment payout or payout has been completed. Please, check and try again.`, codeSt: "500" })
             }
-            debugger
+            // debugger
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
@@ -2236,8 +2317,8 @@ export default class InvestmentsServices {
                     let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 499: ', investment)
-                    // debugger
-                    if (investment && investment.$original.status == "active") {
+                    debugger
+                    if (investment && investment.$original.status == "payout_suspended") {
                         console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
@@ -2252,6 +2333,7 @@ export default class InvestmentsServices {
                         let isDueForPayout = await dueForPayout(startDate, duration)
                         console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
+                        debugger
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
                         if (!settings) {
@@ -2379,7 +2461,7 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'active') {
+                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -2486,7 +2568,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 516:", loanArray);
+            // console.log("Response data in investment service, line 516:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -2498,7 +2580,7 @@ export default class InvestmentsServices {
     public async payoutMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -2689,7 +2771,7 @@ export default class InvestmentsServices {
                                 // record.processedBy = loginAdminFullName;
                                 // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                 // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                // record.approvalStatus = approval.approvalStatus; // "investment_approved"//approval.approvalStatus;
+                                // record.approvalStatus = approval.approvalStatus; 
 
                                 // newStatus = "submitted";
                                 // newStatus = "approved"; 
@@ -2984,7 +3066,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 1063:", investmentArray);
+            // console.log("Response data in investment service, line 1063:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -2996,7 +3078,7 @@ export default class InvestmentsServices {
     public async retryFailedPayoutOfMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -3187,7 +3269,7 @@ export default class InvestmentsServices {
                                 // record.processedBy = loginAdminFullName;
                                 // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                 // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                // record.approvalStatus = approval.approvalStatus; // "investment_approved"//approval.approvalStatus;
+                                // record.approvalStatus = approval.approvalStatus; 
 
                                 // newStatus = "submitted";
                                 // newStatus = "approved"; 
@@ -3552,7 +3634,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 3218:", investmentArray);
+            // console.log("Response data in investment service, line 3218:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
@@ -3564,7 +3646,7 @@ export default class InvestmentsServices {
     public async rolloverMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
-            // console.log("Query params in loan service line 40:", queryParams)
+            // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -4296,7 +4378,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in loan service, line 1063:", investmentArray);
+            // console.log("Response data in investment service, line 1063:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)

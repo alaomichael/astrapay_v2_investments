@@ -8,6 +8,8 @@ import { DateTime } from 'luxon'
 import { v4 as uuid } from "uuid";
 import TimelinesServices from './TimelinesServices'
 import InvestmentsServices from './InvestmentsServices'
+import { debitUserWallet } from 'App/Helpers/debitUserWallet'
+import { sendNotification } from 'App/Helpers/sendNotification'
 
 Database.query()
 
@@ -134,6 +136,7 @@ export default class ApprovalsServices {
             const selectedInvestmentRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
             const timelineService = new TimelinesServices();
             let timelineObject;
+            let investmentId = selectedInvestmentRequest.id;
             // change timeline messsage based on the requestType
             if (saveApproval.requestType === "start_investment") {
                 // get the request by request id
@@ -149,6 +152,182 @@ export default class ApprovalsServices {
                     // update the record
                     // TODO: handle remark
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
+                    //  TODO: Debit user wallet to activate the investment
+                    // Data to send for transfer of fund
+                    let { amount, lng, lat, investmentRequestReference,
+                        firstName, lastName,
+                        walletId, userId,
+                        phone,
+                        email,
+                        rfiCode, currencyCode } = selectedInvestmentRequestUpdate;
+                    let senderName = `${firstName} ${lastName}`;
+                    let senderAccountNumber = walletId;
+                    let senderAccountName = senderName;
+                    let senderPhoneNumber = phone;
+                    let senderEmail = email;
+                    // Send to the endpoint for debit of wallet
+                    let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+                        senderName,
+                        senderAccountNumber,
+                        senderAccountName,
+                        senderPhoneNumber,
+                        senderEmail,
+                        rfiCode)
+                // debugger
+
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment approved",
+                        investmentId: investmentId,//id,
+                        walletId: walletId,// walletId, 
+                        userId: userId,// userId,
+                        // @ts-ignore
+                        message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+                        createdAt: DateTime.now(),
+                        metadata: ``,
+                    };
+                    // console.log("Timeline object line 190:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+
+                    // Send Details to notification service
+                    let subject = "AstraPay Investment Approval";
+                    let message = `
+                ${firstName} this is to inform you, that your Investment request, has been approved.
+
+                Please wait while the investment is being activated. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+                    let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                    console.log("newNotificationMessage line 204:", newNotificationMessage);
+                    if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                        console.log("Notification sent successfully");
+                    } else if (newNotificationMessage.message !== "Success") {
+                        console.log("Notification NOT sent successfully");
+                        console.log(newNotificationMessage);
+                    }
+
+
+                    // Testing
+                    // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
+                    // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
+                    // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
+                    // console.log('Testing Payout Date: ' + testingPayoutDate)
+
+                    // update record
+                  let  currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                    // console.log(" Current log, line 221 :", currentInvestment);
+                    // send for update
+                  let  updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                    // console.log(" Current log, line 224 :", updatedInvestment);
+                    // if successful 
+                    if (debitUserWalletForInvestment.status == 200) {
+                        // update the investment details
+                        selectedInvestmentRequestUpdate.status = 'active'
+                        selectedInvestmentRequestUpdate.approvalStatus = 'approved'
+                        selectedInvestmentRequestUpdate.startDate = DateTime.now() //.toISODate()
+                        selectedInvestmentRequestUpdate.payoutDate = DateTime.now().plus({ days: selectedInvestmentRequestUpdate.duration })
+                        selectedInvestmentRequestUpdate.isInvestmentCreated = true
+                        // debugger
+
+                        // Save the updated record
+                        // await record.save();
+                        // update record
+                        currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                        // console.log(" Current log, line 341 :", currentInvestment);
+                        // send for update
+                        updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                        console.log(" Current log, line 344 :", updatedInvestment);
+
+                        // console.log("Updated record Status line 1281: ", record);
+                        timelineObject = {
+                            id: uuid(),
+                            investmentId: investmentId,
+                            userId: userId,
+                            walletId: walletId,
+                            action: 'investment activated',
+                            // @ts-ignore
+                            message: `${firstName} investment has just been activated.`,
+                            createdAt: selectedInvestmentRequestUpdate.startDate,
+                            metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
+                        }
+                        // console.log('Timeline object line 1004:', timelineObject)
+                        await timelineService.createTimeline(timelineObject);
+                        // Send Details to notification service
+                        let subject = "AstraPay Investment Activation";
+                        let message = `
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${selectedInvestmentRequestUpdate.startDate} and it will be mature for payout on ${selectedInvestmentRequestUpdate.payoutDate}.
+
+                Please check your device. 
+
+                Thank you.
+
+                AstraPay Investment.`;
+                        let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                        // console.log("newNotificationMessage line 398:", newNotificationMessage);
+                        if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                            console.log("Notification sent successfully");
+                        } else if (newNotificationMessage.message !== "Success") {
+                            console.log("Notification NOT sent successfully");
+                            console.log(newNotificationMessage);
+                        }
+                    } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                        console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
+                        // debugger
+                        let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                        // console.log(" Current log, line 280 :", currentInvestment);
+                        // send for update
+                        await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+
+                        // update timeline
+                        timelineObject = {
+                            id: uuid(),
+                            action: "investment activation failed",
+                            investmentId: investmentId,//id,
+                            walletId: walletId,// walletId, 
+                            userId: userId,// userId,
+                            // @ts-ignore
+                            message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                            createdAt: DateTime.now(),
+                            metadata: ``,
+                        };
+                        // console.log("Timeline object line 296:", timelineObject);
+                        await timelineService.createTimeline(timelineObject);
+                        // let newTimeline = await timelineService.createTimeline(timelineObject);
+                        // console.log("new Timeline object line 299:", newTimeline);
+                        // update record
+                        // debugger
+                        // Send Details to notification service
+                        let subject = "AstraPay Investment Activation Failed";
+                        let message = `
+                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+
+                Thank you.
+
+                AstraPay Investment.`;
+                        let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                        // console.log("newNotificationMessage line 311:", newNotificationMessage);
+                        if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                            console.log("Notification sent successfully");
+                        } else if (newNotificationMessage.message !== "Success") {
+                            console.log("Notification NOT sent successfully");
+                            console.log(newNotificationMessage);
+                        }
+
+                        // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                        // console.log(" Current log, line 320 =========:", updatedInvestment);
+                        // console.log("debitUserWalletForInvestment reponse data 321 ==================================", debitUserWalletForInvestment)
+                        // debugger
+                        // throw Error(debitUserWalletForInvestment);
+                        throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                        // return {
+                        //         status: "FAILED",//debitUserWalletForInvestment.status,
+                        //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                        //     };
+                    }
+
                 } else if (saveApproval.approvalStatus === "rejected") {
                     // update the neccesary field
                     console.log("selectedInvestmentRequest ========================================================")

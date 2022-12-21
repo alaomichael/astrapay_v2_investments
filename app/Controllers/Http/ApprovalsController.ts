@@ -654,7 +654,7 @@ export default class ApprovalsController {
           // record.processedBy = loginAdminFullName;
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
-          record.approvalStatus = approval.approvalStatus; //"investment_approved"//approval.approvalStatus;
+          record.approvalStatus = approval.approvalStatus; 
           // Data to send for transfer of fund
           let { amount, lng, lat, id,
             firstName, lastName,
