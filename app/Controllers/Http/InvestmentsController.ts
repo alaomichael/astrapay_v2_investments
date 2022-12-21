@@ -1785,7 +1785,7 @@ interestPayoutStatus } = request.body();
           let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients, );
           console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
           debugger
-          if (newNotificationMessageWithPdf.status == 200 || newNotificationMessageWithPdf.message == "messages sent successfully") {
+          if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
             console.log("Notification NOT sent successfully");

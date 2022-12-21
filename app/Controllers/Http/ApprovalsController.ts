@@ -13,6 +13,10 @@ import ApprovalsServices from "App/Services/ApprovalsServices";
 import UpdateApprovalValidator from "App/Validators/UpdateApprovalValidator";
 import AppException from "App/Exceptions/AppException";
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
+import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
+import SettingsServices from 'App/Services/SettingsServices';
+const Env = require("@ioc:Adonis/Core/Env");
+const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
@@ -371,8 +375,24 @@ export default class ApprovalsController {
         let newStatus;
         // await approval.save();
         // console.log("Update Approval Request line 373:", approval);
-        let { id, firstName, currencyCode, lastName, email } = record;
+        let { id, firstName, currencyCode, lastName, email,rfiCode } = record;
         console.log("Surname: ", lastName)
+        const settingsService = new SettingsServices();
+        const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+        // debugger
+        if (!settings) {
+          throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
+        }
+        let { 
+          // isInvestmentAutomated,
+          rfiName,
+          // initiationNotificationEmail,
+          activationNotificationEmail,
+          // maturityNotificationEmail,
+          // payoutNotificationEmail,
+          // rolloverNotificationEmail,
+          // liquidationNotificationEmail,
+        } = settings
 
         // console.log("CurrencyCode: ", currencyCode)
         // debugger
@@ -525,7 +545,7 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 633:", newNotificationMessage);
+            console.log("newNotificationMessage line 548:", newNotificationMessage);
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessage.message !== "Success") {
@@ -533,6 +553,29 @@ export default class ApprovalsController {
               console.log(newNotificationMessage);
             }
             // debugger
+
+            // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+            let recepients = [
+              {
+                "email": email,
+                "name": `${firstName} ${lastName} `
+              },
+              {
+                "email": activationNotificationEmail,
+                "name": `${rfiName} `
+              },
+            ];
+            let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+            console.log("newNotificationMessage line 549:", newNotificationMessageWithPdf);
+            // debugger
+            if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithPdf);
+            }
+
+
           } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 655 :", currentInvestment);
@@ -771,6 +814,27 @@ export default class ApprovalsController {
             } else if (newNotificationMessage.message !== "Success") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessage);
+            }
+
+            // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+            let recepients = [
+              {
+                "email": email,
+                "name": `${firstName} ${lastName} `
+              },
+              {
+                "email": activationNotificationEmail,
+                "name": `${rfiName} `
+              },
+            ];
+            let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+            console.log("newNotificationMessage line 831:", newNotificationMessageWithPdf);
+            // debugger
+            if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithPdf);
             }
 
             currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
