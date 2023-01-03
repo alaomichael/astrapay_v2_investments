@@ -18,10 +18,18 @@
 |
 */
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
+import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 import Route from '@ioc:Adonis/Core/Route'
+// Route.get('/', async () => {
+//   return { hello: 'world' }
+// })
 
 Route.get('/', async () => {
-  return { hello: 'world' }
+  // Ensures the queue exists
+  await Rabbit.assertQueue('my_queue')
+
+  // Sends a message to the queue
+  await Rabbit.sendToQueue('my_queue', 'This message was sent by adonis-rabbit. Testing.....')
 })
 
 Route.get('health', async ({ response }) => {
