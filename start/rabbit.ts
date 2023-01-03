@@ -16,6 +16,7 @@ async function listen() {
     await Rabbit.consumeFrom('my_queue', (message) => {
         console.log("RabbitMQ Message ======================")
         console.log(message.content)
+        message.ack();
 
         // "If you're expecting a JSON, this will return the parsed message"
         console.log("If you're expecting a JSON, this will return the parsed message ================")
