@@ -83,7 +83,7 @@ Route.group(() => {
     Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment");
     Route.get("admin/investments/retry_failed_payout_of_matured_investment", "InvestmentsController.retryFailedPayoutOfMaturedInvestment");
     Route.get("admin/investments/rollover_matured_investments", "InvestmentsController.rolloverMaturedInvestment");
-    Route.get("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
+    // Route.get("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
     Route.get("admin/investments/sum_of_matured_investment", "InvestmentsController.sumOfMaturedInvestment");
 
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
@@ -114,6 +114,8 @@ Route.group(() => {
     // updateInterestRate
     Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
     Route.put("admin/investments/types/:typeId", "TypesController.update");
+    // liquidate investment
+        Route.put("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
 
 
     // DELETE ROUTES

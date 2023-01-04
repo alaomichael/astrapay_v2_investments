@@ -5873,14 +5873,15 @@ export default class InvestmentsServices {
             // const timelineService = new TimelinesServices();
             const settingsService = new SettingsServices();
             // TESTING
-            let selectedDate;
-            let currentDate = DateTime.now().toISO()
+            // let selectedDate;
+            // let currentDate = DateTime.now().toISO()
 
-            if (payoutDateTo) {
-                selectedDate = payoutDateTo;
-            } else {
-                selectedDate = currentDate;
-            }
+            // if (payoutDateTo) {
+            //     selectedDate = payoutDateTo;
+            // } else {
+            //     selectedDate = currentDate;
+            // }
+
             // debugger
             let responseData = await Database
                 .from('investments')

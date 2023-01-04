@@ -2775,6 +2775,81 @@ interestPayoutStatus } = request.body();
     }
   }
 
+  
+  public async liquidateInvestment({ request, response, loginUserData }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+      const {investmentId} = request.body();
+      const investments = await investmentsService.liquidateInvestment(investmentId,request.qs(), loginUserData)
+      // debugger
+
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2788:', investments)
+        // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          // debugger
+        }
+        return response.status(200).json({
+          status: 'OK',
+          data: investmentArray,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'FAILED',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      // debugger
+      console.log("Error line 2815", error.messages);
+      console.log("Error line 2816", error.message);
+      // debugger
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.code === 'ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      } else if (error.message === 'FAILED TO CREDIT WALLET, ETIMEDOUT') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 504
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
   public async retryFailedPayoutOfMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
