@@ -77,20 +77,21 @@ Route.group(() => {
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/about_to_be_mature_investments", "InvestmentsController.collateAboutToBeMatureInvestment");
     Route.get("admin/investments/reactivate_suspended_investment_payout", "InvestmentsController.reactivateSuspendedPayoutInvestment");
+    Route.get("admin/investments/reactivate_suspended_investment_rollover", "InvestmentsController.reactivateSuspendedRolloverInvestment");
     Route.get("admin/investments/matured_investments", "InvestmentsController.collateMaturedInvestment");
     Route.get("admin/investments/activate_approved_investments", "InvestmentsController.activateApprovedInvestment");
-    Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment"); 
-    Route.get("admin/investments/retry_failed_payout_of_matured_investment", "InvestmentsController.retryFailedPayoutOfMaturedInvestment"); 
+    Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment");
+    Route.get("admin/investments/retry_failed_payout_of_matured_investment", "InvestmentsController.retryFailedPayoutOfMaturedInvestment");
     Route.get("admin/investments/rollover_matured_investments", "InvestmentsController.rolloverMaturedInvestment");
     Route.get("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
     Route.get("admin/investments/sum_of_matured_investment", "InvestmentsController.sumOfMaturedInvestment");
-    
+
     // Route.get('admin/investments/:userId', 'InvestmentsController.show')
     Route.get('investments/users/:userId', 'InvestmentsController.showByUserId')
     Route.get('admin/investments/:investmentId', 'InvestmentsController.showByInvestmentId')
     Route.get('investments/:investmentId', 'InvestmentsController.showByInvestmentId')
-    
-    
+
+
 
     // Route.get('investments/:userId', 'InvestmentsController.show')
 
@@ -113,7 +114,7 @@ Route.group(() => {
     // updateInterestRate
     Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
     Route.put("admin/investments/types/:typeId", "TypesController.update");
-   
+
 
     // DELETE ROUTES
     Route.delete('admin/investments/settings', 'SettingsController.destroy')

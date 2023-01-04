@@ -3,7 +3,7 @@ import InvestmentsServices from 'App/Services/InvestmentsServices'
 import { DateTime } from 'luxon'
 // import axios from 'axios'
 
-export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
+export default class ReactivateSuspendedInvestmentRollover extends BaseTask {
     public static get schedule() {
         // *    *    *    *    *    *
         // ┬    ┬    ┬    ┬    ┬    ┬
@@ -16,7 +16,7 @@ export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/30 * * * *' // runs every 30 minutes
+        return '*/15 * * * *' // runs every 15 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**
@@ -30,7 +30,7 @@ export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
     public async handle() {
         // @ts-ignore
         this.logger.info('Handled')
-        console.log("Scheduler is Running Reactivate Suspended Investment Payout ==============================================")
+        console.log("Scheduler is Running Reactivate Suspended Investment Rollover ==============================================")
         // TODO : Update this when going live
         let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
         console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
@@ -42,8 +42,8 @@ export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
         }
         console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        let listOfReactivatedSuspendedInvestmentPayout = await investmentsServices.reactivateSuspendedPayoutInvestment(queryParams);
-        console.log("After AXIOS CALL for Reactivate Suspended Investment Payout ,  ==================================================");
-        console.log("The ASTRAPAY API Reactivate Suspended Investment Payout response,line 47: ", listOfReactivatedSuspendedInvestmentPayout);
+        let listOfReactivatedSuspendedInvestmentRollover = await investmentsServices.reactivateSuspendedRolloverInvestment(queryParams);
+        console.log("After AXIOS CALL for Reactivate Suspended Investment Rollover ,  ==================================================");
+        console.log("The ASTRAPAY API Reactivate Suspended Investment Rollover response,line 47: ", listOfReactivatedSuspendedInvestmentRollover);
     }
 }

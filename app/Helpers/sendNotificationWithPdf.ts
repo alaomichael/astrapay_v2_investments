@@ -56,7 +56,8 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
             // console.log("The ASTRAPAY API response, line 47: ", response.data);
             return response.data;
         } else {
-            return;
+            // return;
+            throw Error();
         }
     } catch (error) {
         console.log("The ASTRAPAY API response error: @ sendNotificationWithPdf line 51 ");

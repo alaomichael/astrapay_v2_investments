@@ -698,9 +698,9 @@ export default class ApprovalsServices {
                         // send for update
                         await investmentService.updateInvestment(currentInvestment, record);
                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                        // console.log(" Current log, line 521 :", updatedInvestment);
+                        // console.log(" Current log, line 701 :", updatedInvestment);
 
-                        // console.log("Updated record Status line 523: ", record);
+                        // console.log("Updated record Status line 703: ", record);
 
                         // update timeline
                         timelineObject = {
@@ -714,10 +714,10 @@ export default class ApprovalsServices {
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
-                        // console.log("Timeline object line 537:", timelineObject);
+                        // console.log("Timeline object line 717:", timelineObject);
                         await timelineService.createTimeline(timelineObject);
                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                        // console.log("new Timeline object line 540:", newTimeline);
+                        // console.log("new Timeline object line 720:", newTimeline);
                         // update record
 
                         // Send Details to notification service
@@ -731,7 +731,7 @@ export default class ApprovalsServices {
 
                 AstraPay Investment.`;
                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                        // console.log("newNotificationMessage line 554:", newNotificationMessage);
+                        // console.log("newNotificationMessage line 734:", newNotificationMessage);
                         // debugger
                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                             console.log("Notification sent successfully");
@@ -740,7 +740,7 @@ export default class ApprovalsServices {
                             console.log(newNotificationMessage);
                         }
                     }
-                    // console.log("creditUserWalletForInvestment reponse data 321 ==================================", debitUserWalletForInvestment)
+                    // console.log("creditUserWalletForInvestment reponse data 743 ==================================", debitUserWalletForInvestment)
                     // debugger
                     // throw Error(creditUserWalletForInvestment);
                     // throw Error(`${creditUserWalletForInvestment.status}, ${creditUserWalletForInvestment.errorCode}`);
@@ -763,10 +763,10 @@ export default class ApprovalsServices {
                     createdAt: DateTime.now(),
                     metadata: `request type : ${selectedInvestmentRequest.requestType}`,
                 };
-                // console.log("Timeline object line 408:", timelineObject);
+                // console.log("Timeline object line 766:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                // console.log("new Timeline object line 410:", newTimeline);
+                // console.log("new Timeline object line 769:", newTimeline);
             } else if (saveApproval.requestType === "payout_investment") {
                 const selectedInvestmentPayoutRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
@@ -828,10 +828,10 @@ export default class ApprovalsServices {
                     createdAt: DateTime.now(),
                     metadata: `request type : ${selectedApproval.requestType}`,
                 };
-                // console.log("Timeline object line 241:", timelineObject);
+                // console.log("Timeline object line 831:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                // console.log("new Timeline object line 244:", newTimeline);
+                // console.log("new Timeline object line 834:", newTimeline);
             } else if (saveApproval.requestType === "terminate_investment") {
                 const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
