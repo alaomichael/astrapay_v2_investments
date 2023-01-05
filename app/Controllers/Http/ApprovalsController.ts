@@ -480,19 +480,7 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "approval";
-            let generalRecepients = [
-              {
-                "channel": "email",
-                "handle": email,
-                "name": `${firstName} ${lastName}`
-              },
-              {
-                "channel": "email",
-                "handle": activationNotificationEmail,
-                "name": `${rfiName}`
-              },
-            ];
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
             // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
             // debugger
             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -666,20 +654,8 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "activation_failed";
-            let generalRecepients = [
-              {
-                "channel": "email",
-                "handle": email,
-                "name": `${firstName} ${lastName}`
-              },
-              {
-                "channel": "email",
-                "handle": activationNotificationEmail,
-                "name": `${rfiName}`
-              },
-            ];
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
-            // console.log("newNotificationMessage line 682:", newNotificationMessageWithoutPdf);
+                      let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+            // console.log("newNotificationMessage line 658:", newNotificationMessageWithoutPdf);
             // debugger
             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
@@ -760,20 +736,8 @@ export default class ApprovalsController {
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageType = "approval_rejection";
-          let generalRecepients = [
-            {
-              "channel": "email",
-              "handle": email,
-              "name": `${firstName} ${lastName}`
-            },
-            {
-              "channel": "email",
-              "handle": activationNotificationEmail,
-              "name": `${rfiName}`
-            },
-          ];
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
-          // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+                  let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, );
+          // console.log("newNotificationMessage line 740:", newNotificationMessageWithoutPdf);
           // debugger
           if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
@@ -848,13 +812,27 @@ export default class ApprovalsController {
 
                 AstraPay Investment.`;
             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 710:", newNotificationMessage);
+            // console.log("newNotificationMessage line 815:", newNotificationMessage);
             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessage.message !== "Success") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessage);
             }
+
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageType = "approval";
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+            // console.log("newNotificationMessage line 827:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
+
 
             // update record
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -926,13 +904,26 @@ export default class ApprovalsController {
               // },
             ];
             let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
-            console.log("newNotificationMessage line 831:", newNotificationMessageWithPdf);
+            console.log("newNotificationMessage line 907:", newNotificationMessageWithPdf);
             // debugger
             if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithPdf);
+            }
+
+            // Send Notification to admin and others stakeholder
+            // let investment = record;
+             messageType = "activation";
+             newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+            // console.log("newNotificationMessage line 920:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
             }
 
             currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1015,6 +1006,20 @@ export default class ApprovalsController {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessage);
             }
+
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageType = "activation_failed";
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+            // console.log("newNotificationMessage line 1014:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
+
 
             // Credit the user wallet with the amount to be rollover
             // Payout the amount that is to be rollover
