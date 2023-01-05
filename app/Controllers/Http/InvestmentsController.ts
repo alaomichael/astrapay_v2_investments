@@ -1384,27 +1384,6 @@ interestPayoutStatus } = request.body();
       const investmentsService = new InvestmentsServices();
       const timelineService = new TimelinesServices();
       const typesService = new TypesServices();
-      // const user = await auth.authenticate()
-      // const investmentSchema = schema.create({
-      //   amount: schema.number(),
-      //   rolloverType: schema.enum(['100', '101', '102']),
-      //   rolloverTarget: schema.number([rules.range(0, 5)]),
-      //   rolloverDone: schema.number([rules.range(0, 5)]),
-      //   investmentType: schema.enum(['fixed', 'debenture']),
-      //   duration: schema.string({ escape: true }, [rules.maxLength(4)]),
-      //   userId: schema.string(),
-      //   tagName: schema.string({ escape: true }, [rules.maxLength(150)]),
-      //   currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-      //   long: schema.number(),
-      //   lat: schema.number(),
-      //   firstName: schema.string(),
-      //   lastName: schema.string(),
-      //   email: schema.string([rules.email()]),
-      //   phone: schema.number(),
-      //   investorFundingWalletId: schema.string(),
-      // })
-      // const payload: any = await request.validate({ schema: investmentSchema })
-
       const { lastName, firstName,
         walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
         lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
@@ -1702,6 +1681,17 @@ interestPayoutStatus } = request.body();
           console.log("Notification NOT sent successfully");
           console.log(newNotificationMessage);
         }
+            // Send Notification to admin and others stakeholder
+                       let messageType = "approval";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+            // console.log("newNotificationMessage line 1708:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
 
         // Send to the endpoint for debit of wallet
         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -1794,13 +1784,11 @@ interestPayoutStatus } = request.body();
             console.log(newNotificationMessageWithPdf);
           }
           // debugger
-
-
           // Send Notification to admin and others stakeholder
           // let investment = record;
           let messageType = "activation";
           let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
-          // console.log("newNotificationMessage line 1803:", newNotificationMessageWithoutPdf);
+          // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
           // debugger
           if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
@@ -1811,7 +1799,7 @@ interestPayoutStatus } = request.body();
 
         } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-          // console.log(" Current log, line 1763 :", currentInvestment);
+          // console.log(" Current log, line 1802 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, investment);
 
@@ -1830,7 +1818,7 @@ interestPayoutStatus } = request.body();
           // console.log("Timeline object line 1779:", timelineObject);
           await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
-          // console.log("new Timeline object line 1782:", newTimeline);
+          // console.log("new Timeline object line 1842:", newTimeline);
           // update record
           // debugger
           // Send Details to notification service
@@ -1842,13 +1830,25 @@ interestPayoutStatus } = request.body();
 
                 AstraPay Investment.`;
           let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          // console.log("newNotificationMessage line 1794:", newNotificationMessage);
+          // console.log("newNotificationMessage line 1854:", newNotificationMessage);
           if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessage.message !== "Success") {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
           }
+          // Send Notification to admin and others stakeholder
+                   let messageType = "activation_failed";
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+          // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
+          // debugger
+          if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessageWithoutPdf);
+          }
+
 
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 535 =========:", updatedInvestment);

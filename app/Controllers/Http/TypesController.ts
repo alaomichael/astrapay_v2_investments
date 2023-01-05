@@ -4,12 +4,6 @@
 
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Type from "App/Models/Type";
-// import Event from "@ioc:Adonis/Core/Event";
-// import { sendNotification } from "App/Helpers/sendNotification";
-// import TimelinesServices from "App/Services/TimelinesServices";
-// import { DateTime } from "luxon";
-// import { v4 as uuid } from "uuid";
-// import AccountOpeningsServices from "App/Services/AccountOpeningsServices";
 import CreateTypeValidator from "App/Validators/CreateTypeValidator";
 import { TypeType } from "App/Services/types/type_type";
 import TypesServices from "App/Services/TypesServices";
@@ -19,6 +13,7 @@ import TenuresServices from "App/Services/TenuresServices";
 const Env = require("@ioc:Adonis/Core/Env");
 const SUPER_ADMIN_EMAIL_ADDRESS = Env.get("SUPER_ADMIN_EMAIL_ADDRESS");
 import { sendNotification } from "App/Helpers/sendNotification";
+import { sendNotificationWithoutPdf } from "App/Helpers/sendNotificationWithoutPdf";
 
 export default class TypesController {
     public async index({ params, request, response }: HttpContextContract) {
@@ -441,12 +436,23 @@ export default class TypesController {
 
                 AstraPay Investment.`;
                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 306:", newNotificationMessage);
+                console.log("newNotificationMessage line 439:", newNotificationMessage);
                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                     console.log("Notification sent successfully");
                 } else if (newNotificationMessage.message !== "Success") {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessage);
+                }
+                // Send Notification to admin and others stakeholder
+                                let messageType = "investment_type_update";
+                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
+                // console.log("newNotificationMessage line 449:", newNotificationMessageWithoutPdf);
+                // debugger
+                if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                    console.log("Notification sent successfully");
+                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                    console.log("Notification NOT sent successfully");
+                    console.log(newNotificationMessageWithoutPdf);
                 }
 
                 // send to user
@@ -532,7 +538,7 @@ export default class TypesController {
                 let updatedInterestRate = await typesService.updateTypeInterestRate(type, interestRate);
                 // console.log("Type updated: ", type);
                 // await type.save();
-                console.log("Update Type Request line 562:", updatedInterestRate);
+                console.log("Update Type Request line 541:", updatedInterestRate);
                 // debugger
                 // Send Details to notification service
                 let email, firstName;
@@ -562,6 +568,17 @@ export default class TypesController {
                 } else if (newNotificationMessage.message !== "Success") {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessage);
+                }
+                // Send Notification to admin and others stakeholder
+                               let messageType = "investment_type_update";
+                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
+                // console.log("newNotificationMessage line 575:", newNotificationMessageWithoutPdf);
+                // debugger
+                if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                    console.log("Notification sent successfully");
+                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                    console.log("Notification NOT sent successfully");
+                    console.log(newNotificationMessageWithoutPdf);
                 }
 
                 // send to user
