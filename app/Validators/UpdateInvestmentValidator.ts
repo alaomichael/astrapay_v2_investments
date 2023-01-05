@@ -30,6 +30,7 @@ export default class UpdateInvestmentValidator extends BaseValidator {
         interestRate: schema.number.optional(),
         interestDueOnInvestment: schema.number.optional(),
         totalAmountToPayout: schema.number.optional(),
+        penalty: schema.number.optional(),
         processedBy: schema.string.optional(),
         assignedTo: schema.string.optional(),
         approvedBy: schema.string.optional(),

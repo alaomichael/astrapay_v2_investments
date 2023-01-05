@@ -18,7 +18,8 @@ export const settings = [
         isAllPayoutSuspended: false,
         isAllRolloverSuspended: false,
         tagName: "default setting",
-        currencyCode: "NGN"
+        currencyCode: "NGN",
+        liquidationPenalty: 25
     },
 ];
 

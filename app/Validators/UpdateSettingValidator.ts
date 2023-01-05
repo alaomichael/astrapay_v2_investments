@@ -29,6 +29,7 @@ export default class UpdateSettingValidator extends BaseValidator {
         investmentWalletId: schema.string.optional({ escape: true },),
         payoutWalletId: schema.string.optional({ escape: true },),
         isPayoutAutomated: schema.boolean.optional(),
+        liquidationPenalty: schema.number.optional(),
         fundingSourceTerminal: schema.string.optional({ escape: true },),
         isInvestmentAutomated: schema.boolean.optional(),
         isRolloverAutomated: schema.boolean.optional(),

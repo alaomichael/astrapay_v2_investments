@@ -53,6 +53,9 @@ export default class Setting extends AppBaseModel {
   public isPayoutAutomated: boolean
 
   @column()
+  public liquidationPenalty: number
+
+  @column()
   public fundingSourceTerminal: string
 
   @column()

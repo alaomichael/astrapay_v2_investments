@@ -16,6 +16,7 @@ export interface SettingType {
     isRolloverAutomated: boolean,
     isAllPayoutSuspended: boolean,
     isAllRolloverSuspended: boolean,
+    liquidationPenalty: number,
     // investmentType: string,
     tagName: string,
     currencyCode: string,

@@ -24,6 +24,7 @@ export interface InvestmentType {
     interestRate: number,
     interestDueOnInvestment: number,
     totalAmountToPayout: number,
+    penalty:number,
     lng: string,
     lat: string,
     principalPayoutStatus:string,

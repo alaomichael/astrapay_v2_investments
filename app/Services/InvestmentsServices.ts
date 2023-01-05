@@ -6087,6 +6087,7 @@ export default class InvestmentsServices {
                                                 totalAmountToPayout: 0,
                                                 principalPayoutStatus: "pending",
                                                 interestPayoutStatus: "pending",
+                                                penalty: 0,
                                             }
                                             await investmentsService.createNewInvestment(newInvestmentPayload, amount)
                                             // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
@@ -6182,6 +6183,7 @@ export default class InvestmentsServices {
                                                 totalAmountToPayout: 0,
                                                 principalPayoutStatus: "pending",
                                                 interestPayoutStatus: "pending",
+                                                penalty: 0,
                                             }
                                             await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
                                             // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
@@ -6360,7 +6362,7 @@ export default class InvestmentsServices {
                                                 totalAmountToPayout: 0,
                                                 principalPayoutStatus: "pending",
                                                 interestPayoutStatus: "pending",
-
+                                                penalty: 0,
                                             }
 
                                             await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
@@ -6961,7 +6963,7 @@ export default class InvestmentsServices {
                                     let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // Calculate penalty to be deducted
-                                    let currentDate =  new Date().toDateString();  // new Date().toISOString(); //DateTime.now()
+                                    let currentDate = new Date().toDateString();  // new Date().toISOString(); //DateTime.now()
                                     let daysOfInvestment;
                                     daysOfInvestment = await investmentDuration(startDate, currentDate)
                                     // debugger
@@ -7642,6 +7644,11 @@ export default class InvestmentsServices {
             predicateExists()
             predicate = predicate + "total_amount_to_payout=?"
             params.push(queryFields.totalAmountToPayout)
+        }
+        if (queryFields.penalty) {
+            predicateExists()
+            predicate = predicate + "penalty=?"
+            params.push(queryFields.penalty)
         }
         if (queryFields.createdAt) {
             predicateExists()

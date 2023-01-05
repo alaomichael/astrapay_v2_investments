@@ -209,6 +209,12 @@ export default class SettingsServices {
             predicate = predicate + "is_payout_automated=?";
             params.push(queryFields.isPayoutAutomated)
         }
+        
+        if (queryFields.liquidationPenalty) {
+            predicateExists()
+            predicate = predicate + "liquidation_penalty=?";
+            params.push(queryFields.liquidationPenalty)
+        }
 
         if (queryFields.fundingSourceTerminal) {
             predicateExists()

@@ -84,7 +84,10 @@ export default class Investment extends AppBaseModel {
 
   @column()
   public totalAmountToPayout: number
-
+  
+  @column()
+  public penalty: number
+  
   // @column()
   // public walletHolderDetails: JSON
 

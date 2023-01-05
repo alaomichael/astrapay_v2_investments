@@ -26,7 +26,7 @@ export default class SettingsController {
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
         investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName,
         initiationNotificationEmail,activationNotificationEmail,maturityNotificationEmail,payoutNotificationEmail,
-        rolloverNotificationEmail, liquidationNotificationEmail, isAllPayoutSuspended,isAllRolloverSuspended, } = request.body();
+        rolloverNotificationEmail, liquidationNotificationEmail, isAllPayoutSuspended, isAllRolloverSuspended, liquidationPenalty } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -40,14 +40,15 @@ export default class SettingsController {
         // investmentType: investmentType,
         tagName: tagName,
         currencyCode: currencyCode,
-        initiationNotificationEmail:initiationNotificationEmail,
-        activationNotificationEmail:activationNotificationEmail,
-        maturityNotificationEmail:maturityNotificationEmail,
-        payoutNotificationEmail:payoutNotificationEmail,
+        initiationNotificationEmail: initiationNotificationEmail,
+        activationNotificationEmail: activationNotificationEmail,
+        maturityNotificationEmail: maturityNotificationEmail,
+        payoutNotificationEmail: payoutNotificationEmail,
         rolloverNotificationEmail: rolloverNotificationEmail,
-        liquidationNotificationEmail:liquidationNotificationEmail,
+        liquidationNotificationEmail: liquidationNotificationEmail,
         isAllPayoutSuspended: isAllPayoutSuspended,
         isAllRolloverSuspended: isAllRolloverSuspended,
+        liquidationPenalty: liquidationPenalty,
       }
       const setting = await settingsService.createSetting(payload);
 
@@ -94,7 +95,7 @@ export default class SettingsController {
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
         investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, initiationNotificationEmail,
         activationNotificationEmail, maturityNotificationEmail, payoutNotificationEmail, rolloverNotificationEmail, 
-        liquidationNotificationEmail, isAllPayoutSuspended,isAllRolloverSuspended } = request.body();
+        liquidationNotificationEmail, isAllPayoutSuspended, isAllRolloverSuspended, liquidationPenalty } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
         rfiCode: rfiCode,
@@ -116,6 +117,7 @@ export default class SettingsController {
         liquidationNotificationEmail: liquidationNotificationEmail,
         isAllPayoutSuspended: isAllPayoutSuspended,
         isAllRolloverSuspended: isAllRolloverSuspended,
+        liquidationPenalty: liquidationPenalty,
       }
       console.log("Request body validation line 100", payload);
       // get setting by id

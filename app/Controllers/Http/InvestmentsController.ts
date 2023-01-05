@@ -1407,7 +1407,7 @@ interestPayoutStatus } = request.body();
       const { lastName, firstName,
         walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
         lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
-        rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus,interestPayoutStatus } = request.body();
+        rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus,interestPayoutStatus ,penalty} = request.body();
 
       const payload: InvestmentType = {
         lastName: lastName,
@@ -1434,8 +1434,9 @@ interestPayoutStatus } = request.body();
         interestRate: 0,
         interestDueOnInvestment: 0,
         totalAmountToPayout: 0,
-        principalPayoutStatus:principalPayoutStatus,
-        interestPayoutStatus:interestPayoutStatus,
+        principalPayoutStatus: principalPayoutStatus,
+        interestPayoutStatus: interestPayoutStatus,
+        penalty: penalty,
       }
 
 

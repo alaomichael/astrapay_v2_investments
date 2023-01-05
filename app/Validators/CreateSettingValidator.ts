@@ -31,6 +31,7 @@ export default class CreateSettingValidator extends BaseValidator {
         // investment_wallet_id
         // payout_wallet_id
         isPayoutAutomated: schema.boolean(),
+        liquidationPenalty: schema.number.optional(),
         fundingSourceTerminal: schema.string({ escape: true },),
         isInvestmentAutomated: schema.boolean(),
         isRolloverAutomated: schema.boolean(),
