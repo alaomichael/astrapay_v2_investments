@@ -8,7 +8,7 @@ const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
 
-export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode,investment,): Promise<any> {
+export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode, investment,): Promise<any> {
     // connect to Okra
     try {
         // console.log("email,line 25", email);
@@ -17,27 +17,6 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         // console.log("message,line 28", message);
         // const headers = {
         //     "Authorization": NOTIFICATION_MESSAGE_URL_AUTHORIZATION
-        // }
-
-        //   - investment_initiation
-        // - subject
-        // - customerName
-        // - amount
-        // - duration
-        // - rolloverType
-        // - customerPhone
-        // - customerEmail
-        // - investmentType
-        // - investmentTypeName
-        // - investmentId
-        // - recipientName
-
-        // const payload = {
-        //     "url": url,
-        //     "rfiId": rfiCode,
-        //     "message": message,
-        //     "subject": subject,
-        //     "recepients": recepients,
         // }
         const settingsService = new SettingsServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -56,10 +35,40 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             liquidationNotificationEmail,
         } = settings
 
-        let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType, investmentTypeName } = investment;
+        let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
+            investmentTypeName, startDate, payoutDate, interestDueForPayout, principalDueForPayout,
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone } = investment;
+        let rolloverStatus;
+        if (isRolloverActivated == true) {
+            rolloverStatus = "Activated"
+        } else {
+            rolloverStatus = "Not Activated"
+        }
+        let amountPaid;
+        let amountRollover;
+        if (rolloverType == "101") {
+            // Rollover Principal only
+            // amount
+            // interestDueForPayout
+            // totalAmountDueForPayout
+            amountPaid = ` NGN ${interestDueForPayout}`;
+            amountRollover = ` NGN ${amount}`;
+            rolloverType = "Rollover Principal only";
+        } else if (rolloverType == "102") {
+            // Rollover Principal and Interest 
+            amountPaid = ` NGN ${0}`;
+            amountRollover = ` NGN ${totalAmountDueForPayout}`;
+            rolloverType = "Rollover Principal and Interest"
+        } if (rolloverType == "103") {
+            // Rollover Interest only
+            amountPaid = ` NGN ${amount}`;
+            amountRollover = ` NGN ${interestDueForPayout}`;
+            rolloverType = "Rollover Interest only"
+        }
         let metadata;
         let customerName = ` ${firstName} ${lastName}`;
         let recepients;
+        debugger
         if (messageType = "initiation") {
             let subject = "Investment Initiation";
             recepients = [
@@ -120,7 +129,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             recepients = [
                 {
                     "channel": "email",
-                    "handle": activationNotificationEmail, // approvalNotificationEmail
+                    "handle": activationNotificationEmail,
                     "name": `${rfiName}`
                 },
             ];
@@ -130,13 +139,9 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "customerName": customerName,
                     "amount": amount,
                     "duration": duration,
-                    "rolloverType": rolloverType,
-                    "customerPhone": phone,
-                    "customerEmail": email,
-                    "investmentType": investmentType,
-                    "investmentTypeName": investmentTypeName,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
                     "investmentId": id,
-
                 }
         } else if (messageType = "maturity") {
             let subject = "Investment Maturity";
@@ -152,19 +157,21 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`, // Admin or Company Name
                 },
             ];
+
             messageType = "investment_maturity",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
                     "amount": amount,
                     "duration": duration,
-                    "rolloverType": rolloverType,
-                    "customerPhone": phone,
-                    "customerEmail": email,
-                    "investmentType": investmentType,
-                    "investmentTypeName": investmentTypeName,
-                    "investmentId": id,
 
+                    "investmentId": id,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
+                    "interestDueForPayout": interestDueForPayout,
+                    "principalDueForPayout": principalDueForPayout,
+                    "totalAmountDueForPayout": totalAmountDueForPayout,
+                    "rollOverStatus": rolloverStatus,
                 }
         } else if (messageType = "payout") {
             let subject = "Investment Payout";
@@ -180,19 +187,18 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`, // Admin or Company Name
                 },
             ];
+
             messageType = "investment_payout",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
-                    "duration": duration,
-                    "rolloverType": rolloverType,
-                    "customerPhone": phone,
-                    "customerEmail": email,
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-
+                    "amountPaid": totalAmountDueForPayout,
+                    "paymentDate": datePayoutWasDone,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
                 }
         } else if (messageType = "rollover") {
             let subject = "Investment Rollover";
@@ -204,22 +210,22 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 },
                 {
                     "channel": "email",
-                    "handle": rolloverNotificationEmail, 
+                    "handle": rolloverNotificationEmail,
                     "name": `${rfiName}`, // Admin or Company Name
                 },
             ];
+
             messageType = "investment_rollover",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
                     "duration": duration,
                     "rolloverType": rolloverType,
-                    "customerPhone": phone,
-                    "customerEmail": email,
-                    "investmentType": investmentType,
-                    "investmentTypeName": investmentTypeName,
                     "investmentId": id,
+                    "amountPaid": amountPaid,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
+                    "amountRollover": amountRollover,
 
                 }
         } else if (messageType = "liquidation") {
@@ -232,10 +238,11 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 },
                 {
                     "channel": "email",
-                    "handle": liquidationNotificationEmail, 
+                    "handle": liquidationNotificationEmail,
                     "name": `${rfiName}`, // Admin or Company Name
                 },
             ];
+            
             messageType = "investment_liquidation",
                 metadata = {
                     "subject": subject,
