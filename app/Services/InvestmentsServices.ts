@@ -17,8 +17,8 @@ import { sendNotification } from 'App/Helpers/sendNotification';
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 
 const randomstring = require("randomstring");
-const Env = require("@ioc:Adonis/Core/Env");
-const PENALTY_FOR_LIQUIDATION = Env.get("PENALTY_FOR_LIQUIDATION");
+// const Env = require("@ioc:Adonis/Core/Env");
+// const PENALTY_FOR_LIQUIDATION = Env.get("PENALTY_FOR_LIQUIDATION");
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
 // const CHARGE = Env.get("SERVICE_CHARGE");
 // const API_URL = Env.get("API_URL");
@@ -6592,7 +6592,7 @@ export default class InvestmentsServices {
                     //  Check if investment payout is not suspended and activation is automated 
                     // isAllRolloverSuspended
 
-                    let isAllPayoutSuspended = settings.isAllPayoutSuspended
+                    let {isAllPayoutSuspended,liquidationPenalty} = settings; //.isAllPayoutSuspended
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 5996:");
@@ -6968,7 +6968,7 @@ export default class InvestmentsServices {
                                     daysOfInvestment = await investmentDuration(startDate, currentDate)
                                     // debugger
                                     let accruedInterest = ((interestDueOnInvestment / duration) * daysOfInvestment)
-                                    let penalty = (accruedInterest * (Number(PENALTY_FOR_LIQUIDATION) / 100));
+                                    let penalty = (accruedInterest * (Number(liquidationPenalty) / 100));
                                     console.log(" accruedInterest =======", accruedInterest)
                                     console.log(" daysOfInvestment =======", daysOfInvestment)
                                     console.log(" penalty =======", penalty)
@@ -7017,6 +7017,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
+                                        record.totalAmountToPayout = amount + interestDueOnInvestment;
 
 
                                         // Save the updated record
@@ -7088,6 +7089,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
+                                        record.totalAmountToPayout = amount + interestDueOnInvestment;
                                         // Save the updated record
                                         // await record.save();
                                         // update record
@@ -7157,6 +7159,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
+                                        record.totalAmountToPayout = amount + interestDueOnInvestment;
                                         // Save the updated record
                                         // await record.save();
                                         // update record
