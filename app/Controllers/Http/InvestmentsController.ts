@@ -1799,15 +1799,8 @@ interestPayoutStatus } = request.body();
           // Send Notification to admin and others stakeholder
           // let investment = record;
           let messageType = "activation";
-          let generalRecepients = [
-            {
-              "channel": "email",
-              "handle": activationNotificationEmail,
-              "name": `${rfiName}`
-            },
-          ];
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
-          // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+          // console.log("newNotificationMessage line 1803:", newNotificationMessageWithoutPdf);
           // debugger
           if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");

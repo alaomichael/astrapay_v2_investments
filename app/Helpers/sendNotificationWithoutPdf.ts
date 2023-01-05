@@ -1,3 +1,5 @@
+import SettingsServices from "App/Services/SettingsServices";
+
 const Env = require("@ioc:Adonis/Core/Env");
 // const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 const NOTIFICATION_WITHOUT_PDF_MESSAGE_URL = Env.get("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL");
@@ -6,7 +8,7 @@ const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
 
-export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode,investment, recepients): Promise<any> {
+export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode,investment,): Promise<any> {
     // connect to Okra
     try {
         // console.log("email,line 25", email);
@@ -37,11 +39,41 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         //     "subject": subject,
         //     "recepients": recepients,
         // }
+        const settingsService = new SettingsServices();
+        const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+        // debugger
+        if (!settings) {
+            throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
+        }
+        let {
+            // isInvestmentAutomated,
+            rfiName,
+            initiationNotificationEmail,
+            activationNotificationEmail,
+            maturityNotificationEmail,
+            payoutNotificationEmail,
+            rolloverNotificationEmail,
+            liquidationNotificationEmail,
+        } = settings
+
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType, investmentTypeName } = investment;
         let metadata;
-        let customerName = ` ${firstName} ${lastName}`
+        let customerName = ` ${firstName} ${lastName}`;
+        let recepients;
         if (messageType = "initiation") {
             let subject = "Investment Initiation";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": `${firstName} ${lastName}`
+                },
+                {
+                    "channel": "email",
+                    "handle": initiationNotificationEmail,
+                    "name": `${rfiName}`
+                },
+            ];
             messageType = "investment_initiation",
                 metadata = {
                     "subject": subject,
@@ -54,7 +86,169 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-                    "recipientName": recipientName,
+                }
+        } else if (messageType = "approval") {
+            let subject = "Investment Approval";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": customerName,
+                },
+                {
+                    "channel": "email",
+                    "handle": initiationNotificationEmail,
+                    "name": `${rfiName}`
+                },
+            ];
+            messageType = "investment_approval",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
+                }
+        } else if (messageType = "activation") {
+            let subject = "Investment Activation";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": activationNotificationEmail, // approvalNotificationEmail
+                    "name": `${rfiName}`
+                },
+            ];
+            messageType = "investment_activation",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
+                }
+        } else if (messageType = "maturity") {
+            let subject = "Investment Maturity";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": customerName,
+                },
+                {
+                    "channel": "email",
+                    "handle": maturityNotificationEmail, // approvalNotificationEmail
+                    "name": `${rfiName}`, // Admin or Company Name
+                },
+            ];
+            messageType = "investment_maturity",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
+                }
+        } else if (messageType = "payout") {
+            let subject = "Investment Payout";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": customerName,
+                },
+                {
+                    "channel": "email",
+                    "handle": payoutNotificationEmail,
+                    "name": `${rfiName}`, // Admin or Company Name
+                },
+            ];
+            messageType = "investment_payout",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
+                }
+        } else if (messageType = "rollover") {
+            let subject = "Investment Rollover";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": customerName,
+                },
+                {
+                    "channel": "email",
+                    "handle": rolloverNotificationEmail, 
+                    "name": `${rfiName}`, // Admin or Company Name
+                },
+            ];
+            messageType = "investment_rollover",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
+                }
+        } else if (messageType = "liquidation") {
+            let subject = "Investment Liquidation";
+            recepients = [
+                {
+                    "channel": "email",
+                    "handle": email,
+                    "name": customerName,
+                },
+                {
+                    "channel": "email",
+                    "handle": liquidationNotificationEmail, 
+                    "name": `${rfiName}`, // Admin or Company Name
+                },
+            ];
+            messageType = "investment_liquidation",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+
                 }
         }
 
