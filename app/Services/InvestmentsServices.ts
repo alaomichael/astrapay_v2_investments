@@ -8069,7 +8069,8 @@ export default class InvestmentsServices {
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
-
+                                        record.requestType = "liquidate_investment"
+record.isTerminationAuthorized = true
 
                                         // Save the updated record
                                         // await record.save();
@@ -8141,6 +8142,8 @@ export default class InvestmentsServices {
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
+                                        record.requestType = "liquidate_investment"
+                                        record.isTerminationAuthorized = true
                                         // Save the updated record
                                         // await record.save();
                                         // update record
@@ -8211,6 +8214,8 @@ export default class InvestmentsServices {
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
+                                           record.requestType = "liquidate_investment"
+record.isTerminationAuthorized = true
                                         // Save the updated record
                                         // await record.save();
                                         // update record
