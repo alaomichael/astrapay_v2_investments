@@ -82,6 +82,7 @@ Route.group(() => {
     Route.get("admin/investments/activate_approved_investments", "InvestmentsController.activateApprovedInvestment");
     Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment");
     Route.get("admin/investments/retry_failed_payout_of_matured_investment", "InvestmentsController.retryFailedPayoutOfMaturedInvestment");
+    Route.get("admin/investments/retry_failed_payout_of_liquidated_investment", "InvestmentsController.retryFailedPayoutOfLiquidatedInvestment");
     Route.get("admin/investments/rollover_matured_investments", "InvestmentsController.rolloverMaturedInvestment");
     // Route.get("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
     Route.get("admin/investments/sum_of_matured_investment", "InvestmentsController.sumOfMaturedInvestment");
@@ -114,8 +115,11 @@ Route.group(() => {
     // updateInterestRate
     Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
     Route.put("admin/investments/types/:typeId", "TypesController.update");
+    // Reactivate suspended actions
+    Route.put("admin/investments/reactivate_suspended_investment_payout_by_investment_id", "InvestmentsController.reactivateSuspendedPayoutInvestmentByInvestmentId");
+    Route.put("admin/investments/reactivate_suspended_investment_rollover_by_investment_id", "InvestmentsController.reactivateSuspendedRolloverInvestmentByInvestmentId");
     // liquidate investment
-        Route.put("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
+    Route.put("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
 
 
     // DELETE ROUTES
