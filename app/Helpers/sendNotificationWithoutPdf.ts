@@ -1,12 +1,12 @@
 const Env = require("@ioc:Adonis/Core/Env");
 // const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
-const NOTIFICATION_MESSAGE_URL = Env.get("NOTIFICATION_MESSAGE_URL");
+const NOTIFICATION_WITHOUT_PDF_MESSAGE_URL = Env.get("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL");
 
 const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
 
-export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(url, rfiCode, message, subject, recepients): Promise<any> {
+export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode,investment, recepients): Promise<any> {
     // connect to Okra
     try {
         // console.log("email,line 25", email);
@@ -16,29 +16,57 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         // const headers = {
         //     "Authorization": NOTIFICATION_MESSAGE_URL_AUTHORIZATION
         // }
+
+        //   - investment_initiation
+        // - subject
+        // - customerName
+        // - amount
+        // - duration
+        // - rolloverType
+        // - customerPhone
+        // - customerEmail
+        // - investmentType
+        // - investmentTypeName
+        // - investmentId
+        // - recipientName
+
         // const payload = {
-        //     "email": email,
-        //     "subject": subject,
-        //     "firstName": firstName,
+        //     "url": url,
+        //     "rfiId": rfiCode,
         //     "message": message,
-        // };
+        //     "subject": subject,
+        //     "recepients": recepients,
+        // }
+        let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType, investmentTypeName } = investment;
+        let metadata;
+        let customerName = ` ${firstName} ${lastName}`
+        if (messageType = "initiation") {
+            let subject = "Investment Initiation";
+            messageType = "investment_initiation",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": amount,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+                    "recipientName": recipientName,
+                }
+        }
 
         const payload = {
-            "url": url,
-            "rfiId": rfiCode,
-            "message": message,
-            "subject": subject,
+            "messageType": messageType,//"otp_notification_sms",
+            "rfiId": rfiCode,//"6533ty3848484934hfhf84",
+            "metadata": metadata,
             "recepients": recepients,
         }
-        // "recepients": [
-        //     {
-        //         "email": "devmichaelalao@gmail.com",
-        //         "name": "Michael Alao"
-        //     }
-        // ]
 
-        // console.log("NOTIFICATION_MESSAGE_URL,line 34", NOTIFICATION_MESSAGE_URL);
-        const response = await axios.post(`${NOTIFICATION_MESSAGE_URL}/notification`,
+        // console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 34", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
+        const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
         )
         // console.log("The ASTRAPAY API response status: @ sendNotificationWithoutPdf line 43 ", response);

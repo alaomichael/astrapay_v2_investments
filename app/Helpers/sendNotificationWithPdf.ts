@@ -51,7 +51,7 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
         //     "data": null
         // }
         console.log("The ASTRAPAY API response, line 47: ", response.status);
-        debugger
+        // debugger
         if (response.status === 200) {
             // console.log("The ASTRAPAY API response, line 47: ", response.data);
             return response.data;
@@ -63,9 +63,9 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
         console.log("The ASTRAPAY API response error: @ sendNotificationWithPdf line 51 ");
         console.error(error.message);
         if (error.response == undefined) {
-            return { status: "FAILED TO SEND NOTIFICATION", message: error.message }
+            return { status: "FAILED TO SEND NOTIFICATION WITH PDF ATTACHMENT", message: error.message }
         } else {
-            return { status: "FAILED TO SEND NOTIFICATION", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+            return { status: "FAILED TO SEND NOTIFICATION WITH PDF ATTACHMENT", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
         }
     }
 

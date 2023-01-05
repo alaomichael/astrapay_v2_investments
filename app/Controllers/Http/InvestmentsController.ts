@@ -40,6 +40,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import { sendNotification } from 'App/Helpers/sendNotification'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
+import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
@@ -1778,14 +1779,14 @@ interestPayoutStatus } = request.body();
                 "email": email,
                 "name": `${firstName} ${lastName} `
             },
-            {
-              "email": activationNotificationEmail,
-              "name": `${rfiName} `
-            },
+            // {
+            //   "email": activationNotificationEmail,
+            //   "name": `${rfiName} `
+            // },
         ];
           let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients, );
-          console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
-          debugger
+          // console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
+          // debugger
           if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
@@ -1793,6 +1794,28 @@ interestPayoutStatus } = request.body();
             console.log(newNotificationMessageWithPdf);
           }
           // debugger
+
+
+          // Send Notification to admin and others stakeholder
+          // let investment = record;
+          let messageType = "activation";
+          let generalRecepients = [
+            {
+              "channel": "email",
+              "handle": activationNotificationEmail,
+              "name": `${rfiName}`
+            },
+          ];
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
+          // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+          // debugger
+          if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessageWithoutPdf);
+          }
+
         } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
           // console.log(" Current log, line 1763 :", currentInvestment);

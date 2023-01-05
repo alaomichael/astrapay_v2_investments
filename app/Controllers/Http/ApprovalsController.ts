@@ -15,6 +15,7 @@ import AppException from "App/Exceptions/AppException";
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
 import SettingsServices from 'App/Services/SettingsServices';
+import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 
@@ -375,7 +376,7 @@ export default class ApprovalsController {
         let newStatus;
         // await approval.save();
         // console.log("Update Approval Request line 373:", approval);
-        let { id, firstName, currencyCode, lastName, email,rfiCode } = record;
+        let { id, firstName, currencyCode, lastName, email, rfiCode } = record;
         console.log("Surname: ", lastName)
         const settingsService = new SettingsServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -383,7 +384,7 @@ export default class ApprovalsController {
         if (!settings) {
           throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
         }
-        let { 
+        let {
           // isInvestmentAutomated,
           rfiName,
           // initiationNotificationEmail,
@@ -475,7 +476,33 @@ export default class ApprovalsController {
           } else if (newNotificationMessage.message !== "Success") {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessage);
-          }
+          }       
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageType = "approval";
+            let generalRecepients = [
+              {
+                "channel": "email",
+                "handle": email,
+                "name": `${firstName} ${lastName}`
+              },
+              {
+                "channel": "email",
+                "handle": activationNotificationEmail,
+                "name": `${rfiName}`
+              },
+            ];
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
+            // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
+
+
           // // Data to send for transfer of fund
           // let { amount, lng, lat, investmentRequestReference,
           //   firstName, lastName,
@@ -560,13 +587,13 @@ export default class ApprovalsController {
                 "email": email,
                 "name": `${firstName} ${lastName} `
               },
-              {
-                "email": activationNotificationEmail,
-                "name": `${rfiName} `
-              },
+              // {
+              //   "email": activationNotificationEmail,
+              //   "name": `${rfiName} `
+              // },
             ];
             let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
-            console.log("newNotificationMessage line 549:", newNotificationMessageWithPdf);
+            // console.log("newNotificationMessage line 549:", newNotificationMessageWithPdf);
             // debugger
             if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
@@ -575,6 +602,25 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithPdf);
             }
 
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageType = "activation";
+            let generalRecepients = [
+              {
+                "channel": "email",
+                "handle": activationNotificationEmail,
+                "name": `${rfiName}`
+              },
+            ];
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment, generalRecepients,);
+            // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
 
           } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -822,10 +868,10 @@ export default class ApprovalsController {
                 "email": email,
                 "name": `${firstName} ${lastName} `
               },
-              {
-                "email": activationNotificationEmail,
-                "name": `${rfiName} `
-              },
+              // {
+              //   "email": activationNotificationEmail,
+              //   "name": `${rfiName} `
+              // },
             ];
             let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
             console.log("newNotificationMessage line 831:", newNotificationMessageWithPdf);
@@ -1497,6 +1543,7 @@ export default class ApprovalsController {
                 totalAmountToPayout: 0,
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
+                penalty: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -1775,6 +1822,7 @@ export default class ApprovalsController {
                 totalAmountToPayout: 0,
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
+                penalty: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -1885,6 +1933,7 @@ export default class ApprovalsController {
                 totalAmountToPayout: 0,
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
+                penalty: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
               console.log("newInvestmentDetails ", newInvestmentDetails)
