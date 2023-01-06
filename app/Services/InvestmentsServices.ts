@@ -1541,7 +1541,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -2419,7 +2419,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -2633,7 +2633,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -3004,7 +3004,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -3217,7 +3217,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -3597,7 +3597,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -3798,7 +3798,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -4155,7 +4155,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
@@ -4356,7 +4356,7 @@ export default class InvestmentsServices {
                             // let approvalStatus = payload.approvalStatus
                             let requestType = 'payout_investment'
                             // let  approvalStatus = 'approved'
-                            let { firstName, email } = payload;
+                            // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
