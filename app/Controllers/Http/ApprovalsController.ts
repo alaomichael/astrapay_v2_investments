@@ -376,7 +376,8 @@ export default class ApprovalsController {
         let newStatus;
         // await approval.save();
         // console.log("Update Approval Request line 373:", approval);
-        let { id, firstName, currencyCode, lastName, email, rfiCode } = record;
+        let { id, firstName, currencyCode, lastName, //email, 
+          rfiCode } = record;
         console.log("Surname: ", lastName)
         const settingsService = new SettingsServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -738,8 +739,6 @@ export default class ApprovalsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessageWithoutPdf);
           }
-
-
         } else if (approval.requestType === "start_investment_rollover" && record.status === "initiated") {
           // get the request by request id
           // update status based on admin action
@@ -1984,7 +1983,8 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = "approved"; //approval.approvalStatus;
           // Data to send for transfer of fund
-          let { firstName, email, totalAmountToPayout, } = record; // interestDueOnInvestment,
+          let { firstName,// email, 
+            totalAmountToPayout, } = record; // interestDueOnInvestment,
 
           // console.log("Updated record Status line 1439: ", record);
           if (isRolloverSuspended === true) {
@@ -2221,7 +2221,8 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
-          let { firstName, email, totalAmountToPayout, } = record; // interestDueOnInvestment,
+          let { firstName, // email,
+             totalAmountToPayout, } = record; // interestDueOnInvestment,
 
           // console.log("Updated record Status line 1439: ", record);
           if (isRolloverSuspended === true) {

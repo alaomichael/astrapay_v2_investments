@@ -725,7 +725,7 @@ export default class InvestmentsServices {
             let investmentId = investment.id
             // let requestType = 'start_investment'
             // let settings = await Setting.query().where({ rfiCode: rfiCode })
-            // console.log('Approval setting line 910:', settings[0])
+            // console.log('Approval setting line 728:', settings[0])
             const settingsService = new SettingsServices();
             const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
             if (!settings) {
@@ -744,11 +744,21 @@ export default class InvestmentsServices {
                 createdAt: investment.createdAt,
                 metadata: `duration: ${investment.duration}`,
             }
-            // console.log('Timeline object line 656:', timelineObject)
+            // console.log('Timeline object line 747:', timelineObject)
             await timelineService.createTimeline(timelineObject);
             // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log('Timeline object line 659:', newTimeline)
-
+            // console.log('Timeline object line 750:', newTimeline)
+            // Send Notification to admin and others stakeholder
+            let messageKey = "initiation";
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // console.log("newNotificationMessage line 754:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessageWithoutPdf);
+            }
             //  Check if investment activation is automated
             let approvalIsAutomated = settings.isInvestmentAutomated
             // let approvalIsAutomated = false
@@ -830,12 +840,12 @@ export default class InvestmentsServices {
                 // await record.save();
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                // console.log(" Current log, line 740 :", currentInvestment);
+                // console.log(" Current log, line 840 :", currentInvestment);
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                console.log(" Current log, line 743 :", updatedInvestment);
+                console.log(" Current log, line 843 :", updatedInvestment);
 
-                // console.log("Updated record Status line 745: ", record);
+                // console.log("Updated record Status line 845: ", record);
 
                 // update timeline
                 timelineObject = {
@@ -881,7 +891,6 @@ export default class InvestmentsServices {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessageWithoutPdf);
                 }
-
 
                 // Testing
                 // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()

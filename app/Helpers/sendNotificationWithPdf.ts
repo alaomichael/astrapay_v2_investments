@@ -61,7 +61,7 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
         }
     } catch (error) {
         console.log("The ASTRAPAY API response error: @ sendNotificationWithPdf line 63 ");
-        console.error(error);
+        // console.error(error);
         console.error(error.message);
         if (error.response == undefined) {
             return { status: "FAILED TO SEND NOTIFICATION WITH PDF ATTACHMENT", message: error.message }

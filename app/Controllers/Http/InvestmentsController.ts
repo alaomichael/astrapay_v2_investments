@@ -1570,9 +1570,9 @@ export default class InvestmentsController {
 
       //  Check if investment activation is automated
       let { isInvestmentAutomated,
-        rfiName,
+        // rfiName,
         // initiationNotificationEmail,
-        activationNotificationEmail,
+        // activationNotificationEmail,
         // maturityNotificationEmail,
         // payoutNotificationEmail,
         // rolloverNotificationEmail,

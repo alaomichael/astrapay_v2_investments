@@ -435,13 +435,14 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                     //  TODO: Debit user wallet to activate the investment
                     // Data to send for transfer of fund
-                    let { amount, //lng, lat, investmentRequestReference,
+                    let { //amount, //lng, lat, investmentRequestReference,
                         firstName, //lastName,
                         walletId, userId,
                         // phone,
-                        email,
+                        //email,
                         rfiCode,
-                        currencyCode } = selectedInvestmentRequestUpdate;
+                        // currencyCode
+                     } = selectedInvestmentRequestUpdate;
                     // let senderName = `${firstName} ${lastName}`;
                     // let senderAccountNumber = walletId;
                     // let senderAccountName = senderName;

@@ -68,7 +68,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         let metadata;
         let customerName = ` ${firstName} ${lastName}`;
         let recepients;
-        debugger
+        // debugger
         if (messageKey = "initiation") {
             let subject = "Investment Initiation";
             recepients = [
@@ -261,7 +261,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             "metadata": metadata,
             "recepients": recepients,
         }
-        debugger
+        // debugger
         // console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 266", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
         const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
@@ -276,7 +276,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         //     "data": null
         // }
         console.log("The ASTRAPAY API response, line 279: ", response.status);
-        debugger
+        // debugger
         if (response.status === 200) {
             // console.log("The ASTRAPAY API response, line 282: ", response.data);
             return response.data;
@@ -286,7 +286,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         }
     } catch (error) {
         console.log("The ASTRAPAY API response error: @ sendNotificationWithoutPdf line 289 ");
-        console.error(error);
+        // console.error(error);
         console.error(error.message);
         if (error.response == undefined) {
             return { status: "FAILED TO SEND NOTIFICATION", message: error.message }
