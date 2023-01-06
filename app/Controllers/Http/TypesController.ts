@@ -444,8 +444,8 @@ export default class TypesController {
                 //     console.log(newNotificationMessage);
                 // }
                 // Send Notification to admin and others stakeholder
-                let messageType = "investment_type_update";
-                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
+                let messageKey = "investment_type_update";
+                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, type.rfiCode, type,);
                 // console.log("newNotificationMessage line 449:", newNotificationMessageWithoutPdf);
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -570,8 +570,8 @@ export default class TypesController {
                 //                     console.log(newNotificationMessage);
                 //                 }
                 // Send Notification to admin and others stakeholder
-                let messageType = "investment_type_update";
-                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
+                let messageKey = "investment_type_update";
+                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, type.rfiCode, type,);
                 // console.log("newNotificationMessage line 575:", newNotificationMessageWithoutPdf);
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {

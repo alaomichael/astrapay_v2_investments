@@ -8,7 +8,7 @@ const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
 
-export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageType, rfiCode, investment,): Promise<any> {
+export const sendNotificationWithoutPdf = async function sendNotificationWithoutPdf(messageKey, rfiCode, investment,): Promise<any> {
     // connect to Okra
     try {
         // console.log("email,line 15", email);
@@ -69,7 +69,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         let customerName = ` ${firstName} ${lastName}`;
         let recepients;
         debugger
-        if (messageType = "initiation") {
+        if (messageKey = "initiation") {
             let subject = "Investment Initiation";
             recepients = [
                 {
@@ -83,7 +83,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`
                 },
             ];
-            messageType = "investment_initiation",
+            messageKey = "investment_initiation",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -96,7 +96,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
                 }
-        } else if (messageType = "approval") {
+        } else if (messageKey = "approval") {
             let subject = "Investment Approval";
             recepients = [
                 {
@@ -110,7 +110,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`
                 },
             ];
-            messageType = "investment_approval",
+            messageKey = "investment_approval",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -124,7 +124,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentId": id,
 
                 }
-        } else if (messageType = "activation") {
+        } else if (messageKey = "activation") {
             let subject = "Investment Activation";
             recepients = [
                 {
@@ -133,7 +133,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`
                 },
             ];
-            messageType = "investment_activation",
+            messageKey = "investment_activation",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -143,7 +143,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "payoutDate": payoutDate,
                     "investmentId": id,
                 }
-        } else if (messageType = "maturity") {
+        } else if (messageKey = "maturity") {
             let subject = "Investment Maturity";
             recepients = [
                 {
@@ -158,7 +158,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 },
             ];
 
-            messageType = "investment_maturity",
+            messageKey = "investment_maturity",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -172,7 +172,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "totalAmountDueForPayout": totalAmountDueForPayout,
                     "rollOverStatus": rolloverStatus,
                 }
-        } else if (messageType = "payout") {
+        } else if (messageKey = "payout") {
             let subject = "Investment Payout";
             recepients = [
                 {
@@ -187,7 +187,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 },
             ];
 
-            messageType = "investment_payout",
+            messageKey = "investment_payout",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -199,7 +199,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                 }
-        } else if (messageType = "rollover") {
+        } else if (messageKey = "rollover") {
             let subject = "Investment Rollover";
             recepients = [
                 {
@@ -214,7 +214,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 },
             ];
 
-            messageType = "investment_rollover",
+            messageKey = "investment_rollover",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -227,7 +227,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "amountRollover": amountRollover,
 
                 }
-        } else if (messageType = "liquidation") {
+        } else if (messageKey = "liquidation") {
             let subject = "Investment Liquidation";
             recepients = [
                 {
@@ -241,7 +241,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "name": `${rfiName}`, // Admin or Company Name
                 },
             ];
-            messageType = "investment_liquidation",
+            messageKey = "investment_liquidation",
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
@@ -256,7 +256,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         }
 
         const payload = {
-            "messageType": messageType,//"otp_notification_sms",
+            "messageKey": messageKey,//"otp_notification_sms",
             "rfiId": rfiCode,//"6533ty3848484934hfhf84",
             "metadata": metadata,
             "recepients": recepients,

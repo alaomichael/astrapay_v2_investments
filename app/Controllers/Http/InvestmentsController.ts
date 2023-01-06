@@ -1682,8 +1682,8 @@ export default class InvestmentsController {
         //   console.log(newNotificationMessage);
         // }
         // Send Notification to admin and others stakeholder
-        let messageType = "approval";
-        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+        let messageKey = "approval";
+        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
         // console.log("newNotificationMessage line 1708:", newNotificationMessageWithoutPdf);
         // debugger
         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -1789,8 +1789,8 @@ export default class InvestmentsController {
           // debugger
           // Send Notification to admin and others stakeholder
           // let investment = record;
-          let messageType = "activation";
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+          let messageKey = "activation";
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
           // debugger
           if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -1841,8 +1841,8 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessage);
           // }
           // Send Notification to admin and others stakeholder
-          let messageType = "activation_failed";
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+          let messageKey = "activation_failed";
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
           // debugger
           if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {

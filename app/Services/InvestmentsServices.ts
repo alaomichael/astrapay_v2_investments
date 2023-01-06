@@ -189,8 +189,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "payout";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "payout";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 191:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -272,8 +272,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "payout_failed";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "payout_failed";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 274:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -376,8 +376,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "payout";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "payout";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 378:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -459,8 +459,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "rollover_and_payout_failed";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "rollover_and_payout_failed";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 461:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -567,8 +567,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "payout";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "payout";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 569:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -650,8 +650,8 @@ export default class InvestmentsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageType = "rollover_and_payout_failed";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                        let messageKey = "rollover_and_payout_failed";
+                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 653:", newNotificationMessageWithoutPdf);
                         // debugger
                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -871,8 +871,8 @@ export default class InvestmentsServices {
                 //     console.log(newNotificationMessage);
                 // }
                 // Send Notification to admin and others stakeholder
-                let messageType = "approval";
-                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                let messageKey = "approval";
+                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                 // console.log("newNotificationMessage line 875:", newNotificationMessageWithoutPdf);
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -983,8 +983,8 @@ export default class InvestmentsServices {
                 }
 
                 // Send Notification to admin and others stakeholder
-                messageType = "activation";
-                newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                messageKey = "activation";
+                newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                 // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -1617,27 +1617,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 1593:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 1593:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "payout_initiation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "payout_initiation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 1605:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -1736,8 +1736,8 @@ export default class InvestmentsServices {
                                     //                         console.log(newNotificationMessage);
                                     //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "payout_initiation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "payout_initiation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 1705:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2132,8 +2132,8 @@ export default class InvestmentsServices {
                                     console.log(newNotificationMessageWithPdf);
                                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "activation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "activation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2081:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2171,24 +2171,24 @@ export default class InvestmentsServices {
                                 // update record
                                 // debugger
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Activation Failed";
-                //                 let message = `
-                // ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+                                //                 let subject = "AstraPay Investment Activation Failed";
+                                //                 let message = `
+                                // ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 2125:", newNotificationMessage);
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 2125:", newNotificationMessage);
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "activation_failed";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "activation_failed";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2495,28 +2495,28 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 2451:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 2451:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
                                 // let investment = record;
-                                let messageType = "payout_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "payout_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2463:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2577,27 +2577,27 @@ export default class InvestmentsServices {
 
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Payout Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                    //                     let subject = "AstraPay Investment Payout Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 2533:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 2533:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "payout_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "payout_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 2545:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2709,27 +2709,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 2665:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 2665:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "payout_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "payout_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2677:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -2790,27 +2790,27 @@ export default class InvestmentsServices {
 
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Payout Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                    //                     let subject = "AstraPay Investment Payout Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 2746:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 2746:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "payout_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "payout_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 2758:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3080,27 +3080,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 3036:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 3036:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "payout_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "payout_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 3048:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3161,27 +3161,27 @@ export default class InvestmentsServices {
 
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Payout Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                    //                     let subject = "AstraPay Investment Payout Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 3117:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 3117:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "payout_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "payout_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 3128:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3293,27 +3293,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Payout Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                //                 let subject = "AstraPay Investment Payout Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 3249:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 3249:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "payout_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "payout_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 3260:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3374,27 +3374,27 @@ export default class InvestmentsServices {
 
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Payout Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for payout processing.
+                                    //                     let subject = "AstraPay Investment Payout Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for payout processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 3330:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 3330:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "payout_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "payout_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 3342:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3666,27 +3666,27 @@ export default class InvestmentsServices {
                                 // console.log('Timeline object line 2337:', timelineObject)
                                 await timelineService.createTimeline(timelineObject);
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Rollover Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                //                 let subject = "AstraPay Investment Rollover Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 3622:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 3622:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "rollover_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "rollover_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 3634:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3742,27 +3742,27 @@ export default class InvestmentsServices {
                                     await timelineService.createTimeline(timelineObject);
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Rollover Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                    //                     let subject = "AstraPay Investment Rollover Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 3698:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 3698:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "rollover_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "rollover_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 3710:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3870,27 +3870,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Rollover Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                //                 let subject = "AstraPay Investment Rollover Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 3826:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 3826:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "rollover_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "rollover_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 3837:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -3946,27 +3946,27 @@ export default class InvestmentsServices {
                                     await timelineService.createTimeline(timelineObject);
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Rollover Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                    //                     let subject = "AstraPay Investment Rollover Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 3959:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 3959:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "rollover_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "rollover_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 3913:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4224,27 +4224,27 @@ export default class InvestmentsServices {
                                 // console.log('Timeline object line 2337:', timelineObject)
                                 await timelineService.createTimeline(timelineObject);
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Rollover Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                //                 let subject = "AstraPay Investment Rollover Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 4180:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 4180:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "rollover_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "rollover_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 4191:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4300,27 +4300,27 @@ export default class InvestmentsServices {
                                     await timelineService.createTimeline(timelineObject);
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Rollover Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                    //                     let subject = "AstraPay Investment Rollover Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 4256:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 4256:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "rollover_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "rollover_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 4267:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4428,27 +4428,27 @@ export default class InvestmentsServices {
 
 
                                 // Send Details to notification service
-                //                 let subject = "AstraPay Investment Rollover Reactivation";
-                //                 let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                //                 let subject = "AstraPay Investment Rollover Reactivation";
+                                //                 let message = `
+                                // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                // Please check your device. 
 
-                // Thank you.
+                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                 // console.log("newNotificationMessage line 4384:", newNotificationMessage);
-                //                 // debugger
-                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                     console.log("Notification sent successfully");
-                //                 } else if (newNotificationMessage.message !== "Success") {
-                //                     console.log("Notification NOT sent successfully");
-                //                     console.log(newNotificationMessage);
-                //                 }
+                                // AstraPay Investment.`;
+                                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                //                 // console.log("newNotificationMessage line 4384:", newNotificationMessage);
+                                //                 // debugger
+                                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                //                     console.log("Notification sent successfully");
+                                //                 } else if (newNotificationMessage.message !== "Success") {
+                                //                     console.log("Notification NOT sent successfully");
+                                //                     console.log(newNotificationMessage);
+                                //                 }
                                 // Send Notification to admin and others stakeholder
-                                let messageType = "rollover_reactivation";
-                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                let messageKey = "rollover_reactivation";
+                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 4395:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4504,27 +4504,27 @@ export default class InvestmentsServices {
                                     await timelineService.createTimeline(timelineObject);
 
                                     // Send Details to notification service
-                //                     let subject = "AstraPay Investment Rollover Reactivation";
-                //                     let message = `
-                // ${firstName} your mature investment has just been sent for rollover processing.
+                                    //                     let subject = "AstraPay Investment Rollover Reactivation";
+                                    //                     let message = `
+                                    // ${firstName} your mature investment has just been sent for rollover processing.
 
-                // Please check your device. 
+                                    // Please check your device. 
 
-                // Thank you.
+                                    // Thank you.
 
-                // AstraPay Investment.`;
-                //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                     // console.log("newNotificationMessage line 4460:", newNotificationMessage);
-                //                     // debugger
-                //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                         console.log("Notification sent successfully");
-                //                     } else if (newNotificationMessage.message !== "Success") {
-                //                         console.log("Notification NOT sent successfully");
-                //                         console.log(newNotificationMessage);
-                //                     }
+                                    // AstraPay Investment.`;
+                                    //                     let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    //                     // console.log("newNotificationMessage line 4460:", newNotificationMessage);
+                                    //                     // debugger
+                                    //                     if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //                         console.log("Notification sent successfully");
+                                    //                     } else if (newNotificationMessage.message !== "Success") {
+                                    //                         console.log("Notification NOT sent successfully");
+                                    //                         console.log(newNotificationMessage);
+                                    //                     }
                                     // Send Notification to admin and others stakeholder
-                                    let messageType = "rollover_reactivation";
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                    let messageKey = "rollover_reactivation";
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 4472:", newNotificationMessageWithoutPdf);
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4901,27 +4901,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 4857:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 4857:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 4869:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -4980,28 +4980,28 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 4936:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 4936:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
                                         // let investment = record;
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 4948:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -5060,27 +5060,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 5016:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 5016:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 5028:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -5451,27 +5451,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 5407:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 5407:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 5418:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -5530,27 +5530,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 5486:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 5486:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 5498:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -5623,27 +5623,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 5579:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 5579:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 5590:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -5702,27 +5702,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 5658:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 5658:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 5669:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6098,27 +6098,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6054:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6054:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6065:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6177,27 +6177,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6190:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6190:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6144:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6270,27 +6270,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6226:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6226:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6237:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6349,27 +6349,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6305:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6305:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6317:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6743,27 +6743,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6699:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6699:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6710:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6822,27 +6822,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6777:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6777:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6789:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6915,27 +6915,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                            //                             let subject = "AstraPay Investment Payout";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6871:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6871:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6882:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6994,27 +6994,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Payout Failed";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
-                
-                // Please be patient as we try again
+                                            //                             let subject = "AstraPay Investment Payout Failed";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has failed.
 
-                // Thank you.
+                                            // Please be patient as we try again
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 6950:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // Thank you.
+
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 6950:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "payout_failed";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "payout_failed";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 6961:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -7425,27 +7425,27 @@ export default class InvestmentsServices {
                                                 // update record
 
                                                 // Send Details to notification service
-                //                                 let subject = "AstraPay Investment Payout and Rollover";
-                //                                 let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid and the principal of ${currencyCode} ${amount} has been rollover.
+                                                //                                 let subject = "AstraPay Investment Payout and Rollover";
+                                                //                                 let message = `
+                                                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid and the principal of ${currencyCode} ${amount} has been rollover.
 
-                // Please check your account. 
+                                                // Please check your account. 
 
-                // Thank you.
+                                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                                 console.log("newNotificationMessage line 7381:", newNotificationMessage);
-                //                                 // debugger
-                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                     console.log("Notification sent successfully");
-                //                                 } else if (newNotificationMessage.message !== "Success") {
-                //                                     console.log("Notification NOT sent successfully");
-                //                                     console.log(newNotificationMessage);
-                //                                 }
+                                                // AstraPay Investment.`;
+                                                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                                //                                 console.log("newNotificationMessage line 7381:", newNotificationMessage);
+                                                //                                 // debugger
+                                                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                                //                                     console.log("Notification sent successfully");
+                                                //                                 } else if (newNotificationMessage.message !== "Success") {
+                                                //                                     console.log("Notification NOT sent successfully");
+                                                //                                     console.log(newNotificationMessage);
+                                                //                                 }
                                                 // Send Notification to admin and others stakeholder
-                                                let messageType = "payout_and_rollover";
-                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                                let messageKey = "payout_and_rollover";
+                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                                 // console.log("newNotificationMessage line 7392:", newNotificationMessageWithoutPdf);
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -7504,27 +7504,27 @@ export default class InvestmentsServices {
                                                 // update record
 
                                                 // Send Details to notification service
-                //                                 let subject = "AstraPay Investment Rollover Successful but Payout Failed";
-                //                                 let message = `
-                // ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed. 
-                
-                // Please be patient as we try again.
+                                                //                                 let subject = "AstraPay Investment Rollover Successful but Payout Failed";
+                                                //                                 let message = `
+                                                // ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed. 
 
-                // Thank you.
+                                                // Please be patient as we try again.
 
-                // AstraPay Investment.`;
-                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                                 // console.log("newNotificationMessage line 7460:", newNotificationMessage);
-                //                                 // debugger
-                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                     console.log("Notification sent successfully");
-                //                                 } else if (newNotificationMessage.message !== "Success") {
-                //                                     console.log("Notification NOT sent successfully");
-                //                                     console.log(newNotificationMessage);
-                //                                 }
+                                                // Thank you.
+
+                                                // AstraPay Investment.`;
+                                                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                                //                                 // console.log("newNotificationMessage line 7460:", newNotificationMessage);
+                                                //                                 // debugger
+                                                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                                //                                     console.log("Notification sent successfully");
+                                                //                                 } else if (newNotificationMessage.message !== "Success") {
+                                                //                                     console.log("Notification NOT sent successfully");
+                                                //                                     console.log(newNotificationMessage);
+                                                //                                 }
                                                 // Send Notification to admin and others stakeholder
-                                                let messageType = "rollover_but_payout_failed";
-                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                                let messageKey = "rollover_but_payout_failed";
+                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                                 // console.log("newNotificationMessage line 7472:", newNotificationMessageWithoutPdf);
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -7612,27 +7612,27 @@ export default class InvestmentsServices {
                                             // update record
 
                                             // Send Details to notification service
-                //                             let subject = "AstraPay Investment Rollover";
-                //                             let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
+                                            //                             let subject = "AstraPay Investment Rollover";
+                                            //                             let message = `
+                                            // ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
 
-                // Please check your account. 
+                                            // Please check your account. 
 
-                // Thank you.
+                                            // Thank you.
 
-                // AstraPay Investment.`;
-                //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                             // console.log("newNotificationMessage line 7568:", newNotificationMessage);
-                //                             // debugger
-                //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                 console.log("Notification sent successfully");
-                //                             } else if (newNotificationMessage.message !== "Success") {
-                //                                 console.log("Notification NOT sent successfully");
-                //                                 console.log(newNotificationMessage);
-                //                             }
+                                            // AstraPay Investment.`;
+                                            //                             let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                            //                             // console.log("newNotificationMessage line 7568:", newNotificationMessage);
+                                            //                             // debugger
+                                            //                             if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                            //                                 console.log("Notification sent successfully");
+                                            //                             } else if (newNotificationMessage.message !== "Success") {
+                                            //                                 console.log("Notification NOT sent successfully");
+                                            //                                 console.log(newNotificationMessage);
+                                            //                             }
                                             // Send Notification to admin and others stakeholder
-                                            let messageType = "rollover";
-                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                            let messageKey = "rollover";
+                                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                             // console.log("newNotificationMessage line 7579:", newNotificationMessageWithoutPdf);
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -7737,27 +7737,27 @@ export default class InvestmentsServices {
                                                 // update record
 
                                                 // Send Details to notification service
-                //                                 let subject = "AstraPay Investment Payout and Rollover";
-                //                                 let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
+                                                //                                 let subject = "AstraPay Investment Payout and Rollover";
+                                                //                                 let message = `
+                                                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
 
-                // Please check your device. 
+                                                // Please check your device. 
 
-                // Thank you.
+                                                // Thank you.
 
-                // AstraPay Investment.`;
-                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                                 // console.log("newNotificationMessage line 7693:", newNotificationMessage);
-                //                                 // debugger
-                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                     console.log("Notification sent successfully");
-                //                                 } else if (newNotificationMessage.message !== "Success") {
-                //                                     console.log("Notification NOT sent successfully");
-                //                                     console.log(newNotificationMessage);
-                //                                 }
+                                                // AstraPay Investment.`;
+                                                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                                //                                 // console.log("newNotificationMessage line 7693:", newNotificationMessage);
+                                                //                                 // debugger
+                                                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                                //                                     console.log("Notification sent successfully");
+                                                //                                 } else if (newNotificationMessage.message !== "Success") {
+                                                //                                     console.log("Notification NOT sent successfully");
+                                                //                                     console.log(newNotificationMessage);
+                                                //                                 }
                                                 // Send Notification to admin and others stakeholder
-                                                let messageType = "payout_and_rollover";
-                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                                let messageKey = "payout_and_rollover";
+                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                                 // console.log("newNotificationMessage line 7704:", newNotificationMessageWithoutPdf);
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -7814,27 +7814,27 @@ export default class InvestmentsServices {
                                                 // update record
 
                                                 // Send Details to notification service
-                //                                 let subject = "AstraPay Investment Payout and Rollover";
-                //                                 let message = `
-                // ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
-                
-                // Please check your device. 
+                                                //                                 let subject = "AstraPay Investment Payout and Rollover";
+                                                //                                 let message = `
+                                                // ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover.
 
-                // Thank you.
+                                                // Please check your device. 
 
-                // AstraPay Investment.`;
-                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                                 // console.log("newNotificationMessage line 7770:", newNotificationMessage);
-                //                                 // debugger
-                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                                     console.log("Notification sent successfully");
-                //                                 } else if (newNotificationMessage.message !== "Success") {
-                //                                     console.log("Notification NOT sent successfully");
-                //                                     console.log(newNotificationMessage);
-                //                                 }
+                                                // Thank you.
+
+                                                // AstraPay Investment.`;
+                                                //                                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                                //                                 // console.log("newNotificationMessage line 7770:", newNotificationMessage);
+                                                //                                 // debugger
+                                                //                                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                                //                                     console.log("Notification sent successfully");
+                                                //                                 } else if (newNotificationMessage.message !== "Success") {
+                                                //                                     console.log("Notification NOT sent successfully");
+                                                //                                     console.log(newNotificationMessage);
+                                                //                                 }
                                                 // Send Notification to admin and others stakeholder
-                                                let messageType = "payout_and_rollover";
-                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                                let messageKey = "payout_and_rollover";
+                                                let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                                 // console.log("newNotificationMessage line 7782:", newNotificationMessageWithoutPdf);
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8253,27 +8253,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8209:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8209:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8220:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8332,27 +8332,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8288:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8288:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8299:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8411,27 +8411,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8367:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8367:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "payout";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "payout";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8378:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8602,27 +8602,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Liquidation Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Liquidation Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8558:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8558:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "liquidation";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "liquidation";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8569:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8686,27 +8686,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Liquidation Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Liquidation Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8642:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8642:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "liquidation";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "liquidation";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8653:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -8770,27 +8770,27 @@ export default class InvestmentsServices {
                                         // update record
 
                                         // Send Details to notification service
-                //                         let subject = "AstraPay Investment Liquidation Payout";
-                //                         let message = `
-                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
+                                        //                         let subject = "AstraPay Investment Liquidation Payout";
+                                        //                         let message = `
+                                        // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your liquidated Investment, has been paid.
 
-                // Please check your account. 
+                                        // Please check your account. 
 
-                // Thank you.
+                                        // Thank you.
 
-                // AstraPay Investment.`;
-                //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                //                         // console.log("newNotificationMessage line 8726:", newNotificationMessage);
-                //                         // debugger
-                //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                //                             console.log("Notification sent successfully");
-                //                         } else if (newNotificationMessage.message !== "Success") {
-                //                             console.log("Notification NOT sent successfully");
-                //                             console.log(newNotificationMessage);
-                //                         }
+                                        // AstraPay Investment.`;
+                                        //                         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                        //                         // console.log("newNotificationMessage line 8726:", newNotificationMessage);
+                                        //                         // debugger
+                                        //                         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                        //                             console.log("Notification sent successfully");
+                                        //                         } else if (newNotificationMessage.message !== "Success") {
+                                        //                             console.log("Notification NOT sent successfully");
+                                        //                             console.log(newNotificationMessage);
+                                        //                         }
                                         // Send Notification to admin and others stakeholder
-                                        let messageType = "liquidation";
-                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, rfiCode, investment,);
+                                        let messageKey = "liquidation";
+                                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8737:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
