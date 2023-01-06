@@ -37,7 +37,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
             investmentTypeName, startDate, payoutDate, interestDueForPayout, principalDueForPayout,
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment;
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment.$original;
         let rolloverStatus;
         if (isRolloverActivated == true) {
             rolloverStatus = "Activated"

@@ -2,7 +2,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Approval from "App/Models/Approval";
 import Event from "@ioc:Adonis/Core/Event";
-import { sendNotification } from "App/Helpers/sendNotification";
+// import { sendNotification } from "App/Helpers/sendNotification";
 import TimelinesServices from "App/Services/TimelinesServices";
 import { DateTime } from "luxon";
 import { v4 as uuid } from "uuid";
@@ -460,23 +460,23 @@ export default class ApprovalsController {
           // update record
 
           // Send Details to notification service
-          let subject = "AstraPay Investment Approval";
-          let message = `
-                ${firstName} this is to inform you, that your Investment request, has been approved.
+          // let subject = "AstraPay Investment Approval";
+          // let message = `
+          //       ${firstName} this is to inform you, that your Investment request, has been approved.
 
-                Please wait while the investment is being activated. 
+          //       Please wait while the investment is being activated. 
 
-                Thank you.
+          //       Thank you.
 
-                AstraPay Investment.`;
-          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          // console.log("newNotificationMessage line 567:", newNotificationMessage);
-          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessage.message !== "Success") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessage);
-          }
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // // console.log("newNotificationMessage line 567:", newNotificationMessage);
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageType = "approval";
@@ -559,14 +559,14 @@ export default class ApprovalsController {
                 Thank you.
 
                 AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 548:", newNotificationMessage);
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 548:", newNotificationMessage);
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // debugger
 
             // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
@@ -628,21 +628,21 @@ export default class ApprovalsController {
             // update record
             // debugger
             // Send Details to notification service
-            let subject = "AstraPay Investment Activation Failed";
-            let message = `
-                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+            // let subject = "AstraPay Investment Activation Failed";
+            // let message = `
+            //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 569:", newNotificationMessage);
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 569:", newNotificationMessage);
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
 
             // Send Notification to admin and others stakeholder
             let investment = record;
@@ -708,23 +708,23 @@ export default class ApprovalsController {
           // console.log("new Timeline object line 607:", newTimeline);
 
           // Send Details to notification service
-          let subject = "AstraPay Investment Rejection";
-          let message = `
-                ${firstName} this is to inform you, that your investment request, has been rejected.
+          // let subject = "AstraPay Investment Rejection";
+          // let message = `
+          //       ${firstName} this is to inform you, that your investment request, has been rejected.
 
-                Please check your device, and try again later.
+          //       Please check your device, and try again later.
 
-                Thank you.
+          //       Thank you.
 
-                AstraPay Investment.`;
-          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 752:", newNotificationMessage);
-          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessage.message !== "Success") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessage);
-          }
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 752:", newNotificationMessage);
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
 
           // Send Notification to admin and others stakeholder
           let investment = record;
@@ -795,23 +795,23 @@ export default class ApprovalsController {
             await timelineService.createTimeline(timelineObject);
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Rollover Approval";
-            let message = `
-                ${firstName} this is to inform you, that your Investment rollover request, has been approved.
+            // let subject = "AstraPay Investment Rollover Approval";
+            // let message = `
+            //     ${firstName} this is to inform you, that your Investment rollover request, has been approved.
 
-                Please wait while the investment is being activated. 
+            //     Please wait while the investment is being activated. 
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 815:", newNotificationMessage);
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 815:", newNotificationMessage);
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
 
             // Send Notification to admin and others stakeholder
             let investment = record;
@@ -867,8 +867,8 @@ export default class ApprovalsController {
             // console.log('Timeline object line 755:', timelineObject)
             await timelineService.createTimeline(timelineObject);
             // Send Details to notification service
-            subject = "AstraPay Investment Rollover Activation";
-            message = `
+          let subject = "AstraPay Investment Rollover Activation";
+          let message = `
                 ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${selectedInvestmentRequestUpdate.startDate} and it will be mature for payout on ${selectedInvestmentRequestUpdate.payoutDate}.
 
                 Please check your device. 
@@ -876,14 +876,14 @@ export default class ApprovalsController {
                 Thank you.
 
                 AstraPay Investment.`;
-            newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 768:", newNotificationMessage);
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            // newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 768:", newNotificationMessage);
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
 
             // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
             let recepients = [
@@ -984,21 +984,21 @@ export default class ApprovalsController {
             // update record
             // debugger
             // Send Details to notification service
-            let subject = "AstraPay Investment Activation Failed";
-            let message = `
-                ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+            // let subject = "AstraPay Investment Activation Failed";
+            // let message = `
+            //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 995:", newNotificationMessage);
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 995:", newNotificationMessage);
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
 
             // Send Notification to admin and others stakeholder
             let investment = record;
@@ -1076,24 +1076,24 @@ export default class ApprovalsController {
               // update record
 
               // Send Details to notification service
-              let subject = "AstraPay Investment Payout";
-              let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the tenure selected is not available on this type of investment.
+              // let subject = "AstraPay Investment Payout";
+              // let message = `
+              //   ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the tenure selected is not available on this type of investment.
 
-                Please check your device. 
+              //   Please check your device. 
 
-                Thank you.
+              //   Thank you.
 
-                AstraPay Investment.`;
-              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // console.log("newNotificationMessage line 1089:", newNotificationMessage);
-              // debugger
-              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessage.message !== "Success") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessage);
-              }
+              //   AstraPay Investment.`;
+              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              // // console.log("newNotificationMessage line 1089:", newNotificationMessage);
+              // // debugger
+              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessage.message !== "Success") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessage);
+              // }
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageType = "payout";
@@ -1157,24 +1157,24 @@ export default class ApprovalsController {
               // update record
 
               // Send Details to notification service
-              let subject = "AstraPay Investment Rollover and Payout Failed";
-              let message = `
-                ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
+              // let subject = "AstraPay Investment Rollover and Payout Failed";
+              // let message = `
+              //   ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
                 
-                Please check your device. 
+              //   Please check your device. 
 
-                Thank you.
+              //   Thank you.
 
-                AstraPay Investment.`;
-              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // console.log("newNotificationMessage line 1177:", newNotificationMessage);
-              // debugger
-              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessage.message !== "Success") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessage);
-              }
+              //   AstraPay Investment.`;
+              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              // // console.log("newNotificationMessage line 1177:", newNotificationMessage);
+              // // debugger
+              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessage.message !== "Success") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessage);
+              // }
 
               // Send Notification to admin and others stakeholder
               let investment = record;
@@ -1306,24 +1306,24 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout";
-            let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+            // let subject = "AstraPay Investment Payout";
+            // let message = `
+            //     ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                Please check your account. 
+            //     Please check your account. 
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 1326:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 1326:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout";
@@ -1378,24 +1378,24 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout";
-            let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+            // let subject = "AstraPay Investment Payout";
+            // let message = `
+            //     ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                Please check your account. 
+            //     Please check your account. 
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 1398:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1398:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout";
@@ -1452,24 +1452,24 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout";
-            let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+            // let subject = "AstraPay Investment Payout";
+            // let message = `
+            //     ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                Please check your account. 
+            //     Please check your account. 
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            console.log("newNotificationMessage line 1472:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // console.log("newNotificationMessage line 1472:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout";
@@ -1610,24 +1610,24 @@ export default class ApprovalsController {
                 // update record
 
                 // Send Details to notification service
-                let subject = "AstraPay Investment Payout";
-                let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                // let subject = "AstraPay Investment Payout";
+                // let message = `
+                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                Please check your account. 
+                // Please check your account. 
 
-                Thank you.
+                // Thank you.
 
-                AstraPay Investment.`;
-                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 1630:", newNotificationMessage);
-                // debugger
-                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                  console.log("Notification sent successfully");
-                } else if (newNotificationMessage.message !== "Success") {
-                  console.log("Notification NOT sent successfully");
-                  console.log(newNotificationMessage);
-                }
+                // AstraPay Investment.`;
+                // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                // console.log("newNotificationMessage line 1630:", newNotificationMessage);
+                // // debugger
+                // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                //   console.log("Notification sent successfully");
+                // } else if (newNotificationMessage.message !== "Success") {
+                //   console.log("Notification NOT sent successfully");
+                //   console.log(newNotificationMessage);
+                // }
                 // Send Notification to admin and others stakeholder
                 let investment = record;
                 let messageType = "payout";
@@ -1698,24 +1698,24 @@ export default class ApprovalsController {
               // update record
 
               // Send Details to notification service
-              let subject = "AstraPay Investment Rollover";
-              let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
+              // let subject = "AstraPay Investment Rollover";
+              // let message = `
+              //   ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
 
-                Please check your account. 
+              //   Please check your account. 
 
-                Thank you.
+              //   Thank you.
 
-                AstraPay Investment.`;
-              let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              console.log("newNotificationMessage line 1711:", newNotificationMessage);
-              // debugger
-              if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessage.message !== "Success") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessage);
-              }
+              //   AstraPay Investment.`;
+              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+              // console.log("newNotificationMessage line 1711:", newNotificationMessage);
+              // // debugger
+              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessage.message !== "Success") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessage);
+              // }
 
               // Send Notification to admin and others stakeholder
               let investment = record;
@@ -1823,24 +1823,24 @@ export default class ApprovalsController {
                 // update record
 
                 // Send Details to notification service
-                let subject = "AstraPay Investment Payout";
-                let message = `
-                ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
+                // let subject = "AstraPay Investment Payout";
+                // let message = `
+                // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid.
 
-                Please check your account. 
+                // Please check your account. 
 
-                Thank you.
+                // Thank you.
 
-                AstraPay Investment.`;
-                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 1843:", newNotificationMessage);
-                // debugger
-                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                  console.log("Notification sent successfully");
-                } else if (newNotificationMessage.message !== "Success") {
-                  console.log("Notification NOT sent successfully");
-                  console.log(newNotificationMessage);
-                }
+                // AstraPay Investment.`;
+                // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                // console.log("newNotificationMessage line 1843:", newNotificationMessage);
+                // // debugger
+                // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                //   console.log("Notification sent successfully");
+                // } else if (newNotificationMessage.message !== "Success") {
+                //   console.log("Notification NOT sent successfully");
+                //   console.log(newNotificationMessage);
+                // }
                 // Send Notification to admin and others stakeholder
                 let investment = record;
                 let messageType = "payout";
@@ -1929,22 +1929,22 @@ export default class ApprovalsController {
           // update record
 
           // Send Details to notification service
-          let subject = "AstraPay Investment Rollover Pending";
-          let message = `
-              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+          // let subject = "AstraPay Investment Rollover Pending";
+          // let message = `
+          //     ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
 
-                Thank you.
+          //       Thank you.
 
-                AstraPay Investment.`;
-          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          // console.log("newNotificationMessage line 1947:", newNotificationMessage);
-          // debugger
-          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessage.message !== "Success") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessage);
-          }
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // // console.log("newNotificationMessage line 1947:", newNotificationMessage);
+          // // debugger
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageType = "rollover_pending";
@@ -2009,22 +2009,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Rollover Pending";
-            let message = `
-              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+            // let subject = "AstraPay Investment Rollover Pending";
+            // let message = `
+            //   ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2027:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2027:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "rollover_pending";
@@ -2060,22 +2060,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Rollover Activated";
-            let message = `
-              ${firstName} the rollover of your matured investment is activated and will be process for rollover.
+            // let subject = "AstraPay Investment Rollover Activated";
+            // let message = `
+            //   ${firstName} the rollover of your matured investment is activated and will be process for rollover.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2078:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2078:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "activation";
@@ -2113,22 +2113,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout Pending";
-            let message = `
-               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
+            // let subject = "AstraPay Investment Payout Pending";
+            // let message = `
+            //    ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2131:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2131:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout_pending";
@@ -2164,22 +2164,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout Activation";
-            let message = `
-               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been activated for payment processing.
+            // let subject = "AstraPay Investment Payout Activation";
+            // let message = `
+            //    ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been activated for payment processing.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2182:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2182:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout_activation";
@@ -2246,22 +2246,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Rollover Pending";
-            let message = `
-              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+            // let subject = "AstraPay Investment Rollover Pending";
+            // let message = `
+            //   ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2264:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2264:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "rollover_pending";
@@ -2299,22 +2299,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout Pending";
-            let message = `
-               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
+            // let subject = "AstraPay Investment Payout Pending";
+            // let message = `
+            //    ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2317:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2317:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout_pending";
@@ -2352,22 +2352,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            let subject = "AstraPay Investment Payout Pending";
-            let message = `
-               ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
+            // let subject = "AstraPay Investment Payout Pending";
+            // let message = `
+            //    ${firstName},this is to inform you that the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2370:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2370:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageType = "payout_pending";
@@ -2401,22 +2401,22 @@ export default class ApprovalsController {
             // update record
 
             // Send Details to notification service
-            subject = "AstraPay Investment Rollover Pending";
-            message = `
-              ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
+            // subject = "AstraPay Investment Rollover Pending";
+            // message = `
+            //   ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
 
-                Thank you.
+            //     Thank you.
 
-                AstraPay Investment.`;
-            newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // console.log("newNotificationMessage line 2412:", newNotificationMessage);
-            // debugger
-            if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessage.message !== "Success") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessage);
-            }
+            //     AstraPay Investment.`;
+            // newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            // // console.log("newNotificationMessage line 2412:", newNotificationMessage);
+            // // debugger
+            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessage.message !== "Success") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessage);
+            // }
             // Send Notification to admin and others stakeholder
             investment = record;
             messageType = "rollover_pending";
@@ -2475,20 +2475,20 @@ export default class ApprovalsController {
 
           // Send Details to notification service
 
-          let subject = "AstraPay Investment Liquidation";
-          let message = `
-                ${firstName} this is to inform you, that your investment request, has been Liquidated.
-                Thank you.
+          // let subject = "AstraPay Investment Liquidation";
+          // let message = `
+          //       ${firstName} this is to inform you, that your investment request, has been Liquidated.
+          //       Thank you.
 
-                AstraPay Investment.`;
-          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 2485:", newNotificationMessage);
-          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessage.message !== "Success") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessage);
-          }
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 2485:", newNotificationMessage);
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageType = "liquidation";
@@ -2539,23 +2539,23 @@ export default class ApprovalsController {
           // console.log("new Timeline object line 1483:", newTimeline);
 
           // Send Details to notification service
-          let subject = "AstraPay Investment Termination Rejection";
-          let message = `
-                ${firstName} this is to inform you, that your investment request, termination approval has been rejected.
+          // let subject = "AstraPay Investment Termination Rejection";
+          // let message = `
+          //       ${firstName} this is to inform you, that your investment request, termination approval has been rejected.
 
-                Please check your account.
+          //       Please check your account.
 
-                Thank you.
+          //       Thank you.
 
-                AstraPay Investment.`;
-          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          console.log("newNotificationMessage line 2552:", newNotificationMessage);
-          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessage.message !== "Success") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessage);
-          }
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 2552:", newNotificationMessage);
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageType = "liquidation_rejection";

@@ -10,9 +10,9 @@ import TypesServices from "App/Services/TypesServices";
 import UpdateTypeValidator from "App/Validators/UpdateTypeValidator";
 import AppException from "App/Exceptions/AppException";
 import TenuresServices from "App/Services/TenuresServices";
-const Env = require("@ioc:Adonis/Core/Env");
-const SUPER_ADMIN_EMAIL_ADDRESS = Env.get("SUPER_ADMIN_EMAIL_ADDRESS");
-import { sendNotification } from "App/Helpers/sendNotification";
+// const Env = require("@ioc:Adonis/Core/Env");
+// const SUPER_ADMIN_EMAIL_ADDRESS = Env.get("SUPER_ADMIN_EMAIL_ADDRESS");
+// import { sendNotification } from "App/Helpers/sendNotification";
 import { sendNotificationWithoutPdf } from "App/Helpers/sendNotificationWithoutPdf";
 
 export default class TypesController {
@@ -366,16 +366,16 @@ export default class TypesController {
                 // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
                 // payload.remark = remark !== undefined ? remark : type.remark;
                 // Former Type Details
-                let formerTypeName = type.typeName;
-                let formerTypeTagName = type.tagName;
-                let formerTypeDescription = type.description;
-                let formerTypeCurrencyCode = type.currencyCode;
-                // let formerTypeFixedCharge = type.fixedCharge;
-                // let formerTypeRatedCharge = type.ratedCharge;
-                let formerTypeLowestAmount = type.lowestAmount;
-                let formerTypeHighestAmount = type.highestAmount;
-                let formerTypeInterestRate = type.interestRate;
-                let formerTypeStatus = type.status;
+                // let formerTypeName = type.typeName;
+                // let formerTypeTagName = type.tagName;
+                // let formerTypeDescription = type.description;
+                // let formerTypeCurrencyCode = type.currencyCode;
+                // // let formerTypeFixedCharge = type.fixedCharge;
+                // // let formerTypeRatedCharge = type.ratedCharge;
+                // let formerTypeLowestAmount = type.lowestAmount;
+                // let formerTypeHighestAmount = type.highestAmount;
+                // let formerTypeInterestRate = type.interestRate;
+                // let formerTypeStatus = type.status;
 
                 let typeTenure;
                 if (duration) {
@@ -384,7 +384,7 @@ export default class TypesController {
                         (tenure) => tenure.tenure
                         //.$original.tenure
                     );
-                    // console.log("Type tenure selected: ", formerTypeTenures);
+                    console.log("Type tenure selected: ", formerTypeTenures);
                     // delete all type tenure/duration
                     const typeTenureDelete = tenuresService.deleteRelatedTenure(typeId);
                     console.log("Type tenure deleted: ", typeTenureDelete);
@@ -399,52 +399,52 @@ export default class TypesController {
                 console.log("Update Type Request line 317:", type);
 
                 // Send Details to notification service
-                let email, firstName;
-                email = SUPER_ADMIN_EMAIL_ADDRESS;
-                firstName = "Super Admin";
-                let subject = "AstraPay Investment Type Updated";
-                let message = `
-                This is to inform you, that your investment type has been updated by "loginAdminFullName".
-                Former investment type details are as follows:
+                // let email, firstName;
+                //                 email = SUPER_ADMIN_EMAIL_ADDRESS;
+                //                 firstName = "Super Admin";
+                //                 let subject = "AstraPay Investment Type Updated";
+                //                 let message = `
+                //                 This is to inform you, that your investment type has been updated by "loginAdminFullName".
+                //                 Former investment type details are as follows:
 
-                Type Name: ${formerTypeName}
-                Type Tag Name: ${formerTypeTagName}
-                Type Description: ${formerTypeDescription}
-                Type Currency Code: ${formerTypeCurrencyCode}
-                Type Lowest Amount: ${formerTypeLowestAmount}
-                Type Highest Amount: ${formerTypeHighestAmount}
-                Type Interest Rate: ${formerTypeInterestRate}
-                Type Status: ${formerTypeStatus}
-                Type Tenures: ${formerTypeTenures}
+                //                 Type Name: ${formerTypeName}
+                //                 Type Tag Name: ${formerTypeTagName}
+                //                 Type Description: ${formerTypeDescription}
+                //                 Type Currency Code: ${formerTypeCurrencyCode}
+                //                 Type Lowest Amount: ${formerTypeLowestAmount}
+                //                 Type Highest Amount: ${formerTypeHighestAmount}
+                //                 Type Interest Rate: ${formerTypeInterestRate}
+                //                 Type Status: ${formerTypeStatus}
+                //                 Type Tenures: ${formerTypeTenures}
 
-================================================================**********=============================================================================**********=============================================================================
-                New Investment type details are as follows:
+                // ================================================================**********=============================================================================**********=============================================================================
+                //                 New Investment type details are as follows:
 
-                Type Name: ${type.typeName}
-                Type Tag Name: ${type.tagName}
-                Type Description: ${type.description}
-                Type Currency Code: ${type.currencyCode}
-                Type Lowest Amount: ${type.lowestAmount}
-                Type Highest Amount: ${type.highestAmount}
-                Type Interest Rate: ${type.interestRate}
-                Type Status: ${type.status}
-                Type Tenures: ${typeTenure}
+                //                 Type Name: ${type.typeName}
+                //                 Type Tag Name: ${type.tagName}
+                //                 Type Description: ${type.description}
+                //                 Type Currency Code: ${type.currencyCode}
+                //                 Type Lowest Amount: ${type.lowestAmount}
+                //                 Type Highest Amount: ${type.highestAmount}
+                //                 Type Interest Rate: ${type.interestRate}
+                //                 Type Status: ${type.status}
+                //                 Type Tenures: ${typeTenure}
 
-                Please check your investment type.
+                //                 Please check your investment type.
 
-                Thank you.
+                //                 Thank you.
 
-                AstraPay Investment.`;
-                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                console.log("newNotificationMessage line 439:", newNotificationMessage);
-                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                    console.log("Notification sent successfully");
-                } else if (newNotificationMessage.message !== "Success") {
-                    console.log("Notification NOT sent successfully");
-                    console.log(newNotificationMessage);
-                }
+                //                 AstraPay Investment.`;
+                // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                // console.log("newNotificationMessage line 439:", newNotificationMessage);
+                // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                //     console.log("Notification sent successfully");
+                // } else if (newNotificationMessage.message !== "Success") {
+                //     console.log("Notification NOT sent successfully");
+                //     console.log(newNotificationMessage);
+                // }
                 // Send Notification to admin and others stakeholder
-                                let messageType = "investment_type_update";
+                let messageType = "investment_type_update";
                 let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
                 // console.log("newNotificationMessage line 449:", newNotificationMessageWithoutPdf);
                 // debugger
@@ -499,23 +499,23 @@ export default class TypesController {
                 // throw new Error(`Type Request with Id: ${id} does not exist, please check and try again.`);
                 throw new AppException({ message: `Type Request with Id: ${typeId} does not exist, please check and try again.`, codeSt: "404" })
             }
-            console.log(" Login User Data line 248 =========================");
+            console.log(" Login User Data line 502 =========================");
             console.log(loginUserData);
             // TODO: Uncomment to use LoginUserData
             // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
             // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-            // console.log(" Login User Data line 967 =========================");
+            // console.log(" Login User Data line 507 =========================");
             // console.log(loginUserData);
-            // console.log(" Login User Roles line 969 =========================");
+            // console.log(" Login User Roles line 509 =========================");
             // console.log(loginUserData.roles);
             // let { roles, biodata } = loginUserData;
 
-            // console.log("Admin roles , line 973 ==================")
+            // console.log("Admin roles , line 513 ==================")
             // console.log(roles)
             // // @ts-ignore
             // let { fullName } = biodata;
             // let loginAdminFullName = fullName;
-            // console.log("Login Admin FullName, line 978 ==================")
+            // console.log("Login Admin FullName, line 518 ==================")
             // console.log(loginAdminFullName)
             type = typeRequestIsExisting //await typesService.getTypeByTypeId(id);
             console.log(" QUERY RESULT: ", type);
@@ -533,7 +533,7 @@ export default class TypesController {
                 // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
                 // payload.remark = remark !== undefined ? remark : type.remark;
                 // Former Type Details
-                let formerTypeInterestRate = type.interestRate;
+                // let formerTypeInterestRate = type.interestRate;
                 // type = await typesService.updateType(type, payload);
                 let updatedInterestRate = await typesService.updateTypeInterestRate(type, interestRate);
                 // console.log("Type updated: ", type);
@@ -541,36 +541,36 @@ export default class TypesController {
                 console.log("Update Type Request line 541:", updatedInterestRate);
                 // debugger
                 // Send Details to notification service
-                let email, firstName;
-                email = SUPER_ADMIN_EMAIL_ADDRESS;
-                firstName = "Super Admin";
-                let subject = "AstraPay Investment Type Updated";
-                let message = `
-                This is to inform you, that your investment type INTEREST RATE has been updated by "loginAdminFullName".
-                Former investment type details are as follows:
+                //                 let email, firstName;
+                //                 email = SUPER_ADMIN_EMAIL_ADDRESS;
+                //                 firstName = "Super Admin";
+                //                 let subject = "AstraPay Investment Type Updated";
+                //                 let message = `
+                //                 This is to inform you, that your investment type INTEREST RATE has been updated by "loginAdminFullName".
+                //                 Former investment type details are as follows:
 
-                Type Interest Rate: ${formerTypeInterestRate}
+                //                 Type Interest Rate: ${formerTypeInterestRate}
 
-================================================================**********=============================================================================**********=============================================================================
-                New Investment type details are as follows:
+                // ================================================================**********=============================================================================**********=============================================================================
+                //                 New Investment type details are as follows:
 
-                Type Interest Rate: ${type.interestRate}
+                //                 Type Interest Rate: ${type.interestRate}
 
-                Please check your investment type.
+                //                 Please check your investment type.
 
-                Thank you.
+                //                 Thank you.
 
-                AstraPay Investment.`;
-                let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                // console.log("newNotificationMessage line 586:", newNotificationMessage);
-                if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                    console.log("Notification sent successfully");
-                } else if (newNotificationMessage.message !== "Success") {
-                    console.log("Notification NOT sent successfully");
-                    console.log(newNotificationMessage);
-                }
+                //                 AstraPay Investment.`;
+                //                 let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                //                 // console.log("newNotificationMessage line 565:", newNotificationMessage);
+                //                 if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                //                     console.log("Notification sent successfully");
+                //                 } else if (newNotificationMessage.message !== "Success") {
+                //                     console.log("Notification NOT sent successfully");
+                //                     console.log(newNotificationMessage);
+                //                 }
                 // Send Notification to admin and others stakeholder
-                               let messageType = "investment_type_update";
+                let messageType = "investment_type_update";
                 let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageType, type.rfiCode, type,);
                 // console.log("newNotificationMessage line 575:", newNotificationMessageWithoutPdf);
                 // debugger
