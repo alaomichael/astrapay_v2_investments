@@ -164,7 +164,6 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "customerName": customerName,
                     "amount": amount,
                     "duration": duration,
-
                     "investmentId": id,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
@@ -287,6 +286,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         }
     } catch (error) {
         console.log("The ASTRAPAY API response error: @ sendNotificationWithoutPdf line 289 ");
+        console.error(error);
         console.error(error.message);
         if (error.response == undefined) {
             return { status: "FAILED TO SEND NOTIFICATION", message: error.message }
