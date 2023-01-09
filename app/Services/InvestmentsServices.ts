@@ -8522,7 +8522,7 @@ export default class InvestmentsServices {
                                     let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // Calculate penalty to be deducted
                                     let currentDate = new Date();//.toDateString();  // new Date().toISOString(); //DateTime.now()
-                                    debugger
+                                    // debugger
                                     let daysOfInvestment;
                                     daysOfInvestment = await investmentDuration(startDate, currentDate)
                                     // debugger
@@ -8756,9 +8756,9 @@ export default class InvestmentsServices {
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1431 :", updatedInvestment);
+                                        // console.log(" Current log, line 8759 :", updatedInvestment);
 
-                                        // console.log("Updated record Status line 1433: ", record);
+                                        // console.log("Updated record Status line 8761: ", record);
 
                                         // update timeline
                                         timelineObject = {
@@ -8772,10 +8772,10 @@ export default class InvestmentsServices {
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
-                                        // console.log("Timeline object line 1447:", timelineObject);
+                                        // console.log("Timeline object line 8775:", timelineObject);
                                         await timelineService.createTimeline(timelineObject);
                                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                        // console.log("new Timeline object line 1450:", newTimeline);
+                                        // console.log("new Timeline object line 8778:", newTimeline);
                                         // update record
 
                                         // Send Details to notification service
@@ -8813,19 +8813,21 @@ export default class InvestmentsServices {
                                         await trx.commit();
                                         // debugger
                                     } else {
-                                        console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
+                                        console.log("Entering failed payout of principal and interest data block ,line 8816 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 8753 :", currentInvestment);
+                                        // console.log(" Current log, line 8819 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1488 :", updatedInvestment);
+                                        // console.log(" Current log, line 8823 :", updatedInvestment);
+                                        // console.log(" creditUserWalletWithPrincipal line 8824 ================", creditUserWalletWithPrincipal );
+                                        // console.log(" creditUserWalletWithInterest line 8825 ================", creditUserWalletWithInterest );
                                         // debugger
-                                        throw Error();
+                                        throw Error(`${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
                                     }
                                 } else {
-                                    // console.log("Entering no data 1492 ==================================")
+                                    // console.log("Entering no data 8830 ==================================")
                                     return {
                                         status: 'FAILED',
                                         message: 'no investment matched your search',
@@ -8843,14 +8845,13 @@ export default class InvestmentsServices {
                         }
                     }
                 } catch (error) {
-                    console.log(error)
+                    console.log("Error line 8846 ===================", error)
                     // debugger
-                    console.log("Error line 6334", error.messages);
-                    console.log("Error line 6335", error.message);
-                    // console.log("Error line 6336", error.message);
-                    // debugger
+                    console.log("Error line 8848", error.messages);
+                    console.log("Error line 8849", error.message);
+                                       // debugger
                     await trx.rollback()
-                    console.log(`Error line 6339, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
+                    console.log(`Error line 8852, status: "FAILED", message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }
@@ -8862,7 +8863,7 @@ export default class InvestmentsServices {
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 6351 =====================:", error);
+                    console.log("Error line 8866 =====================:", error);
                     throw error;
                 }
             }
