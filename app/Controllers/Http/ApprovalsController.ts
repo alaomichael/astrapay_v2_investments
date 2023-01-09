@@ -2197,11 +2197,11 @@ export default class ApprovalsController {
 
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 1593 :", currentInvestment);
+          // console.log(" Current log, line 2200 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          // console.log(" Current log, line 1597 :", updatedInvestment);
+          // console.log(" Current log, line 2204 :", updatedInvestment);
 
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
@@ -2224,7 +2224,7 @@ export default class ApprovalsController {
           let { firstName, // email,
              totalAmountToPayout, } = record; // interestDueOnInvestment,
 
-          // console.log("Updated record Status line 1439: ", record);
+          // console.log("Updated record Status line 2227: ", record);
           if (isRolloverSuspended === true) {
             newStatus = "rollover_suspended";
             record.status = newStatus;
@@ -2240,10 +2240,10 @@ export default class ApprovalsController {
               createdAt: DateTime.now(),
               metadata: ``,
             };
-            // console.log("Timeline object line 1453:", timelineObject);
+            // console.log("Timeline object line 2243:", timelineObject);
             await timelineService.createTimeline(timelineObject);
             // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log("new Timeline object line 1456:", newTimeline);
+            // console.log("new Timeline object line 2246:", newTimeline);
             // update record
 
             // Send Details to notification service

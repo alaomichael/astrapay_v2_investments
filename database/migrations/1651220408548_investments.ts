@@ -64,14 +64,15 @@ export default class Investments extends BaseSchema {
       table.boolean("is_request_sent").notNullable().defaultTo(false);
       table.string("investment_request_reference").nullable();
       table.boolean("is_investment_created").notNullable().defaultTo(false);
-      table.boolean("is_investment_completed").notNullable().defaultTo(false);
-      table.timestamp("investment_completion_date").nullable().index();
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
      
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
+      table.boolean("is_investment_completed").notNullable().defaultTo(false);
+      table.timestamp("investment_completion_date").nullable().index();
       table.boolean('is_rollover_activated').notNullable().defaultTo(false).index()
       table.boolean('is_rollover_suspended').notNullable().defaultTo(false).index()
       table.date('rollover_reactivation_date').nullable().index()
