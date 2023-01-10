@@ -37,7 +37,27 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
             investmentTypeName, startDate, payoutDate, interestDueForPayout, principalDueForPayout,
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment.$original;
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment
+
+        if (investment.firstName == undefined) {
+            let { first_name, last_name, rollover_type, investment_type,
+                investment_type_name, start_date, payout_date, interest_due_for_payout, principal_due_for_payout,
+                total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, } = investment.$original;
+            // Update the value of the variables
+            firstName = first_name;
+            lastName = last_name;
+            rolloverType = rollover_type;
+            investmentType = investment_type;
+            investmentTypeName = investment_type_name;
+            startDate = start_date;
+            payoutDate = payout_date;
+            interestDueForPayout = interest_due_for_payout;
+            principalDueForPayout = principal_due_for_payout;
+            totalAmountDueForPayout = total_amount_due_for_payout;
+            isRolloverActivated = is_rollover_activated;
+            datePayoutWasDone = date_payout_was_done;
+        }
+        debugger
         let rolloverStatus;
         if (isRolloverActivated == true) {
             rolloverStatus = "Activated"
@@ -69,7 +89,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         let customerName = ` ${firstName} ${lastName}`;
         let recepients;
         // debugger
-        if (messageKey = "initiation") {
+        if (messageKey == "initiation") {
             let subject = "Investment Initiation";
             recepients = [
                 {
@@ -96,7 +116,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
                 }
-        } else if (messageKey = "approval") {
+        } else if (messageKey == "approval") {
             let subject = "Investment Approval";
             recepients = [
                 {
@@ -124,7 +144,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentId": id,
 
                 }
-        } else if (messageKey = "activation") {
+        } else if (messageKey == "activation") {
             let subject = "Investment Activation";
             recepients = [
                 {
@@ -143,7 +163,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "payoutDate": payoutDate,
                     "investmentId": id,
                 }
-        } else if (messageKey = "maturity") {
+        } else if (messageKey == "maturity") {
             let subject = "Investment Maturity";
             recepients = [
                 {
@@ -172,7 +192,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "totalAmountDueForPayout": totalAmountDueForPayout,
                     "rollOverStatus": rolloverStatus,
                 }
-        } else if (messageKey = "payout") {
+        } else if (messageKey == "payout") {
             let subject = "Investment Payout";
             recepients = [
                 {
@@ -199,7 +219,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                 }
-        } else if (messageKey = "rollover") {
+        } else if (messageKey == "rollover") {
             let subject = "Investment Rollover";
             recepients = [
                 {
@@ -227,7 +247,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "amountRollover": amountRollover,
 
                 }
-        } else if (messageKey = "liquidation") {
+        } else if (messageKey == "liquidation") {
             let subject = "Investment Liquidation";
             recepients = [
                 {

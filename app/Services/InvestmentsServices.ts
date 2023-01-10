@@ -668,7 +668,7 @@ export default class InvestmentsServices {
                 rate = interestRate;
             }
 
-            // console.log(' Rate return line 568 : ', rate)
+            // console.log(' Rate return line 671 : ', rate)
             if (rate === undefined) {
                 throw Error('no investment rate matched your search, please try again.')
             }
@@ -994,7 +994,7 @@ export default class InvestmentsServices {
                 // Send Notification to admin and others stakeholder
                 messageKey = "activation";
                 newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+                // console.log("newNotificationMessage line 997:", newNotificationMessageWithoutPdf);
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
