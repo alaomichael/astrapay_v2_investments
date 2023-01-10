@@ -36,12 +36,13 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         } = settings
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
-            investmentTypeName, startDate, payoutDate, interestDueForPayout, principalDueForPayout,
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment
-
-        if (investment.firstName == undefined) {
+            investmentTypeName, startDate, payoutDate, interestDueForPayout, 
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment.$original;
+        debugger
+        let principalDueForPayout = amount;
+        if (investment.$original.firstName == undefined) {
             let { first_name, last_name, rollover_type, investment_type,
-                investment_type_name, start_date, payout_date, interest_due_for_payout, principal_due_for_payout,
+                investment_type_name, start_date, payout_date, interest_due_for_payout,
                 total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, } = investment.$original;
             // Update the value of the variables
             firstName = first_name;
@@ -52,7 +53,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             startDate = start_date;
             payoutDate = payout_date;
             interestDueForPayout = interest_due_for_payout;
-            principalDueForPayout = principal_due_for_payout;
+            // principalDueForPayout = amount;
             totalAmountDueForPayout = total_amount_due_for_payout;
             isRolloverActivated = is_rollover_activated;
             datePayoutWasDone = date_payout_was_done;
@@ -79,7 +80,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             amountPaid = ` NGN ${0}`;
             amountRollover = ` NGN ${totalAmountDueForPayout}`;
             rolloverType = "Rollover Principal and Interest"
-        } if (rolloverType == "103") {
+        }else if (rolloverType == "103") {
             // Rollover Interest only
             amountPaid = ` NGN ${amount}`;
             amountRollover = ` NGN ${interestDueForPayout}`;

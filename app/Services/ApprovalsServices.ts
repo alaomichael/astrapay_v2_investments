@@ -830,7 +830,7 @@ export default class ApprovalsServices {
                         //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
-                        let messageKey = "rollover_and_payout_failed";
+                        let messageKey = "payout_and_rollover_failed";
                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                         // console.log("newNotificationMessage line 834:", newNotificationMessageWithoutPdf);
                         // debugger
