@@ -329,13 +329,13 @@ export default class InvestmentsServices {
                         // await record.save();
                         // update record
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-                        // console.log(" Current log, line 2188 :", currentInvestment);
+                        // console.log(" Current log, line 332 :", currentInvestment);
                         // send for update
                         await investmentsService.updateInvestment(currentInvestment, record);
                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                        // console.log(" Current log, line 298 :", updatedInvestment);
+                        // console.log(" Current log, line 336 :", updatedInvestment);
 
-                        // console.log("Updated record Status line 300: ", record);
+                        // console.log("Updated record Status line 338: ", record);
 
                         // update timeline
                         timelineObject = {
@@ -349,10 +349,10 @@ export default class InvestmentsServices {
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
-                        // console.log("Timeline object line 314:", timelineObject);
+                        // console.log("Timeline object line 352:", timelineObject);
                         await timelineService.createTimeline(timelineObject);
                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                        // console.log("new Timeline object line 317:", newTimeline);
+                        // console.log("new Timeline object line 355:", newTimeline);
                         // update record
 
                         // Send Details to notification service
@@ -412,13 +412,13 @@ export default class InvestmentsServices {
                         // await record.save();
                         // update record
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-                        // console.log(" Current log, line 360 :", currentInvestment);
+                        // console.log(" Current log, line 415 :", currentInvestment);
                         // send for update
                         await investmentsService.updateInvestment(currentInvestment, record);
                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                        // console.log(" Current log, line 364 :", updatedInvestment);
+                        // console.log(" Current log, line 419 :", updatedInvestment);
 
-                        // console.log("Updated record Status line 366: ", record);
+                        // console.log("Updated record Status line 421: ", record);
 
                         // update timeline
                         timelineObject = {
@@ -432,10 +432,10 @@ export default class InvestmentsServices {
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
-                        // console.log("Timeline object line 380:", timelineObject);
+                        // console.log("Timeline object line 435:", timelineObject);
                         await timelineService.createTimeline(timelineObject);
                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                        // console.log("new Timeline object line 383:", newTimeline);
+                        // console.log("new Timeline object line 438:", newTimeline);
                         // update record
 
                         // Send Details to notification service
@@ -449,7 +449,7 @@ export default class InvestmentsServices {
 
                         // AstraPay Investment.`;
                         //         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                        //         // console.log("newNotificationMessage line 449:", newNotificationMessage);
+                        //         // console.log("newNotificationMessage line 452:", newNotificationMessage);
                         //         // debugger
                         //         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                         //             console.log("Notification sent successfully");
@@ -478,10 +478,10 @@ export default class InvestmentsServices {
                 // }
                 let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
                 // let isTenureExisting = investmentTenures.find(o =>{
-                //   console.log(' o.$original return line 413 : ', o.$original.tenure)
+                //   console.log(' o.$original return line 481 : ', o.$original.tenure)
                 //   return o.$original.tenure.toString() == duration.toString();
                 // })
-                // console.log(' IsTenureExisting return line 416 : ', isTenureExisting)
+                // console.log(' IsTenureExisting return line 484 : ', isTenureExisting)
                 //  debugger
                 if (isTenureExisting == false || isTenureExisting == undefined) {
                     // Payout the amount that is to be rollover
@@ -660,7 +660,6 @@ export default class InvestmentsServices {
                             console.log("Notification NOT sent successfully");
                             console.log(newNotificationMessageWithoutPdf);
                         }
-
                     }
                     throw new AppException({ message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`, codeSt: "404" })
                 }
@@ -681,11 +680,11 @@ export default class InvestmentsServices {
             // console.log("New investment request line 578: ", investment);
             let decPl = 2;
             let interestRateByDuration = rate * (Number(investment.duration) / 360);
-            console.log(`Interest rate by Investment duration for ${duration} day(s), @ investmentService line 124:`, interestRateByDuration)
+            console.log(`Interest rate by Investment duration for ${duration} day(s), @ investmentService line 684:`, interestRateByDuration)
             // convert to decimal places
             // interestRateByDuration = Number(getDecimalPlace(interestRateByDuration, decPl))
             interestRateByDuration = Number(interestRateByDuration.toFixed(decPl));
-            console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ investmentService line 127:`, interestRateByDuration);
+            console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ investmentService line 687:`, interestRateByDuration);
             investment.interestRate = interestRateByDuration;
             // debugger
             // investment.interestRate = rate
@@ -705,19 +704,7 @@ export default class InvestmentsServices {
             // investment.walletId = investorFundingWalletId
             // await investment.save()
             // console.log('The new investment:', investment)
-
-            // TODO
-            // Send Investment Payload To Transaction Service
-            // let sendToTransactionService //= new SendToTransactionService(investment)
-            // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-            // UPDATE Investment Status based on the response from Transaction Service
-            // let duration = Number(investment.duration)
-            // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
-            // let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
-            // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
-            // console.log('Updated Payout Date: ' + updatedPayoutDate)
-            // Save Investment new status to Database
-            // await investment.save()
+            
             // Send Investment Initiation Message to Queue
 
             // check if Approval is set to Auto, from Setting Controller
@@ -859,7 +846,7 @@ export default class InvestmentsServices {
                     createdAt: DateTime.now(),
                     metadata: ``,
                 };
-                // console.log("Timeline object line 759:", timelineObject);
+                // console.log("Timeline object line 849:", timelineObject);
                 await timelineService.createTimeline(timelineObject);
 
                 // Send Details to notification service
@@ -918,13 +905,13 @@ export default class InvestmentsServices {
                 // await record.save();
                 // update record
                 currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                // console.log(" Current log, line 809 :", currentInvestment);
+                // console.log(" Current log, line 908 :", currentInvestment);
                 // send for update
                 await investmentsService.updateInvestment(currentInvestment, investment);
                 // updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                // console.log(" Current log, line 811 :", updatedInvestment);
+                // console.log(" Current log, line 912 :", updatedInvestment);
 
-                // console.log("Updated record Status line 814: ", record);
+                // console.log("Updated record Status line 914: ", record);
                 timelineObject = {
                     id: uuid(),
                     investmentId: investmentId,
