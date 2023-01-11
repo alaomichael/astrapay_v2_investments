@@ -38,7 +38,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
             investmentTypeName, startDate, payoutDate, interestDueOnInvestment,
             totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty, investmentCompletionDate } = investment;
-        debugger
+        // debugger
         let principalDueForPayout = amount;
         let interestDueForPayout = interestDueOnInvestment;
         let completionDate = investmentCompletionDate;
@@ -279,7 +279,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "penaltyDeducted": penalty,
                 }
         }
-
+debugger
         const payload = {
             "messageKey": messageKey,//"otp_notification_sms",
             "rfiId": rfiCode,//"6533ty3848484934hfhf84",

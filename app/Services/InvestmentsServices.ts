@@ -8442,16 +8442,16 @@ export default class InvestmentsServices {
                                         console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 1484 :", currentInvestment);
+                                        // console.log(" Current log, line 8445 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1488 :", updatedInvestment);
+                                        // console.log(" Current log, line 8449 :", updatedInvestment);
                                         // debugger
                                         throw Error();
                                     }
                                 } else {
-                                    // console.log("Entering no data 1492 ==================================")
+                                    // console.log("Entering no data 8454 ==================================")
                                     return {
                                         status: 'FAILED',
                                         message: 'no investment matched your search',
@@ -8616,6 +8616,7 @@ export default class InvestmentsServices {
                                         //                         }
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "liquidation";
+                                        debugger
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8569:", newNotificationMessageWithoutPdf);
                                         // debugger
@@ -8700,6 +8701,7 @@ export default class InvestmentsServices {
                                         //                         }
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "liquidation";
+                                        // debugger
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8653:", newNotificationMessageWithoutPdf);
                                         // debugger

@@ -2493,6 +2493,7 @@ export default class ApprovalsController {
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageKey = "liquidation";
+          // debugger
           let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
           // debugger
