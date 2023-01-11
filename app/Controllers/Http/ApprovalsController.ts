@@ -66,12 +66,12 @@ export default class ApprovalsController {
             ...approval.$original,
             investmentDetails: investment.$original,
           };
-          console.log("approvalWithInvestmentDetails line 218 ===================");
+          console.log("approvalWithInvestmentDetails line 69 ===================");
           console.log(approvalWithInvestmentDetails);
           approvalArray.push(approvalWithInvestmentDetails);
         }
         // approvalArray.push(approval);
-        // console.log("approvalArray line 125 ===================");
+        // console.log("approvalArray line 74 ===================");
         // console.log(approvalArray);
       }
 
@@ -175,12 +175,12 @@ export default class ApprovalsController {
           //     // if it has, update
           //     if (remarkIsExisting) {
           //       let updatedRemark = await remarksService.updateRemark(remarkIsExisting, remarksObject);
-          //       console.log("updated Remark object line 245:", updatedRemark);
+          //       console.log("updated Remark object line 178:", updatedRemark);
 
           //     } else {
           //       // if it does not have create new remark
           //       let newRemark = await remarksService.createRemark(remarksObject);
-          //       console.log("new Remark object line 250:", newRemark);
+          //       console.log("new Remark object line 183:", newRemark);
 
           //       // create new verification timeline
           //     }

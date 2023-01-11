@@ -948,8 +948,6 @@ export default class InvestmentsServices {
                 let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
-                Please check your device. 
-
                 Your certificate is attached.
 
                 Please check your device. 
@@ -3559,7 +3557,7 @@ export default class InvestmentsServices {
                     // console.log('Investment Info, line 2892: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "rollover_suspended") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
                         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -4125,7 +4123,7 @@ export default class InvestmentsServices {
                     // console.log('Investment Info, line 2892: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "rollover_suspended") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         console.log('Time investment was started line 2904: ', startDate)
                         let timelineObject

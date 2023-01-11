@@ -44,7 +44,7 @@ export default class ActivateApprovedInvestment extends BaseTask {
         let investmentsServices = new InvestmentsServices();
         await investmentsServices.activateApprovedInvestment(queryParams);  
         // let listOfActivatedInvestments = await investmentsServices.activateApprovedInvestment(queryParams);  
-        console.log("After AXIOS CALL for Activate Investment ,  ==================================================");
-        console.log("The ASTRAPAY API Activate Investment  response,line 47: ");
+        // console.log("After AXIOS CALL for Activate Investment ,  ==================================================");
+        // console.log("The ASTRAPAY API Activate Investment  response,line 47: ");
     }
 }

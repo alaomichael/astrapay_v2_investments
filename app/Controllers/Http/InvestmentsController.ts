@@ -1458,7 +1458,7 @@ export default class InvestmentsController {
         //   console.log(' o.$original return line 1349 : ', o.$original.tenure)
         //   return o.$original.tenure.toString() == duration.toString();
         // })
-        console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
+        // console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
         //  debugger
         if (isTenureExisting == false || isTenureExisting == undefined) {
           // debugger
@@ -1747,10 +1747,7 @@ export default class InvestmentsController {
           let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
-                Please check your device. 
-
-
-                Your certificate is attached.
+                                Your certificate is attached.
 
                 Please check your device. 
 
@@ -3138,16 +3135,16 @@ export default class InvestmentsController {
       // console.log('Investment Info, line 1322: ', investment)
       // debugger
       if (investment) {
-        console.log('investment search data :', investment.$original)
-        let { rfiCode } = investment.$original;
+        // console.log('investment search data :', investment.$original)
+        let { rfiCode, startDate, duration } = investment.$original;
         // @ts-ignore
         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
         // console.log('Is due for payout status :', isDueForPayout)
 
         // TESTING
-        let startDate = DateTime.now().minus({ days: 5 }).toISO()
-        let duration = 4
-        console.log('Time investment was started line 1332: ', startDate)
+        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
+        // let duration = 4
+        // console.log('Time investment was started line 1332: ', startDate)
         let timelineObject
         // let timeline
         let isDueForPayout = await dueForPayout(startDate, duration)
@@ -4813,7 +4810,7 @@ export default class InvestmentsController {
       // Save
       await investment.save()
 
-      console.log('data:', investment.$original)
+      // console.log('data:', investment.$original)
       return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
       return response
