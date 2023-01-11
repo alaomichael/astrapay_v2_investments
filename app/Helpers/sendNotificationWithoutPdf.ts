@@ -36,14 +36,17 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         } = settings
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
-            investmentTypeName, startDate, payoutDate, interestDueForPayout, 
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment;
+            investmentTypeName, startDate, payoutDate, interestDueOnInvestment,
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty, investmentCompletionDate } = investment;
         debugger
         let principalDueForPayout = amount;
+        let interestDueForPayout = interestDueOnInvestment;
+        let completionDate = investmentCompletionDate;
         if (investment.firstName == undefined) {
             let { first_name, last_name, rollover_type, investment_type,
-                investment_type_name, start_date, payout_date, interest_due_for_payout,
-                total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, } = investment.$original;
+                investment_type_name, start_date, payout_date, interest_due_on_investment,
+                total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, investment_completion_date } = investment;
+            debugger
             // Update the value of the variables
             firstName = first_name;
             lastName = last_name;
@@ -52,11 +55,12 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             investmentTypeName = investment_type_name;
             startDate = start_date;
             payoutDate = payout_date;
-            interestDueForPayout = interest_due_for_payout;
+            interestDueForPayout = interest_due_on_investment;
             // principalDueForPayout = amount;
             totalAmountDueForPayout = total_amount_due_for_payout;
             isRolloverActivated = is_rollover_activated;
             datePayoutWasDone = date_payout_was_done;
+            completionDate = investment_completion_date;
         }
         debugger
         let rolloverStatus;
@@ -80,7 +84,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             amountPaid = ` NGN ${0}`;
             amountRollover = ` NGN ${totalAmountDueForPayout}`;
             rolloverType = "Rollover Principal and Interest"
-        }else if (rolloverType == "103") {
+        } else if (rolloverType == "103") {
             // Rollover Interest only
             amountPaid = ` NGN ${amount}`;
             amountRollover = ` NGN ${interestDueForPayout}`;
@@ -271,7 +275,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "amountPaid": totalAmountDueForPayout,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
-                    "liquidationDate": datePayoutWasDone,
+                    "liquidationDate": completionDate,
                     "penaltyDeducted": penalty,
                 }
         }
