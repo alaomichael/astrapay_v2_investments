@@ -5510,7 +5510,7 @@ export default class InvestmentsServices {
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
-                                                action: "investment payout",
+                                                action: "investment payout failed",
                                                 investmentId: investmentId,//id,
                                                 walletId: walletIdToSearch,// walletId, 
                                                 userId: userIdToSearch,// userId,

@@ -37,7 +37,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
             investmentTypeName, startDate, payoutDate, interestDueForPayout, 
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment.$original;
+            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty } = investment;
         debugger
         let principalDueForPayout = amount;
         if (investment.$original.firstName == undefined) {
