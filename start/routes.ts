@@ -25,11 +25,21 @@ import Route from '@ioc:Adonis/Core/Route'
 // })
 
 Route.get('/', async () => {
-  // Ensures the queue exists
-  await Rabbit.assertQueue('my_queue')
+  let listOfQueues = ["my_queue", "another_queue", "yet_another_queue"];
+  for (let index = 0; index < listOfQueues.length; index++) {
+    const currentQueue = listOfQueues[index];
+    // Ensures the queue exists
+    await Rabbit.assertQueue(currentQueue)
 
-  // Sends a message to the queue
-  await Rabbit.sendToQueue('my_queue', 'This message was sent by adonis-rabbit. Testing.....')
+    // Sends a message to the queue
+    await Rabbit.sendToQueue(currentQueue, { status: "OK", message: 'This message was sent by adonis-rabbit. Testing.....' })
+  }
+
+  // // Ensures the queue exists
+  // await Rabbit.assertQueue('my_queue')
+
+  // // Sends a message to the queue
+  // await Rabbit.sendToQueue('my_queue', {status:"OK", message:'This message was sent by adonis-rabbit. Testing.....'})
 })
 
 Route.get('health', async ({ response }) => {

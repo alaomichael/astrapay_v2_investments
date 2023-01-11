@@ -8616,6 +8616,7 @@ export default class InvestmentsServices {
                                         //                         }
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "liquidation";
+                                        investment = record;
                                         debugger
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8569:", newNotificationMessageWithoutPdf);
@@ -8701,6 +8702,7 @@ export default class InvestmentsServices {
                                         //                         }
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "liquidation";
+                                        investment = record;
                                         // debugger
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8653:", newNotificationMessageWithoutPdf);
@@ -8786,6 +8788,7 @@ export default class InvestmentsServices {
                                         //                         }
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "liquidation";
+                                        investment = record;
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                         // console.log("newNotificationMessage line 8737:", newNotificationMessageWithoutPdf);
                                         // debugger
