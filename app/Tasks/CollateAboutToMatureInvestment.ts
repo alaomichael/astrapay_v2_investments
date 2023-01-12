@@ -40,11 +40,11 @@ export default class CollateAboutToMatureInvestment extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        let listOfCollateAboutToMatureInvestments = await investmentsServices.collateAboutToBeMatureInvestment(queryParams);
+        await investmentsServices.collateAboutToBeMatureInvestment(queryParams);
         // let listOfCollateAboutToMatureInvestments = await investmentsServices.collateAboutToBeMatureInvestment(queryParams);  
-        console.log("After AXIOS CALL for Collate About To Mature Investment ,  ==================================================");
-        console.log("The ASTRAPAY API Collate About To Mature Investment response,line 47: ", listOfCollateAboutToMatureInvestments);
+        // console.log("After AXIOS CALL for Collate About To Mature Investment ,  ==================================================");
+        // console.log("The ASTRAPAY API Collate About To Mature Investment response,line 47: ", listOfCollateAboutToMatureInvestments);
     }
 }

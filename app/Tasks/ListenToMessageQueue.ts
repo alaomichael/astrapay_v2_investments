@@ -31,7 +31,7 @@ export default class ListenToMessageQueue extends BaseTask {
         // @ts-ignore
         this.logger.info('Handled')
         console.log("Scheduler is Running Listen To Message Queue ==============================================")
-       
+
         async function listen() {
             await Rabbit.assertQueue('my_queue')
 
@@ -42,7 +42,7 @@ export default class ListenToMessageQueue extends BaseTask {
                 // "If you're expecting a JSON, this will return the parsed message"
                 console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
                 console.log(message.jsonContent)
-
+                // delete the message from queue by acknowledging it with "message.ack()"
                 message.ack();
             })
         }

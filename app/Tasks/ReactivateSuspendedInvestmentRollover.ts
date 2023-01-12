@@ -40,10 +40,11 @@ export default class ReactivateSuspendedInvestmentRollover extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        let listOfReactivatedSuspendedInvestmentRollover = await investmentsServices.reactivateSuspendedRolloverInvestment(queryParams);
-        console.log("After AXIOS CALL for Reactivate Suspended Investment Rollover ,  ==================================================");
-        console.log("The ASTRAPAY API Reactivate Suspended Investment Rollover response,line 47: ", listOfReactivatedSuspendedInvestmentRollover);
+        await investmentsServices.reactivateSuspendedRolloverInvestment(queryParams);
+        // let listOfReactivatedSuspendedInvestmentRollover = await investmentsServices.reactivateSuspendedRolloverInvestment(queryParams);
+        // console.log("After AXIOS CALL for Reactivate Suspended Investment Rollover ,  ==================================================");
+        // console.log("The ASTRAPAY API Reactivate Suspended Investment Rollover response,line 47: ", listOfReactivatedSuspendedInvestmentRollover);
     }
 }

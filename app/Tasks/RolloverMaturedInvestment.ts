@@ -40,11 +40,11 @@ export default class RolloverMaturedInvestment extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        let listOfRolloverMaturedInvestments = await investmentsServices.rolloverMaturedInvestment(queryParams);
+        await investmentsServices.rolloverMaturedInvestment(queryParams);
         // let listOfRolloverMaturedInvestments = await investmentsServices.rolloverMaturedInvestment(queryParams);  
-        console.log("After AXIOS CALL for Rollover Matured Investment ,  ==================================================");
-        console.log("The ASTRAPAY API Rollover Matured Investment response,line 47: ", listOfRolloverMaturedInvestments);
+        // console.log("After AXIOS CALL for Rollover Matured Investment ,  ==================================================");
+        // console.log("The ASTRAPAY API Rollover Matured Investment response,line 47: ", listOfRolloverMaturedInvestments);
     }
 }

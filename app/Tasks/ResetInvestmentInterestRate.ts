@@ -59,9 +59,8 @@ export default class ResetInvestmentInterestRate extends BaseTask {
             console.log(updatedInterestRate!.interestRate);  
         }
         
-
-        console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
-        console.log("The ASTRAPAY API Reset Investment Interest Rate response,line 64: ");
+        // console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
+        // console.log("The ASTRAPAY API Reset Investment Interest Rate response,line 64: ");
 
     }
 }

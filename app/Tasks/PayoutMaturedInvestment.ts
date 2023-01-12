@@ -40,11 +40,11 @@ export default class PayoutMaturedInvestment extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        let listOfPayoutMaturedInvestments = await investmentsServices.payoutMaturedInvestment(queryParams);
+         await investmentsServices.payoutMaturedInvestment(queryParams);
         // let listOfPayoutMaturedInvestments = await investmentsServices.payoutMaturedInvestment(queryParams);  
-        console.log("After AXIOS CALL for Payout Matured Investment ,  ==================================================");
-        console.log("The ASTRAPAY API Payout Matured Investment response,line 47: ", listOfPayoutMaturedInvestments);
+        // console.log("After AXIOS CALL for Payout Matured Investment ,  ==================================================");
+        // console.log("The ASTRAPAY API Payout Matured Investment response,line 47: ", listOfPayoutMaturedInvestments);
     }
 }
