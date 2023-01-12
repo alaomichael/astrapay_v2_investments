@@ -919,7 +919,7 @@ export default class InvestmentsServices {
                     walletId: walletId,
                     action: 'investment activated',
                     // @ts-ignore
-                    message: `${firstName} investment has just been activated.`,
+                    message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
                     createdAt: investment.startDate,
                     metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
                 }

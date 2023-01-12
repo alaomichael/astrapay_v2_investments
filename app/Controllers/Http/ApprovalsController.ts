@@ -793,25 +793,6 @@ export default class ApprovalsController {
             // console.log("Timeline object line 696:", timelineObject);
             await timelineService.createTimeline(timelineObject);
 
-            // Send Details to notification service
-            // let subject = "AstraPay Investment Rollover Approval";
-            // let message = `
-            //     ${firstName} this is to inform you, that your Investment rollover request, has been approved.
-
-            //     Please wait while the investment is being activated. 
-
-            //     Thank you.
-
-            //     AstraPay Investment.`;
-            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // // console.log("newNotificationMessage line 815:", newNotificationMessage);
-            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            //   console.log("Notification sent successfully");
-            // } else if (newNotificationMessage.message !== "Success") {
-            //   console.log("Notification NOT sent successfully");
-            //   console.log(newNotificationMessage);
-            // }
-
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "approval";
@@ -859,7 +840,7 @@ export default class ApprovalsController {
               walletId: walletId,
               action: 'investment rollover activated',
               // @ts-ignore
-              message: `${firstName} investment rollover has just been activated.`,
+              message: `${firstName}, your investment rollover of ${currencyCode} ${amount} has been activated.`,
               createdAt: selectedInvestmentRequestUpdate.startDate,
               metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
             }

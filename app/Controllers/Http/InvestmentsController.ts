@@ -477,7 +477,7 @@ export default class InvestmentsController {
           walletId: investment[0].walletId,// walletId, 
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName} investment has just been activated.`,
+          message: `${investment[0].firstName}, your investment of ${investment[0].currencyCode} ${investment[0].amount} has been activated.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
