@@ -35,8 +35,8 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         this.logger.info('Handled')
         console.log("Scheduler is Running Reset Investment Interest Rate ==============================================")
         // TODO : Update this when going live
-        let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
-        console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
+        // let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
+        // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
             limit: "20",
@@ -49,7 +49,7 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         }else{
             defaultInterestRate = 10;
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let typesServices = new TypesServices();
        let listOfInvestmentType = await typesServices.getTypes(queryParams);   
         for (let index = 0; index < listOfInvestmentType.length; index++) {

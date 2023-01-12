@@ -47,7 +47,7 @@ export default class ListenToMessageQueue extends BaseTask {
             })
         }
 
-        listen()
+        await listen();
         // console.log("After AXIOS CALL for Listen To Message Queue ,  ==================================================");
         // console.log("The ASTRAPAY API Listen To Message Queue  response,line 47: ");
     }

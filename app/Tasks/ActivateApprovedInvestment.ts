@@ -32,8 +32,8 @@ export default class ActivateApprovedInvestment extends BaseTask {
         this.logger.info('Handled')
         console.log("Scheduler is Running Activate Investment ==============================================")
         // TODO : Update this when going live
-        let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
-        console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
+        // let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
+        // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
             limit: "20",
