@@ -24,7 +24,9 @@ import Route from '@ioc:Adonis/Core/Route'
 //   return { hello: 'world' }
 // })
 
-Route.get('/', async () => {
+Route.get('/', async ({ logger }) => {
+
+  logger.info('An info message. From logger.');
   let listOfQueues = ["my_queue", "another_queue", "yet_another_queue"];
   for (let index = 0; index < listOfQueues.length; index++) {
     const currentQueue = listOfQueues[index];

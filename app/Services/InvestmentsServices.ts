@@ -2081,10 +2081,10 @@ export default class InvestmentsServices {
                                     createdAt: DateTime.now(),
                                     metadata: ``,
                                 };
-                                // console.log("Timeline object line 551:", timelineObject);
+                                // console.log("Timeline object line 2084:", timelineObject);
                                 await timelineService.createTimeline(timelineObject);
                                 // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                // console.log("new Timeline object line 553:", newTimeline);
+                                // console.log("new Timeline object line 2087:", newTimeline);
                                 // update record
                                 // debugger
                                 // Send Details to notification service
@@ -2127,6 +2127,7 @@ export default class InvestmentsServices {
                                 }
                                 // Send Notification to admin and others stakeholder
                                 let messageKey = "activation";
+                                let investment = record;
                                 let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2081:", newNotificationMessageWithoutPdf);
                                 // debugger
@@ -2182,6 +2183,7 @@ export default class InvestmentsServices {
                                 //                 }
                                 // Send Notification to admin and others stakeholder
                                 let messageKey = "activation_failed";
+                                let investment = record;
                                 let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                 // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
                                 // debugger
@@ -2209,15 +2211,15 @@ export default class InvestmentsServices {
                             // update record
                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                             // debugger
-                            // console.log(" Current log, line 1007 :", currentInvestment);
+                            // console.log(" Current log, line 2214 :", currentInvestment);
                             // send for update
                             await investmentsService.updateInvestment(currentInvestment, record);
                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                            // console.log(" Current log, line 1011 =========:", updatedInvestment);
+                            // console.log(" Current log, line 2218 =========:", updatedInvestment);
 
                         }
                         // Update Investment data
-                        // console.log(" Updated record line 1015: ", record.$original);
+                        // console.log(" Updated record line 2222: ", record.$original);
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                         // debugger
                         // send to user
@@ -2227,7 +2229,7 @@ export default class InvestmentsServices {
                             data: currentInvestment,
                         }
                     } else {
-                        // console.log("Entering no data 1023 ==================================")
+                        // console.log("Entering no data 2232 ==================================")
                         return {
                             status: 'FAILED',
                             message: 'no investment matched your search',
@@ -2259,7 +2261,7 @@ export default class InvestmentsServices {
             }
             // commit transaction and changes to database
             await trx.commit();
-            // console.log("Response data in investment service, line 2228:", investmentArray);
+            // console.log("Response data in investment service, line 2268:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
