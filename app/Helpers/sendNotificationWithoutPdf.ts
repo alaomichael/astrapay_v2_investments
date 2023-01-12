@@ -46,7 +46,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             let { first_name, last_name, rollover_type, investment_type,
                 investment_type_name, start_date, payout_date, interest_due_on_investment,
                 total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, investment_completion_date } = investment;
-            debugger
+            // debugger
             // Update the value of the variables
             firstName = first_name;
             lastName = last_name;
@@ -62,7 +62,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             datePayoutWasDone = date_payout_was_done;
             completionDate = investment_completion_date;
         }
-        debugger
+        // debugger
         let rolloverStatus;
         if (isRolloverActivated == true) {
             rolloverStatus = "Activated"
@@ -279,7 +279,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "penaltyDeducted": penalty,
                 }
         }
-debugger
+        // debugger
         const payload = {
             "messageKey": messageKey,//"otp_notification_sms",
             "rfiId": rfiCode,//"6533ty3848484934hfhf84",
