@@ -36,11 +36,11 @@ export default class ListenToMessageQueue extends BaseTask {
             await Rabbit.assertQueue('my_queue')
 
             await Rabbit.consumeFrom('my_queue', (message) => {
-                console.log("RabbitMQ Message ======================")
+                console.log("RabbitMQ Message, @ ListenToMessageQueue line 39 ======================")
                 console.log(message.content)
 
                 // "If you're expecting a JSON, this will return the parsed message"
-                console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
+                console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message, @ ListenToMessageQueue line 43 ================")
                 console.log(message.jsonContent)
                 // delete the message from queue by acknowledging it with "message.ack()"
                 message.ack();
@@ -49,6 +49,6 @@ export default class ListenToMessageQueue extends BaseTask {
 
         await listen();
         // console.log("After AXIOS CALL for Listen To Message Queue ,  ==================================================");
-        // console.log("The ASTRAPAY API Listen To Message Queue  response,line 47: ");
+        // console.log("The ASTRAPAY API Listen To Message Queue  response,line 52: ");
     }
 }
