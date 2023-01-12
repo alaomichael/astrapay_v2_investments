@@ -44,6 +44,27 @@ Route.get('/', async ({ logger }) => {
   // await Rabbit.sendToQueue('my_queue', {status:"OK", message:'This message was sent by adonis-rabbit. Testing.....'})
 })
 
+Route.get('/queue_messages', async ({ logger }) => {
+
+  logger.info('An info message from queue messages route. From logger.');
+async function listen() {
+    await Rabbit.assertQueue('my_queue')
+
+    await Rabbit.consumeFrom('my_queue', (message) => {
+        console.log("RabbitMQ Message ======================")
+        console.log(message.content)
+
+        // "If you're expecting a JSON, this will return the parsed message"
+        console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
+        console.log(message.jsonContent)
+
+        message.ack();
+    })
+}
+
+listen()
+})
+
 Route.get('health', async ({ response }) => {
   const report = await HealthCheck.getReport()
   return report.healthy ? response.ok(report) : response.badRequest(report)
