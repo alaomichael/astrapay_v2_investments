@@ -1030,10 +1030,10 @@ export default class InvestmentsServices {
                         // TESTING
                         // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         // let duration = 4
-                        console.log('Time investment was started line 973: ', startDate)
+                        // console.log('Time investment was started line 973: ', startDate)
                         // let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 976:', isDueForPayout)
+                        // console.log('Is due for payout status line 976:', isDueForPayout)
                         // let amt = investment.amount
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -1041,7 +1041,7 @@ export default class InvestmentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 984:', settings)
+                        // console.log('Approval setting line 984:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -1096,8 +1096,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 1040:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 1040:", newApprovalRequest);
                                 }
 
 
@@ -1150,8 +1151,9 @@ export default class InvestmentsServices {
                                     // check if the approval request is not existing
                                     let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                     if (!approvalRequestIsExisting) {
-                                        let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                        console.log("new ApprovalRequest object line 1040:", newApprovalRequest);
+                                        await approvalsService.createApproval(approvalObject);
+                                        // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                        // console.log("new ApprovalRequest object line 1040:", newApprovalRequest);
                                     }
 
                                 }
@@ -8226,8 +8228,8 @@ export default class InvestmentsServices {
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 // .orderBy("updated_at", "desc")
                 .first();
-            console.log("Investment search result from service")
-            console.log(investment);
+            // console.log("Investment search result from service")
+            // console.log(investment);
             return investment;
         } catch (error) {
             console.log(error)
@@ -8243,8 +8245,8 @@ export default class InvestmentsServices {
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
                 .first();
-            console.log("Investment search result from service")
-            console.log(investment);
+            // console.log("Investment search result from service")
+            // console.log(investment);
             return investment;
         } catch (error) {
             console.log(error)
@@ -8258,8 +8260,8 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-            console.log("Investment search result from service")
-            console.log(investment);
+            // console.log("Investment search result from service")
+            // console.log(investment);
             return investment;
         } catch (error) {
             console.log(error)
