@@ -1115,7 +1115,7 @@ export default class InvestmentsController {
           let duration = investment.duration
           // let timeline
           // let timelineObject
-          try {
+          // try {
             isDueForPayout = await dueForPayout(startDate, duration)
             // debugger
             // isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -1126,14 +1126,14 @@ export default class InvestmentsController {
             if (
               investment &&
               investment.investmentType !== 'debenture' &&
-              isDueForPayout === false &&
-              rolloverTarget <= 5
+              isDueForPayout === false
+              //  && rolloverTarget <= 5
             ) {
               // investment.amount = request.input('amount')
               // investment.rolloverTarget = newRolloverTarget
               // investment.rolloverType = newRolloverType
               // investment.investmentType = request.input('investmentType')
-              if (investment) {
+             
                 // update timeline
                 // timelineObject = {
                 //   id: uuid(),
@@ -1180,8 +1180,8 @@ export default class InvestmentsController {
                 return response.json({
                   status: 'OK', data: updatedInvestment//.map((inv) => inv.$original) 
                 })
-              }
-              return // 422
+             
+              // return // 422
             } else {
               return response.status(400).json({
                 status: 'FAILED',
@@ -1190,30 +1190,30 @@ export default class InvestmentsController {
                   'please check your investment type, and note the rollover target cannot be more than 5 times',
               })
             }
-          } catch (error) {
-            console.error('Is due for payout status Error :', error)
-            // return response.json({ status: 'FAILED', data: error.message })
-            console.log("Error line 1187", error.messages);
-            console.log("Error line 1188", error.message);
-            if (error.code === 'E_APP_EXCEPTION') {
-              console.log(error.codeSt)
-              let statusCode = error.codeSt ? error.codeSt : 500
-              return response.status(parseInt(statusCode)).json({
-                status: "FAILED",
-                message: error.messages,
-                hint: error.message
-              });
-            }
-            return response.status(500).json({
-              status: "FAILED",
-              message: error.messages,
-              hint: error.message
-            });
+          // } catch (error) {
+          //   console.error('Is due for payout status Error :', error)
+          //   // return response.json({ status: 'FAILED', data: error.message })
+          //   console.log("Error line 1187", error.messages);
+          //   console.log("Error line 1188", error.message);
+          //   if (error.code === 'E_APP_EXCEPTION') {
+          //     console.log(error.codeSt)
+          //     let statusCode = error.codeSt ? error.codeSt : 500
+          //     return response.status(parseInt(statusCode)).json({
+          //       status: "FAILED",
+          //       message: error.messages,
+          //       hint: error.message
+          //     });
+          //   }
+          //   return response.status(500).json({
+          //     status: "FAILED",
+          //     message: error.messages,
+          //     hint: error.message
+          //   });
 
-          }
+          // }
         } else {
-          return response.json({
-            status: 'FAILED', data: investment//.map((inv) => inv.$original) 
+          return response.status(422).json({
+            status: 'FAILED', message: 'This investment is yet to be activated.' , data: investment//.map((inv) => inv.$original) 
           })
         }
       } else {
