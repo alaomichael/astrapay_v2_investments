@@ -906,7 +906,7 @@ export default class ApprovalsController {
             }
 
             // Send Notification to admin and others stakeholder
-            // let investment = record;
+            investment = selectedInvestmentRequestUpdate;
             messageKey = "activation";
             newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 920:", newNotificationMessageWithoutPdf);
@@ -967,12 +967,12 @@ export default class ApprovalsController {
             // update timeline
             timelineObject = {
               id: uuid(),
-              action: "investment activation failed",
+              action: "investment rollover rejected",
               investmentId: investmentId,//id,
               walletId: walletId,// walletId, 
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has rejected by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1000,8 +1000,8 @@ export default class ApprovalsController {
             // }
 
             // Send Notification to admin and others stakeholder
-            let investment = record;
-            let messageKey = "activation_failed";
+            let investment = selectedInvestmentRequestUpdate;
+            let messageKey = "rollover_failed";
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1014:", newNotificationMessageWithoutPdf);
             // debugger
@@ -2222,7 +2222,7 @@ export default class ApprovalsController {
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           let { firstName, // email,
-             totalAmountToPayout, } = record; // interestDueOnInvestment,
+            totalAmountToPayout, } = record; // interestDueOnInvestment,
 
           // console.log("Updated record Status line 2227: ", record);
           if (isRolloverSuspended === true) {
