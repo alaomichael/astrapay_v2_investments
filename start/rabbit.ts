@@ -18,8 +18,8 @@ async function listen() {
         console.log(message.content)
 
         // "If you're expecting a JSON, this will return the parsed message"
-        console.log("If you're expecting a JSON, this will return the parsed message ================")
-        // console.log(message.jsonContent)
+        console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
+        console.log(message.jsonContent)
 
         message.ack();
     })
