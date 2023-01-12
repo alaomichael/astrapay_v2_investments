@@ -403,19 +403,19 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                 }
                 // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "investment request approval updated",
-                    investmentId: selectedInvestmentRequest.id,
-                    userId: selectedInvestmentRequest.userId,
-                    walletId: selectedInvestmentRequest.walletId,
-                    // @ts-ignore
-                    message: `${selectedInvestmentRequest.firstName} investment request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${selectedInvestmentRequest.requestType}`,
-                };
-                // console.log("Timeline object line 408:", timelineObject);
-                await timelineService.createTimeline(timelineObject);
+                // timelineObject = {
+                //     id: uuid(),
+                //     action: "investment request approval updated",
+                //     investmentId: selectedInvestmentRequest.id,
+                //     userId: selectedInvestmentRequest.userId,
+                //     walletId: selectedInvestmentRequest.walletId,
+                //     // @ts-ignore
+                //     message: `${selectedInvestmentRequest.firstName} investment request approval record has just been updated.`,
+                //     createdAt: DateTime.now(),
+                //     metadata: `request type : ${selectedInvestmentRequest.requestType}`,
+                // };
+                // // console.log("Timeline object line 408:", timelineObject);
+                // await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 410:", newTimeline);
             } else if (saveApproval.requestType === "start_investment_rollover") {
@@ -442,7 +442,7 @@ export default class ApprovalsServices {
                         //email,
                         rfiCode,
                         // currencyCode
-                     } = selectedInvestmentRequestUpdate;
+                    } = selectedInvestmentRequestUpdate;
                     // let senderName = `${firstName} ${lastName}`;
                     // let senderAccountNumber = walletId;
                     // let senderAccountName = senderName;
@@ -852,19 +852,19 @@ export default class ApprovalsServices {
                     //     };
                 }
                 // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "investment request approval updated",
-                    investmentId: selectedInvestmentRequest.id,
-                    userId: selectedInvestmentRequest.userId,
-                    walletId: selectedInvestmentRequest.walletId,
-                    // @ts-ignore
-                    message: `${selectedInvestmentRequest.firstName} investment request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${selectedInvestmentRequest.requestType}`,
-                };
-                // console.log("Timeline object line 766:", timelineObject);
-                await timelineService.createTimeline(timelineObject);
+                // timelineObject = {
+                //     id: uuid(),
+                //     action: "investment request approval updated",
+                //     investmentId: selectedInvestmentRequest.id,
+                //     userId: selectedInvestmentRequest.userId,
+                //     walletId: selectedInvestmentRequest.walletId,
+                //     // @ts-ignore
+                //     message: `${selectedInvestmentRequest.firstName} investment request approval record has just been updated.`,
+                //     createdAt: DateTime.now(),
+                //     metadata: `request type : ${selectedInvestmentRequest.requestType}`,
+                // };
+                // // console.log("Timeline object line 766:", timelineObject);
+                // await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 769:", newTimeline);
             } else if (saveApproval.requestType === "payout_investment") {
@@ -917,19 +917,19 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
                 }
                 // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "investment payout request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: selectedApproval.userId,
-                    walletId: selectedApproval.walletId,
-                    // @ts-ignore
-                    message: `${selectedInvestmentRequest.firstName} investment payout request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${selectedApproval.requestType}`,
-                };
-                // console.log("Timeline object line 831:", timelineObject);
-                await timelineService.createTimeline(timelineObject);
+                // timelineObject = {
+                //     id: uuid(),
+                //     action: "investment payout request approval updated",
+                //     investmentId: saveApproval.investmentId,
+                //     userId: selectedApproval.userId,
+                //     walletId: selectedApproval.walletId,
+                //     // @ts-ignore
+                //     message: `${selectedInvestmentRequest.firstName} investment payout request approval record has just been updated.`,
+                //     createdAt: DateTime.now(),
+                //     metadata: `request type : ${selectedApproval.requestType}`,
+                // };
+                // // console.log("Timeline object line 831:", timelineObject);
+                // await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 834:", newTimeline);
             } else if (saveApproval.requestType === "terminate_investment") {
@@ -942,41 +942,76 @@ export default class ApprovalsServices {
                     console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
                     selectedInvestmentTerminationRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
-                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_completed";
+                    selectedInvestmentTerminationRequestUpdate.status = "liquidation_approved";
                     // Calculate and deduct the penalty from the accrued interest, before payout
 
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
                     // update the record
                     // debugger
                     await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment liquidation approved",
+                        investmentId: saveApproval.investmentId,
+                        userId: selectedApproval.userId,
+                        walletId: selectedApproval.walletId,
+                        // @ts-ignore
+                        message: `${selectedInvestmentTerminationRequest.firstName} investment liquidation request has just been approved.`,
+                        createdAt: DateTime.now(),
+                        metadata: `request type : ${selectedApproval.requestType}`,
+                    };
+                    // console.log("Timeline object line 964:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                    // console.log("new Timeline object line 967:", newTimeline);
+
+                    // Send to investmentsService for processing of liquidation
+                    await investmentService.liquidateInvestment(saveApproval.investmentId);
+
                 } else if (saveApproval.approvalStatus === "rejected") {
                     // update the neccesary field
-                    console.log("selectedInvestmentTerminationRequest ========================================================")
-                    console.log(selectedInvestmentTerminationRequest)
+                    // console.log("selectedInvestmentTerminationRequest ========================================================")
+                    // console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
-                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "investment_termination_rejected" //saveApproval.approvalStatus;
-                    selectedInvestmentTerminationRequestUpdate.status = "investment_termination_rejected";
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "liquidation_rejected" //saveApproval.approvalStatus;
+                    // selectedInvestmentTerminationRequestUpdate.status = "liquidation_rejected";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
                     await investmentService.updateInvestment(selectedInvestmentTerminationRequest, selectedInvestmentTerminationRequestUpdate);
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment liquidation rejected",
+                        investmentId: saveApproval.investmentId,
+                        userId: selectedApproval.userId,
+                        walletId: selectedApproval.walletId,
+                        // @ts-ignore
+                        message: `${selectedInvestmentTerminationRequest.firstName} investment liquidation request has just been rejected.`,
+                        createdAt: DateTime.now(),
+                        metadata: `request type : ${selectedApproval.requestType}`,
+                    };
+                    // console.log("Timeline object line 994:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                    // console.log("new Timeline object line 997:", newTimeline);
+
+                    // Send Notification to admin and others stakeholder
+                    let investment = selectedInvestmentTerminationRequest;
+                    let { rfiCode } = selectedInvestmentTerminationRequest;
+                    let messageKey = "liquidation_rejection";
+                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                    // console.log("newNotificationMessage line 2563:", newNotificationMessageWithoutPdf);
+                    // debugger
+                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                        console.log("Notification sent successfully");
+                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                        console.log("Notification NOT sent successfully");
+                        console.log(newNotificationMessageWithoutPdf);
+                    }
                 }
-                // update timeline
-                timelineObject = {
-                    id: uuid(),
-                    action: "investment termination request approval updated",
-                    investmentId: saveApproval.investmentId,
-                    userId: selectedApproval.userId,
-                    walletId: selectedApproval.walletId,
-                    // @ts-ignore
-                    message: `${selectedInvestmentTerminationRequest.firstName} investment termination request approval record has just been updated.`,
-                    createdAt: DateTime.now(),
-                    metadata: `request type : ${selectedApproval.requestType}`,
-                };
-                // console.log("Timeline object line 408:", timelineObject);
-                await timelineService.createTimeline(timelineObject);
-                // let newTimeline = await timelineService.createTimeline(timelineObject);
-                // console.log("new Timeline object line 410:", newTimeline);
+
             }
             return saveApproval
         } catch (error) {

@@ -1149,10 +1149,10 @@ export default class ApprovalsController {
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
-              // console.log("Timeline object line 537:", timelineObject);
+              // console.log("Timeline object line 1152:", timelineObject);
               await timelineService.createTimeline(timelineObject);
               // let newTimeline = await timelineService.createTimeline(timelineObject);
-              // console.log("new Timeline object line 540:", newTimeline);
+              // console.log("new Timeline object line 1155:", newTimeline);
               // update record
 
               // Send Details to notification service
@@ -1200,19 +1200,19 @@ export default class ApprovalsController {
 
           }
           // update timeline
-          timelineObject = {
-            id: uuid(),
-            action: "investment request approval updated",
-            investmentId: record.id,
-            userId: record.userId,
-            walletId: record.walletId,
-            // @ts-ignore
-            message: `${record.firstName} investment request approval record has just been updated.`,
-            createdAt: DateTime.now(),
-            metadata: `request type : ${record.requestType}`,
-          };
-          // console.log("Timeline object line 1028:", timelineObject);
-          await timelineService.createTimeline(timelineObject);
+          // timelineObject = {
+          //   id: uuid(),
+          //   action: "investment request approval updated",
+          //   investmentId: record.id,
+          //   userId: record.userId,
+          //   walletId: record.walletId,
+          //   // @ts-ignore
+          //   message: `${record.firstName} investment request approval record has just been updated.`,
+          //   createdAt: DateTime.now(),
+          //   metadata: `request type : ${record.requestType}`,
+          // };
+          // // console.log("Timeline object line 1028:", timelineObject);
+          // await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
           // console.log("new Timeline object line 1031:", newTimeline);
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
@@ -2440,9 +2440,9 @@ export default class ApprovalsController {
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1597 :", updatedInvestment);
 
-        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "approved" && record.status == "active" && record.investmentType === "fixed") {
-          newStatus = 'terminated'
-          record.status = newStatus
+        } else if (approval.requestType == "liquidate_investment" && approval.approvalStatus == "approved" && record.status == "active" && record.investmentType === "fixed") {
+          // newStatus = 'liquidated'
+          // record.status = newStatus
           record.approvalStatus = approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
@@ -2451,12 +2451,14 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 1346 :", currentInvestment);
+          // console.log(" Current log, line 2446 :", currentInvestment);
           // send for update
           let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 1349 :", updatedInvestment);
+          console.log(" Current log, line 2449 :", updatedInvestment);
 
-          // console.log("Updated record Status line 1351: ", record);
+          await investmentsService.liquidateInvestment(investmentId);
+
+          // console.log("Updated record Status line 2451: ", record);
           // update timeline
           timelineObject = {
             id: uuid(),
@@ -2469,10 +2471,10 @@ export default class ApprovalsController {
             createdAt: DateTime.now(),
             metadata: ``,
           };
-          // console.log("Timeline object line 1727:", timelineObject);
+          // console.log("Timeline object line 2472:", timelineObject);
           await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
-          // console.log("new Timeline object line 1729:", newTimeline);
+          // console.log("new Timeline object line 2475:", newTimeline);
 
           // Send Details to notification service
 
@@ -2504,7 +2506,7 @@ export default class ApprovalsController {
             console.log(newNotificationMessageWithoutPdf);
           }
 
-        } else if (approval.requestType == "terminate_investment" && approval.approvalStatus == "rejected" && record.status == "active" && record.investmentType === "fixed") {
+        } else if (approval.requestType == "liquidate_investment" && approval.approvalStatus == "rejected" && record.status == "active" && record.investmentType === "fixed") {
           // newStatus = 'active'
           // record.status = newStatus
           record.approvalStatus = approval.approvalStatus;
@@ -2526,12 +2528,12 @@ export default class ApprovalsController {
           // update timeline
           timelineObject = {
             id: uuid(),
-            action: "investment termination rejected",
+            action: "investment liquidation rejected",
             investmentId: id,
             walletId: walletIdToSearch,
             userId: userIdToSearch,
             // @ts-ignore
-            message: `${firstName}, your investment termination has been rejected, please check your account,thank you.`,
+            message: `${firstName}, your investment liquidation has been rejected, please check your account,thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };

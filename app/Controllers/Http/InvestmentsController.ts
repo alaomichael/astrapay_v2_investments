@@ -1118,7 +1118,7 @@ export default class InvestmentsController {
             isDueForPayout = await dueForPayout(startDate, duration)
             // debugger
             // isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
-            console.log('Is due for payout status :', isDueForPayout)
+            console.log('Is due for payout status @ InvestmentsController line 1121 ========= :', isDueForPayout)
             // let newRolloverTarget = request.input('rolloverTarget')
             // let newRolloverType = request.input('rolloverType')
             // Restrict update to timed/fixed deposit only
@@ -1134,20 +1134,20 @@ export default class InvestmentsController {
               // investment.investmentType = request.input('investmentType')
               if (investment) {
                 // update timeline
-                timelineObject = {
-                  id: uuid(),
-                  action: 'investment updated',
-                  investmentId: investment.id,//id,
-                  walletId: investment.walletId,// walletId, 
-                  userId: investment.userId,// userId,
-                  // @ts-ignore
-                  message: `${investment.firstName} investment has just been updated.`,
-                  createdAt: DateTime.now(),
-                  metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
-                }
-                // console.log('Timeline object line 935:', timelineObject)
-                //  Push the new object to the array
-                await timelineService.createTimeline(timelineObject);
+                // timelineObject = {
+                //   id: uuid(),
+                //   action: 'investment updated',
+                //   investmentId: investment.id,//id,
+                //   walletId: investment.walletId,// walletId, 
+                //   userId: investment.userId,// userId,
+                //   // @ts-ignore
+                //   message: `${investment.firstName} investment has just been updated.`,
+                //   createdAt: DateTime.now(),
+                //   metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+                // }
+                // // console.log('Timeline object line 935:', timelineObject)
+                // //  Push the new object to the array
+                // await timelineService.createTimeline(timelineObject);
                 // update investment record
                 investment.rolloverType = rolloverType;
                 investment.rolloverTarget = rolloverTarget;
@@ -1257,7 +1257,7 @@ export default class InvestmentsController {
       const { walletId, userId } = request.all()
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
       if (investment) {
-        console.log('Investment Selected for Update line 889:', investment.startDate)
+        console.log('Investment Selected for Update line 1260:', investment.startDate)
         let isDueForPayout
         if (investment.startDate !== null) {
           let createdAt = investment.createdAt
@@ -1283,20 +1283,20 @@ export default class InvestmentsController {
               // investment.investmentType = request.input('investmentType')
               if (investment) {
                 // update timeline
-                timelineObject = {
-                  id: uuid(),
-                  action: 'investment updated',
-                  investmentId: investment.id,//id,
-                  walletId: investment.walletId,// walletId, 
-                  userId: investment.userId,// userId,
-                  // @ts-ignore
-                  message: `${investment.firstName} investment has just been updated.`,
-                  createdAt: DateTime.now(),
-                  metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
-                }
-                // console.log('Timeline object line 935:', timelineObject)
-                //  Push the new object to the array
-                await timelineService.createTimeline(timelineObject);
+                // timelineObject = {
+                //   id: uuid(),
+                //   action: 'investment updated',
+                //   investmentId: investment.id,//id,
+                //   walletId: investment.walletId,// walletId, 
+                //   userId: investment.userId,// userId,
+                //   // @ts-ignore
+                //   message: `${investment.firstName} investment has just been updated.`,
+                //   createdAt: DateTime.now(),
+                //   metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+                // }
+                // // console.log('Timeline object line 1297:', timelineObject)
+                // //  Push the new object to the array
+                // await timelineService.createTimeline(timelineObject);
                 // Save
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);

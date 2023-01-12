@@ -7943,7 +7943,7 @@ export default class InvestmentsServices {
         }
     }
 
-    public async liquidateInvestment(investmentId: string, queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
+    public async liquidateInvestment(investmentId: string, queryParams?: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
@@ -8659,9 +8659,9 @@ export default class InvestmentsServices {
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 6497 :", updatedInvestment);
+                                        // console.log(" Current log, line 8662 :", updatedInvestment);
 
-                                        // console.log("Updated record Status line 6499: ", record);
+                                        // console.log("Updated record Status line 8664: ", record);
 
                                         // update timeline
                                         timelineObject = {
@@ -8675,10 +8675,10 @@ export default class InvestmentsServices {
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
-                                        // console.log("Timeline object line 1388:", timelineObject);
+                                        // console.log("Timeline object line 8678:", timelineObject);
                                         await timelineService.createTimeline(timelineObject);
                                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                        // console.log("new Timeline object line 1391:", newTimeline);
+                                        // console.log("new Timeline object line 8681:", newTimeline);
                                         // update record
 
                                         // Send Details to notification service
@@ -8741,7 +8741,7 @@ export default class InvestmentsServices {
                                         // await record.save();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 1428 :", currentInvestment);
+                                        // console.log(" Current log, line 8744 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
@@ -8790,7 +8790,7 @@ export default class InvestmentsServices {
                                         let messageKey = "liquidation";
                                         investment = record;
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                                        // console.log("newNotificationMessage line 8737:", newNotificationMessageWithoutPdf);
+                                        // console.log("newNotificationMessage line 8793:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
@@ -8806,18 +8806,18 @@ export default class InvestmentsServices {
                                         console.log("Entering failed payout of principal and interest data block ,line 8816 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 8819 :", currentInvestment);
+                                        // console.log(" Current log, line 8809 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 8823 :", updatedInvestment);
-                                        // console.log(" creditUserWalletWithPrincipal line 8824 ================", creditUserWalletWithPrincipal );
-                                        // console.log(" creditUserWalletWithInterest line 8825 ================", creditUserWalletWithInterest );
+                                        // console.log(" Current log, line 8813 :", updatedInvestment);
+                                        // console.log(" creditUserWalletWithPrincipal line 8814 ================", creditUserWalletWithPrincipal );
+                                        // console.log(" creditUserWalletWithInterest line 8815 ================", creditUserWalletWithInterest );
                                         // debugger
                                         throw Error(`${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
                                     }
                                 } else {
-                                    // console.log("Entering no data 8830 ==================================")
+                                    // console.log("Entering no data 8820 ==================================")
                                     return {
                                         status: 'FAILED',
                                         message: 'no investment matched your search',
