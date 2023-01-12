@@ -41,6 +41,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
+import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
@@ -1088,7 +1089,7 @@ export default class InvestmentsController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const timelineService = new TimelinesServices();
+      // const timelineService = new TimelinesServices();
       const investmentsService = new InvestmentsServices();
       // const { investmentId } = request.params()
       const { investmentId } = request.all()
@@ -1113,7 +1114,7 @@ export default class InvestmentsController {
           let startDate = investment.startDate
           let duration = investment.duration
           // let timeline
-          let timelineObject
+          // let timelineObject
           try {
             isDueForPayout = await dueForPayout(startDate, duration)
             // debugger
@@ -1283,20 +1284,20 @@ export default class InvestmentsController {
               // investment.investmentType = request.input('investmentType')
               if (investment) {
                 // update timeline
-                // timelineObject = {
-                //   id: uuid(),
-                //   action: 'investment updated',
-                //   investmentId: investment.id,//id,
-                //   walletId: investment.walletId,// walletId, 
-                //   userId: investment.userId,// userId,
-                //   // @ts-ignore
-                //   message: `${investment.firstName} investment has just been updated.`,
-                //   createdAt: DateTime.now(),
-                //   metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
-                // }
-                // // console.log('Timeline object line 1297:', timelineObject)
-                // //  Push the new object to the array
-                // await timelineService.createTimeline(timelineObject);
+                timelineObject = {
+                  id: uuid(),
+                  action: 'investment rollover target updated',
+                  investmentId: investment.id,//id,
+                  walletId: investment.walletId,// walletId, 
+                  userId: investment.userId,// userId,
+                  // @ts-ignore
+                  message: `${investment.firstName} investment rollover target has just been updated.`,
+                  createdAt: DateTime.now(),
+                  metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
+                }
+                // console.log('Timeline object line 1297:', timelineObject)
+                //  Push the new object to the array
+                await timelineService.createTimeline(timelineObject);
                 // Save
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1882,13 +1883,21 @@ export default class InvestmentsController {
       // console.log(" Current log, line 1777 :", updatedInvestment);
 
       let newInvestmentId = investment.id
-      // Send to Notificaation Service
+      // Send to Notification Service
       // @ts-ignore
       let newInvestmentEmail = email
       Event.emit('new:investment', {
         id: newInvestmentId,
         email: newInvestmentEmail,
       })
+
+      // publish to RabbitMQ Queue
+      // Ensures the queue exists
+      await Rabbit.assertQueue('my_queue')
+
+      // Sends a message to the queue
+      await Rabbit.sendToQueue('my_queue', { data: investment })
+
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {
       console.error('update investment by investmentId Error :', error)
@@ -2302,27 +2311,7 @@ export default class InvestmentsController {
             // console.log('Payout investment data line 1380:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
-            // debugger
-            // Check if the user set Rollover
-            // "rolloverType": "101",
-            // "rolloverTarget": 3,
-            // "rolloverDone": 0,
-            // '100' = 'no rollover',
-            //   '101' = 'rollover principal only',
-            //   '102' = 'rollover principal with interest',
-            // if (investment.rolloverTarget > 0 && investment.rolloverTarget > investment.rolloverDone && investment.rolloverType !== "100") {
-            //   // check type of rollover
-
-            //   if (investment.rollOverType == "101") {
-
-            //   } else if (investment.rollOverType == "101") {
-
-            //   }
-            // } else {
-
-            // }
-
-            // await investment.save()
+           
             let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // send for update
             // await investmentsService.updateInvestment(record, investment);
@@ -3884,7 +3873,6 @@ export default class InvestmentsController {
                       // stringify the timeline array
                       // investment.timeline = JSON.stringify(timeline)
 
-
                       return response.send({
                         status: 'OK',
                         message:
@@ -4538,7 +4526,7 @@ export default class InvestmentsController {
             // update timeline
             timelineObject = {
               id: uuid(),
-              action: 'terminated investment payout',
+              action: 'liquidate investment payout',
               investmentId: payload.id,//id,
               walletId: payload.walletId,// walletId, 
               userId: payload.userId,// userId,

@@ -251,25 +251,6 @@ export default class InvestmentsServices {
                         // console.log("new Timeline object line 233:", newTimeline);
                         // update record
 
-                        // Send Details to notification service
-                        //         let subject = "AstraPay Investment Payout Failed";
-                        //         let message = `
-                        // ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
-
-                        // Please check your device. 
-
-                        // Thank you.
-
-                        // AstraPay Investment.`;
-                        //         let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-                        //         // console.log("newNotificationMessage line 262:", newNotificationMessage);
-                        //         // debugger
-                        //         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-                        //             console.log("Notification sent successfully");
-                        //         } else if (newNotificationMessage.message !== "Success") {
-                        //             console.log("Notification NOT sent successfully");
-                        //             console.log(newNotificationMessage);
-                        //         }
                         // Send Notification to admin and others stakeholder
                         let investment = record;
                         let messageKey = "payout_failed";
