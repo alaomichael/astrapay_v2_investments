@@ -33,11 +33,12 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             payoutNotificationEmail,
             rolloverNotificationEmail,
             liquidationNotificationEmail,
+            currencyCode,
         } = settings
 
         let { id, firstName, lastName, amount, duration, rolloverType, phone, email, investmentType,
             investmentTypeName, startDate, payoutDate, interestDueOnInvestment,
-            totalAmountDueForPayout, isRolloverActivated, datePayoutWasDone, penalty, investmentCompletionDate } = investment;
+            totalAmountToPayout, isRolloverActivated, datePayoutWasDone, penalty, investmentCompletionDate } = investment;
         // debugger
         let principalDueForPayout = amount;
         let interestDueForPayout = interestDueOnInvestment;
@@ -45,7 +46,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         if (investment.firstName == undefined) {
             let { first_name, last_name, rollover_type, investment_type,
                 investment_type_name, start_date, payout_date, interest_due_on_investment,
-                total_amount_due_for_payout, is_rollover_activated, date_payout_was_done, investment_completion_date } = investment;
+                total_amount_to_payout, is_rollover_activated, date_payout_was_done, investment_completion_date } = investment;
             // debugger
             // Update the value of the variables
             firstName = first_name;
@@ -57,7 +58,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             payoutDate = payout_date;
             interestDueForPayout = interest_due_on_investment;
             // principalDueForPayout = amount;
-            totalAmountDueForPayout = total_amount_due_for_payout;
+            totalAmountToPayout = total_amount_to_payout;
             isRolloverActivated = is_rollover_activated;
             datePayoutWasDone = date_payout_was_done;
             completionDate = investment_completion_date;
@@ -76,18 +77,18 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             // amount
             // interestDueForPayout
             // totalAmountDueForPayout
-            amountPaid = ` NGN ${interestDueForPayout}`;
-            amountRollover = ` NGN ${amount}`;
+            amountPaid = ` ${currencyCode} ${interestDueForPayout}`;
+            amountRollover = ` ${currencyCode} ${amount}`;
             rolloverType = "Rollover Principal only";
         } else if (rolloverType == "102") {
             // Rollover Principal and Interest 
-            amountPaid = ` NGN ${0}`;
-            amountRollover = ` NGN ${totalAmountDueForPayout}`;
+            amountPaid = ` ${currencyCode} ${0}`;
+            amountRollover = ` ${currencyCode} ${totalAmountToPayout}`;
             rolloverType = "Rollover Principal and Interest"
         } else if (rolloverType == "103") {
             // Rollover Interest only
-            amountPaid = ` NGN ${amount}`;
-            amountRollover = ` NGN ${interestDueForPayout}`;
+            amountPaid = ` ${currencyCode} ${amount}`;
+            amountRollover = ` ${currencyCode} ${interestDueForPayout}`;
             rolloverType = "Rollover Interest only"
         }
         let metadata;
@@ -112,7 +113,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
+                    "amount": ` ${currencyCode} ${amount}`,
                     "duration": duration,
                     "rolloverType": rolloverType,
                     "customerPhone": phone,
@@ -139,7 +140,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
+                    "amount": ` ${currencyCode} ${amount}`,
                     "duration": duration,
                     "rolloverType": rolloverType,
                     "customerPhone": phone,
@@ -162,7 +163,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
+                    "amount": ` ${currencyCode} ${amount}`,
                     "duration": duration,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
@@ -187,14 +188,14 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": amount,
+                    "amount": ` ${currencyCode} ${amount}`,
                     "duration": duration,
                     "investmentId": id,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
-                    "interestDueForPayout": interestDueForPayout,
-                    "principalDueForPayout": principalDueForPayout,
-                    "totalAmountDueForPayout": totalAmountDueForPayout,
+                    "interestDueForPayout": ` ${currencyCode} ${interestDueForPayout}`,
+                    "principalDueForPayout": ` ${currencyCode} ${principalDueForPayout}`,
+                    "totalAmountDueForPayout": ` ${currencyCode} ${totalAmountToPayout}`,
                     "rollOverStatus": rolloverStatus,
                 }
         } else if (messageKey == "payout") {
@@ -219,7 +220,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-                    "amountPaid": totalAmountDueForPayout,
+                    "amountPaid": amountPaid,
                     "paymentDate": datePayoutWasDone,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
@@ -272,11 +273,11 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "customerName": customerName,
                     "duration": duration,
                     "investmentId": id,
-                    "amountPaid": totalAmountDueForPayout,
+                    "amountPaid": ` ${currencyCode} ${totalAmountToPayout}`, //totalAmountToPayout,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                     "liquidationDate": completionDate,
-                    "penaltyDeducted": penalty,
+                    "penaltyDeducted": ` ${currencyCode} ${penalty}`,
                 }
         }
         // debugger

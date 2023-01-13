@@ -145,6 +145,7 @@ Route.group(() => {
     Route.delete('admin/investments/:userId', 'InvestmentsController.destroy')
     Route.delete("admin/investments/types/:typeId", "TypesController.destroy");
   })
+
   // User Endpoints
   Route.group(() => {
     // Route.resource('investments/payouts', 'PayoutsController').apiOnly()
@@ -214,19 +215,19 @@ Route.group(() => {
     // Route.put('admin/investments/rates', 'RatesController.update')
     // Route.put('admin/investments/taxes', 'TaxesController.update')
     // Route.put('admin/investments/taxrecords', 'TaxRecordsController.update')
-    Route.put('admin/investments/approvals/:id', 'ApprovalsController.update')
-    Route.put('admin/investments', 'InvestmentsController.update')
+    // Route.put('admin/investments/approvals/:id', 'ApprovalsController.update')
+    // Route.put('admin/investments', 'InvestmentsController.update')
     Route.put('investments', 'InvestmentsController.update')
     Route.put('investments/:investmentId', 'InvestmentsController.updateByInvestmentId')
-    Route.put('admin/investments/rfi_records', 'RfiRecordsController.update')
+    // Route.put('admin/investments/rfi_records', 'RfiRecordsController.update')
     // updateInterestRate
-    Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
-    Route.put("admin/investments/types/:typeId", "TypesController.update");
+    // Route.put("admin/investments/types/interest_rate/:typeId", "TypesController.updateInterestRate");
+    // Route.put("admin/investments/types/:typeId", "TypesController.update");
     // Reactivate suspended actions
-    Route.put("admin/investments/reactivate_suspended_investment_payout_by_investment_id", "InvestmentsController.reactivateSuspendedPayoutInvestmentByInvestmentId");
-    Route.put("admin/investments/reactivate_suspended_investment_rollover_by_investment_id", "InvestmentsController.reactivateSuspendedRolloverInvestmentByInvestmentId");
+    // Route.put("admin/investments/reactivate_suspended_investment_payout_by_investment_id", "InvestmentsController.reactivateSuspendedPayoutInvestmentByInvestmentId");
+    // Route.put("admin/investments/reactivate_suspended_investment_rollover_by_investment_id", "InvestmentsController.reactivateSuspendedRolloverInvestmentByInvestmentId");
     // liquidate investment
-    Route.put("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
+    // Route.put("admin/investments/liquidate_investments", "InvestmentsController.liquidateInvestment");
 
 
     // DELETE ROUTES
