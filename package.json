@@ -12,7 +12,7 @@
     "start_former": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "pushToGithub": "git push -u origin dev && git push -u octa-investment-service dev",
+    "pushToGithub": "npm run build && git push -u origin dev && git push -u octa-investment-service dev",
     "test": "node ace test --watch",
     "deploy": "git add . && git commit -m Heroku && git push heroku main",
     "restart": "heroku restart -a astrapay-v2-investment",
