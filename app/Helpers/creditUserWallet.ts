@@ -5,8 +5,9 @@ const Env = require("@ioc:Adonis/Core/Env");
 // const ASTRAPAY_BEARER_TOKEN = Env.get("ASTRAPAY_BEARER_TOKEN");
 const ORCHESTRATOR_URL = Env.get("ORCHESTRATOR_URL");
 import RfiRecordsServices from "App/Services/RfiRecordsServices";
-// const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
+// const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
 import SettingServices from "App/Services/SettingsServices";
+// import { DateTime } from "luxon";
 const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
@@ -59,7 +60,11 @@ export const creditUserWallet = async function creditUserWallet(
         // let approvalIsAutomated = false
         console.log("investmentWalletId setting line 59:", investmentWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
-
+        // let reference = DateTime.now() + randomstring.generate(4);
+        // investmentId = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+        // console.log("Customer Transaction Reference , line 69 ==================")
+        // console.log(investmentId);
+        debugger;
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
