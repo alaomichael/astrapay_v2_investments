@@ -14,7 +14,7 @@ const { URLSearchParams } = require('url');
 // const randomstring = require("randomstring");
 
 export const creditUserWallet = async function creditUserWallet(
-    amount, lng, lat, investmentId,
+    amount, lng, lat, customerReference,
     beneficiaryName,
     beneficiaryAccountNumber,
     beneficiaryAccountName,
@@ -59,11 +59,11 @@ export const creditUserWallet = async function creditUserWallet(
         let senderName = rfiName;
         // let approvalIsAutomated = false
         console.log("investmentWalletId setting line 59:", investmentWalletId);
-        // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
+        
         // let reference = DateTime.now() + randomstring.generate(4);
-        // investmentId = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+        // customerReference = `${TRANSACTION_PREFIX}-${reference}-${customerReference}`;
         // console.log("Customer Transaction Reference , line 69 ==================")
-        // console.log(investmentId);
+        // console.log(customerReference);
         debugger;
         const headers = {
             "correlation-id": "68678989IO09",
@@ -77,7 +77,7 @@ export const creditUserWallet = async function creditUserWallet(
 
         const payload = {
             "batchDetail": {
-                "customerReference": investmentId,
+                "customerReference": customerReference,
                 "currency": "NGN",
                 "customerMetadata": {
                     "cool": "cool"
@@ -105,7 +105,7 @@ export const creditUserWallet = async function creditUserWallet(
             "beneficiaries": [
                 {
                     "amount": amountConvertedToKobo,
-                    "customerReference": investmentId,
+                    "customerReference": customerReference,
                     "beneficiaryName": beneficiaryName,
                     "beneficiaryAccountNumber": beneficiaryAccountNumber,
                     "beneficiaryAccountName": beneficiaryAccountName,
