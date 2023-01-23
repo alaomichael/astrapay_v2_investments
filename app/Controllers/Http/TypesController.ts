@@ -156,7 +156,7 @@ export default class TypesController {
                 minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
                 maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
             }
-
+// debugger
             // TODO: Uncomment to use LoginUserData
             console.log("loginUserData  ==================", loginUserData)
             // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
