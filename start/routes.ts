@@ -42,6 +42,10 @@ Route.get('/', async ({ logger }) => {
 
   // // Sends a message to the queue
   // await Rabbit.sendToQueue('my_queue', {status:"OK", message:'This message was sent by adonis-rabbit. Testing.....'})
+  return {
+    status: "OK",
+    message: "Successfull",
+  };
 })
 
 Route.get('/queue_messages', async ({ logger }) => {
