@@ -17,13 +17,7 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel",
-    {
-      "file": "./start/rabbit",
-      "environment": [
-        "web"
-      ]
-    }
+    "./start/kernel"
   ],
   "providers": [
     "./providers/AppProvider",
@@ -33,8 +27,7 @@
     "@adonisjs/attachment-lite",
     "@adonisjs/session",
     "@adonisjs/mail",
-    "adonis5-scheduler",
-    "adonis-rabbit"
+    "adonis5-scheduler"
   ],
   "aceProviders": [
     "@adonisjs/repl"

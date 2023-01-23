@@ -18,7 +18,7 @@
 |
 */
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
-import Rabbit from '@ioc:Adonis/Addons/Rabbit'
+// import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 import Route from '@ioc:Adonis/Core/Route'
 // Route.get('/', async () => {
 //   return { hello: 'world' }
@@ -27,15 +27,15 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async ({ logger }) => {
 
   logger.info('An info message. From logger.');
-  let listOfQueues = ["my_queue", "another_queue", "yet_another_queue"];
-  for (let index = 0; index < listOfQueues.length; index++) {
-    const currentQueue = listOfQueues[index];
-    // Ensures the queue exists
-    await Rabbit.assertQueue(currentQueue)
+  // let listOfQueues = ["my_queue", "another_queue", "yet_another_queue"];
+  // for (let index = 0; index < listOfQueues.length; index++) {
+  //   const currentQueue = listOfQueues[index];
+  //   // Ensures the queue exists
+  //   await Rabbit.assertQueue(currentQueue)
 
-    // Sends a message to the queue
-    await Rabbit.sendToQueue(currentQueue, { status: "OK", message: 'This message was sent by adonis-rabbit. Testing.....' })
-  }
+  //   // Sends a message to the queue
+  //   await Rabbit.sendToQueue(currentQueue, { status: "OK", message: 'This message was sent by adonis-rabbit. Testing.....' })
+  // }
 
   // // Ensures the queue exists
   // await Rabbit.assertQueue('my_queue')
@@ -47,22 +47,22 @@ Route.get('/', async ({ logger }) => {
 Route.get('/queue_messages', async ({ logger }) => {
 
   logger.info('An info message from queue messages route. From logger.');
-  async function listen() {
-    await Rabbit.assertQueue('my_queue')
+  // async function listen() {
+  //   await Rabbit.assertQueue('my_queue')
 
-    await Rabbit.consumeFrom('my_queue', (message) => {
-      console.log("RabbitMQ Message ======================")
-      console.log(message.content)
+  //   await Rabbit.consumeFrom('my_queue', (message) => {
+  //     console.log("RabbitMQ Message ======================")
+  //     console.log(message.content)
 
-      // "If you're expecting a JSON, this will return the parsed message"
-      console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
-      console.log(message.jsonContent)
+  //     // "If you're expecting a JSON, this will return the parsed message"
+  //     console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
+  //     console.log(message.jsonContent)
 
-      message.ack();
-    })
-  }
+  //     message.ack();
+  //   })
+  // }
 
-  listen()
+  // listen()
 })
 
 Route.get('health', async ({ response }) => {

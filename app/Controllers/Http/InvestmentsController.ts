@@ -42,7 +42,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet'
 import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
-import Rabbit from '@ioc:Adonis/Addons/Rabbit'
+// import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
 const randomstring = require("randomstring");
@@ -1910,10 +1910,10 @@ export default class InvestmentsController {
 
       // publish to RabbitMQ Queue
       // Ensures the queue exists
-      await Rabbit.assertQueue('my_queue')
+      // await Rabbit.assertQueue('my_queue')
 
       // Sends a message to the queue
-      await Rabbit.sendToQueue('my_queue', { data: investment })
+      // await Rabbit.sendToQueue('my_queue', { data: investment })
 
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {

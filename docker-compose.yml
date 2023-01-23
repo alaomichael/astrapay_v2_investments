@@ -22,14 +22,14 @@ services:
   #   ports:
   #     - 6379:6379
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:3.9.11-management-alpine
-    # volumes:
-      # - redis_volume:/data
-    ports:
-      - 5672:5672  # i.e amqp://localhost:5672 , for the port on the left
-      - 15672:15672  # i.e amqp://localhost:15672 , for the port on the left
+  # rabbitmq:
+  #   container_name: rabbitmq
+  #   image: rabbitmq:3.9.11-management-alpine
+  #   # volumes:
+  #     # - redis_volume:/data
+  #   ports:
+  #     - 5672:5672  # i.e amqp://localhost:5672 , for the port on the left
+  #     - 15672:15672  # i.e amqp://localhost:15672 , for the port on the left
 
   adonis_app:
     container_name: adonis_app

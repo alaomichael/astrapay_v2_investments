@@ -86,7 +86,8 @@
       // "@japa/preset-adonis/build/adonis-typings",
       // "@adonisjs/lucid",
       // "adonis5-scheduler",
-      // "@shagital/adonisjs-crud-generator"
+      // "@shagital/adonisjs-crud-generator",
+      // "adonis-rabbit",
             "@adonisjs/core",
             "@adonisjs/repl",
             "@japa/preset-adonis/build/adonis-typings",
@@ -95,7 +96,7 @@
             "@adonisjs/session",
             "@adonisjs/mail",
             "adonis5-scheduler",
-            "adonis-rabbit"
+            
     ]
   }
 }

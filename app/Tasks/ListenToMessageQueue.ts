@@ -1,4 +1,4 @@
-import Rabbit from '@ioc:Adonis/Addons/Rabbit'
+// import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 import { BaseTask } from 'adonis5-scheduler/build'
 
 // import axios from 'axios'
@@ -32,22 +32,22 @@ export default class ListenToMessageQueue extends BaseTask {
         this.logger.info('Handled')
         console.log("Scheduler is Running Listen To Message Queue ==============================================")
 
-        async function listen() {
-            await Rabbit.assertQueue('my_queue')
+        // async function listen() {
+        //     await Rabbit.assertQueue('my_queue')
 
-            await Rabbit.consumeFrom('my_queue', (message) => {
-                console.log("RabbitMQ Message, @ ListenToMessageQueue line 39 ======================")
-                console.log(message.content)
+        //     await Rabbit.consumeFrom('my_queue', (message) => {
+        //         console.log("RabbitMQ Message, @ ListenToMessageQueue line 39 ======================")
+        //         console.log(message.content)
 
-                // "If you're expecting a JSON, this will return the parsed message"
-                console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message, @ ListenToMessageQueue line 43 ================")
-                console.log(message.jsonContent)
-                // delete the message from queue by acknowledging it with "message.ack()"
-                message.ack();
-            })
-        }
+        //         // "If you're expecting a JSON, this will return the parsed message"
+        //         console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message, @ ListenToMessageQueue line 43 ================")
+        //         console.log(message.jsonContent)
+        //         // delete the message from queue by acknowledging it with "message.ack()"
+        //         message.ack();
+        //     })
+        // }
 
-        await listen();
+        // await listen();
         // console.log("After AXIOS CALL for Listen To Message Queue ,  ==================================================");
         // console.log("The ASTRAPAY API Listen To Message Queue  response,line 52: ");
     }
