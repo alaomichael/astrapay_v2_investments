@@ -1,6 +1,7 @@
 {
   "name": "investment",
   "version": "1.0.0",
+  "author": "Michael Alao",
   "private": true,
   "type": "commonjs",
   "scripts": {

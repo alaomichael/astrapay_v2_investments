@@ -1,7 +1,7 @@
 import { BaseTask } from 'adonis5-scheduler/build'
 // import InvestmentsServices from 'App/Services/InvestmentsServices'
 import TypesServices from 'App/Services/TypesServices'
-import { DateTime } from 'luxon'
+// import { DateTime } from 'luxon'
 // import axios from 'axios'
 const Env = require("@ioc:Adonis/Core/Env");
 const DEFAULT_INTEREST_RATE = Env.get("DEFAULT_INTEREST_RATE");
