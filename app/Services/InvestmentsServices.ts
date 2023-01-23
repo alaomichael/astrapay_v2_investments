@@ -22,7 +22,7 @@ const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // const PENALTY_FOR_LIQUIDATION = Env.get("PENALTY_FOR_LIQUIDATION");
-// const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
+const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
 // const CHARGE = Env.get("SERVICE_CHARGE");
 // const API_URL = Env.get("API_URL");
 // const ASTRAPAY_BEARER_TOKEN = Env.get("ASTRAPAY_BEARER_TOKEN");
@@ -578,11 +578,29 @@ export default class InvestmentsServices {
             }
             // const investment = await Investment.create(payload)
             // @ts-ignore
-            payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
+            // payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
             // @ts-ignore
             payload.isRequestSent = true;
-            const investment = await investmentsService.createInvestment(payload);
+            let investment = await investmentsService.createInvestment(payload);
             // console.log("New investment request line 578: ", investment);
+            let investmentId = investment.id
+            // Create Unique payment reference for the customer
+            let reference = DateTime.now() + randomstring.generate(4);
+            let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+            console.log("Customer Transaction Reference ,@ InvestmentsServices line 590 ==================")
+            console.log(paymentReference);
+            debugger;
+            // @ts-ignore
+            investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
+
+            let currentInvestment = await this.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+            // debugger
+            // console.log(" Current log, line 598 :", currentInvestment);
+            // send for update
+            await this.updateInvestment(currentInvestment, investment);
+        // let updatedInvestment = await this.updateInvestment(currentInvestment, investment);
+        // console.log(" Current log, line 602 =========:", updatedInvestment);
+
             let decPl = 2;
             let interestRateByDuration = rate * (Number(investment.duration) / 360);
             console.log(`Interest rate by Investment duration for ${duration} day(s), @ investmentService line 684:`, interestRateByDuration)
@@ -614,7 +632,7 @@ export default class InvestmentsServices {
 
             // check if Approval is set to Auto, from Setting Controller
             // let userId = investment.userId
-            let investmentId = investment.id
+            // let investmentId = investment.id
             // let requestType = 'start_investment'
             // let settings = await Setting.query().where({ rfiCode: rfiCode })
             // console.log('Approval setting line 728:', settings[0])
