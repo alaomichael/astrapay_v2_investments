@@ -15,7 +15,8 @@ const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // import Env from '@ioc:Adonis/Core/Env'
 // const axios = require('axios').default
 
-// const API_URL = Env.get('API_URL')
+const TRANSACTION_PREFIX = Env.get('TRANSACTION_PREFIX')
+
 import {
   // generateRate,
   interestDueOnPayout,
@@ -1482,13 +1483,29 @@ export default class InvestmentsController {
       }
       // console.log('Payload line 1373  :', payload)
       // const investment = await Investment.create(payload)
-      // @ts-ignore
-      payload.investmentRequestReference = DateTime.now() + randomstring.generate(4);
+      
       // @ts-ignore
       payload.isRequestSent = true;
       const investment = await investmentsService.createInvestment(payload);
       // console.log("New investment request line 1380: ", investment);
       // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
+      let investmentId = investment.id
+      // Create Unique payment reference for the customer
+      let reference = DateTime.now() + randomstring.generate(4);
+      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+      console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
+      console.log(paymentReference);
+      debugger;
+      // @ts-ignore
+      investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
+      
+      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+      // debugger
+      // console.log(" Current log, line 1649 :", currentInvestment);
+      // send for update
+      await investmentsService.updateInvestment(currentInvestment, investment);
+        // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+        // console.log(" Current log, line 1653 =========:", updatedInvestment);
 
       // const newInvestment = request.all() as Partial<Investment>
       // const investment = await Investment.create(newInvestment)
@@ -1537,7 +1554,7 @@ export default class InvestmentsController {
 
       // check if Approval is set to Auto, from Setting Controller
       // let userId = investment.userId
-      let investmentId = investment.id
+      // let investmentId = investment.id
       // let requestType = 'start_investment'
       // let settings = await Setting.query().where({ rfiCode: rfiCode })
       // console.log('Approval setting line 1433:', settings[0])
@@ -1716,7 +1733,7 @@ export default class InvestmentsController {
           // Save the updated record
           // await record.save();
           // update record
-          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
           // console.log(" Current log, line 1276 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, investment);
@@ -1875,7 +1892,7 @@ export default class InvestmentsController {
       // Save update to database
       // await investment.save()
       // update record
-      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+       currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
       // console.log(" Current log, line 1774 :", currentInvestment);
       // send for update
       await investmentsService.updateInvestment(currentInvestment, investment);
