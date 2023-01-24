@@ -1436,7 +1436,7 @@ export default class InvestmentsServices {
                         // TESTING
                         // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         // let duration = 4
-                        console.log('Time investment was started line 1469: ', startDate)
+                        // console.log('Time investment was started line 1469: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
                         console.log('Is due for payout status line 1472:', isDueForPayout)
