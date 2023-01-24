@@ -1521,7 +1521,7 @@ export default class InvestmentsServices {
                                     walletId: investment.walletId,// walletId, 
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
-                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    message: `${investment.firstName},your investment has just been sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -1602,7 +1602,7 @@ export default class InvestmentsServices {
                                         walletId: investment.walletId,// walletId, 
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
-                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        message: `${investment.firstName},your investment has just been sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -2346,7 +2346,7 @@ export default class InvestmentsServices {
                                     walletId: investment.walletId,// walletId, 
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
-                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -2408,7 +2408,7 @@ export default class InvestmentsServices {
                                         walletId: investment.walletId,// walletId, 
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
-                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -2519,7 +2519,7 @@ export default class InvestmentsServices {
                                     walletId: investment.walletId,// walletId, 
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
-                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -2581,7 +2581,7 @@ export default class InvestmentsServices {
                                         walletId: investment.walletId,// walletId, 
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
-                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -2850,7 +2850,7 @@ export default class InvestmentsServices {
                                     walletId: investment.walletId,// walletId, 
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
-                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -2912,7 +2912,7 @@ export default class InvestmentsServices {
                                         walletId: investment.walletId,// walletId, 
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
-                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -3023,7 +3023,7 @@ export default class InvestmentsServices {
                                     walletId: investment.walletId,// walletId, 
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
-                                    message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                    message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -3085,7 +3085,7 @@ export default class InvestmentsServices {
                                         walletId: investment.walletId,// walletId, 
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
-                                        message: `${investment.firstName} investment has just been sent for payout processing.`,
+                                        message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
