@@ -1719,7 +1719,7 @@ export default class InvestmentsController {
           senderPhoneNumber,
           senderEmail,
           rfiCode)
-        // debugger
+        debugger
         // if successful 
         if (debitUserWalletForInvestment.status == 200) {
 

@@ -1877,7 +1877,7 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 837 ==================================")
+                    console.log("check approval record 1837 ==================================")
                     // debugger
                     if (record == undefined || !record) {
                         return { status: "FAILED", message: "Not Found,try again." };
@@ -1885,7 +1885,7 @@ export default class InvestmentsServices {
                     // console.log(" QUERY RESULT for record: ", record.$original);
 
                     if (investment) {
-                        console.log("Investment approval Selected for Update line 845:");
+                        console.log("Investment approval Selected for Update line 1845:");
                         // update the data
                         // TODO: Uncomment to use loginAdminFullName
                         // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
@@ -1933,8 +1933,8 @@ export default class InvestmentsServices {
                                 senderPhoneNumber,
                                 senderEmail,
                                 rfiCode)
-                            // debugger
-                            // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
+                            debugger
+                            // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
                             // if successful 
                             if (debitUserWalletForInvestment.status == 200) {
                                 // update the investment details
@@ -1943,16 +1943,16 @@ export default class InvestmentsServices {
                                 record.startDate = DateTime.now() //.toISODate()
                                 record.payoutDate = DateTime.now().plus({ days: record.duration })
                                 record.isInvestmentCreated = true
-                                // console.log("Updated record Status line 537: ", record);
+                                // console.log("Updated record Status line 1946: ", record);
 
                                 // update record
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                 // debugger
-                                // console.log(" Current log, line 610 :", currentInvestment);
+                                // console.log(" Current log, line 1951 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                // console.log(" Current log, line 614 =========:", updatedInvestment);
+                                // console.log(" Current log, line 1955 =========:", updatedInvestment);
 
                                 // update timeline
                                 timelineObject = {

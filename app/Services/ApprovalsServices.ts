@@ -195,7 +195,7 @@ export default class ApprovalsServices {
                         senderPhoneNumber,
                         senderEmail,
                         rfiCode)
-                    // debugger
+                    debugger
 
                     // update timeline
                     timelineObject = {
