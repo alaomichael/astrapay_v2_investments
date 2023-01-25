@@ -34,7 +34,7 @@ export default class TypesController {
             }
             if (sortedTypes.length < 1) {
                 return response.status(200).json({
-                    status: "FAILED",
+                    status: "OK",
                     message: "no type request matched your search",
                     data: [],
                 });

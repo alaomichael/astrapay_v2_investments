@@ -678,7 +678,7 @@ export default class InvestmentsServices {
                 // console.log(' Approval request return line 938 : ', approval)
                 // if (approval === undefined) {
                 //   return response.status(400).json({
-                //     status: 'FAILED',
+                //     status: 'OK',
                 //     message: 'investment approval request was not successful, please try again.',
                 //     data: [],
                 //   })
@@ -1089,7 +1089,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -1217,7 +1217,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -1310,7 +1310,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -1477,7 +1477,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -1646,7 +1646,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -2101,7 +2101,7 @@ export default class InvestmentsServices {
                     } else {
                         // console.log("Entering no data 2232 ==================================")
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -2302,7 +2302,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -2475,7 +2475,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -2624,7 +2624,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -2806,7 +2806,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -2979,7 +2979,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -3129,7 +3129,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -3320,7 +3320,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 2943 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -3484,7 +3484,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -3625,7 +3625,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -3802,7 +3802,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 2943 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -3966,7 +3966,7 @@ export default class InvestmentsServices {
                                 //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
                                 //   if (approvalRequestIsDone === undefined) {
                                 //     return response.status(400).json({
-                                //       status: 'FAILED',
+                                //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
                                 //       data: [],
                                 //     })
@@ -4107,7 +4107,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'no investment matched your search',
                             data: [],
                         }
@@ -4605,14 +4605,14 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 1492 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
                                 }
                             } else {
                                 return {
-                                    status: 'FAILED',
+                                    status: 'OK',
                                     message: 'this investment is not mature for payout.',
                                     data: [],
                                 }
@@ -4620,7 +4620,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Payout of investment is currently suspended.',
                             data: [],
                         }
@@ -5176,14 +5176,14 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
                                 }
                             } else {
                                 return {
-                                    status: 'FAILED',
+                                    status: 'OK',
                                     message: 'this investment is not mature for payout.',
                                     data: [],
                                 }
@@ -5191,7 +5191,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Payout of investment is currently suspended.',
                             data: [],
                         }
@@ -5750,14 +5750,14 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
                                 }
                             } else {
                                 return {
-                                    status: 'FAILED',
+                                    status: 'OK',
                                     message: 'this investment is not mature for payout.',
                                     data: [],
                                 }
@@ -5765,7 +5765,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Payout of investment is currently suspended.',
                             data: [],
                         }
@@ -6317,14 +6317,14 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
                                 }
                             } else {
                                 return {
-                                    status: 'FAILED',
+                                    status: 'OK',
                                     message: 'this investment is not mature for payout.',
                                     data: [],
                                 }
@@ -6332,7 +6332,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Payout of investment is currently suspended.',
                             data: [],
                         }
@@ -7070,14 +7070,14 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 4374 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
                                 }
                             } else {
                                 return {
-                                    status: 'FAILED',
+                                    status: 'OK',
                                     message: 'this investment is not mature for rollover.',
                                     data: [],
                                 }
@@ -7085,7 +7085,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Rollover of investment is currently suspended.',
                             data: [],
                         }
@@ -7577,7 +7577,7 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
@@ -7886,7 +7886,7 @@ export default class InvestmentsServices {
                                 } else {
                                     // console.log("Entering no data 8820 ==================================")
                                     return {
-                                        status: 'FAILED',
+                                        status: 'OK',
                                         message: 'no investment matched your search',
                                         data: [],
                                     }
@@ -7896,7 +7896,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         return {
-                            status: 'FAILED',
+                            status: 'OK',
                             message: 'Payout of investment is currently suspended.',
                             data: [],
                         }

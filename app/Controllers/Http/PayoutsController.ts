@@ -61,7 +61,7 @@ export default class PayoutsController {
     }
     if (sortedPayouts.length < 1) {
       return response.status(200).json({
-        status: 'FAILED',
+        status: 'OK',
         message: 'no investment payout matched your search',
         data: [],
       })
@@ -162,7 +162,7 @@ export default class PayoutsController {
   //       }
   //     } else {
   //       return response.status(404).json({
-  //         status: 'FAILED',
+  //         status: 'OK',
   //         message: 'no investment matched your search',
   //         data: [],
   //       })

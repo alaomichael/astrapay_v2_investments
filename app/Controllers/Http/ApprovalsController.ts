@@ -41,7 +41,7 @@ export default class ApprovalsController {
       }
       if (sortedApprovals.length < 1) {
         return response.status(200).json({
-          status: "FAILED",
+          status: "OK",
           message: "no approval request matched your search",
           data: [],
         });

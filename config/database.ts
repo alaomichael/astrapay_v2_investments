@@ -9,30 +9,30 @@
 // import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
 // const databaseConfig: DatabaseConfig = {
-  /*
-  |--------------------------------------------------------------------------
-  | Connection
-  |--------------------------------------------------------------------------
-  |
-  | The primary connection for making database queries across the application
-  | You can use any key from the `connections` object defined in this same
-  | file.
-  |
-  */
-  // connection: Env.get('DB_CONNECTION'),
+/*
+|--------------------------------------------------------------------------
+| Connection
+|--------------------------------------------------------------------------
+|
+| The primary connection for making database queries across the application
+| You can use any key from the `connections` object defined in this same
+| file.
+|
+*/
+// connection: Env.get('DB_CONNECTION'),
 
-  // connections: {
-    /*
-    |--------------------------------------------------------------------------
-    | PostgreSQL config
-    |--------------------------------------------------------------------------
-    |
-    | Configuration for PostgreSQL database. Make sure to install the driver
-    | from npm when using this connection
-    |
-    | npm i pg
-    |
-    */
+// connections: {
+/*
+|--------------------------------------------------------------------------
+| PostgreSQL config
+|--------------------------------------------------------------------------
+|
+| Configuration for PostgreSQL database. Make sure to install the driver
+| from npm when using this connection
+|
+| npm i pg
+|
+*/
 //     pg: {
 //       client: 'pg',
 //       connection: {
@@ -69,24 +69,44 @@ const databaseConfig: DatabaseConfig = {
       connection: Application.inProduction
         ? Env.get('DATABASE_URL') + '?ssl=no-verify'
         : {
-            host: Env.get('PG_HOST'),
-            port: Env.get('PG_PORT'),
-            user: Env.get('PG_USER'),
-            password: Env.get('PG_PASSWORD', ''),
-            database: Env.get('PG_DB_NAME'),
-          },
-
+          host: Env.get('PG_HOST'),
+          port: Env.get('PG_PORT'),
+          user: Env.get('PG_USER'),
+          password: Env.get('PG_PASSWORD', ''),
+          database: Env.get('PG_DB_NAME'),
+          ssl: { rejectUnauthorized: false }, // this line is required (just added)
+        },
+      // acquireConnectionTimeout: 1000000,
       healthCheck: Application.inDev,
       debug: Application.inDev,
+      pool: {
+        min: 0,
+        max: 10,
+        idleTimeoutMillis: 30000000,
+        createTimeoutMillis: 30000000,
+        acquireTimeoutMillis: 30000000,
+        propagateCreateError: false,
+        reapIntervalMillis: 1000,
+        createRetryIntervalMillis: 2000,
+      },
     },
 
     /*
 I usually use this custom connection to run database migrations on remote database from my local machine. For instance,
-node ace migration:run --connection=custom, this will run the migration against you remote database. In order to use this connection, you must set DATABASE_URL in .env file, you can get the value from your heroku dashboard, or by running this command on your terminal: heroku config:get DATABASE_URL --app=your_app_name
+node ace migration:run --connection=custom, this will run the migration against you remote database. 
+In order to use this connection, you must set DATABASE_URL in .env file, you can get the value from your heroku dashboard, 
+or by running this command on your terminal: heroku config:get DATABASE_URL --app=your_app_name
 */
     custom: {
       client: 'pg',
       connection: Env.get('DATABASE_URL') + '?ssl=no-verify',
+      pool: {
+        afterCreate: (conn, done) => {
+          // .... add logic here ....
+          // you must call with new connection
+          done(null, conn);
+        },
+      }
     },
   },
 

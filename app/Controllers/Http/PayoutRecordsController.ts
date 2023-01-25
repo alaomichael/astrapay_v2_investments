@@ -54,7 +54,7 @@ export default class PayoutRecordsController {
     }
     if (sortedPayouts.length < 1) {
       return response.status(200).json({
-        status: 'FAILED',
+        status: 'OK',
         message: 'no investment payout record matched your search',
         data: [],
       })

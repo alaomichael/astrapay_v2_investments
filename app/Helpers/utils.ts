@@ -501,7 +501,7 @@ const createNewInvestment = async function ( payloadAmount,
 //                   console.log(' Rate return line 2282 : ', rate)
 //                   if (rate === undefined) {
 //                     return response.status(400).json({
-//                       status: 'FAILED',
+//                       status: 'OK',
 //                       message: 'no investment rate matched your search, please try again.',
 //                       data: [],
 //                     })
@@ -582,7 +582,7 @@ const createNewInvestment = async function ( payloadAmount,
 //                     console.log(' Approval request return line 2362 : ', approval)
 //                     if (approval === undefined) {
 //                       return response.status(400).json({
-//                         status: 'FAILED',
+//                         status: 'OK',
 //                         message:
 //                           'investment approval request was not successful, please try again.',
 //                         data: [],

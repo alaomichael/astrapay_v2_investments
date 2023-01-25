@@ -60,7 +60,7 @@ export default class InvestmentsController {
 
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
-        status: "FAILED",
+        status: "OK",
         message: "no investment request matched your search",
         data: [],
       });
@@ -130,7 +130,7 @@ export default class InvestmentsController {
       //     }
       //     if (sortedInvestments.length < 1) {
       //       return response.status(200).json({
-      //         status: 'FAILED',
+      //         status: 'OK',
       //         message: 'no investment matched your search',
       //         data: [],
       //       })
@@ -139,7 +139,7 @@ export default class InvestmentsController {
       //     return response.status(200).json({ status: 'OK', data: sortedInvestments })
       //   } else {
       //     return response.status(200).json({
-      //       status: 'FAILED',
+      //       status: 'OK',
       //       message: 'no investment matched your search',
       //       data: [],
       //     })
@@ -155,7 +155,7 @@ export default class InvestmentsController {
 
       if (sortedInvestments.length < 1) {
         return response.status(200).json({
-          status: "FAILED",
+          status: "OK",
           message: "no investment request matched your search",
           data: [],
         });
@@ -336,7 +336,7 @@ export default class InvestmentsController {
       }
       if (sortedPayouts.length < 1) {
         return response.status(200).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment payout matched your search',
           data: [],
         })
@@ -1043,7 +1043,7 @@ export default class InvestmentsController {
     //   console.log(' Rate return line 236 : ', rate)
     //   if (rate === undefined  || rate.length < 1) {
     //     return response.status(400).json({
-    //       status: 'FAILED',
+    //       status: 'OK',
     //       message: 'no investment rate matched your search, please try again.',
     //       data: [],
     //     })
@@ -1476,7 +1476,7 @@ export default class InvestmentsController {
       // console.log(' Rate return line 1365 : ', rate)
       if (rate === undefined) {
         return response.status(400).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment rate matched your search, please try again.',
           data: [],
         })
@@ -1603,7 +1603,7 @@ export default class InvestmentsController {
         // console.log(' Approval request return line 938 : ', approval)
         // if (approval === undefined) {
         //   return response.status(400).json({
-        //     status: 'FAILED',
+        //     status: 'OK',
         //     message: 'investment approval request was not successful, please try again.',
         //     data: [],
         //   })
@@ -2156,7 +2156,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2267,7 +2267,7 @@ export default class InvestmentsController {
             //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
             //   if (approvalRequestIsDone === undefined) {
             //     return response.status(400).json({
-            //       status: 'FAILED',
+            //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
             //       data: [],
             //     })
@@ -2369,7 +2369,7 @@ export default class InvestmentsController {
         }
       } else {
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2421,7 +2421,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2474,7 +2474,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2528,7 +2528,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2580,7 +2580,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2633,7 +2633,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2685,7 +2685,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2730,7 +2730,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2784,7 +2784,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2858,7 +2858,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -2933,7 +2933,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -3006,7 +3006,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -3079,7 +3079,7 @@ export default class InvestmentsController {
       } else {
         // debugger
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -3190,7 +3190,7 @@ export default class InvestmentsController {
             //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
             //   if (approvalRequestIsDone === undefined) {
             //     return response.status(400).json({
-            //       status: 'FAILED',
+            //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
             //       data: [],
             //     })
@@ -3330,7 +3330,7 @@ export default class InvestmentsController {
               console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
-                  status: 'FAILED',
+                  status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
                   data: [],
                 })
@@ -3455,7 +3455,7 @@ export default class InvestmentsController {
         }
       } else {
         return response.status(404).json({
-          status: 'FAILED',
+          status: 'OK',
           message: 'no investment matched your search',
           data: [],
         })
@@ -3681,7 +3681,7 @@ export default class InvestmentsController {
                 console.log(' Approval request return line 1717 : ', approvalRequestIsDone)
                 if (approvalRequestIsDone === undefined) {
                   return response.status(400).json({
-                    status: 'FAILED',
+                    status: 'OK',
                     message:
                       'payment processing approval request was not successful, please try again.',
                     data: [],
@@ -3797,7 +3797,7 @@ export default class InvestmentsController {
                         console.log(' Approval request return line 1672 : ', approvalRequestIsDone)
                         if (approvalRequestIsDone === undefined) {
                           return response.status(400).json({
-                            status: 'FAILED',
+                            status: 'OK',
                             message:
                               'payment processing approval request was not successful, please try again.',
                             data: [],
@@ -3931,7 +3931,7 @@ export default class InvestmentsController {
                   //   console.log(' Rate return line 2282 : ', rate)
                   //   if (rate === undefined) {
                   //     return response.status(400).json({
-                  //       status: 'FAILED',
+                  //       status: 'OK',
                   //       message: 'no investment rate matched your search, please try again.',
                   //       data: [],
                   //     })
@@ -4012,7 +4012,7 @@ export default class InvestmentsController {
                   //     console.log(' Approval request return line 2362 : ', approval)
                   //     if (approval === undefined) {
                   //       return response.status(400).json({
-                  //         status: 'FAILED',
+                  //         status: 'OK',
                   //         message:
                   //           'investment approval request was not successful, please try again.',
                   //         data: [],
@@ -4184,7 +4184,7 @@ export default class InvestmentsController {
                         break
 
                         // return response.status(400).json({
-                        //   status: 'FAILED',
+                        //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
                         //   data: [],
                         // })
@@ -4299,7 +4299,7 @@ export default class InvestmentsController {
                         rolloverIsSuccessful = false
                         break
                         // return response.status(400).json({
-                        //   status: 'FAILED',
+                        //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
                         //   data: [],
                         // })
@@ -4474,7 +4474,7 @@ export default class InvestmentsController {
               console.log(' Approval request return line 2772 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
-                  status: 'FAILED',
+                  status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
                   data: [],
                 })
