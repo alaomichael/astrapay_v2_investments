@@ -40,7 +40,7 @@ export default class ActivateApprovedInvestment extends BaseTask {
             offset: "0",
             // add checkedForPaymentAt
         }
-        console.log("Query params in type service line 42:", queryParams)
+        // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
         await investmentsServices.activateApprovedInvestment(queryParams);  
         // let listOfActivatedInvestments = await investmentsServices.activateApprovedInvestment(queryParams);  
