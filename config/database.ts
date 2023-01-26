@@ -81,13 +81,13 @@ const databaseConfig: DatabaseConfig = {
       debug: Application.inDev,
       pool: {
         min: 0,
-        max: 50,
-        idleTimeoutMillis: 60 * 1000,
-        createTimeoutMillis: 60 * 1000,//300*10000,
-        acquireTimeoutMillis: 60 * 1000, //30000000,
+        max: 10,
+        idleTimeoutMillis: 20 * 60 * 1000, // 20 secs 
+        createTimeoutMillis: 20 * 60 * 1000, // 20 secs //300*10000,
+        acquireTimeoutMillis: 20 * 60 * 1000, // 20 secs  //30000000,
         // propagateCreateError: false,
-        reapIntervalMillis: 1000,
-        createRetryIntervalMillis: 2 * 1000,
+        reapIntervalMillis: 1 * 1000, // 1 milli seconds
+        createRetryIntervalMillis: 2 * 1000, // 1 milli seconds
         afterCreate: function (conn, done) {
           // in this example we use pg driver's connection API
           conn.query('SET timezone="UTC+1";', function (err) {
@@ -141,13 +141,13 @@ const databaseConfig: DatabaseConfig = {
       // }
       pool: {
         min: 0,
-        max: 50,
-        idleTimeoutMillis: 60 * 1000,
-        createTimeoutMillis: 60 * 1000,//300*10000,
-        acquireTimeoutMillis: 60 * 1000, //30000000,
+        max: 10,
+        idleTimeoutMillis: 20 * 60 * 1000, // 20 secs 
+        createTimeoutMillis: 20 * 60 * 1000, // 20 secs //300*10000,
+        acquireTimeoutMillis: 20 * 60 * 1000, // 20 secs  //30000000,
         // propagateCreateError: false,
-        reapIntervalMillis: 1000,
-        createRetryIntervalMillis: 2 * 1000,
+        reapIntervalMillis: 1 * 1000, // 1 milli seconds
+        createRetryIntervalMillis: 2 * 1000, // 1 milli seconds
         afterCreate: function (conn, done) {
           // in this example we use pg driver's connection API
           conn.query('SET timezone="UTC+1";', function (err) {
