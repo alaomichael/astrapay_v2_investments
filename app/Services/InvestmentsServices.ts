@@ -1312,6 +1312,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -1648,6 +1649,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -1748,6 +1750,7 @@ export default class InvestmentsServices {
                 console.log(`There is no matured investment or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no matured investment or payout has been completed. Please, check and try again.`, codeSt: "404" })
             }
+            await trx.commit()
             return responseData;
         } catch (error) {
             console.log(error)
@@ -1883,6 +1886,7 @@ export default class InvestmentsServices {
                     console.log("check approval record 1837 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -2103,6 +2107,7 @@ export default class InvestmentsServices {
                         }
                     } else {
                         // console.log("Entering no data 2232 ==================================")
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -2626,6 +2631,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3131,6 +3137,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3627,6 +3634,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4109,6 +4117,7 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4299,6 +4308,7 @@ export default class InvestmentsServices {
                     console.log("check approval record 2295 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -4814,6 +4824,7 @@ export default class InvestmentsServices {
                     console.log("check approval record 2295 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -5185,6 +5196,7 @@ export default class InvestmentsServices {
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
+                                    await trx.commit()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5192,6 +5204,7 @@ export default class InvestmentsServices {
                                     }
                                 }
                             } else {
+                                await trx.commit()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',

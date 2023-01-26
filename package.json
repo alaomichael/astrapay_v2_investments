@@ -81,6 +81,7 @@
     "esm": "^3.2.25",
     "js-joda": "^1.11.0",
     "knex": "^2.4.2",
+    "knex-dynamic-connection": "^3.0.0",
     "luxon": "^2.4.0",
     "map-anything": "^2.0.2",
     "mapper-utils": "^0.0.1",
