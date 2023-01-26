@@ -121,7 +121,6 @@ const databaseConfig: DatabaseConfig = {
           });
         }
       },
-
     },
 
     /*
@@ -133,13 +132,55 @@ const databaseConfig: DatabaseConfig = {
     custom: {
       client: 'pg',
       connection: Env.get('DATABASE_URL') + '?ssl=no-verify',
+      // pool: {
+      //   afterCreate: (conn, done) => {
+      //     // .... add logic here ....
+      //     // you must call with new connection
+      //     done(null, conn);
+      //   },
+      // }
       pool: {
-        afterCreate: (conn, done) => {
-          // .... add logic here ....
-          // you must call with new connection
-          done(null, conn);
-        },
-      }
+        min: 0,
+        max: 50,
+        idleTimeoutMillis: 60 * 1000,
+        createTimeoutMillis: 60 * 1000,//300*10000,
+        acquireTimeoutMillis: 60 * 1000, //30000000,
+        // propagateCreateError: false,
+        reapIntervalMillis: 1000,
+        createRetryIntervalMillis: 2 * 1000,
+        afterCreate: function (conn, done) {
+          // in this example we use pg driver's connection API
+          conn.query('SET timezone="UTC+1";', function (err) {
+            if (err) {
+              // first query failed, 
+              // return error and don't try to make next query
+              console.log("Pool full error. ===============================")
+              done(err, conn);
+            } else {
+              // do the second query...
+              conn.query('SET timezone="UTC+1";',
+                // setTimeout(() => {
+                //   console.log("Running Timeout in Pool not full, delay for 2secs. ===============================")
+                // }, 2000),
+
+                // 'SELECT set_limit(0.01);',
+                function (err) {
+                  // if err is not falsy, 
+                  //  connection is discarded from pool
+                  // if connection aquire was triggered by a 
+                  // query the error is passed to query promise
+
+                  // setTimeout(() => {
+                  //   console.log("Running Timeout in Pool not full, delay for 2secs. ===============================")
+                  // }, 2000);
+
+                  console.log("Pool not full. ===============================")
+                  done(err, conn);
+                });
+            }
+          });
+        }
+      },
     },
   },
 
