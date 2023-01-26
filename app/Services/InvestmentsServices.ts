@@ -5213,6 +5213,7 @@ export default class InvestmentsServices {
                             }
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5398,9 +5399,10 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 2295 ==================================")
+                    console.log("check approval record 5402 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -5774,6 +5776,7 @@ export default class InvestmentsServices {
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
+await trx.commit()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5781,6 +5784,7 @@ export default class InvestmentsServices {
                                     }
                                 }
                             } else {
+                                await trx.commit()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -5789,6 +5793,7 @@ export default class InvestmentsServices {
                             }
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5972,9 +5977,10 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 2295 ==================================")
+                    console.log("check approval record 5980 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -6343,6 +6349,7 @@ export default class InvestmentsServices {
                                   
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
+                                    await trx.commit()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -6350,6 +6357,7 @@ export default class InvestmentsServices {
                                     }
                                 }
                             } else {
+                                await trx.commit()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -6358,6 +6366,7 @@ export default class InvestmentsServices {
                             }
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -6538,9 +6547,10 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 3811 ==================================")
+                    console.log("check approval record 6550 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -7098,6 +7108,7 @@ export default class InvestmentsServices {
                                     // console.log(" Current log, line 4372 :", updatedInvestment);
                                 } else {
                                     // console.log("Entering no data 4374 ==================================")
+                                   await trx.commit()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -7105,14 +7116,16 @@ export default class InvestmentsServices {
                                     }
                                 }
                             } else {
+                                await trx.commit()
                                 return {
                                     status: 'OK',
-                                    message: 'this investment is not mature for rollover.',
+                                    message: 'This investment is not mature for rollover.',
                                     data: [],
                                 }
                             }
                         }
                     } else {
+                        await trx.commit()
                         return {
                             status: 'OK',
                             message: 'Rollover of investment is currently suspended.',
@@ -7296,9 +7309,10 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 2295 ==================================")
+                    console.log("check approval record 7312 ==================================")
                     // debugger
                     if (record == undefined || !record) {
+                        await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -8023,6 +8037,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
+                .first()
             // console.log("Investment search result from service")
             // console.log(investment);
             return investment;
@@ -8085,7 +8100,7 @@ export default class InvestmentsServices {
                 queryParams.userId = userId
             }
 
-            // console.log(" updatedAtFrom line 2543 ==============================================================");
+            // console.log(" updatedAtFrom line 8103 ==============================================================");
             console.log(queryParams);
             // debugger;
             const queryGetter = await this.queryBuilder(queryParams)
