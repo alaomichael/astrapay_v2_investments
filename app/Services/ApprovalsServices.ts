@@ -595,9 +595,10 @@ export default class ApprovalsServices {
                         rfiCode,
                         descriptionForPrincipal)
                     // if successful 
+                    let decPl = 3;
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
-                        let decPl = 2;
+                        // let decPl = 2;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
@@ -660,7 +661,7 @@ export default class ApprovalsServices {
 
                     } else if (creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
-                        let decPl = 2;
+                        // let decPl = 3;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                         // update the investment details
                         //@ts-ignore
