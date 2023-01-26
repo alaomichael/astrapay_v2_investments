@@ -7381,9 +7381,10 @@ export default class InvestmentsServices {
                                         descriptionForInterest)
                                     // debugger
                                     // if successful 
+                                    let decPl = 2;
                                     if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7444,7 +7445,7 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7504,7 +7505,7 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7572,10 +7573,15 @@ export default class InvestmentsServices {
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8449 :", updatedInvestment);
                                         // debugger
+
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                         throw Error();
                                     }
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
+                                                                           // commit transaction and changes to database
+                                        await trx.commit();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -7639,9 +7645,11 @@ export default class InvestmentsServices {
                                     let penalty = (accruedInterest * (Number(liquidationPenalty) / 100));
                                     console.log(" accruedInterest =======", accruedInterest)
                                     console.log(" daysOfInvestment =======", daysOfInvestment)
-                                    console.log(" penalty =======", penalty)
+                                    console.log(" penalty before rounding up to 3 decimal place =======", penalty)
+                                    console.log(" penalty rounded up to 3 decimal place =======", penalty.toFixed(3))
+                                    penalty = Number(penalty.toFixed(3));
                                     interestDueOnInvestment = accruedInterest;
-                                    // debugger
+                                    debugger
                                     console.log(" interestDueOnInvestment before penalty deduction =======", interestDueOnInvestment)
                                     interestDueOnInvestment = interestDueOnInvestment - penalty;
                                     console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
@@ -7668,9 +7676,10 @@ export default class InvestmentsServices {
                                         descriptionForInterest)
                                     // debugger
                                     // if successful 
+                                    let decPl = 2;
                                     if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7738,7 +7747,7 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7805,7 +7814,7 @@ export default class InvestmentsServices {
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment
-                                        let decPl = 2;
+                                        // let decPl = 2;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
                                         // update the investment details
                                         record.isInvestmentCompleted = true;
@@ -7881,10 +7890,16 @@ export default class InvestmentsServices {
                                         // console.log(" creditUserWalletWithPrincipal line 8814 ================", creditUserWalletWithPrincipal );
                                         // console.log(" creditUserWalletWithInterest line 8815 ================", creditUserWalletWithInterest );
                                         // debugger
+
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                         throw Error(`${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
                                     }
                                 } else {
                                     // console.log("Entering no data 8820 ==================================")
+                                  
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -7895,6 +7910,9 @@ export default class InvestmentsServices {
                             }
                         }
                     } else {
+
+                        // commit transaction and changes to database
+                        await trx.commit();
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -7906,7 +7924,7 @@ export default class InvestmentsServices {
                     // debugger
                     console.log("Error line 8848", error.messages);
                     console.log("Error line 8849", error.message);
-                                       // debugger
+                    // debugger
                     await trx.rollback()
                     console.log(`Error line 8852, status: "FAILED", message: ${error.messages} ,hint: ${error.message},`)
                     throw error;

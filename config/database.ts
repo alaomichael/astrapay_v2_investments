@@ -76,7 +76,7 @@ const databaseConfig: DatabaseConfig = {
           database: Env.get('PG_DB_NAME'),
           // ssl: { rejectUnauthorized: false }, // this line is required (just added)
         },
-      // acquireConnectionTimeout: 1000000,
+      // acquireConnectionTimeout: 10000,
       healthCheck: Application.inDev,
       debug: Application.inDev,
       pool: {
