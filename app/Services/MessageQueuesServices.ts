@@ -48,9 +48,11 @@ const rabbitMQService = async () => {
             console.log('Received the fields message ======:', msg.fields);
             // console.log('Received message converted to string =========:', msg.content.toString());
             // console.log('Received in json format ========:', msg.content);
-            let { fields,content } = msg;
+            let { fields, content } = msg;
             content = content.toString();
             console.log('Received message converted to string, line 53 =========:', content);
+            content = JSON.parse(content);
+            console.log('Received message converted to json, line 55 =========:', content);
             let {
                 consumerTag,//: 'amq.ctag-ihMXzcY0EI6bWrseyN52Hg',
                 deliveryTag,//: 1,
@@ -59,25 +61,22 @@ const rabbitMQService = async () => {
                 routingKey,//: 'investment.configuration'
             } = fields;
 
-    //          "id": "069ee6a3-13e7-4b56-91fb-5fb109fefddf",
-    // "name": "comapny namekujjkkkk",
-    // "email": "business@gmail.com",
-    // "code": "code",
-    // "createdBy": "08102872652",
-    // "status": "Onboarding",
-    // "address": {
-    //   "street": "joceyB, Mokola",
-    //   "city": "ibadan",
-    //   "state": "Oyo",
-    //   "country": "Nigeria"
-    // },
-            let { id,name,email,code,status,address } = content//.toString()
-            console.log("fields line 73 =====", consumerTag,
-                deliveryTag,
-                redelivered,
-                exchange,
-                routingKey,)
-            console.log("content line 78 ===== ",id, name, email, code, status, address)
+            // "id": "069ee6a3-13e7-4b56-91fb-5fb109fefddf",
+            // "name": "comapny namekujjkkkk",
+            // "email": "business@gmail.com",
+            // "code": "code",
+            // "createdBy": "08102872652",
+            // "status": "Onboarding",
+            // "address": {
+            //   "street": "joceyB, Mokola",
+            //   "city": "ibadan",
+            //   "state": "Oyo",
+            //   "country": "Nigeria"
+            // },
+
+            let { id, name, email, code, status, address } = content//.toString()
+            console.log("fields line 73 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
+            console.log("content line 78 ===== ", id, name, email, code, status, address)
             debugger
             ch1.ack(msg);
         } else {
