@@ -45,15 +45,15 @@ const rabbitMQService = async () => {
     // Listener
     ch1.consume(queue, (msg) => {
         if (msg !== null) {
-            console.log('Received the whole message ======:', msg);
-            console.log('Received the fields message ======:', msg.fields);
+            // console.log('Received the whole message ======:', msg);
+            // console.log('Received the fields message ======:', msg.fields);
             // console.log('Received message converted to string =========:', msg.content.toString());
             // console.log('Received in json format ========:', msg.content);
             let { fields, content } = msg;
             content = content.toString();
-            console.log('Received message converted to string, line 53 =========:', content);
+            // console.log('Received message converted to string, line 53 =========:', content);
             content = JSON.parse(content);
-            console.log('Received message converted to json, line 55 =========:', content);
+            // console.log('Received message converted to json, line 55 =========:', content);
             let {
                 consumerTag,//: 'amq.ctag-ihMXzcY0EI6bWrseyN52Hg',
                 deliveryTag,//: 1,
@@ -75,9 +75,9 @@ const rabbitMQService = async () => {
             //   "country": "Nigeria"
             // },
 
-            let { id, name, email, code, status, address } = content//.toString()
-            console.log("fields line 73 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
-            console.log("content line 78 ===== ", id, name, email, code, status, address)
+            let { id, name, email, code, status, address } = content;
+            console.log("fields line 79 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
+            console.log("content line 80 ===== ", id, name, email, code, status, address)
             // debugger
             ch1.ack(msg);
         } else {
