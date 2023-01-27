@@ -1887,6 +1887,7 @@ export default class InvestmentsServices {
                     // debugger
                     if (record == undefined || !record) {
                         await trx.rollback()
+                        // await trx.isCompleted()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);

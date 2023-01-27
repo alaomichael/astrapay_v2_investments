@@ -16,8 +16,8 @@ export default class RetryFailedPayoutOfMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/10 * * * *' // runs every 10 minutes
-        // return '0 */2 * * *' // runs every 2 hours 0 minute
+        // return '*/10 * * * *' // runs every 10 minutes
+        return '0 */2 * * *' // runs every 2 hours 0 minute
     }
     /**
      * Set enable use .lock file for block run retry task

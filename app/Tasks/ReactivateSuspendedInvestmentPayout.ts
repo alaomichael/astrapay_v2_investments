@@ -16,8 +16,9 @@ export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/30 * * * *' // runs every 30 minutes
+        // return '*/30 * * * *' // runs every 30 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '1 7 * * *' // runs every 07:01 daily
     }
     /**
      * Set enable use .lock file for block run retry task

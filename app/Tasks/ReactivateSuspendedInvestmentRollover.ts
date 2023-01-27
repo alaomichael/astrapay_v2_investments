@@ -16,8 +16,9 @@ export default class ReactivateSuspendedInvestmentRollover extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/15 * * * *' // runs every 15 minutes
+        // return '*/15 * * * *' // runs every 15 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '1 6 * * *' // runs every 06:01 daily
     }
     /**
      * Set enable use .lock file for block run retry task

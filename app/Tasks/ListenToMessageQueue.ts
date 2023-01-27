@@ -16,8 +16,9 @@ export default class ListenToMessageQueue extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/3 * * * *' // runs every 3 minutes
+        return '*/10 * * * *' // runs every 10 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        // return '1 0 * * *' // runs every 00:01 daily
     }
     /**
      * Set enable use .lock file for block run retry task

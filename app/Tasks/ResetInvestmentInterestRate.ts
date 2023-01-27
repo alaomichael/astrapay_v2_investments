@@ -19,8 +19,9 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/20 * * * *' // runs every 20 minutes
+        // return '*/20 * * * *' // runs every 20 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '0 0 * * *' // runs every 00:00 daily
     }
     /**
      * Set enable use .lock file for block run retry task

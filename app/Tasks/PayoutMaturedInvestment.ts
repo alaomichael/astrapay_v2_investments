@@ -16,8 +16,9 @@ export default class PayoutMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/30 * * * *' // runs every 30 minutes
+        // return '*/30 * * * *' // runs every 30 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '1 9 * * *' // runs every 09:01 daily
     }
     /**
      * Set enable use .lock file for block run retry task
@@ -42,7 +43,7 @@ export default class PayoutMaturedInvestment extends BaseTask {
         }
         // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-         await investmentsServices.payoutMaturedInvestment(queryParams);
+        await investmentsServices.payoutMaturedInvestment(queryParams);
         // let listOfPayoutMaturedInvestments = await investmentsServices.payoutMaturedInvestment(queryParams);  
         // console.log("After AXIOS CALL for Payout Matured Investment ,  ==================================================");
         // console.log("The ASTRAPAY API Payout Matured Investment response,line 47: ", listOfPayoutMaturedInvestments);

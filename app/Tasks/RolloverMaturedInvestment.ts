@@ -16,8 +16,9 @@ export default class RolloverMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/8 * * * *' // runs every 8 minutes
+        // return '*/8 * * * *' // runs every 8 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '15 4 * * *' // runs every 04:15 daily
     }
     /**
      * Set enable use .lock file for block run retry task

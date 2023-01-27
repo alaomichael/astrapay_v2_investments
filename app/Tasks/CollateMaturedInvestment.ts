@@ -16,8 +16,9 @@ export default class CollateMaturedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/5 * * * *' // runs every 5 minutes
+        // return '*/5 * * * *' // runs every 5 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
+        return '1 1 * * *' // runs every 01:01 daily
     }
     /**
      * Set enable use .lock file for block run retry task
