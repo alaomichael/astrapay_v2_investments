@@ -8,24 +8,24 @@
 |
 */
 
-// import Rabbit from '@ioc:Adonis/Addons/Rabbit'
+import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 
-// async function listen() {
-//     await Rabbit.assertQueue('my_queue')
+async function listen() {
+    await Rabbit.assertQueue('config')
 
-//     await Rabbit.consumeFrom('my_queue', (message) => {
-//         console.log("RabbitMQ Message ======================")
-//         console.log(message.content)
+    await Rabbit.consumeFrom('config', (message) => {
+        console.log("RabbitMQ Message ======================")
+        console.log(message.content)
 
-//         // "If you're expecting a JSON, this will return the parsed message"
-//         console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
-//         console.log(message.jsonContent)
+        // "If you're expecting a JSON, this will return the parsed message"
+        console.log("If you're expecting a JSON, 'message.jsonContent' will return the parsed message ================")
+        console.log(message.jsonContent)
 
-//         message.ack();
-//     })
-// }
+        message.ack();
+    })
+}
 
-// listen()
+listen()
 
 // let listOfQueues = ["my_queue", "another_queue", "yet_another_queue"]
 // async function listenToQueue(queueName) {

@@ -6,7 +6,8 @@ const RABBITMQ_QUEUE_NAME = Env.get("RABBITMQ_QUEUE_NAME");
 
 const amqplib = require('amqplib');
 
-// const rabbitMQService = (async () => {
+// const rabbitMQService = 
+// (async () => {
 //     const queue = RABBITMQ_QUEUE_NAME//'tasks';
 //     const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`);
 
@@ -77,7 +78,7 @@ const rabbitMQService = async () => {
             let { id, name, email, code, status, address } = content//.toString()
             console.log("fields line 73 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
             console.log("content line 78 ===== ", id, name, email, code, status, address)
-            debugger
+            // debugger
             ch1.ack(msg);
         } else {
             console.log('Consumer cancelled by server');

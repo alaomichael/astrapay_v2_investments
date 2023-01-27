@@ -27,7 +27,8 @@
     "@adonisjs/attachment-lite",
     "@adonisjs/session",
     "@adonisjs/mail",
-    "adonis5-scheduler"
+    "adonis5-scheduler",
+    "adonis-rabbit"
   ],
   "aceProviders": [
     "@adonisjs/repl"

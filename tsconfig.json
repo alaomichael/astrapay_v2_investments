@@ -50,8 +50,6 @@
 //     ]
 //   }
 // }
-
-
 {
   "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
@@ -88,15 +86,16 @@
       // "adonis5-scheduler",
       // "@shagital/adonisjs-crud-generator",
       // "adonis-rabbit",
-            "@adonisjs/core",
-            "@adonisjs/repl",
-            "@japa/preset-adonis/build/adonis-typings",
-            "@adonisjs/lucid",
-            "@adonisjs/attachment-lite",
-            "@adonisjs/session",
-            "@adonisjs/mail",
-            "adonis5-scheduler",
-            
+      "@adonisjs/core",
+      "@adonisjs/repl",
+      "@japa/preset-adonis/build/adonis-typings",
+      "@adonisjs/lucid",
+      "@adonisjs/attachment-lite",
+      "@adonisjs/session",
+      "@adonisjs/mail",
+      "adonis5-scheduler",
+      // "amqplib",
+      "adonis-rabbit"
     ]
   }
 }
