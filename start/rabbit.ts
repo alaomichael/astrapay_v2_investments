@@ -321,7 +321,7 @@ const amqplib = require('amqplib');
 
                         if (payload.phone2) {
                             let phone2Exist = await rfiRecordsService.getRfiRecordByRfiRecordPhone2AndWhereRfiCodeIsNotThis(payload.phone2, payload.rfiCode);
-                            if (phone2Exist) {
+                            if (phone2Exist && phone2Exist.phone2 != "phone2 was not provided") {
                                 console.log('Consumer cancelled by server, line 317 =====');
                                 console.log(`phone2 ${payload.phone2} already exist`);
                                 debugger
@@ -345,7 +345,7 @@ const amqplib = require('amqplib');
 
                         if (payload.website) {
                             let websiteExist = await rfiRecordsService.getRfiRecordByRfiRecordWebsiteAndWhereRfiCodeIsNotThis(payload.website, payload.rfiCode);
-                            if (websiteExist) {
+                            if (websiteExist && websiteExist.website != "http://www.no_website_provided.com") {
                                 console.log('Consumer cancelled by server, line 335 =====');
                                 console.log(`website ${payload.website} already exist`);
                                 debugger
@@ -357,7 +357,7 @@ const amqplib = require('amqplib');
 
                         if (payload.slogan) {
                             let sloganExist = await rfiRecordsService.getRfiRecordByRfiRecordSloganAndWhereRfiCodeIsNotThis(payload.slogan, payload.rfiCode);
-                            if (sloganExist) {
+                            if (sloganExist && sloganExist.slogan != "slogan was not provided") {
                                 console.log('Consumer cancelled by server, line 344 =====');
                                 console.log(`slogan ${payload.slogan} already exist`);
                                 debugger
