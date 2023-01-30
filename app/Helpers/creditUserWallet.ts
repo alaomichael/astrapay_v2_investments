@@ -64,7 +64,7 @@ export const creditUserWallet = async function creditUserWallet(
         // customerReference = `${TRANSACTION_PREFIX}-${reference}-${customerReference}`;
         // console.log("Customer Transaction Reference , line 69 ==================")
         // console.log(customerReference);
-        debugger;
+        // debugger;
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",

@@ -131,12 +131,12 @@ const amqplib = require('amqplib');
                 address: address,
             }
             debugger
-            let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
-            if (!rfiRecord) {
-                rfiRecord = await rfiRecordsService.createRfiRecord(payload);
-            } else {
-                rfiRecord = await rfiRecordsService.updateRfiRecord(rfiRecord, payload);
-            }
+            // let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
+            // if (!rfiRecord) {
+            //     rfiRecord = await rfiRecordsService.createRfiRecord(payload);
+            // } else {
+            //     rfiRecord = await rfiRecordsService.updateRfiRecord(rfiRecord, payload);
+            // }
             debugger
             ch1.ack(msg);
         } else {
