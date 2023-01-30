@@ -1,3 +1,6 @@
+import RfiRecordsServices from "App/Services/RfiRecordsServices";
+import { RfiRecordType } from "App/Services/types/rfirecord_type";
+
 /*
 |--------------------------------------------------------------------------
 | Preloaded File
@@ -42,7 +45,7 @@ const amqplib = require('amqplib');
 //     await Rabbit.consumeFrom(queueName, (message) => {
 //         console.log("RabbitMQ Message ======================")
 //         console.log(message.content)
-        
+
 //         // "If you're expecting a JSON, this will return the parsed message"
 //         console.log("If you're expecting a JSON, this will return the parsed message ================")
 //         console.log(message.jsonContent)
@@ -68,7 +71,7 @@ const amqplib = require('amqplib');
     await ch1.assertQueue(queue);
 
     // Listener
-    ch1.consume(queue, (msg) => {
+    ch1.consume(queue, async (msg) => {
         if (msg !== null) {
             // console.log('Received the whole message ======:', msg);
             // console.log('Received the fields message ======:', msg.fields);
@@ -100,10 +103,41 @@ const amqplib = require('amqplib');
             //   "country": "Nigeria"
             // },
 
-            let { id, name, email, code, status, address } = content;
+            let { id, name, email, code, status, address, directors } = content;
             console.log("fields line 104 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
             console.log("content line 105 ===== ", id, name, email, code, status, address)
-            // debugger
+            // Check if the record is existing
+
+            const rfiRecordsService = new RfiRecordsServices();
+            let externalRfiRecordId = id;
+            let rfiCode = code;
+            let rfiName = name;
+            let phone = directors[0].phoneNumber
+            let imageUrl = content.imageUrl ? content.imageUrl : "http://www.no_image_provided.com";
+            let website = content.website ? content.website : "http://www.no_website_provided.com";
+            let phone2 = content.phone2 ? content.phone2 : "phone2 was not provided";
+            let slogan = content.slogan ? content.slogan : "slogan was not provided";
+          
+            const payload: RfiRecordType = {
+                externalRfiRecordId: externalRfiRecordId,
+                rfiName: rfiName,
+                rfiCode: rfiCode,
+                phone: phone,
+                phone2: phone2,
+                email: email,
+                website: website,
+                slogan: slogan,
+                imageUrl: imageUrl,
+                address: address,
+            }
+            debugger
+            let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
+            if (!rfiRecord) {
+                rfiRecord = await rfiRecordsService.createRfiRecord(payload);
+            } else {
+                rfiRecord = await rfiRecordsService.updateRfiRecord(rfiRecord, payload);
+            }
+            debugger
             ch1.ack(msg);
         } else {
             console.log('Consumer cancelled by server');
