@@ -18,6 +18,38 @@ export default class RfiRecordsController {
             data: rfirecords
         });
     }
+    
+    public async showByExternalRfiRecordId({ params, request, response, }: HttpContextContract) {
+        console.log("RfiRecord params: ", params);
+        const { externalRfiRecordId } = request.params();
+        console.log("RfiRecord params externalRfiRecordId: ", externalRfiRecordId);
+        try {
+            const rfiRecordsService = new RfiRecordsServices();
+            // let rfiRecord = await RfiRecord.query().where({ id: externalRfiRecordId }).preload("timelines", (query) => {query.orderBy("createdAt", "desc"); }).first();
+            let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
+            if (!rfiRecord) return response.json({ status: "FAILED", data: [] });
+            return response
+                .status(200)
+                .json({ status: "OK", data: rfiRecord });
+        } catch (error) {
+            console.log("Error line 51", error.messages);
+            console.log("Error line 52", error.message);
+            if (error.code === 'E_APP_EXCEPTION') {
+                console.log(error.codeSt)
+                let statusCode = error.codeSt ? error.codeSt : 500
+                return response.status(parseInt(statusCode)).json({
+                    status: "FAILED",
+                    message: error.messages,
+                    hint: error.message
+                });
+            }
+            return response.status(500).json({
+                status: "FAILED",
+                message: error.messages,
+                hint: error.message
+            });
+        }
+    }
 
     public async showByRfiRecordId({ params, request, response, }: HttpContextContract) {
         console.log("RfiRecord params: ", params);
@@ -56,9 +88,10 @@ export default class RfiRecordsController {
         try {
             await request.validate(CreateRfiRecordValidator);
             const rfirecordsService = new RfiRecordServices();
-            const { rfiName, rfiCode, phone, phone2,//generalVerificationRequirementId,// phone2,
+            const { externalRfiRecordId,rfiName, rfiCode, phone, phone2,//generalVerificationRequirementId,// phone2,
                 email, website, slogan, imageUrl, address, } = request.body();
             const payload: RfiRecordType = {
+                externalRfiRecordId: externalRfiRecordId,
                 rfiName: rfiName,
                 rfiCode: rfiCode,
                 phone: phone,
@@ -106,10 +139,11 @@ export default class RfiRecordsController {
             await request.validate(UpdateRfiRecordValidator);
             const rfirecordsService = new RfiRecordServices();
             const { id } = request.params();
-            const { rfiName, rfiCode, phone, phone2,//generalVerificationRequirementId,    // phone2,
+            const { externalRfiRecordId,rfiName, rfiCode, phone, phone2,//generalVerificationRequirementId,    // phone2,
                 email, website, slogan, imageUrl, address, //otherInformation, 
             } = request.body();
             const payload: RfiRecordType = {
+                externalRfiRecordId: externalRfiRecordId,
                 rfiName: rfiName,
                 rfiCode: rfiCode,
                 phone: phone,

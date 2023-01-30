@@ -8,6 +8,12 @@ export default class UpdateRfiRecordValidator extends BaseValidator {
 
     public schema = schema.create({
         // generalVerificationRequirementId: schema.string.optional(),
+        externalRfiRecordId: schema.string.optional({ escape: true },
+            [rules.maxLength(255), rules.unique({
+                table: 'rfi_records',
+                column: 'external_rfi_record_id'
+            })]
+        ),
         rfiName: schema.string.optional({ escape: true },
             [rules.maxLength(255), rules.unique({
                 table: 'rfi_records',

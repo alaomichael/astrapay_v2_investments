@@ -103,6 +103,8 @@ Route.group(() => {
     Route.get('admin/investments/feedbacks', 'InvestmentsController.feedbacks')
     Route.get('admin/investments/transactionsfeedbacks', 'InvestmentsController.transactionStatus')
     Route.get('admin/investments/rfi_records', 'RfiRecordsController.index')
+    Route.get('admin/investments/rfi_records/external_rfi_record/:externalRfiRecordId', 'RfiRecordsController.showByExternalRfiRecordId')
+    Route.get('admin/investments/rfi_records/:rfiRecordId', 'RfiRecordsController.showByRfiRecordId')
     Route.get("admin/investments/types", "TypesController.index");
     Route.get("admin/investments/types/:typeId", "TypesController.showByTypeId");
     Route.get("admin/investments/about_to_be_mature_investments", "InvestmentsController.collateAboutToBeMatureInvestment");

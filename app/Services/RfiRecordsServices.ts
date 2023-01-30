@@ -31,7 +31,19 @@ export default class RfiRecordsServices {
             throw error
         }
     }
-
+    
+    public async getRfiRecordByExternalRfiRecordId(externalRfiRecordId: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ external_rfi_record_id: externalRfiRecordId })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
     public async getRfiRecordByRfiRecordId(id: string): Promise<RfiRecord | null> {
         try {
             const rfiRecord = await RfiRecord.query().where({ id: id })
@@ -172,11 +184,11 @@ export default class RfiRecordsServices {
             params.push(queryFields.id)
         }
 
-        // if (queryFields.generalVerificationRequirementId) {
-        //     predicateExists()
-        //     predicate = predicate + "general_verification_requirement_id=?"
-        //     params.push(queryFields.generalVerificationRequirementId)
-        // }
+        if (queryFields.externalRfiRecordId) {
+            predicateExists()
+            predicate = predicate + "external_rfi_record_id=?"
+            params.push(queryFields.externalRfiRecordId)
+        }
         if (queryFields.rfiName) {
             predicateExists()
             predicate = predicate + "rfi_name=?"

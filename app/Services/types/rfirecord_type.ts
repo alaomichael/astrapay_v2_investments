@@ -1,7 +1,7 @@
 
 export interface RfiRecordType {
     rfiName: string,
-    // generalVerificationRequirementId: string,
+    externalRfiRecordId: string,
     rfiCode: string,
     phone: string,
     phone2: string,

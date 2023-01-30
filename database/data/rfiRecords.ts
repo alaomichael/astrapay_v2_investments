@@ -1,7 +1,8 @@
 export const rfiRecords = [
     {
-        rfiName: "Sigma Octantis",
-        rfiCode: "S8",
+        externalRfiRecordId:"0879a164-ca49-40f2-aa64-a7796e872a62",
+        rfiName: "Astra Polaris",
+        rfiCode: "APMFB",
         phone: "07033680599",
         phone2: "07033680598",
         email: "devmichaelalao@gmail.com",
@@ -10,7 +11,7 @@ export const rfiRecords = [
         address: "65, adebiyi street"
 
     },
-    {
+ {     externalRfiRecordId:"0879a164-ca49-40f2-aa64-a7796e872a63",
         bankName: "King Bank",
         bankCode: "002",
         phone: "07033680597",

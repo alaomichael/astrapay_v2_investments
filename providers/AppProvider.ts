@@ -5,9 +5,7 @@ export default class AppProvider {
 
   public register() {
     // Register your own bindings
-    // const messageQueue = this.app.container.use('Adonis/Addons/Rabbit');
-    // messageQueue();
-  }
+      }
 
   public async boot() {
     // IoC container is ready
@@ -17,8 +15,6 @@ export default class AppProvider {
     // App is ready
     const scheduler = this.app.container.use('Adonis/Addons/Scheduler');
     scheduler.run();
-    // const messageQueue = this.app.container.use('Adonis/Addons/Rabbit');
-    // messageQueue.run();
   }
 
   public async shutdown() {

@@ -13,6 +13,7 @@ export default class extends BaseSchema {
       //   .index()
       //   .onUpdate("CASCADE")
       //   .onDelete("CASCADE");
+      table.string("external_rfi_record_id", 255).notNullable().unique().index();
       table.string("rfi_name", 255).notNullable().unique().index();
       table.string("rfi_code", 255).notNullable().unique().index();
       table.string("phone", 255).notNullable().unique().index();

@@ -1,5 +1,5 @@
 // import Rabbit from '@ioc:Adonis/Addons/Rabbit'
-import { rabbitMQService } from 'App/Services/MessageQueuesServices'
+// import { rabbitMQService } from 'App/Services/MessageQueuesServices'
 import { BaseTask } from 'adonis5-scheduler/build'
 
 // import axios from 'axios'
@@ -18,7 +18,7 @@ export default class ListenToMessageQueue extends BaseTask {
         // return '* * * * * *'
 
         // return '*/30 * * * * *' // runs every 30 seconds
-        return '*/1 * * * *' // runs every 1 minutes
+        return '*/30 * * * *' // runs every 30 minutes
         // return '0 */2 * * *' // runs every 2 hours 0 minute
         // return '1 0 * * *' // runs every 00:01 daily
     }
@@ -51,7 +51,7 @@ export default class ListenToMessageQueue extends BaseTask {
         // }
 
         // await listen();
-      await rabbitMQService()
+    //   await rabbitMQService()
         console.log("After AXIOS CALL for Listen To Message Queue ,  ==================================================");
         console.log("The ASTRAPAY API Listen To Message Queue  response,line 52: ");
     }

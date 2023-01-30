@@ -16,8 +16,8 @@ export default class RfiRecord extends AppBaseModel {
   @column({ isPrimary: true })
   public id: string
 
-  // @column({})
-  // public generalVerificationRequirementId: string
+  @column({})
+  public externalRfiRecordId: string
 
   @column({})
   public rfiName: string
