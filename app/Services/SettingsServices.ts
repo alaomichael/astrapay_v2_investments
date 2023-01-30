@@ -17,12 +17,13 @@ export default class SettingsServices {
         }
     }
 
-    public async getSettings(queryParams: any): Promise<Settings | null> {
+    public async getSettings(queryParams: any): Promise<Settings[] | null> {
         try {
             // console.log("Query params in settings service:",queryParams)
-            // const { limit, offset = 0 } = queryParams
+            const { limit, offset = 0 } = queryParams
             const queryGetter = await this.queryBuilder(queryParams)
-            const responseData = await Settings.query().whereRaw(queryGetter.sqlQuery, queryGetter.params).first()//.orderBy("updated_at", "desc").offset(offset).limit(limit)
+            const responseData = await Settings.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)//.first()
+            .orderBy("updated_at", "desc").offset(offset).limit(limit)
             return responseData
         } catch (error) {
             console.log(error)
