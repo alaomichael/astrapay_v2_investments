@@ -118,10 +118,10 @@ const amqplib = require('amqplib');
                     let rfiCode = code;
                     let rfiName = name;
                     let phone = directors[0].phoneNumber
-                    let imageUrl = content.imageUrl ? content.imageUrl : "http://www.no_image_provided.com";
-                    let website = content.website ? content.website : "http://www.no_website_provided.com";
-                    let phone2 = content.phone2 ? content.phone2 : "phone2 was not provided";
-                    let slogan = content.slogan ? content.slogan : "slogan was not provided";
+                    let imageUrl = content.imageUrl ? content.imageUrl : `http://www.${rfiName}.no_image_provided.com`;
+                    let website = content.website ? content.website : `http://www.${rfiName}.no_website_provided.com`;
+                    let phone2 = content.phone2 ? content.phone2 : `${rfiName} phone2 was not provided`;
+                    let slogan = content.slogan ? content.slogan : `${rfiName} slogan was not provided`;
                     address = `${address.street}, ${address.city}, ${address.state}, ${address.country}`;
                     const payload: RfiRecordType = {
                         externalRfiRecordId: externalRfiRecordId,
@@ -167,7 +167,7 @@ const amqplib = require('amqplib');
                         }
 
                         let phone2Exist = await rfiRecordsService.getRfiRecordByRfiRecordPhone2(payload.phone2);
-                        if (phone2Exist) {
+                        if (phone2Exist && phone2Exist.phone2 != "phone2 was not provided") {
                             console.log('Consumer cancelled by server, line 164 =====');
                             console.log(`phone2 ${payload.phone2} already exist`);
                             debugger
@@ -185,7 +185,7 @@ const amqplib = require('amqplib');
                         }
 
                         let websiteExist = await rfiRecordsService.getRfiRecordByRfiRecordWebsite(payload.website);
-                        if (websiteExist) {
+                        if (websiteExist && websiteExist.website != "http://www.no_website_provided.com") {
                             console.log('Consumer cancelled by server, line 178 =====');
                             console.log(`website ${payload.website} already exist`);
                             debugger
@@ -194,7 +194,7 @@ const amqplib = require('amqplib');
                         }
 
                         let sloganExist = await rfiRecordsService.getRfiRecordByRfiRecordSlogan(payload.slogan);
-                        if (sloganExist) {
+                        if (sloganExist && sloganExist.slogan != "slogan was not provided") {
                             console.log('Consumer cancelled by server, line 185 =====');
                             console.log(`slogan ${payload.slogan} already exist`);
                             debugger
@@ -282,9 +282,9 @@ const amqplib = require('amqplib');
                         } else {
                             await settingsService.updateSetting(selectedSetting, payload2);
                         }
-
+                        console.log("New RFI record created successfully line 285 ===== ")
                     } else {
-                        console.log("payload line 287 ===== ", payload)
+                        console.log("payload for existing RFI record line 287 ===== ", payload)
                         if (payload.rfiName) {
                             let rfiNameExist = await rfiRecordsService.getRfiRecordByRfiRecordRfiNameAndWhereRfiCodeIsNotThis(payload.rfiName, payload.rfiCode);
                             if (rfiNameExist) {
@@ -445,6 +445,7 @@ const amqplib = require('amqplib');
                         } else {
                             await settingsService.updateSetting(selectedSetting, payload2);
                         }
+                        console.log("Existing RFI record updated successfully line 448 ===== ")
                     }
                     // debugger
                     ch1.ack(msg);
