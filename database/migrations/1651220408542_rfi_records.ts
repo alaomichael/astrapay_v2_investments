@@ -21,8 +21,8 @@ export default class extends BaseSchema {
       table.string("email", 255).notNullable().unique().index();
       table.string("website", 255).notNullable().unique().index();
       table.string("slogan", 255).nullable().unique().index();
-      table.string("image_url", 255).notNullable().unique().index();
-      table.string("address", 255).notNullable().unique().index();
+      table.string("image_url", 255).notNullable().index();
+      table.string("address", 255).notNullable().index();
       // table.specificType("other_information", "text ARRAY").nullable();
 
 

@@ -109,10 +109,130 @@ export default class RfiRecordsServices {
         }
     }
 
+    public async getRfiRecordByRfiRecordPhone2(phone2: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ phone2: phone2 })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
+    
+    
 
     public async getRfiRecordByRfiRecordWebsite(website: string): Promise<RfiRecord | null> {
         try {
             const rfiRecord = await RfiRecord.query().where({ website: website })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
+    public async getRfiRecordByRfiRecordSlogan(slogan: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ slogan: slogan })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
+    
+    public async getRfiRecordByRfiRecordRfiNameAndWhereRfiCodeIsNotThis(rfiName: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ rfi_name: rfiName }).andWhereNot({ rfi_code: rfiCode })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordRfiCodeAndWhereRfiNameIsNotThis(rfiCode: string, rfiName: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ rfi_code: rfiCode }).andWhereNot({ rfi_name: rfiName })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordPhoneAndWhereRfiCodeIsNotThis(phone: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ phone: phone }).andWhereNot({ rfi_code: rfiCode })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordPhone2AndWhereRfiCodeIsNotThis(phone2: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ phone2: phone2 }).andWhereNot({ rfi_code: rfiCode })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordEmailAndWhereRfiCodeIsNotThis(email: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ email: email }).andWhereNot({ rfi_code: rfiCode })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordWebsiteAndWhereRfiCodeIsNotThis(website: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ website: website }).andWhereNot({ rfi_code: rfiCode })
+                // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("types", (query) => { query.orderBy("typeName", "asc"); })
+                .first();
+            return rfiRecord;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    
+    public async getRfiRecordByRfiRecordSloganAndWhereRfiCodeIsNotThis(slogan: string, rfiCode: string): Promise<RfiRecord | null> {
+        try {
+            const rfiRecord = await RfiRecord.query().where({ slogan: slogan }).andWhereNot({ rfi_code: rfiCode })
                 // .preload("bankVerificationRequirements", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("types", (query) => { query.orderBy("typeName", "asc"); })
                 .first();

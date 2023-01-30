@@ -1,7 +1,7 @@
 export const settings = [
     {
-        rfiName: "Sigma Octantis",
-        rfiCode: "S8",
+        rfiName: "Astra Polaris",
+        rfiCode: "APMFB",
         rfiImageUrl: "http://www.rfi-image.com/01",
         initiationNotificationEmail: "devmichaelalao@gmail.com",
         activationNotificationEmail: "devmichaelalao@gmail.com",
