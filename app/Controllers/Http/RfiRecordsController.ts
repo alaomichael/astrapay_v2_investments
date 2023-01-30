@@ -177,7 +177,7 @@ export default class RfiRecordsController {
             //     }
             // }
             const rfirecord = await rfirecordsService.updateRfiRecord(selectedRfiRecord, payload);
-            console.log("RfiRecord updated: ", rfirecord);
+            // console.log("RfiRecord updated: ", rfirecord);
             // send to user
             return response.json({
                 status: "OK",
