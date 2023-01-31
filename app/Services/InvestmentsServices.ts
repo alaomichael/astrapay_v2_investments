@@ -961,7 +961,7 @@ export default class InvestmentsServices {
     }
 
     public async collateAboutToBeMatureInvestment(queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, numberOfDaysFromToday, numberOfDaysBeforeToday } = queryParams;
@@ -1005,7 +1005,7 @@ export default class InvestmentsServices {
 
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', "active")
                 // .where('payout_date', '>=', payoutDateFrom)
                 // .where('payout_date', '<=', payoutDateTo)
@@ -1025,6 +1025,7 @@ export default class InvestmentsServices {
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     // const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -1312,7 +1313,8 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -1346,18 +1348,18 @@ export default class InvestmentsServices {
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 516:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async collateMaturedInvestment(queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -1395,7 +1397,7 @@ export default class InvestmentsServices {
 
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', "active")
                 // .where('payout_date', '>=', payoutDateFrom)
                 .where('payout_date', '<=', payoutDateTo)
@@ -1414,6 +1416,7 @@ export default class InvestmentsServices {
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -1582,6 +1585,7 @@ export default class InvestmentsServices {
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 1655 :", updatedInvestment);
+                                await trx.commit();
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'active') {
@@ -1598,6 +1602,7 @@ export default class InvestmentsServices {
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 654 :", updatedInvestment);
+                                    await trx.commit();
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -1638,6 +1643,7 @@ export default class InvestmentsServices {
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 680 :", updatedInvestment);
+                                await trx.commit();
                             }
 
                             // console.log('Investment data after payout request line 685:', investment)
@@ -1649,7 +1655,8 @@ export default class InvestmentsServices {
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback();
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -1683,18 +1690,18 @@ export default class InvestmentsServices {
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 516:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async sumOfMaturedInvestment(queryParams: any): Promise<Investment | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -1732,7 +1739,7 @@ export default class InvestmentsServices {
 
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .sum('total_amount_to_payout as totalAmountDueForPayout')
                 .where('status', "matured")
                 .first()
@@ -1750,11 +1757,11 @@ export default class InvestmentsServices {
                 console.log(`There is no matured investment or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no matured investment or payout has been completed. Please, check and try again.`, codeSt: "404" })
             }
-            await trx.commit()
+            // await trx.commit()
             return responseData;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
@@ -2547,7 +2554,7 @@ await trx.rollback()
 
 
     public async reactivateSuspendedPayoutInvestment(queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 2240:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, payoutReactivationDate } = queryParams;
@@ -2594,7 +2601,7 @@ await trx.rollback()
             if (payoutReactivationDate) {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('status', "payout_suspended")
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
@@ -2606,7 +2613,7 @@ await trx.rollback()
             } else {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('status', "payout_suspended")
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
@@ -2639,6 +2646,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -2789,6 +2797,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
+                                await trx.commit();
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
@@ -2805,6 +2814,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
+                                    await trx.commit();
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -2817,11 +2827,11 @@ await trx.rollback()
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
-                                    // console.log('Timeline object line 667:', timelineObject)
+                                    // console.log('Timeline object line 2830:', timelineObject)
                                     //  Push the new object to the array
                                     // timeline = investment.timeline
                                     // timeline.push(timelineObject)
-                                    // console.log('Timeline object line 671:', timeline)
+                                    // console.log('Timeline object line 2834:', timeline)
                                     // stringify the timeline array
                                     await timelineService.createTimeline(timelineObject);
 
@@ -2844,9 +2854,10 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2559 :", updatedInvestment);
+                                await trx.commit();
                             }
 
-                            // console.log('Investment data after payout request line 685:', investment)
+                            // console.log('Investment data after payout request line 2860:', investment)
                             await trx.commit();
                             return {
                                 status: 'OK',
@@ -2962,6 +2973,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
+                                await trx.commit();
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
@@ -2978,6 +2990,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
+                                    await trx.commit()
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -3017,6 +3030,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2772 :", updatedInvestment);
+                                await trx.commit();
                             }
 
                             // console.log('Investment data after payout request line 2729:', investment)
@@ -3028,7 +3042,8 @@ await trx.rollback()
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3062,19 +3077,19 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 2772:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
 
     public async reactivateSuspendedPayoutInvestmentByInvestmentId(investmentId: string, queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 2240:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, payoutReactivationDate } = queryParams;
@@ -3121,7 +3136,7 @@ await trx.rollback()
             if (payoutReactivationDate) {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('id', investmentId)
                     .where('status', "payout_suspended")
                     .where('is_payout_suspended', true)
@@ -3134,7 +3149,7 @@ await trx.rollback()
             } else {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('id', investmentId)
                     .where('status', "payout_suspended")
                     .where('is_payout_suspended', true)
@@ -3158,6 +3173,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -3294,6 +3310,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
+                                await trx.commit()
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
@@ -3310,6 +3327,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
+                                    await trx.commit()
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -3349,6 +3367,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 680 :", updatedInvestment);
+                                await trx.commit()
                             }
 
                             // console.log('Investment data after payout request line 685:', investment)
@@ -3467,6 +3486,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
+                                await trx.commit()
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
@@ -3483,6 +3503,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
+                                    await trx.commit()
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -3502,8 +3523,6 @@ await trx.rollback()
                                     // console.log('Timeline object line 2695:', timeline)
                                     // stringify the timeline array
                                     await timelineService.createTimeline(timelineObject);
-
-
                                     // Send Notification to admin and others stakeholder
                                     let messageKey = "payout_reactivation";
                                     let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
@@ -3523,6 +3542,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2726 :", updatedInvestment);
+                                await trx.commit()
                             }
 
                             // console.log('Investment data after payout request line 2729:', investment)
@@ -3534,7 +3554,8 @@ await trx.rollback()
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3568,18 +3589,18 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 2772:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async reactivateSuspendedRolloverInvestment(queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 2800:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, rolloverReactivationDate } = queryParams;
@@ -3626,7 +3647,7 @@ await trx.rollback()
             if (rolloverReactivationDate) {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('status', "rollover_suspended")
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
@@ -3638,7 +3659,7 @@ await trx.rollback()
             } else {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('status', "rollover_suspended")
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
@@ -3659,6 +3680,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -3764,6 +3786,20 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
+                                                    // START
+                                // console.log('Updated investment Status line 3017: ', investment)
+                                // console.log('Payout investment data line 3018:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 3028 :", updatedInvestment);
+                                await trx.commit()
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
@@ -3776,7 +3812,7 @@ await trx.rollback()
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
-                                // console.log('Timeline object line 2337:', timelineObject)
+                                // console.log('Timeline object line 3815:', timelineObject)
                                 await timelineService.createTimeline(timelineObject);
 
                                 // Send Notification to admin and others stakeholder
@@ -3791,19 +3827,6 @@ await trx.rollback()
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
-                                // START
-                                // console.log('Updated investment Status line 3017: ', investment)
-                                // console.log('Payout investment data line 3018:', payload)
-                                payload.investmentId = investmentId
-                                payload.requestType = requestType
-                                // debugger
-                                // await investment.save()
-                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                                // send for update
-                                // await investmentsService.updateInvestment(record, investment);
-                                await investmentsService.updateInvestment(record, investment);
-                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                // console.log(" Current log, line 3028 :", updatedInvestment);
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
@@ -3821,6 +3844,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3045 :", updatedInvestment);
+                                    await trx.commit()
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -3855,6 +3879,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3087 :", updatedInvestment);
+                                await trx.commit()
                             }
 
                             // console.log('Investment data after rollover request line 685:', investment)
@@ -3928,6 +3953,21 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
+                                // START
+                                // console.log('Updated investment Status line 3198: ', investment)
+                                // console.log('Payout investment data line 3199:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 3209 :", updatedInvestment);
+                                await trx.commit()
+                                // debugger
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
@@ -3956,20 +3996,7 @@ await trx.rollback()
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
-                                // START
-                                // console.log('Updated investment Status line 3198: ', investment)
-                                // console.log('Payout investment data line 3199:', payload)
-                                payload.investmentId = investmentId
-                                payload.requestType = requestType
-                                // debugger
-                                // await investment.save()
-                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                                // send for update
-                                // await investmentsService.updateInvestment(record, investment);
-                                await investmentsService.updateInvestment(record, investment);
-                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                // console.log(" Current log, line 3209 :", updatedInvestment);
-                                // debugger
+
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
@@ -3986,6 +4013,8 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3225 :", updatedInvestment);
+                                    await trx.commit()
+
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -4020,6 +4049,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3273 :", updatedInvestment);
+                                await trx.commit()
                             }
 
                             // console.log('Investment data after rollover request line 3276:', investment)
@@ -4031,7 +4061,8 @@ await trx.rollback()
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4065,18 +4096,18 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 3314:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async reactivateSuspendedRolloverInvestmentByInvestmentId(investmentId: string, queryParams: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 2800:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, rolloverReactivationDate } = queryParams;
@@ -4123,7 +4154,7 @@ await trx.rollback()
             if (rolloverReactivationDate) {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('id', investmentId)
                     .where('status', "rollover_suspended")
                     .where('is_rollover_suspended', true)
@@ -4136,7 +4167,7 @@ await trx.rollback()
             } else {
                 responseData = await Database
                     .from('investments')
-                    .useTransaction(trx) // 👈
+                    // .useTransaction(trx) // 👈
                     .where('id', investmentId)
                     .where('status', "rollover_suspended")
                     .where('is_rollover_suspended', true)
@@ -4158,6 +4189,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -4247,6 +4279,22 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
+   // START
+                                // console.log('Updated investment Status line 4201: ', investment)
+                                // console.log('Payout investment data line 4202:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 4294 :", updatedInvestment);
+                                await trx.commit()
+                                // debugger
+
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
@@ -4259,13 +4307,13 @@ await trx.rollback()
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
-                                // console.log('Timeline object line 2337:', timelineObject)
+                                // console.log('Timeline object line 4310:', timelineObject)
                                 await timelineService.createTimeline(timelineObject);
 
                                 // Send Notification to admin and others stakeholder
                                 let messageKey = "rollover_reactivation";
                                 let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                                // console.log("newNotificationMessage line 4191:", newNotificationMessageWithoutPdf);
+                                // console.log("newNotificationMessage line 4316:", newNotificationMessageWithoutPdf);
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
@@ -4274,20 +4322,7 @@ await trx.rollback()
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
-                                // START
-                                // console.log('Updated investment Status line 4201: ', investment)
-                                // console.log('Payout investment data line 4202:', payload)
-                                payload.investmentId = investmentId
-                                payload.requestType = requestType
-                                // debugger
-                                // await investment.save()
-                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                                // send for update
-                                // await investmentsService.updateInvestment(record, investment);
-                                await investmentsService.updateInvestment(record, investment);
-                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                // console.log(" Current log, line 3028 :", updatedInvestment);
-                                // debugger
+                             
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
@@ -4304,6 +4339,8 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3045 :", updatedInvestment);
+                                    await trx.commit()
+
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -4338,6 +4375,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 4282 :", updatedInvestment);
+                                await trx.commit();
                             }
 
                             // console.log('Investment data after rollover request line 4285:', investment)
@@ -4411,6 +4449,21 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
+                                                                // START
+                                // console.log('Updated investment Status line 3198: ', investment)
+                                // console.log('Payout investment data line 3199:', payload)
+                                payload.investmentId = investmentId
+                                payload.requestType = requestType
+                                // debugger
+                                // await investment.save()
+                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                                // send for update
+                                // await investmentsService.updateInvestment(record, investment);
+                                await investmentsService.updateInvestment(record, investment);
+                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+                                // console.log(" Current log, line 3209 :", updatedInvestment);
+                                await trx.commit();
+                                // debugger
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
@@ -4439,20 +4492,7 @@ await trx.rollback()
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
-                                // START
-                                // console.log('Updated investment Status line 3198: ', investment)
-                                // console.log('Payout investment data line 3199:', payload)
-                                payload.investmentId = investmentId
-                                payload.requestType = requestType
-                                // debugger
-                                // await investment.save()
-                                let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                                // send for update
-                                // await investmentsService.updateInvestment(record, investment);
-                                await investmentsService.updateInvestment(record, investment);
-                                // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-                                // console.log(" Current log, line 3209 :", updatedInvestment);
-                                // debugger
+
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
@@ -4469,6 +4509,7 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3225 :", updatedInvestment);
+                                    await trx.commit()
                                     // update timeline
                                     timelineObject = {
                                         id: uuid(),
@@ -4503,6 +4544,7 @@ await trx.rollback()
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3273 :", updatedInvestment);
+                                await trx.commit()
                             }
 
                             // console.log('Investment data after rollover request line 3276:', investment)
@@ -4514,7 +4556,8 @@ await trx.rollback()
                             // END
                         }
                     } else {
-                        await trx.commit()
+                        // await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4548,18 +4591,18 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 3314:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async payoutMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -4607,7 +4650,7 @@ await trx.rollback()
             // debugger
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', 'matured')
                 .andWhere('request_type', 'payout_investment')
                 .andWhere('approval_status', 'approved')
@@ -4638,6 +4681,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     console.log("Entering update 2232 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -4846,7 +4890,8 @@ await trx.rollback()
                                         // console.log(" Current log, line 1313 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 1315: ", record);
-
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -4877,8 +4922,6 @@ await trx.rollback()
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
 
-                                        // commit transaction and changes to database
-                                        await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
@@ -4904,9 +4947,9 @@ await trx.rollback()
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 1372 :", updatedInvestment);
-
                                         // console.log("Updated record Status line 1374: ", record);
-
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -4938,8 +4981,6 @@ await trx.rollback()
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
 
-                                        // commit transaction and changes to database
-                                        await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment
@@ -4960,14 +5001,14 @@ await trx.rollback()
                                         // await record.save();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 1428 :", currentInvestment);
+                                        // console.log(" Current log, line 5002 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1431 :", updatedInvestment);
-
-                                        // console.log("Updated record Status line 1433: ", record);
-
+                                        // console.log(" Current log, line 5003 :", updatedInvestment);
+                                        // console.log("Updated record Status line 5009: ", record);
+                                        // commit transaction and changes to database
+                                        await trx.commit();
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -4980,10 +5021,10 @@ await trx.rollback()
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
-                                        // console.log("Timeline object line 1447:", timelineObject);
+                                        // console.log("Timeline object line 5024:", timelineObject);
                                         await timelineService.createTimeline(timelineObject);
                                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                        // console.log("new Timeline object line 1450:", newTimeline);
+                                        // console.log("new Timeline object line 5027:", newTimeline);
                                         // update record
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "payout";
@@ -4997,9 +5038,7 @@ await trx.rollback()
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
-
-                                        // commit transaction and changes to database
-                                        await trx.commit();
+                                        
                                         // debugger
                                     } else {
                                         console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
@@ -5016,7 +5055,8 @@ await trx.rollback()
                                     }
                                 } else {
                                     // console.log("Entering no data 4611 ==================================")
-                                    await trx.commit();
+                                    // await trx.commit();
+                                    await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5024,7 +5064,7 @@ await trx.rollback()
                                     }
                                 }
                             } else {
-                                await trx.commit();
+                                await trx.rollback();
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -5033,7 +5073,7 @@ await trx.rollback()
                             }
                         }
                     } else {
-                        await trx.commit();
+                        await trx.rollback();
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5065,18 +5105,18 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 4662:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async retryFailedPayoutOfMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 3859:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -5124,7 +5164,7 @@ await trx.rollback()
             // debugger
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', "completed_with_interest_payout_outstanding")
                 .orWhere('status', "completed_with_principal_payout_outstanding")
                 .where('interest_payout_status', "failed")
@@ -5154,8 +5194,9 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
-                    console.log("Entering update 3936 ==================================")
+                    console.log("Entering update 5199 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
@@ -5343,9 +5384,8 @@ await trx.rollback()
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1313 :", updatedInvestment);
-
                                             // console.log("Updated record Status line 1315: ", record);
-
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -5377,7 +5417,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         } else if (creditUserWalletWithInterest.status !== 200) {
                                             let amountPaidOut = interestDueOnInvestment
@@ -5403,9 +5443,8 @@ await trx.rollback()
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1372 :", updatedInvestment);
-
                                             // console.log("Updated record Status line 1374: ", record);
-
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -5437,7 +5476,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         }
                                     }
@@ -5473,14 +5512,13 @@ await trx.rollback()
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 1302 :", currentInvestment);
+                                            // console.log(" Current log, line 5502 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 1313 :", updatedInvestment);
-
-                                            // console.log("Updated record Status line 1315: ", record);
-
+                                            // console.log(" Current log, line 5513 :", updatedInvestment);
+                                            // console.log("Updated record Status line 5515: ", record);
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -5512,7 +5550,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         } else if (creditUserWalletWithPrincipal.status !== 200) {
                                             let amountPaidOut = amount;
@@ -5538,9 +5576,8 @@ await trx.rollback()
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1372 :", updatedInvestment);
-
                                             // console.log("Updated record Status line 1374: ", record);
-
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -5573,7 +5610,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         }
                                     }
@@ -5588,12 +5625,13 @@ await trx.rollback()
                                     await investmentsService.updateInvestment(currentInvestment, record);
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
+                                    await trx.commit()
                                     // debugger
                                     // throw Error();
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
-                                    await trx.commit()
+                                    await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5601,7 +5639,7 @@ await trx.rollback()
                                     }
                                 }
                             } else {
-                                await trx.commit()
+                                await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -5610,7 +5648,7 @@ await trx.rollback()
                             }
                         }
                     } else {
-                        await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5621,12 +5659,12 @@ await trx.rollback()
                 } catch (error) {
                     console.log(error)
                     // debugger
-                    console.log("Error line 3195", error.messages);
-                    console.log("Error line 3196", error.message);
-                    // console.log("Error line 3197", error.message);
+                    console.log("Error line 5665", error.messages);
+                    console.log("Error line 5666", error.message);
+                    // console.log("Error line 5667", error.message);
                     // debugger
                     await trx.rollback()
-                    console.log(`Error line 3200, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
+                    console.log(`Error line 5669, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }
@@ -5638,23 +5676,23 @@ await trx.rollback()
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 3212 =====================:", error);
+                    console.log("Error line 5680 =====================:", error);
                     throw error;
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 3218:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async retryFailedPayoutOfLiquidatedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 3859:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -5702,7 +5740,7 @@ await trx.rollback()
             // debugger
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', "liquidated_with_interest_payout_outstanding")
                 .orWhere('status', "liquidated_with_principal_payout_outstanding")
                 .where('interest_payout_status', "failed")
@@ -5732,6 +5770,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
                     console.log("Entering update 4535 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -5916,14 +5955,13 @@ await trx.rollback()
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 1302 :", currentInvestment);
+                                            // console.log(" Current log, line 5952 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 1313 :", updatedInvestment);
-
-                                            // console.log("Updated record Status line 1315: ", record);
-
+                                            // console.log(" Current log, line 5953 :", updatedInvestment);
+                                            // console.log("Updated record Status line 5955: ", record);
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -5956,7 +5994,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         } else if (creditUserWalletWithInterest.status !== 200) {
                                             let amountPaidOut = interestDueOnInvestment
@@ -5977,14 +6015,13 @@ await trx.rollback()
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 1369 :", currentInvestment);
+                                            // console.log(" Current log, line 6069 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 1372 :", updatedInvestment);
-
-                                            // console.log("Updated record Status line 1374: ", record);
-
+                                            // console.log(" Current log, line 6072 :", updatedInvestment);
+                                            // console.log("Updated record Status line 6074: ", record);
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -6016,7 +6053,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         }
                                     }
@@ -6052,14 +6089,13 @@ await trx.rollback()
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 1302 :", currentInvestment);
+                                            // console.log(" Current log, line 6002 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 1313 :", updatedInvestment);
-
-                                            // console.log("Updated record Status line 1315: ", record);
-
+                                            // console.log(" Current log, line 6013 :", updatedInvestment);
+                                            // console.log("Updated record Status line 6015: ", record);
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -6093,7 +6129,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         } else if (creditUserWalletWithPrincipal.status !== 200) {
                                             let amountPaidOut = amount;
@@ -6114,14 +6150,13 @@ await trx.rollback()
                                             // await record.save();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 1369 :", currentInvestment);
+                                            // console.log(" Current log, line 6156 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 1372 :", updatedInvestment);
-
-                                            // console.log("Updated record Status line 1374: ", record);
-
+                                            // console.log(" Current log, line 6157 :", updatedInvestment);
+                                            // console.log("Updated record Status line 6158: ", record);
+await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
@@ -6153,7 +6188,7 @@ await trx.rollback()
                                             }
 
                                             // commit transaction and changes to database
-                                            await trx.commit();
+                                            // await trx.commit();
                                             // debugger
                                         }
                                     }
@@ -6173,7 +6208,7 @@ await trx.rollback()
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
-                                    await trx.commit()
+                                    await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -6181,7 +6216,7 @@ await trx.rollback()
                                     }
                                 }
                             } else {
-                                await trx.commit()
+                                await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -6190,7 +6225,7 @@ await trx.rollback()
                             }
                         }
                     } else {
-                        await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -6223,12 +6258,12 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 3218:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
@@ -6807,7 +6842,7 @@ await trx.rollback()
     }
 
     public async rolloverMaturedInvestment(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -6855,7 +6890,7 @@ await trx.rollback()
             // debugger
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('status', "matured")
                 .where('request_type', "payout_investment")
                 // .orWhere('approval_status', "pending")
@@ -6880,8 +6915,9 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
-                    console.log("Entering update 3748 ==================================")
+                    console.log("Entering update 6920 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
@@ -6901,7 +6937,7 @@ await trx.rollback()
                     //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
                     //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
                     // }
-                    console.log(" Login User Data line 3768 =========================");
+                    console.log(" Login User Data line 6940 =========================");
                     console.log(loginUserData);
                     // TODO: Uncomment to use LoginUserData
                     // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
@@ -7104,14 +7140,13 @@ await trx.rollback()
                                                 // await record.save();
                                                 // update record
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                                // console.log(" Current log, line 2008 :", currentInvestment);
+                                                // console.log(" Current log, line 7140 :", currentInvestment);
                                                 // send for update
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                                // console.log(" Current log, line 2011 :", updatedInvestment);
-
-                                                // console.log("Updated record Status line 2013: ", record);
-
+                                                // console.log(" Current log, line 7141 :", updatedInvestment);
+                                                // console.log("Updated record Status line 7141: ", record);
+await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -7164,14 +7199,13 @@ await trx.rollback()
                                                 // await record.save();
                                                 // update record
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                                // console.log(" Current log, line 4019 :", currentInvestment);
+                                                // console.log(" Current log, line 7201 :", currentInvestment);
                                                 // send for update
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                                // console.log(" Current log, line 4023 :", updatedInvestment);
-
-                                                // console.log("Updated record Status line 4025: ", record);
-
+                                                // console.log(" Current log, line 7202 :", updatedInvestment);
+                                                // console.log("Updated record Status line 7202: ", record);
+await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -7254,12 +7288,12 @@ await trx.rollback()
                                             record.datePayoutWasDone = DateTime.now();
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                            // console.log(" Current log, line 4111 :", currentInvestment);
+                                            // console.log(" Current log, line 7291 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                            // console.log(" Current log, line 4115 :", updatedInvestment);
-
+                                            // console.log(" Current log, line 7295 :", updatedInvestment);
+await trx.commit()
                                             // create newInvestment
                                             // update timeline
                                             timelineObject = {
@@ -7360,14 +7394,13 @@ await trx.rollback()
                                                 // await record.save();
                                                 // update record
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                                // console.log(" Current log, line 4221 :", currentInvestment);
+                                                // console.log(" Current log, line 7391 :", currentInvestment);
                                                 // send for update
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                                // console.log(" Current log, line 4225 :", updatedInvestment);
-
-                                                // console.log("Updated record Status line 4227: ", record);
-
+                                                // console.log(" Current log, line 7395 :", updatedInvestment);
+                                                // console.log("Updated record Status line 7397: ", record);
+await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -7418,14 +7451,13 @@ await trx.rollback()
                                                 // await record.save();
                                                 // update record
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                                // console.log(" Current log, line 4284 :", currentInvestment);
+                                                // console.log(" Current log, line 7454 :", currentInvestment);
                                                 // send for update
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                                // console.log(" Current log, line 4288 :", updatedInvestment);
-
-                                                // console.log("Updated record Status line 4290: ", record);
-
+                                                // console.log(" Current log, line 7458 :", updatedInvestment);
+                                                // console.log("Updated record Status line 7459: ", record);
+await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -7498,14 +7530,15 @@ await trx.rollback()
                                     }
                                     // update record
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                    // console.log(" Current log, line 4368 :", currentInvestment);
+                                    // console.log(" Current log, line 7533 :", currentInvestment);
                                     // send for update
                                     await investmentsService.updateInvestment(currentInvestment, record);
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                    // console.log(" Current log, line 4372 :", updatedInvestment);
-                                } else {
-                                    // console.log("Entering no data 4374 ==================================")
+                                    // console.log(" Current log, line 7537 :", updatedInvestment);
                                     await trx.commit()
+                                } else {
+                                    // console.log("Entering no data 7539 ==================================")
+                                    await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -7513,7 +7546,7 @@ await trx.rollback()
                                     }
                                 }
                             } else {
-                                await trx.commit()
+                                await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'This investment is not mature for rollover.',
@@ -7522,7 +7555,7 @@ await trx.rollback()
                             }
                         }
                     } else {
-                        await trx.commit()
+                        await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Rollover of investment is currently suspended.',
@@ -7554,18 +7587,18 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 4415:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
 
     public async liquidateInvestment(investmentId: string, queryParams?: any, loginUserData?: any): Promise<Investment[] | any> {
-        const trx = await Database.transaction();
+        // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
@@ -7614,7 +7647,7 @@ await trx.rollback()
             // debugger
             let responseData = await Database
                 .from('investments')
-                .useTransaction(trx) // 👈
+                // .useTransaction(trx) // 👈
                 .where('id', investmentId)
                 .where('status', 'active')
                 .andWhere('request_type', 'start_investment')
@@ -7646,8 +7679,9 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
+                const trx = await Database.transaction();
                 try {
-                    console.log("Entering update 5920 ==================================")
+                    console.log("Entering update 7684 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
@@ -7667,7 +7701,7 @@ await trx.rollback()
                     //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
                     //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
                     // }
-                    console.log(" Login User Data line 5940 =========================");
+                    console.log(" Login User Data line 7704 =========================");
                     console.log(loginUserData);
                     // TODO: Uncomment to use LoginUserData
                     // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
@@ -7842,14 +7876,13 @@ await trx.rollback()
                                         // await record.save();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 1302 :", currentInvestment);
+                                        // console.log(" Current log, line 7872 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1313 :", updatedInvestment);
-
-                                        // console.log("Updated record Status line 1315: ", record);
-
+                                        // console.log(" Current log, line 7873 :", updatedInvestment);
+                                        // console.log("Updated record Status line 7875: ", record);
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -7881,7 +7914,7 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
@@ -7902,14 +7935,13 @@ await trx.rollback()
                                         // await record.save();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 1369 :", currentInvestment);
+                                        // console.log(" Current log, line 7939 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 1372 :", updatedInvestment);
-
-                                        // console.log("Updated record Status line 1374: ", record);
-
+                                        // console.log(" Current log, line 7942 :", updatedInvestment);
+                                        // console.log("Updated record Status line 7944: ", record);
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -7922,16 +7954,16 @@ await trx.rollback()
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
-                                        // console.log("Timeline object line 1388:", timelineObject);
+                                        // console.log("Timeline object line 7958:", timelineObject);
                                         await timelineService.createTimeline(timelineObject);
                                         // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                        // console.log("new Timeline object line 1391:", newTimeline);
+                                        // console.log("new Timeline object line 7959:", newTimeline);
                                         // update record
                                         // Send Notification to admin and others stakeholder
                                         let messageKey = "payout";
                                         let investment = record;
                                         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                                        // console.log("newNotificationMessage line 8299:", newNotificationMessageWithoutPdf);
+                                        // console.log("newNotificationMessage line 7966:", newNotificationMessageWithoutPdf);
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
@@ -7941,7 +7973,7 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment
@@ -7967,9 +7999,8 @@ await trx.rollback()
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 1431 :", updatedInvestment);
-
                                         // console.log("Updated record Status line 1433: ", record);
-
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -8001,17 +8032,17 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else {
-                                        console.log("Entering failed payout of principal and interest data block ,line 7793 ==================================")
+                                        console.log("Entering failed payout of principal and interest data block ,line 8038 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-                                        // console.log(" Current log, line 8445 :", currentInvestment);
+                                        // console.log(" Current log, line 8045 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                                        // console.log(" Current log, line 8449 :", updatedInvestment);
+                                        // console.log(" Current log, line 8049 :", updatedInvestment);
                                         // debugger
 
                                         // commit transaction and changes to database
@@ -8021,7 +8052,7 @@ await trx.rollback()
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
                                     // commit transaction and changes to database
-                                    await trx.commit();
+                                    await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -8147,9 +8178,8 @@ await trx.rollback()
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 7929 :", updatedInvestment);
-
                                         // console.log("Updated record Status line 7931: ", record);
-
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -8183,7 +8213,7 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
@@ -8214,9 +8244,8 @@ await trx.rollback()
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8662 :", updatedInvestment);
-
                                         // console.log("Updated record Status line 8664: ", record);
-
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -8250,7 +8279,7 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = interestDueOnInvestment
@@ -8281,9 +8310,8 @@ await trx.rollback()
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8759 :", updatedInvestment);
-
                                         // console.log("Updated record Status line 8761: ", record);
-
+await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
@@ -8316,7 +8344,7 @@ await trx.rollback()
                                         }
 
                                         // commit transaction and changes to database
-                                        await trx.commit();
+                                        // await trx.commit();
                                         // debugger
                                     } else {
                                         console.log("Entering failed payout of principal and interest data block ,line 8816 ==================================")
@@ -8339,7 +8367,7 @@ await trx.rollback()
                                     // console.log("Entering no data 8820 ==================================")
 
                                     // commit transaction and changes to database
-                                    await trx.commit();
+                                    await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -8352,7 +8380,7 @@ await trx.rollback()
                     } else {
 
                         // commit transaction and changes to database
-                        await trx.commit();
+                        await trx.rollback();
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -8383,12 +8411,12 @@ await trx.rollback()
                 }
             }
             // commit transaction and changes to database
-            await trx.commit();
+            // await trx.commit();
             // console.log("Response data in investment service, line 1063:", investmentArray);
             return investmentArray;
         } catch (error) {
             console.log(error)
-            await trx.rollback();
+            // await trx.rollback();
             throw error;
         }
     }
