@@ -44,7 +44,7 @@ Route.get('/', async ({ logger }) => {
   // await Rabbit.sendToQueue('my_queue', {status:"OK", message:'This message was sent by adonis-rabbit. Testing.....'})
   return {
     status: "OK",
-    message: "Successfull",
+    message: "Successful",
   };
 })
 
