@@ -54,8 +54,8 @@ export default class TypesServices {
             const type = await Type.query().where({ id: id })
                 .preload("investmentTenures", (query) => { query.orderBy("tenure", "asc"); })
                 .first();
-            console.log("Type search result from service")
-            console.log(type);
+            // console.log("Type search result from service")
+            // console.log(type);
             return type;
         } catch (error) {
             console.log(error)
@@ -69,8 +69,8 @@ export default class TypesServices {
             const type = await Type.query().where({ id: id, rfi_record_id: rfiRecordId })
                 .preload("investmentTenures", (query) => { query.orderBy("tenure", "asc"); })
                 .first();
-            console.log("Type search result from service")
-            console.log(type);
+            // console.log("Type search result from service")
+            // console.log(type);
             return type;
         } catch (error) {
             console.log(error)

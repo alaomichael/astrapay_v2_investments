@@ -1573,7 +1573,7 @@ export default class InvestmentsController {
         userId: userId,
         action: 'investment initiated',
         // @ts-ignore
-        message: `${firstName} just initiated an investment.`,
+        message: `${firstName}, you just initiated an investment.`,
         createdAt: investment.createdAt,
         metadata: `duration: ${investment.duration}`,
       }
@@ -1639,7 +1639,7 @@ export default class InvestmentsController {
           walletId: walletId,// walletId, 
           userId: userId,// userId,
           // @ts-ignore
-          message: `${firstName}, your investment request has been for approval, please wait while the investment is approved. Thank you.`,
+          message: `${firstName}, your investment request has been sent for approval, please wait while the investment is approved. Thank you.`,
           createdAt: DateTime.now(),
           metadata: ``,
         };

@@ -653,7 +653,7 @@ export default class InvestmentsServices {
                 userId: userId,
                 action: 'investment initiated',
                 // @ts-ignore
-                message: `${firstName} just initiated an investment.`,
+                message: `${firstName}, you just initiated an investment.`,
                 createdAt: investment.createdAt,
                 metadata: `duration: ${investment.duration}`,
             }
