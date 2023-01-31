@@ -25,8 +25,9 @@ export default class extends BaseSchema {
       // table.float("fixed_charge", 255).nullable();
       // table.float("rated_charge", 255).nullable();
       // table.specificType('available_types', 'text ARRAY').nullable();
-      table.jsonb('available_types').nullable();//text[]
+      // table.jsonb('available_types').nullable();//text[]
       // table.jsonb("available_types").nullable();
+      table.specificType('available_types', 'text[]').nullable();
       table.string("minimum_allowed_period_of_investment", 255).notNullable().defaultTo(30);
       table.string("maximum_allowed_period_of_investment", 255).notNullable().defaultTo(360);
       // table.float("daily_minimum_limit", 255).notNullable().index().defaultTo(0);
@@ -41,8 +42,10 @@ export default class extends BaseSchema {
       table.string("description").nullable();
       // table.specificType('features', 'text ARRAY').nullable();
       // table.specificType('requirements', 'text ARRAY').nullable();
-      table.jsonb('features').nullable();
-      table.jsonb('requirements').nullable();
+      // table.jsonb('features').nullable();
+      table.specificType('features', 'text[]').nullable();
+      // table.jsonb('requirements').nullable();
+      table.specificType('requirements', 'text[]').nullable();
       table.string("created_by").notNullable();
       table.string('tag_name', 100).notNullable().index().unique();
       table.string('currency_code', 10).notNullable().index().defaultTo("NGN")

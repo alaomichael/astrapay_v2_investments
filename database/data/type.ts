@@ -3,7 +3,7 @@ export const types = [
         "rfiRecordId": "",
         "rfiCode": "",
         "typeName": "Basic Investment",
-        "availableTypes": ["fixed"],
+        "availableTypes": ['fixed'],
         "lowestAmount": 10,
         "highestAmount": 75000,
         "tagName": "basic investment # 10 - 75000",
@@ -17,18 +17,18 @@ export const types = [
         "isAutomated": true,
         "isRolloverAllowed": true,
         "features": [
-            "certificate",
-            "loan"
+            'certificate',
+            'loan'
         ],
         "requirements": [
-            "account number",
-            "linked account"
+            'account number',
+            'linked account'
         ]
 }, {
         "rfiRecordId": "",
         "rfiCode": "",
         "typeName": "General Investment",
-        "availableTypes": ["fixed","debenture"],
+        "availableTypes": ['fixed','debenture'],
         "lowestAmount": 10,
         "highestAmount": 90000,
         "tagName": "general investment # 10 - 90000",
@@ -42,12 +42,12 @@ export const types = [
         "isAutomated": true,
         "isRolloverAllowed": true,
         "features": [
-            "certificate",
-            "loan"
+            'certificate',
+            'loan'
         ],
         "requirements": [
-            "account number",
-            "linked account"
+            'account number',
+            'linked account'
         ]
 
     },]

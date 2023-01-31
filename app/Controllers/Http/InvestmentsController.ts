@@ -1631,6 +1631,21 @@ export default class InvestmentsController {
           console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
         }
 
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: "investment approval request",
+          investmentId: investmentId,//id,
+          walletId: walletId,// walletId, 
+          userId: userId,// userId,
+          // @ts-ignore
+          message: `${firstName}, your investment request has been for approval, please wait while the investment is approved. Thank you.`,
+          createdAt: DateTime.now(),
+          metadata: ``,
+        };
+        // console.log("Timeline object line 1647:", timelineObject);
+        await timelineService.createTimeline(timelineObject);
+
       } else if (approvalIsAutomated === true) {
         // TODO
         // Send Investment Payload To Transaction Service
