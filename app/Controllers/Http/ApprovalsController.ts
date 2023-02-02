@@ -300,6 +300,8 @@ export default class ApprovalsController {
         // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
         throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
       }
+
+      let currentApprovalStatus = approvalRequestIsExisting.approvalStatus;
       console.log(" Login User Data line 426 =========================");
       console.log(loginUserData);
       // TODO: Uncomment to use LoginUserData
@@ -349,9 +351,10 @@ export default class ApprovalsController {
           .json({ status: "FAILED", message: "Not Found,try again." });
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
-      // debugger
-      if (approval) {
-        console.log("Investment approval Selected for Update line 477:");
+      console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus );
+      debugger
+      if (approval && currentApprovalStatus == "pending") {
+        console.log("Investment approval Selected for Update line 357:");
 
         let payload: ApprovalType = {
           walletId: approval.walletId,
@@ -2399,7 +2402,7 @@ export default class ApprovalsController {
             .status(404)
             .json({
               status: "FAILED",
-              message: "No approval data match your query parameters",
+              message: "No approval data match your query parameters or this approval has been processed.",
             });
         }
         // Update Investment data
