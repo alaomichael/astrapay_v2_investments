@@ -66,9 +66,11 @@ export default class InvestmentsController {
       });
     }
     // return recommendation(s)
+    let totalCount = sortedInvestments.length;
     return response.status(200).json({
       status: "OK",
       data: sortedInvestments,
+      totalCount: totalCount
     });
   }
 
@@ -1481,6 +1483,9 @@ export default class InvestmentsController {
           data: [],
         })
       }
+
+      // Get the value of the mode of approval set for this type of investment
+      let {isAutomated} = investmentTypeDetails;
       // console.log('Payload line 1373  :', payload)
       // const investment = await Investment.create(payload)
       
@@ -1597,7 +1602,7 @@ export default class InvestmentsController {
         // liquidationNotificationEmail,
       } = settings//.isInvestmentAutomated
       let approvalIsAutomated = isInvestmentAutomated
-      if (approvalIsAutomated === false) {
+      if ((approvalIsAutomated === false && isAutomated === false) || (approvalIsAutomated === true && isAutomated === false)) {
         // Send Approval Request to Admin
         // let approval = await approvalRequest(userId, investmentId, requestType)
         // console.log(' Approval request return line 938 : ', approval)
@@ -1646,7 +1651,7 @@ export default class InvestmentsController {
         // console.log("Timeline object line 1647:", timelineObject);
         await timelineService.createTimeline(timelineObject);
 
-      } else if (approvalIsAutomated === true) {
+      } else if ((approvalIsAutomated === true && isAutomated === true)) { // || (approvalIsAutomated === false && isAutomated === true)
         // TODO
         // Send Investment Payload To Transaction Service
         // let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)

@@ -51,7 +51,7 @@ export default class extends BaseSchema {
       table.string('currency_code', 10).notNullable().index().defaultTo("NGN")
       table.string('lng').unsigned().nullable().index()
       table.string('lat').unsigned().nullable().index()
-      table.string('status', 255).notNullable().index().defaultTo("active")
+      table.string('status', 255).notNullable().index().defaultTo("active") // or inactive
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
