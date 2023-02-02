@@ -354,13 +354,13 @@ export default class ApprovalsServices {
                         //     };
                     }
 
-                } else if (saveApproval.approvalStatus === "rejected") {
+                } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     console.log("selectedInvestmentRequest ========================================================")
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
-                    selectedInvestmentRequestUpdate.approvalStatus = "rejected" //saveApproval.approvalStatus;
-                    selectedInvestmentRequestUpdate.status = "investment_rejected";
+                    selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
+                    selectedInvestmentRequestUpdate.status = "investment_declined";
                     // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // TODO: handle remark
                     // update the record
@@ -370,12 +370,12 @@ export default class ApprovalsServices {
                     // update timeline
                     timelineObject = {
                         id: uuid(),
-                        action: "investment rejected",
+                        action: "investment declined",
                         investmentId: investmentId,//id,
                         walletId: walletId,// walletId, 
                         userId: userId,// userId,
                         // @ts-ignore
-                        message: `${firstName}, your investment request has been rejected. Please try again. Thank you.`,
+                        message: `${firstName}, your investment request has been declined. Please try again. Thank you.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -495,13 +495,13 @@ export default class ApprovalsServices {
                     // send for update
                     await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
 
-                } else if (saveApproval.approvalStatus === "rejected") {
+                } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     console.log("selectedInvestmentRequest ========================================================")
                     console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
-                    selectedInvestmentRequestUpdate.approvalStatus = "rejected" //saveApproval.approvalStatus;
-                    selectedInvestmentRequestUpdate.status = "investment_rejected";
+                    selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
+                    selectedInvestmentRequestUpdate.status = "investment_declined";
                     // selectedInvestmentRequestUpdate.remark = saveApproval.remark;
                     // TODO: handle remark
                     // update the record
@@ -747,13 +747,13 @@ export default class ApprovalsServices {
                     // update the record
                     // debugger
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
-                } else if (saveApproval.approvalStatus === "rejected") {
+                } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     console.log("selectedInvestmentPayoutRequest ========================================================")
                     console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
-                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "investment_payout_rejected" //saveApproval.approvalStatus;
-                    selectedInvestmentPayoutRequestUpdate.status = "investment_payout_rejected";
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "investment_payout_declined" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.status = "investment_payout_declined";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
@@ -762,12 +762,12 @@ export default class ApprovalsServices {
                     // update timeline
                     timelineObject = {
                         id: uuid(),
-                        action: "investment payout rejected",
+                        action: "investment payout declined",
                         investmentId: investmentId,//id,
                         walletId: walletId,// walletId, 
                         userId: userId,// userId,
                         // @ts-ignore
-                        message: `${firstName}, your investment payout request has been rejected. Please try again. Thank you.`,
+                        message: `${firstName}, your investment payout request has been declined. Please try again. Thank you.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -864,13 +864,13 @@ export default class ApprovalsServices {
                     // Send to investmentsService for processing of liquidation
                     await investmentService.liquidateInvestment(saveApproval.investmentId);
 
-                } else if (saveApproval.approvalStatus === "rejected") {
+                } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentTerminationRequest ========================================================")
                     // console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
-                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "liquidation_rejected" //saveApproval.approvalStatus;
-                    // selectedInvestmentTerminationRequestUpdate.status = "liquidation_rejected";
+                    selectedInvestmentTerminationRequestUpdate.approvalStatus = "liquidation_declined" //saveApproval.approvalStatus;
+                    // selectedInvestmentTerminationRequestUpdate.status = "liquidation_declined";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
@@ -878,12 +878,12 @@ export default class ApprovalsServices {
                     // update timeline
                     timelineObject = {
                         id: uuid(),
-                        action: "investment liquidation rejected",
+                        action: "investment liquidation declined",
                         investmentId: saveApproval.investmentId,
                         userId: selectedApproval.userId,
                         walletId: selectedApproval.walletId,
                         // @ts-ignore
-                        message: `${selectedInvestmentTerminationRequest.firstName},your investment liquidation request has just been rejected.`,
+                        message: `${selectedInvestmentTerminationRequest.firstName},your investment liquidation request has just been declined.`,
                         createdAt: DateTime.now(),
                         metadata: `request type : ${selectedApproval.requestType}`,
                     };

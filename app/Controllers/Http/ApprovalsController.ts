@@ -421,14 +421,14 @@ export default class ApprovalsController {
           // await record.save();
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 696 :", currentInvestment);
+          // console.log(" Current log, line 424 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          // console.log(" Current log, line 535 =========:", updatedInvestment);
+          // console.log(" Current log, line 428 =========:", updatedInvestment);
 
 
-          // console.log("Updated record Status line 537: ", record);
+          // console.log("Updated record Status line 431: ", record);
           // Data to send for transfer of fund
           let { amount, lng, lat, investmentRequestReference,
             firstName, lastName,
@@ -671,8 +671,8 @@ export default class ApprovalsController {
                 message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
               });
           }
-        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "rejected" && record.status === "initiated") { // && record.status == "submitted"
-          newStatus = "investment_rejected";
+        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "declined" && record.status === "initiated") { // && record.status == "submitted"
+          newStatus = "investment_declined";
           record.status = newStatus;
           record.approvalStatus = approval.approvalStatus;// "investment_declined"; //approval.approvalStatus;
           // TODO: Uncomment to use loginAdminFullName
@@ -694,12 +694,12 @@ export default class ApprovalsController {
           // update timeline
           timelineObject = {
             id: uuid(),
-            action: "investment request rejection",
+            action: "investment request declined",
             investmentId: investmentId,
             walletId: walletIdToSearch,
             userId: userIdToSearch,
             // @ts-ignore
-            message: `${firstName}, your investment request has been rejected. Please try again, thank you.`,
+            message: `${firstName}, your investment request has been declined. Please try again, thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -711,7 +711,7 @@ export default class ApprovalsController {
           // Send Details to notification service
           // let subject = "AstraPay Investment Rejection";
           // let message = `
-          //       ${firstName} this is to inform you, that your investment request, has been rejected.
+          //       ${firstName} this is to inform you, that your investment request, has been declined.
 
           //       Please check your device, and try again later.
 
@@ -904,13 +904,13 @@ export default class ApprovalsController {
             // send for update
             await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
 
-          } else if (approval.approvalStatus === "rejected") {
+          } else if (approval.approvalStatus === "declined") {
             // update the neccesary field
             // console.log("record ========================================================")
             // console.log(record)
             let selectedInvestmentRequestUpdate = record;
-            selectedInvestmentRequestUpdate.approvalStatus = "rejected" //approval.approvalStatus;
-            selectedInvestmentRequestUpdate.status = "investment_rollover_rejected";
+            selectedInvestmentRequestUpdate.approvalStatus = "declined" //approval.approvalStatus;
+            selectedInvestmentRequestUpdate.status = "investment_rollover_declined";
             // selectedInvestmentRequestUpdate.remark = approval.remark;
             // TODO: handle remark
             // update the record
@@ -948,12 +948,12 @@ export default class ApprovalsController {
             // update timeline
             timelineObject = {
               id: uuid(),
-              action: "investment rollover rejected",
+              action: "investment rollover declined",
               investmentId: investmentId,//id,
               walletId: walletId,// walletId, 
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has rejected by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
+              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2325,7 +2325,7 @@ export default class ApprovalsController {
             console.log(newNotificationMessageWithoutPdf);
           }
 
-        } else if (approval.requestType == "liquidate_investment" && approval.approvalStatus == "rejected" && record.status == "active" && record.investmentType === "fixed") {
+        } else if (approval.requestType == "liquidate_investment" && approval.approvalStatus == "declined" && record.status == "active" && record.investmentType === "fixed") {
           // newStatus = 'active'
           // record.status = newStatus
           record.approvalStatus = approval.approvalStatus;
@@ -2347,12 +2347,12 @@ export default class ApprovalsController {
           // update timeline
           timelineObject = {
             id: uuid(),
-            action: "investment liquidation rejected",
+            action: "investment liquidation declined",
             investmentId: id,
             walletId: walletIdToSearch,
             userId: userIdToSearch,
             // @ts-ignore
-            message: `${firstName}, your investment liquidation has been rejected, please check your account,thank you.`,
+            message: `${firstName}, your investment liquidation has been declined, please check your account,thank you.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -2364,7 +2364,7 @@ export default class ApprovalsController {
           // Send Details to notification service
           // let subject = "AstraPay Investment Termination Rejection";
           // let message = `
-          //       ${firstName} this is to inform you, that your investment request, termination approval has been rejected.
+          //       ${firstName} this is to inform you, that your investment request, termination approval has been declined.
 
           //       Please check your account.
 
