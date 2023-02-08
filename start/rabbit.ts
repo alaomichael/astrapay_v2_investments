@@ -174,7 +174,7 @@ const amqplib = require('amqplib');
                         }
                         console.log("New RFI record created successfully line 175 ===== ")
                     } else {
-                        console.log("payload for existing RFI record line 752 ===== ", payload)
+                        console.log("payload for existing RFI record line 177 ===== ", payload)
                         if (payload.rfiName) {
                             let rfiNameExist = await rfiRecordsService.getRfiRecordByRfiRecordRfiNameAndWhereRfiCodeIsNotThis(payload.rfiName, payload.rfiCode);
                             if (rfiNameExist) {
