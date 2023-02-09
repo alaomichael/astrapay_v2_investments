@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { column, beforeCreate, afterFetch, afterFind, beforeSave } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, beforeSave } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
 export default class Setting extends AppBaseModel {
@@ -137,12 +137,12 @@ export default class Setting extends AppBaseModel {
   //   setting.initiationNotificationEmail = JSON.parse(setting.initiationNotificationEmail)
   // }
 
-  @afterFetch()
-  public static async parseAllFormats(settings: Setting[]) {
-    settings.map((setting) => {
-      // console.log("setting initiationNotificationEmail before parsing , line 117 =====", setting.initiationNotificationEmail)
-      // console.log("setting initiationNotificationEmail before parsing , line 118 =====",typeof setting.initiationNotificationEmail)
-      return setting//.initiationNotificationEmail
-    })
-  }
+  // @afterFetch()
+  // public static async parseAllFormats(settings: Setting[]) {
+  //   settings.map((setting) => {
+  //     // console.log("setting initiationNotificationEmail before parsing , line 117 =====", setting.initiationNotificationEmail)
+  //     // console.log("setting initiationNotificationEmail before parsing , line 118 =====",typeof setting.initiationNotificationEmail)
+  //     return setting//.initiationNotificationEmail
+  //   })
+  // }
 }
