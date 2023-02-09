@@ -195,8 +195,6 @@ const amqplib = require('amqplib');
                                 throw Error(`rfiCode ${payload.rfiCode} already exist`);
                             }
                         }
-
-
                         if (payload.phone) {
                             let phoneExist = await rfiRecordsService.getRfiRecordByRfiRecordPhoneAndWhereRfiCodeIsNotThis(payload.phone, payload.rfiCode);
                             if (phoneExist && phoneExist.phone != `${payload.rfiName} phone was not provided`) {
@@ -207,8 +205,6 @@ const amqplib = require('amqplib');
                                 throw Error(`phone number ${payload.phone} already exist`);
                             }
                         }
-
-
                         if (payload.phone2) {
                             let phone2Exist = await rfiRecordsService.getRfiRecordByRfiRecordPhone2AndWhereRfiCodeIsNotThis(payload.phone2, payload.rfiCode);
                             if (phone2Exist && phone2Exist.phone2 != `${payload.rfiName} phone2 was not provided`) {
@@ -219,8 +215,6 @@ const amqplib = require('amqplib');
                                 throw Error(`phone2 ${payload.phone2} already exist`);
                             }
                         }
-
-
                         if (payload.email) {
                             let emailExist = await rfiRecordsService.getRfiRecordByRfiRecordEmailAndWhereRfiCodeIsNotThis(payload.email, payload.rfiCode);
                             if (emailExist) {
@@ -232,7 +226,6 @@ const amqplib = require('amqplib');
                             }
 
                         }
-
                         if (payload.website) {
                             let websiteExist = await rfiRecordsService.getRfiRecordByRfiRecordWebsiteAndWhereRfiCodeIsNotThis(payload.website, payload.rfiCode);
                             if (websiteExist && websiteExist.website != `http://www.${payload.rfiName}.no_website_provided.com`) {
@@ -243,8 +236,6 @@ const amqplib = require('amqplib');
                                 throw Error(`website ${payload.website} already exist`);
                             }
                         }
-
-
                         if (payload.slogan) {
                             let sloganExist = await rfiRecordsService.getRfiRecordByRfiRecordSloganAndWhereRfiCodeIsNotThis(payload.slogan, payload.rfiCode);
                             if (sloganExist && sloganExist.slogan != `${payload.rfiName} slogan was not provided`) {
@@ -255,27 +246,25 @@ const amqplib = require('amqplib');
                                 throw Error(`slogan ${payload.slogan} already exist`);
                             }
                         }
-
-
                         // Update the Rfi record
                         rfiRecord = await rfiRecordsService.updateRfiRecord(rfiRecord, payload);
                         if (!rfiRecord) {
-                            console.log('Consumer cancelled by server, line 263 =====');
+                            console.log('Consumer cancelled by server, line 252 =====');
                             // @ts-ignore
                             throw Error(rfiRecord);
                         }
-                        console.log("Existing RFI record updated successfully line 267 ===== ")
+                        console.log("Existing RFI record updated successfully line 256 ===== ")
                     }
                     // debugger
                     ch1.ack(msg);
                 } catch (error) {
-                    console.log('Consumer cancelled by server, line 272 =====');
+                    console.log('Consumer cancelled by server, line 261 =====');
                     console.log(error);
                     ch1.nack(msg, false, false); // requeue set to false
                     // ch1.reject(msg, false, false); // requeue set to false
                 }
             } else {
-                console.log('Consumer cancelled by server, line 278 =====');
+                console.log('Consumer cancelled by server, line 267 =====');
                 throw Error();
             }
         });
@@ -451,7 +440,7 @@ const amqplib = require('amqplib');
         //     //     ch2.sendToQueue(queue, Buffer.from('something to do'));
         //     // }, 1000);
     } catch (error) {
-        console.log('Consumer cancelled by server, line 454 =====');
+        console.log('Consumer cancelled by server, line 443 =====');
         console.log(error);
     }
 })();

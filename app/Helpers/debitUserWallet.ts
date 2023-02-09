@@ -58,7 +58,7 @@ export const debitUserWallet = async function debitUserWallet(
         let beneficiaryName = rfiName;
         // let approvalIsAutomated = false
         console.log("payoutWalletId setting line 60:", payoutWalletId);
-        // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
+        // console.log("loanServiceChargeAccount setting line 61:", loanServiceChargeAccount);
 
         const headers = {
             "correlation-id": "68678989IO09",

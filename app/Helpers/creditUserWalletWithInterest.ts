@@ -107,7 +107,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                     "beneficiaryEmail": beneficiaryEmail,
                     "beneficiaryBankId": "S8",
                     "bfiCode": "S8",
-                    "description": ` ${amount} investment for ${senderName}. `,
+                    "description": `${currencyCode} ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
                     "customerMetadata": {

@@ -9,8 +9,10 @@ export default class Settings extends BaseSchema {
       table.string('rfi_name', 255).notNullable().index()
       table.string('rfi_code', 255).notNullable().index()
       table.string('rfi_image_url', 255).notNullable().index()
-    //   - [ ]  On Setting table add new fields for email of who to notify on investment :  @Michael Alao **Monday**
-      table.string('initiation_notification_email', 255).notNullable().index()
+      //   - [ ]  On Setting table add new fields for email of who to notify on investment :  @Michael Alao **Monday**
+      // table.string('initiation_notification_email', 255).notNullable().index()
+      // table.specificType('initiation_notification_email', 'text[]').notNullable().index()
+      table.jsonb('initiation_notification_email').notNullable().index()
       table.string('activation_notification_email', 255).notNullable().index()
       table.string('maturity_notification_email', 255).notNullable().index()
       table.string('payout_notification_email', 255).notNullable().index()
@@ -21,7 +23,7 @@ export default class Settings extends BaseSchema {
       table.boolean('is_payout_automated').notNullable().defaultTo(false).index()
       table.string('funding_source_terminal', 100).notNullable().index()
       table.float('liquidation_penalty', 100).notNullable().index().defaultTo(25)
-            table.boolean('is_investment_automated').notNullable().defaultTo(false).index()
+      table.boolean('is_investment_automated').notNullable().defaultTo(false).index()
       table.boolean('is_rollover_automated').notNullable().defaultTo(false).index()
       table.boolean('is_all_payout_suspended').notNullable().defaultTo(false).index()
       table.boolean('is_all_rollover_suspended').notNullable().defaultTo(false).index()
