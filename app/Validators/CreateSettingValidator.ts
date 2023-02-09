@@ -26,11 +26,36 @@ export default class CreateSettingValidator extends BaseValidator {
                 email: schema.string({ escape: true }, [rules.email()]),
                 name: schema.string.optional(),
             })),
-        activationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
-        maturityNotificationEmail: schema.string({ escape: true }, [rules.email()]),
-        payoutNotificationEmail: schema.string({ escape: true }, [rules.email()]),
-        rolloverNotificationEmail: schema.string({ escape: true }, [rules.email()]),
-        liquidationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        // activationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        activationNotificationEmail: schema.array().members(
+            schema.object().members({
+                email: schema.string({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // maturityNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        maturityNotificationEmail: schema.array().members(
+            schema.object().members({
+                email: schema.string({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // payoutNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        payoutNotificationEmail: schema.array().members(
+            schema.object().members({
+                email: schema.string({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // rolloverNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        rolloverNotificationEmail: schema.array().members(
+            schema.object().members({
+                email: schema.string({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // liquidationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        liquidationNotificationEmail: schema.array().members(
+            schema.object().members({
+                email: schema.string({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
         investmentWalletId: schema.string({ escape: true },),
         payoutWalletId: schema.string({ escape: true },),
         // investment_wallet_id

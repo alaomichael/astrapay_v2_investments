@@ -22,15 +22,45 @@ export default class UpdateSettingValidator extends BaseValidator {
         rfiImageUrl: schema.string.optional(),
         // initiationNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
         initiationNotificationEmail: schema.array.optional().members(
-            schema.object.optional().members({
+            schema.object().members({
                 email: schema.string.optional({ escape: true }, [rules.email()]),
                 name: schema.string.optional(),
             })),
-        activationNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
-        maturityNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
-        payoutNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
-        rolloverNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
-        liquidationNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // activationNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // maturityNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // payoutNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // rolloverNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // liquidationNotificationEmail: schema.string.optional({ escape: true }, [rules.email()]),
+        // activationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        activationNotificationEmail: schema.array.optional().members(
+            schema.object().members({
+                email: schema.string.optional({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // maturityNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        maturityNotificationEmail: schema.array.optional().members(
+            schema.object().members({
+                email: schema.string.optional({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // payoutNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        payoutNotificationEmail: schema.array.optional().members(
+            schema.object().members({
+                email: schema.string.optional({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // rolloverNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        rolloverNotificationEmail: schema.array.optional().members(
+            schema.object().members({
+                email: schema.string.optional({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
+        // liquidationNotificationEmail: schema.string({ escape: true }, [rules.email()]),
+        liquidationNotificationEmail: schema.array.optional().members(
+            schema.object().members({
+                email: schema.string.optional({ escape: true }, [rules.email()]),
+                name: schema.string.optional(),
+            })),
         investmentWalletId: schema.string.optional({ escape: true },),
         payoutWalletId: schema.string.optional({ escape: true },),
         isPayoutAutomated: schema.boolean.optional(),
