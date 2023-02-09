@@ -24,23 +24,23 @@ export default class Setting extends AppBaseModel {
 
 @column({
   })
-  public activationNotificationEmail: string
+  public activationNotificationEmail: string | any
 
 @column({
   })
-  public maturityNotificationEmail: string
+  public maturityNotificationEmail: string | any
 
 @column({
   })
-  public payoutNotificationEmail: string
+  public payoutNotificationEmail: string | any
 
 @column({
   })
-  public rolloverNotificationEmail: string
+  public rolloverNotificationEmail: string | any
 
 @column({
   })
-  public liquidationNotificationEmail: string
+  public liquidationNotificationEmail: string | any
 
 
   @column()
