@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-debugger */
+/* eslint-disable prettier/prettier */
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Approval from "App/Models/Approval";
@@ -379,7 +382,7 @@ export default class ApprovalsController {
         let newStatus;
         // await approval.save();
         // console.log("Update Approval Request line 373:", approval);
-        let { id, firstName, currencyCode, lastName, //email, 
+        let { id, firstName, currencyCode, lastName, //email,
           rfiCode } = record;
         console.log("Surname: ", lastName)
         const settingsService = new SettingsServices();
@@ -409,7 +412,7 @@ export default class ApprovalsController {
         if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status === "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
-          newStatus = "investment_approved"; //'pending_account_number_generation'; 
+          newStatus = "investment_approved"; //'pending_account_number_generation';
           record.status = newStatus;
           record.requestType = "start_investment";
           // record.remark = approval.remark;
@@ -450,7 +453,7 @@ export default class ApprovalsController {
             id: uuid(),
             action: "investment approved",
             investmentId: investmentId,//id,
-            walletId: walletIdToSearch,// walletId, 
+            walletId: walletIdToSearch,// walletId,
             userId: userIdToSearch,// userId,
             // @ts-ignore
             message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
@@ -468,7 +471,7 @@ export default class ApprovalsController {
           // let message = `
           //       ${firstName} this is to inform you, that your Investment request, has been approved.
 
-          //       Please wait while the investment is being activated. 
+          //       Please wait while the investment is being activated.
 
           //       Thank you.
 
@@ -517,7 +520,7 @@ export default class ApprovalsController {
             rfiCode)
           // debugger
           // console.log("debitUserWalletForInvestment reponse data 608 ==================================", debitUserWalletForInvestment)
-          // if successful 
+          // if successful
           if (debitUserWalletForInvestment.status == 200) {
             // update the investment details
             record.status = 'active'
@@ -540,7 +543,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment activation",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
@@ -558,7 +561,7 @@ export default class ApprovalsController {
             let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
-                Please check your device. 
+                Please check your device.
 
                 Thank you.
 
@@ -618,7 +621,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment activation failed",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
@@ -764,7 +767,7 @@ export default class ApprovalsController {
               walletId, userId,
               // phone,
               email,
-              // rfiCode, 
+              // rfiCode,
               currencyCode } = selectedInvestmentRequestUpdate;
             // let senderName = `${firstName} ${lastName}`;
             // let senderAccountNumber = walletId;
@@ -786,7 +789,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover approved",
               investmentId: investmentId,//id,
-              walletId: walletId,// walletId, 
+              walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, your investment rollover request has been approved, please wait while the investment is activated. Thank you.`,
@@ -816,7 +819,7 @@ export default class ApprovalsController {
             // send for update
             let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
             // console.log(" Current log, line 723 :", updatedInvestment);
-            // if successful 
+            // if successful
             // if (debitUserWalletForInvestment.status == 200) {
             // update the investment details
             selectedInvestmentRequestUpdate.status = 'active'
@@ -854,7 +857,7 @@ export default class ApprovalsController {
             let message = `
                 ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${selectedInvestmentRequestUpdate.startDate} and it will be mature for payout on ${selectedInvestmentRequestUpdate.payoutDate}.
 
-                Please check your device. 
+                Please check your device.
 
                 Thank you.
 
@@ -953,7 +956,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover declined",
               investmentId: investmentId,//id,
-              walletId: walletId,// walletId, 
+              walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
@@ -1007,7 +1010,7 @@ export default class ApprovalsController {
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForPrincipal)
-            // if successful 
+            // if successful
             let decPl = 3;
             if (creditUserWalletWithPrincipal.status == 200) {
               let amountPaidOut = amount;
@@ -1046,7 +1049,7 @@ export default class ApprovalsController {
                 id: uuid(),
                 action: "investment payout",
                 investmentId: id,//id,
-                walletId: walletId,// walletId, 
+                walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
@@ -1064,7 +1067,7 @@ export default class ApprovalsController {
               // let message = `
               //   ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid because the tenure selected is not available on this type of investment.
 
-              //   Please check your device. 
+              //   Please check your device.
 
               //   Thank you.
 
@@ -1127,7 +1130,7 @@ export default class ApprovalsController {
                 id: uuid(),
                 action: "investment rollover and payout failed",
                 investmentId: id,//id,
-                walletId: walletId,// walletId, 
+                walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -1145,7 +1148,7 @@ export default class ApprovalsController {
               // let message = `
               //   ${firstName} this is to inform you, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed.
 
-              //   Please check your device. 
+              //   Please check your device.
 
               //   Thank you.
 
@@ -1203,7 +1206,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing: ===========================================>")
           // newStatus = "submitted";
-          newStatus = "approved"; //'pending_account_number_generation'; 
+          newStatus = "approved"; //'pending_account_number_generation';
           record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
@@ -1245,7 +1248,7 @@ export default class ApprovalsController {
             rfiCode,
             descriptionForInterest)
           // debugger
-          // if successful 
+          // if successful
           if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
             let amountPaidOut = amount + interestDueOnInvestment;
             // update the investment details
@@ -1276,7 +1279,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -1329,7 +1332,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -1384,7 +1387,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -1397,7 +1400,7 @@ export default class ApprovalsController {
             // console.log("new Timeline object line 553:", newTimeline);
             // update record
 
-          
+
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout";
@@ -1417,7 +1420,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_rollover" && isRolloverSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
-          // newStatus = "rollover"; //'pending_account_number_generation'; 
+          // newStatus = "rollover"; //'pending_account_number_generation';
           // record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
@@ -1495,7 +1498,7 @@ export default class ApprovalsController {
                 beneficiaryPhoneNumber,
                 rfiCode,
                 descriptionForInterest)
-              // if successful 
+              // if successful
               if (creditUserWalletWithInterest.status == 200) {
                 let amountPaidOut = interestDueOnInvestment;
                 // update the investment details
@@ -1524,7 +1527,7 @@ export default class ApprovalsController {
                   id: uuid(),
                   action: "investment payout",
                   investmentId: investmentId,//id,
-                  walletId: walletIdToSearch,// walletId, 
+                  walletId: walletIdToSearch,// walletId,
                   userId: userIdToSearch,// userId,
                   // @ts-ignore
                   message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -1593,7 +1596,7 @@ export default class ApprovalsController {
                 id: uuid(),
                 action: "investment rollover",
                 investmentId: investmentId,//id,
-                walletId: walletIdToSearch,// walletId, 
+                walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
@@ -1611,7 +1614,7 @@ export default class ApprovalsController {
               // let message = `
               //   ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
 
-              //   Please check your account. 
+              //   Please check your account.
 
               //   Thank you.
 
@@ -1688,7 +1691,7 @@ export default class ApprovalsController {
                 beneficiaryPhoneNumber,
                 rfiCode,
                 descriptionForPrincipal)
-              // if successful 
+              // if successful
               if (creditUserWalletWithPrincipal.status == 200) {
                 let amountPaidOut = amount;
                 // update the investment details
@@ -1718,7 +1721,7 @@ export default class ApprovalsController {
                   id: uuid(),
                   action: "investment payout",
                   investmentId: investmentId,//id,
-                  walletId: walletIdToSearch,// walletId, 
+                  walletId: walletIdToSearch,// walletId,
                   userId: userIdToSearch,// userId,
                   // @ts-ignore
                   message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -1786,7 +1789,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover processing: ===========================================>")
           // newStatus = "submitted";
-          // newStatus = "rollover"; //'pending_account_number_generation'; 
+          // newStatus = "rollover"; //'pending_account_number_generation';
           // record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
@@ -1805,7 +1808,7 @@ export default class ApprovalsController {
             id: uuid(),
             action: "investment rollover pending",
             investmentId: investmentId,//id,
-            walletId: walletIdToSearch,// walletId, 
+            walletId: walletIdToSearch,// walletId,
             userId: userIdToSearch,// userId,
             // @ts-ignore
             message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
@@ -1859,7 +1862,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && isPayoutSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           newStatus = "matured";
-          // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
+          // newStatus = "payout_suspended"; //'pending_account_number_generation';
           record.status = newStatus;
           record.requestType = "payout_investment";
           record.isRolloverSuspended = isRolloverSuspended;
@@ -1874,7 +1877,7 @@ export default class ApprovalsController {
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = "approved"; //approval.approvalStatus;
           // Data to send for transfer of fund
-          let { firstName,// email, 
+          let { firstName,// email,
             totalAmountToPayout, } = record; // interestDueOnInvestment,
 
           // console.log("Updated record Status line 1439: ", record);
@@ -1886,7 +1889,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
@@ -1937,7 +1940,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover activated",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is activated and will be process for rollover. Thank you.`,
@@ -1990,7 +1993,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
@@ -2024,7 +2027,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout activation",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been activated for payment processing. Thank you.`,
@@ -2062,7 +2065,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // newStatus = "submitted";
-          // newStatus = "payout_suspended"; //'pending_account_number_generation'; 
+          // newStatus = "payout_suspended"; //'pending_account_number_generation';
           // record.status = newStatus;
           record.requestType = "payout_investment";
           record.isRolloverSuspended = isRolloverSuspended;
@@ -2089,7 +2092,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
@@ -2142,7 +2145,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
@@ -2154,7 +2157,7 @@ export default class ApprovalsController {
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 1494:", newTimeline);
             // update record
-          
+
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout_pending";
@@ -2178,7 +2181,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment payout pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
@@ -2210,7 +2213,7 @@ export default class ApprovalsController {
               id: uuid(),
               action: "investment rollover pending",
               investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId, 
+              walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,

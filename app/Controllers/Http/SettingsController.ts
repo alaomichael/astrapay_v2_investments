@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import SettingServices from "App/Services/SettingsServices";
 import Event from "@ioc:Adonis/Core/Event";
@@ -94,7 +95,7 @@ export default class SettingsController {
       const { id } = request.params();
       const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
         investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, initiationNotificationEmail,
-        activationNotificationEmail, maturityNotificationEmail, payoutNotificationEmail, rolloverNotificationEmail, 
+        activationNotificationEmail, maturityNotificationEmail, payoutNotificationEmail, rolloverNotificationEmail,
         liquidationNotificationEmail, isAllPayoutSuspended, isAllRolloverSuspended, liquidationPenalty } = request.body();
       const payload: SettingType = {
         rfiName: rfiName,
