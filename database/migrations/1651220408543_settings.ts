@@ -22,7 +22,7 @@ export default class Settings extends BaseSchema {
       table.jsonb('maturity_notification_email',).notNullable().index()
       table.jsonb('payout_notification_email',).notNullable().index()
       table.jsonb('rollover_notification_email',).notNullable().index()
-      table.jsonb('liquidation_notification_email',).notNullable().index()   table.text('investment_wallet_id').unsigned().notNullable().index()
+      table.jsonb('liquidation_notification_email',).notNullable().index();   table.text('investment_wallet_id').unsigned().notNullable().index()
       table.text('payout_wallet_id').unsigned().notNullable().index()
       table.boolean('is_payout_automated').notNullable().defaultTo(false).index()
       table.string('funding_source_terminal', 100).notNullable().index()
