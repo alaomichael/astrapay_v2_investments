@@ -4,9 +4,9 @@ const Env = require("@ioc:Adonis/Core/Env");
 // const BENEFICIARY_NAME = Env.get("BENEFICIARY_NAME");
 // const ASTRAPAY_BEARER_TOKEN = Env.get("ASTRAPAY_BEARER_TOKEN");
 const ORCHESTRATOR_URL = Env.get("ORCHESTRATOR_URL");
-import RfiRecordsServices from "App/Services/RfiRecordsServices";
+// import RfiRecordsServices from "App/Services/RfiRecordsServices";
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
-import SettingServices from "App/Services/SettingsServices";
+// import SettingServices from "App/Services/SettingsServices";
 const axios = require("axios").default;
 // @ts-ignore
 const { URLSearchParams } = require('url');
@@ -15,7 +15,7 @@ const { URLSearchParams } = require('url');
 export const checkTransactionStatus = async function checkTransactionStatus(
     investmentRequestReference
 ): Promise<any> {
-    // connect to Okra
+
     try {
         // let amountConvertedToKobo = amount * 100;
         // let userWalletId = walletId;
@@ -32,12 +32,12 @@ export const checkTransactionStatus = async function checkTransactionStatus(
 
         // let batchPaymentId = randomstring.generate(10);
 
-        const settingsService = new SettingServices();
-        const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+        // const settingsService = new SettingServices();
+        // const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
 
         // Get Rfi Record
-        const rfiRecordsService = new RfiRecordsServices();
-        const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
+        // const rfiRecordsService = new RfiRecordsServices();
+        // const rfiRecords = await rfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode)
         // debugger
         // console.log("Admin setting line 47 @ checkTransactionStatus:", settings);
         //  get the loan currency
@@ -58,8 +58,8 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
             "client-app": "OCTANTIS_MOBILE",
-            "lng": lng,
-            "lat": lat,
+            "lng": "3.7877",
+            "lat": "7.5677",
             "ffi-code": "S8",
             "user-principal": "58699700JJK"
         };
