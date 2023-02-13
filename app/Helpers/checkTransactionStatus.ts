@@ -132,7 +132,139 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         if (response.status == 200) {
             // console.log("The ASTRAPAY API response, @ checkTransactionStatus line 118: ", response.data);
             // debugger
-            return response;
+            // {
+            //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",
+            //     "correlationId": "68678989IO09",
+            //     "transactionId": "16759132994525197",
+            //     "customerReference": "16708830553194Kt90",
+            //     "batchId": "aee5adf2-d32c-44a1-b3cd-9be941c7b48b",
+            //     "indexInBatch": 0,
+            //     "performedBy": "485885869",
+            //     "description": " NGN 38 investment for Tomiwa Folalu. ",
+            //     "product": "Funds transfer",
+            //     "subproduct": "mobilebanking.fundstransfer.wallettowallet",
+            //     "process": "WALLET_TO_WALLET_TRANSFER",
+            //     "senderFirstName": "Tomiwa Folalu",
+            //     "senderOtherName": "Tomiwa Folalu",
+            //     "senderAccountNumber": "12345678",
+            //     "senderAccountName": "Tomiwa Folalu",
+            //     "senderPhoneNumber": "2348161885549",
+            //     "senderEmail": "tomiczilla@gmail.com",
+            //     "senderBankName": "Sigma Octantis",
+            //     "senderBankCode": "S8",
+            //     "senderBankAlias": "S8",
+            //     "senderBankCategory": "SIGMA_OCTANTIS",
+            //     "beneficiaryFirstName": "Sigma Octantis",
+            //     "beneficiaryOtherName": "Sigma Octantis",
+            //     "beneficiaryAccountNumber": "65656565",
+            //     "beneficiaryAccountName": "Sigma Octantis",
+            //     "beneficiaryPhoneNumber": "07033680599",
+            //     "beneficiaryEmail": "devmichaelalao@gmail.com",
+            //     "beneficiaryBankName": "Sigma Octantis",
+            //     "beneficiaryBankCode": "S8",
+            //     "beneficiaryBankAlias": "S8",
+            //     "beneficiaryBankCategory": "SIGMA_OCTANTIS",
+            //     "billerId": null,
+            //     "paymentCode": null,
+            //     "facilitatorName": "Jane Wood",
+            //     "facilitatorId": "485885869",
+            //     "facilitatorPhoneNumber": "2348079859043",
+            //     "facilitatorEmail": "test@email.com",
+            //     "amount": 3800,
+            //     "currency": "NGN",
+            //     "serviceCharge": 3000,
+            //     "serviceChargeWalletHolderId": "123456",
+            //     "serviceChargeWalletHolderName": "SigmaOctantis",
+            //     "serviceChargeWalletIdentifier": "1234567",
+            //     "serviceChargeWalletName": "Mock Service Charge Wallet",
+            //     "vat": 225,
+            //     "vatWalletHolderId": "123456",
+            //     "vatWalletHolderName": "SigmaOctantis",
+            //     "vatWalletIdentifier": "1234567",
+            //     "vatWalletName": "Mock vat Wallet",
+            //     "commissionWalletHolderId": "12345",
+            //     "commissionWalletHolderName": "SigmaOctantis",
+            //     "commissionWalletIdentifier": "1234567",
+            //     "commissionWalletName": "Mock commission Wallet",
+            //     "lng": "64532111",
+            //     "lat": "12234435",
+            //     "transactionStatus": "AWAITING_APPROVAL",
+            //     "screenStatus": "AWAITING_APPROVAL",
+            //     "createdAt": "2023-02-09T04:28:20.417098",
+            //     "updatedAt": "2023-02-09T04:28:20.417098",
+            //     "systemMetadata": null,
+            //     "customerMetadata": {
+            //         "cool": "cool"
+            //     },
+            //     "timeline": [
+            //         {
+            //             "id": "04bd6a4e-e2c3-40fd-819a-fb8ae93f03be",
+            //             "transactionId": "defddb06-c27d-4255-aa6a-2d483ed8de40",
+            //             "transactionStatus": "AWAITING_APPROVAL",
+            //             "createdAt": "2023-02-09T04:28:20.418097",
+            //             "updatedAt": "2023-02-09T04:28:20.418097",
+            //             "systemMetadata": null
+            //         }
+            //     ],
+            //     "commissions": [],
+            //     "clientApp": "OCTANTIS_MOBILE",
+            //     "userAgent": "PostmanRuntime/7.30.1",
+            //     "ffiCode": "S8",
+            //     "ffiName": "S8",
+            //     "ofiCode": "S8",
+            //     "ofiName": "S8",
+            //     "bfiCode": "S8",
+            //     "bfiName": "S8",
+            //     "notifiable": {
+            //         "id": "cb3dbc59-cf32-49ed-b647-d17c70e6dfa2",
+            //         "createdAt": "2023-02-09T04:28:20.417098",
+            //         "updatedAt": "2023-02-09T04:28:20.417098",
+            //         "notifications": [
+            //             {
+            //                 "id": "8470432e-25c3-4882-8534-a30c7da72949",
+            //                 "notifiableId": "cb3dbc59-cf32-49ed-b647-d17c70e6dfa2",
+            //                 "channel": "SMS",
+            //                 "handle": "07033680599",
+            //                 "recipientName": "Sigma Octantis",
+            //                 "walletToBillId": "12345678",
+            //                 "walletToBillName": "Mock Wallet",
+            //                 "eventType": "TRANSACTION_SUCCESS",
+            //                 "createdAt": "2023-02-09T04:28:20.417098",
+            //                 "updatedAt": "2023-02-09T04:28:20.417098"
+            //             }
+            //         ]
+            //     },
+            //     "authorizable": {
+            //         "id": "65cad0cd-1df2-4d3e-9c3b-7e985caaa40a",
+            //         "createdAt": "2023-02-09T04:28:20.296422",
+            //         "updatedAt": "2023-02-09T04:28:20.296422",
+            //         "authorizations": [
+            //             {
+            //                 "id": "e881f905-7f5a-46b6-903f-ed67110d8b44",
+            //                 "authorizableId": "65cad0cd-1df2-4d3e-9c3b-7e985caaa40a",
+            //                 "requiredAuthorityId": "12345",
+            //                 "requiredAuthorityName": "Mock authority",
+            //                 "authorityId": null,
+            //                 "authorityName": null,
+            //                 "authorityActionAt": null,
+            //                 "authorityAction": null,
+            //                 "createdAt": "2023-02-09T04:28:20.412112",
+            //                 "updatedAt": "2023-02-09T04:28:20.412112"
+            //             }
+            //         ]
+            //     },
+            //     "tenant": null,
+            //     "senderWalletIdentifier": "12345678",
+            //     "senderWalletName": "Tomiwa Folalu",
+            //     "senderWalletHolderId": "5886990",
+            //     "senderWalletHolderName": "MockWalletHolder",
+            //     "beneficiaryWalletIdentifier": "65656565",
+            //     "beneficiaryWalletName": "Sigma Octantis",
+            //     "beneficiaryWalletHolderId": "5886990",
+            //     "beneficiaryWalletHolderName": "MockWalletHolder"
+            // }
+            // Return the first object in the array
+            return response[0];
         } else {
             console.log("The ASTRAPAY API response @ checkTransactionStatus line 137: ", response.code);
             // debugger
