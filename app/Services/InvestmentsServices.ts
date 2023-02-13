@@ -17,6 +17,7 @@ import { debitUserWallet } from 'App/Helpers/debitUserWallet';
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
+import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 
 const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
@@ -117,7 +118,7 @@ export default class InvestmentsServices {
                         beneficiaryPhoneNumber,
                         rfiCode,
                         descriptionForPrincipal)
-                    // if successful 
+                    // if successful
                     let decPl = 3;
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
@@ -156,7 +157,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid, because the investment type you selected for your rollover is presently not active, please check your device. Thank you.`,
@@ -174,7 +175,7 @@ export default class InvestmentsServices {
                         //         let message = `
                         // ${firstName} this is to inform you, that the sum of ${currencyCode} ${amountPaidOut} for your matured Investment, has been paid, because the investment type you selected for your rollover is presently not active.
 
-                        // Please check your device. 
+                        // Please check your device.
 
                         // Thank you.
 
@@ -239,7 +240,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout failed",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -284,7 +285,7 @@ export default class InvestmentsServices {
                         beneficiaryPhoneNumber,
                         rfiCode,
                         descriptionForPrincipal)
-                    // if successful 
+                    // if successful
                     let decPl = 3;
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
@@ -325,7 +326,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment, please check your device. Thank you.`,
@@ -389,7 +390,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout failed",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -438,7 +439,7 @@ export default class InvestmentsServices {
                         beneficiaryPhoneNumber,
                         rfiCode,
                         descriptionForPrincipal)
-                    // if successful 
+                    // if successful
                     let decPl = 3;
                     if (creditUserWalletWithPrincipal.status == 200) {
                         let amountPaidOut = amount;
@@ -479,7 +480,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
@@ -543,7 +544,7 @@ export default class InvestmentsServices {
                             id: uuid(),
                             action: "investment payout failed",
                             investmentId: id,//id,
-                            walletId: walletId,// walletId, 
+                            walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -723,7 +724,7 @@ export default class InvestmentsServices {
                     walletId, userId,
                     // phone,
                     email,
-                    // rfiCode, 
+                    // rfiCode,
                     currencyCode } = investment;
                 // let senderName = `${firstName} ${lastName}`;
                 // let senderAccountNumber = walletId;
@@ -765,7 +766,7 @@ export default class InvestmentsServices {
                     id: uuid(),
                     action: "investment approved",
                     investmentId: investmentId,//id,
-                    walletId: walletId,// walletId, 
+                    walletId: walletId,// walletId,
                     userId: userId,// userId,
                     // @ts-ignore
                     message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
@@ -780,7 +781,7 @@ export default class InvestmentsServices {
                 // let message = `
                 // ${firstName} this is to inform you, that your Investment request, has been approved.
 
-                // Please wait while the investment is being activated. 
+                // Please wait while the investment is being activated.
 
                 // Thank you.
 
@@ -817,7 +818,7 @@ export default class InvestmentsServices {
                 // send for update
                 updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 // console.log(" Current log, line 793 :", updatedInvestment);
-                // if successful 
+                // if successful
                 // // if (debitUserWalletForInvestment.status == 200) {
                 // update the investment details
                 investment.status = 'active'
@@ -856,7 +857,7 @@ export default class InvestmentsServices {
                 // message = `
                 // ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
-                // Please check your device. 
+                // Please check your device.
 
                 // Thank you.
 
@@ -876,7 +877,7 @@ export default class InvestmentsServices {
 
                 Your certificate is attached.
 
-                Please check your device. 
+                Please check your device.
 
                 Thank you.
 
@@ -1525,7 +1526,7 @@ export default class InvestmentsServices {
                                     id: uuid(),
                                     action: 'investment payout initiated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName}, your investment has just been sent for payout processing.`,
@@ -1608,7 +1609,7 @@ export default class InvestmentsServices {
                                         id: uuid(),
                                         action: 'investment payout initiated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName}, your investment has just been sent for payout processing.`,
@@ -1826,7 +1827,7 @@ export default class InvestmentsServices {
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 debugger
                 try {
                     console.log("Entering update 1823 ==================================")
@@ -1895,7 +1896,7 @@ export default class InvestmentsServices {
                     console.log("check approval record 1837 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         // await trx.isCompleted()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
@@ -1927,7 +1928,7 @@ export default class InvestmentsServices {
                             // record.processedBy = loginAdminFullName;
                             // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                             // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                            // record.approvalStatus = approval.approvalStatus; 
+                            // record.approvalStatus = approval.approvalStatus;
 
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
@@ -1941,6 +1942,357 @@ export default class InvestmentsServices {
                             let senderAccountName = senderName;
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
+
+                            // check if transaction with same customer ref exist
+                            let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+                            if (checkTransactionStatusByCustomerRef.length === 0) {
+                                // initiate a new  transaction
+                                // Send to the endpoint for debit of wallet
+                                // debugger
+                                let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+                                    senderName,
+                                    senderAccountNumber,
+                                    senderAccountName,
+                                    senderPhoneNumber,
+                                    senderEmail,
+                                    rfiCode)
+                                debugger
+                                // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
+                                // if successful
+                                if (debitUserWalletForInvestment.status == 200) {
+                                    // update the investment details
+                                    record.status = 'active'
+                                    // record.approvalStatus = 'approved'
+                                    record.startDate = DateTime.now() //.toISODate()
+                                    record.payoutDate = DateTime.now().plus({ days: record.duration })
+                                    record.isInvestmentCreated = true
+                                    // console.log("Updated record Status line 1946: ", record);
+
+                                    // update record
+                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                    // debugger
+                                    // console.log(" Current log, line 1951 :", currentInvestment);
+                                    // send for update
+                                    const trx = await Database.transaction();
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1955 =========:", updatedInvestment);
+                                    await trx.commit()
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: "investment activation",
+                                        investmentId: investmentId,//id,
+                                        walletId: walletIdToSearch,// walletId,
+                                        userId: userIdToSearch,// userId,
+                                        // @ts-ignore
+                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: ``,
+                                    };
+                                    // console.log("Timeline object line 2084:", timelineObject);
+                                    await timelineService.createTimeline(timelineObject);
+                                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                                    // console.log("new Timeline object line 2087:", newTimeline);
+                                    // update record
+                                    // debugger
+                                    // Send Details to notification service
+                                    let subject = "AstraPay Investment Activation";
+                                    let message = `
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+
+                Please check your device.
+
+                Thank you.
+
+                AstraPay Investment.`;
+                                    // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
+                                    // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessage.message !== "Success") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessage);
+                                    // }
+                                    // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+                                    let recepients = [
+                                        {
+                                            "email": email,
+                                            "name": `${firstName} ${lastName} `
+                                        },
+                                        // {
+                                        //   "email": activationNotificationEmail,
+                                        //   "name": `${rfiName} `
+                                        // },
+                                    ];
+                                    let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+                                    // console.log("newNotificationMessage line 2139:", newNotificationMessageWithPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithPdf);
+                                    }
+                                    // Send Notification to admin and others stakeholder
+                                    let messageKey = "activation";
+                                    let investment = record;
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // console.log("newNotificationMessage line 2081:", newNotificationMessageWithoutPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithoutPdf);
+                                    }
+
+                                    // debugger
+                                } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    // debugger
+                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                    // console.log(" Current log, line 2039 :", currentInvestment);
+                                    // send for update
+                                    const trx = await Database.transaction();
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    await trx.rollback()
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: "investment activation failed",
+                                        investmentId: investmentId,//id,
+                                        walletId: walletIdToSearch,// walletId,
+                                        userId: userIdToSearch,// userId,
+                                        // @ts-ignore
+                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: ``,
+                                    };
+                                    // console.log("Timeline object line 1088:", timelineObject);
+                                    await timelineService.createTimeline(timelineObject);
+                                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                                    // console.log("new Timeline object line 1091:", newTimeline);
+                                    // update record
+                                    // debugger
+
+                                    // Send Notification to admin and others stakeholder
+                                    let messageKey = "activation_failed";
+                                    let investment = record;
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithoutPdf);
+                                    }
+
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1051 =========:", updatedInvestment);
+                                    // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
+                                    // debugger
+                                    // throw Error(debitUserWalletForInvestment);
+                                    throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                    // return {
+                                    //         status: "FAILED",//debitUserWalletForInvestment.status,
+                                    //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                                    //     };
+                                }
+
+                                // Save the updated record
+                                // await record.save();
+                                // update record
+                                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                // debugger
+                                // console.log(" Current log, line 2214 :", currentInvestment);
+                                // send for update
+                                const trx = await Database.transaction();
+                                await investmentsService.updateInvestment(currentInvestment, record);
+                                // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                // console.log(" Current log, line 2218 =========:", updatedInvestment);
+                                await trx.commit();
+
+                            } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+                                // update the value for number of attempts
+                                // get the current investmentRef, split , add one to the current number, update and try again
+                                let getNumberOfAttempt = investmentRequestReference.split("/");
+                                console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
+                                let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
+                                let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
+                                let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
+                                console.log("Customer Transaction Reference ,@ InvestmentsController line 2125 ==================")
+                                console.log(newPaymentReference);
+                                investmentRequestReference = newPaymentReference;
+                                // Send to the endpoint for debit of wallet
+                                // debugger
+                                let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+                                    senderName,
+                                    senderAccountNumber,
+                                    senderAccountName,
+                                    senderPhoneNumber,
+                                    senderEmail,
+                                    rfiCode)
+                                debugger
+                                // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
+                                // if successful
+                                if (debitUserWalletForInvestment.status == 200) {
+                                    // update the investment details
+                                    record.status = 'active'
+                                    // record.approvalStatus = 'approved'
+                                    record.startDate = DateTime.now() //.toISODate()
+                                    record.payoutDate = DateTime.now().plus({ days: record.duration })
+                                    record.isInvestmentCreated = true
+                                    // console.log("Updated record Status line 1946: ", record);
+
+                                    // update record
+                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                    // debugger
+                                    // console.log(" Current log, line 1951 :", currentInvestment);
+                                    // send for update
+                                    const trx = await Database.transaction();
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1955 =========:", updatedInvestment);
+                                    await trx.commit()
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: "investment activation",
+                                        investmentId: investmentId,//id,
+                                        walletId: walletIdToSearch,// walletId,
+                                        userId: userIdToSearch,// userId,
+                                        // @ts-ignore
+                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: ``,
+                                    };
+                                    // console.log("Timeline object line 2084:", timelineObject);
+                                    await timelineService.createTimeline(timelineObject);
+                                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                                    // console.log("new Timeline object line 2087:", newTimeline);
+                                    // update record
+                                    // debugger
+                                    // Send Details to notification service
+                                    let subject = "AstraPay Investment Activation";
+                                    let message = `
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+
+                Please check your device.
+
+                Thank you.
+
+                AstraPay Investment.`;
+                                    // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+                                    // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
+                                    // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessage.message !== "Success") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessage);
+                                    // }
+                                    // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+                                    let recepients = [
+                                        {
+                                            "email": email,
+                                            "name": `${firstName} ${lastName} `
+                                        },
+                                        // {
+                                        //   "email": activationNotificationEmail,
+                                        //   "name": `${rfiName} `
+                                        // },
+                                    ];
+                                    let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+                                    // console.log("newNotificationMessage line 2139:", newNotificationMessageWithPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithPdf);
+                                    }
+                                    // Send Notification to admin and others stakeholder
+                                    let messageKey = "activation";
+                                    let investment = record;
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // console.log("newNotificationMessage line 2081:", newNotificationMessageWithoutPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithoutPdf);
+                                    }
+
+                                    // debugger
+                                } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    // debugger
+                                    let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                    // console.log(" Current log, line 2039 :", currentInvestment);
+                                    // send for update
+                                    const trx = await Database.transaction();
+                                    await investmentsService.updateInvestment(currentInvestment, record);
+                                    await trx.rollback()
+                                    // update timeline
+                                    timelineObject = {
+                                        id: uuid(),
+                                        action: "investment activation failed",
+                                        investmentId: investmentId,//id,
+                                        walletId: walletIdToSearch,// walletId,
+                                        userId: userIdToSearch,// userId,
+                                        // @ts-ignore
+                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        createdAt: DateTime.now(),
+                                        metadata: ``,
+                                    };
+                                    // console.log("Timeline object line 1088:", timelineObject);
+                                    await timelineService.createTimeline(timelineObject);
+                                    // let newTimeline = await timelineService.createTimeline(timelineObject);
+                                    // console.log("new Timeline object line 1091:", newTimeline);
+                                    // update record
+                                    // debugger
+
+                                    // Send Notification to admin and others stakeholder
+                                    let messageKey = "activation_failed";
+                                    let investment = record;
+                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
+                                    // debugger
+                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                        console.log("Notification sent successfully");
+                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        console.log("Notification NOT sent successfully");
+                                        console.log(newNotificationMessageWithoutPdf);
+                                    }
+
+                                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    // console.log(" Current log, line 1051 =========:", updatedInvestment);
+                                    // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
+                                    // debugger
+                                    // throw Error(debitUserWalletForInvestment);
+                                    throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                    // return {
+                                    //         status: "FAILED",//debitUserWalletForInvestment.status,
+                                    //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                                    //     };
+                                }
+
+                                // Save the updated record
+                                // await record.save();
+                                // update record
+                                let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+                                // debugger
+                                // console.log(" Current log, line 2214 :", currentInvestment);
+                                // send for update
+                                const trx = await Database.transaction();
+                                await investmentsService.updateInvestment(currentInvestment, record);
+                                // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                // console.log(" Current log, line 2218 =========:", updatedInvestment);
+await trx.commit();
+                            }
+
                             // Send to the endpoint for debit of wallet
                             // debugger
                             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -1952,7 +2304,7 @@ export default class InvestmentsServices {
                                 rfiCode)
                             debugger
                             // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
-                            // if successful 
+                            // if successful
                             if (debitUserWalletForInvestment.status == 200) {
                                 // update the investment details
                                 record.status = 'active'
@@ -1967,6 +2319,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 // console.log(" Current log, line 1951 :", currentInvestment);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(currentInvestment, record);
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                 // console.log(" Current log, line 1955 =========:", updatedInvestment);
@@ -1976,7 +2329,7 @@ export default class InvestmentsServices {
                                     id: uuid(),
                                     action: "investment activation",
                                     investmentId: investmentId,//id,
-                                    walletId: walletIdToSearch,// walletId, 
+                                    walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
                                     message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
@@ -1994,7 +2347,7 @@ export default class InvestmentsServices {
                                 let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
-                Please check your device. 
+                Please check your device.
 
                 Thank you.
 
@@ -2047,14 +2400,15 @@ export default class InvestmentsServices {
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                 // console.log(" Current log, line 2039 :", currentInvestment);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(currentInvestment, record);
-await trx.rollback()
+                                await trx.rollback()
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
                                     action: "investment activation failed",
                                     investmentId: investmentId,//id,
-                                    walletId: walletIdToSearch,// walletId, 
+                                    walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
                                     message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
@@ -2100,10 +2454,11 @@ await trx.rollback()
                             // debugger
                             // console.log(" Current log, line 2214 :", currentInvestment);
                             // send for update
+                            const trx = await Database.transaction();
                             await investmentsService.updateInvestment(currentInvestment, record);
                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                             // console.log(" Current log, line 2218 =========:", updatedInvestment);
-
+await trx.commit();
                         }
                         // Update Investment data
                         // console.log(" Updated record line 2222: ", record.$original);
@@ -2111,7 +2466,7 @@ await trx.rollback()
                         // debugger
                         // send to user
                         // await trx.commit();
-                        await trx.rollback();
+                        // await trx.rollback();
                         return {
                             status: 'OK',
                             data: currentInvestment,
@@ -2119,7 +2474,7 @@ await trx.rollback()
                     } else {
                         // console.log("Entering no data 2232 ==================================")
                         // await trx.commit()
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -2133,7 +2488,7 @@ await trx.rollback()
                     console.log("Error line 2121", error.message);
                     // console.log("Error line 2123", error.message);
                     // debugger
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`Error line 2126, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
@@ -2160,7 +2515,7 @@ await trx.rollback()
         }
     }
 
-        public async activateApprovedInvestmentFormer(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
+    public async activateApprovedInvestmentFormer(queryParams: any, loginUserData?: any): Promise<Investment[] | any> {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
@@ -2319,7 +2674,7 @@ await trx.rollback()
                             // record.processedBy = loginAdminFullName;
                             // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                             // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                            // record.approvalStatus = approval.approvalStatus; 
+                            // record.approvalStatus = approval.approvalStatus;
 
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
@@ -2344,7 +2699,7 @@ await trx.rollback()
                                 rfiCode)
                             debugger
                             // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
-                            // if successful 
+                            // if successful
                             if (debitUserWalletForInvestment.status == 200) {
                                 // update the investment details
                                 record.status = 'active'
@@ -2368,7 +2723,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: "investment activation",
                                     investmentId: investmentId,//id,
-                                    walletId: walletIdToSearch,// walletId, 
+                                    walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
                                     message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
@@ -2386,7 +2741,7 @@ await trx.rollback()
                                 let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
-                Please check your device. 
+                Please check your device.
 
                 Thank you.
 
@@ -2440,13 +2795,13 @@ await trx.rollback()
                                 // console.log(" Current log, line 2039 :", currentInvestment);
                                 // send for update
                                 await investmentsService.updateInvestment(currentInvestment, record);
-await trx.rollback()
+                                await trx.rollback()
                                 // update timeline
                                 timelineObject = {
                                     id: uuid(),
                                     action: "investment activation failed",
                                     investmentId: investmentId,//id,
-                                    walletId: walletIdToSearch,// walletId, 
+                                    walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
                                     message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
@@ -2646,7 +3001,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -2756,7 +3111,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment payout reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -2793,6 +3148,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -2811,6 +3167,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
@@ -2820,7 +3177,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment payout reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -2851,6 +3208,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2559 :", updatedInvestment);
@@ -2858,7 +3216,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after payout request line 2860:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -2932,7 +3290,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment payout reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -2969,6 +3327,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -2987,6 +3346,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
@@ -2996,7 +3356,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment payout reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -3027,6 +3387,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2772 :", updatedInvestment);
@@ -3034,7 +3395,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after payout request line 2729:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -3043,7 +3404,7 @@ await trx.rollback()
                         }
                     } else {
                         // await trx.commit()
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3060,7 +3421,7 @@ await trx.rollback()
                     console.error(error)
                     console.log("Error line 2758", error.messages);
                     console.log("Error line 2759", error.message);
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
                 }
@@ -3173,7 +3534,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -3269,7 +3630,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment payout reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -3306,6 +3667,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -3324,6 +3686,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
@@ -3333,7 +3696,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment payout reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -3364,6 +3727,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 680 :", updatedInvestment);
@@ -3371,7 +3735,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after payout request line 685:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -3445,7 +3809,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment payout reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -3482,6 +3846,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -3500,6 +3865,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 2394 :", updatedInvestment);
@@ -3509,7 +3875,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment payout reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
@@ -3539,6 +3905,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 2726 :", updatedInvestment);
@@ -3546,7 +3913,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after payout request line 2729:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -3555,7 +3922,7 @@ await trx.rollback()
                         }
                     } else {
                         // await trx.commit()
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -3572,7 +3939,7 @@ await trx.rollback()
                     console.error(error)
                     console.log("Error line 2758", error.messages);
                     console.log("Error line 2759", error.message);
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
                 }
@@ -3680,7 +4047,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -3786,7 +4153,7 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
-                                                    // START
+                                // START
                                 // console.log('Updated investment Status line 3017: ', investment)
                                 // console.log('Payout investment data line 3018:', payload)
                                 payload.investmentId = investmentId
@@ -3795,6 +4162,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -3805,7 +4173,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment rollover reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -3841,6 +4209,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3045 :", updatedInvestment);
@@ -3850,7 +4219,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment rollover reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -3876,6 +4245,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3087 :", updatedInvestment);
@@ -3883,7 +4253,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after rollover request line 685:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -3962,6 +4332,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -3973,7 +4344,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment rollover reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4010,6 +4381,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3225 :", updatedInvestment);
@@ -4020,7 +4392,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment rollover reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4046,6 +4418,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3273 :", updatedInvestment);
@@ -4053,7 +4426,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after rollover request line 3276:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -4062,7 +4435,7 @@ await trx.rollback()
                         }
                     } else {
                         // await trx.commit()
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4079,7 +4452,7 @@ await trx.rollback()
                     console.error(error)
                     console.log("Error line 3298", error.messages);
                     console.log("Error line 3299", error.message);
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
                 }
@@ -4189,7 +4562,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     const timelineService = new TimelinesServices();
                     const investmentsService = new InvestmentsServices();
@@ -4279,7 +4652,7 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
-   // START
+                                // START
                                 // console.log('Updated investment Status line 4201: ', investment)
                                 // console.log('Payout investment data line 4202:', payload)
                                 payload.investmentId = investmentId
@@ -4288,6 +4661,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -4300,7 +4674,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment rollover reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4322,7 +4696,7 @@ await trx.rollback()
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
-                             
+
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
                                 if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
@@ -4336,6 +4710,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3045 :", updatedInvestment);
@@ -4346,7 +4721,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment rollover reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4372,6 +4747,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 4282 :", updatedInvestment);
@@ -4379,7 +4755,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after rollover request line 4285:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -4449,7 +4825,7 @@ await trx.rollback()
                                 // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
-                                                                // START
+                                // START
                                 // console.log('Updated investment Status line 3198: ', investment)
                                 // console.log('Payout investment data line 3199:', payload)
                                 payload.investmentId = investmentId
@@ -4458,6 +4834,7 @@ await trx.rollback()
                                 // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 // await investmentsService.updateInvestment(record, investment);
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
@@ -4469,7 +4846,7 @@ await trx.rollback()
                                     id: uuid(),
                                     action: 'investment rollover reactivated',
                                     investmentId: investment.id,//id,
-                                    walletId: investment.walletId,// walletId, 
+                                    walletId: investment.walletId,// walletId,
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4506,6 +4883,7 @@ await trx.rollback()
                                     // await investment.save()
                                     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(record, investment);
                                     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                     // console.log(" Current log, line 3225 :", updatedInvestment);
@@ -4515,7 +4893,7 @@ await trx.rollback()
                                         id: uuid(),
                                         action: 'investment rollover reactivated',
                                         investmentId: investment.id,//id,
-                                        walletId: investment.walletId,// walletId, 
+                                        walletId: investment.walletId,// walletId,
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} investment has just been sent for rollover processing.`,
@@ -4541,6 +4919,7 @@ await trx.rollback()
                                 // await investment save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
+                                const trx = await Database.transaction();
                                 await investmentsService.updateInvestment(record, investment);
                                 // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
                                 // console.log(" Current log, line 3273 :", updatedInvestment);
@@ -4548,7 +4927,7 @@ await trx.rollback()
                             }
 
                             // console.log('Investment data after rollover request line 3276:', investment)
-                            await trx.commit();
+                            // await trx.commit();
                             return {
                                 status: 'OK',
                                 data: investment//.map((inv) => inv.$original),
@@ -4557,7 +4936,7 @@ await trx.rollback()
                         }
                     } else {
                         // await trx.commit()
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
@@ -4574,7 +4953,7 @@ await trx.rollback()
                     console.error(error)
                     console.log("Error line 3298", error.messages);
                     console.log("Error line 3299", error.message);
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
                 }
@@ -4681,7 +5060,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     console.log("Entering update 2232 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -4749,7 +5128,7 @@ await trx.rollback()
                     console.log("check approval record 2295 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -4758,7 +5137,7 @@ await trx.rollback()
                     if (!settings) {
                         throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                     }
-                    //  Check if investment payout is not suspended and activation is automated 
+                    //  Check if investment payout is not suspended and activation is automated
 
                     // isAllPayoutSuspended
                     // isAllRolloverSuspended
@@ -4800,7 +5179,7 @@ await trx.rollback()
                                 // payoutReactivationDate: null,
 
                                 // record.status === "matured" &&
-                                //     record.status === "matured" && 
+                                //     record.status === "matured" &&
 
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -4811,10 +5190,10 @@ await trx.rollback()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -4823,7 +5202,7 @@ await trx.rollback()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -4860,7 +5239,7 @@ await trx.rollback()
                                         rfiCode,
                                         descriptionForInterest)
                                     // debugger
-                                    // if successful 
+                                    // if successful
                                     let decPl = 3;
                                     if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
@@ -4885,6 +5264,7 @@ await trx.rollback()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 1302 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 1313 :", updatedInvestment);
@@ -4897,7 +5277,7 @@ await trx.rollback()
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -4944,6 +5324,7 @@ await trx.rollback()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 1369 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 1372 :", updatedInvestment);
@@ -4955,7 +5336,7 @@ await trx.rollback()
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -5003,6 +5384,7 @@ await trx.rollback()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 5002 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 5003 :", updatedInvestment);
@@ -5014,7 +5396,7 @@ await trx.rollback()
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -5038,7 +5420,7 @@ await trx.rollback()
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
-                                        
+
                                         // debugger
                                     } else {
                                         console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
@@ -5046,6 +5428,7 @@ await trx.rollback()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 1484 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 4605 :", updatedInvestment);
@@ -5056,7 +5439,7 @@ await trx.rollback()
                                 } else {
                                     // console.log("Entering no data 4611 ==================================")
                                     // await trx.commit();
-                                    await trx.rollback();
+                                    // await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5064,7 +5447,7 @@ await trx.rollback()
                                     }
                                 }
                             } else {
-                                await trx.rollback();
+                                // await trx.rollback();
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -5073,7 +5456,7 @@ await trx.rollback()
                             }
                         }
                     } else {
-                        await trx.rollback();
+                        // await trx.rollback();
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5087,7 +5470,7 @@ await trx.rollback()
                     console.log("Error line 4638", error.message);
                     // console.log("Error line 4641", error.message);
                     // debugger
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`Error line 4644, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
@@ -5194,7 +5577,7 @@ await trx.rollback()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     console.log("Entering update 5199 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -5262,7 +5645,7 @@ await trx.rollback()
                     console.log("check approval record 2295 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -5308,7 +5691,7 @@ await trx.rollback()
                                 // payoutReactivationDate: null,
 
                                 // record.status === "matured" &&
-                                //     record.status === "matured" && 
+                                //     record.status === "matured" &&
 
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -5319,10 +5702,10 @@ await trx.rollback()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -5331,7 +5714,7 @@ await trx.rollback()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -5359,7 +5742,7 @@ await trx.rollback()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithInterest.status == 200) {
                                             let amountPaidOut = interestDueOnInvestment;
@@ -5381,17 +5764,18 @@ await trx.rollback()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 1302 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1313 :", updatedInvestment);
                                             // console.log("Updated record Status line 1315: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -5440,6 +5824,7 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 1369 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1372 :", updatedInvestment);
@@ -5450,7 +5835,7 @@ await trx.commit()
                                                 id: uuid(),
                                                 action: "investment payout failed",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -5491,7 +5876,7 @@ await trx.commit()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithPrincipal.status == 200) {
                                             let amountPaidOut = amount;
@@ -5514,17 +5899,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 5502 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 5513 :", updatedInvestment);
                                             // console.log("Updated record Status line 5515: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -5573,17 +5959,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 1369 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 1372 :", updatedInvestment);
                                             // console.log("Updated record Status line 1374: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout failed",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -5622,6 +6009,7 @@ await trx.commit()
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 3168 :", currentInvestment);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(currentInvestment, record);
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
@@ -5631,7 +6019,7 @@ await trx.commit()
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
-                                    await trx.rollback()
+                                    // await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -5639,7 +6027,7 @@ await trx.commit()
                                     }
                                 }
                             } else {
-                                await trx.rollback()
+                                // await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -5648,7 +6036,7 @@ await trx.commit()
                             }
                         }
                     } else {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -5663,7 +6051,7 @@ await trx.commit()
                     console.log("Error line 5666", error.message);
                     // console.log("Error line 5667", error.message);
                     // debugger
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`Error line 5669, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
@@ -5770,7 +6158,7 @@ await trx.commit()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     console.log("Entering update 4535 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -5838,7 +6226,7 @@ await trx.commit()
                     console.log("check approval record 5402 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -5884,7 +6272,7 @@ await trx.commit()
                                 // payoutReactivationDate: null,
 
                                 // record.status === "matured" &&
-                                //     record.status === "matured" && 
+                                //     record.status === "matured" &&
 
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -5895,10 +6283,10 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -5907,7 +6295,7 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -5935,7 +6323,7 @@ await trx.commit()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithInterest.status == 200) {
                                             let amountPaidOut = interestDueOnInvestment;
@@ -5957,17 +6345,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 5952 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 5953 :", updatedInvestment);
                                             // console.log("Updated record Status line 5955: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -6017,17 +6406,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 6069 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 6072 :", updatedInvestment);
                                             // console.log("Updated record Status line 6074: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -6068,7 +6458,7 @@ await trx.commit()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithPrincipal.status == 200) {
                                             let amountPaidOut = amount;
@@ -6091,27 +6481,28 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 6002 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 6013 :", updatedInvestment);
                                             // console.log("Updated record Status line 6015: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
-                                            // console.log("Timeline object line 551:", timelineObject);
+                                            // console.log("Timeline object line 6149:", timelineObject);
                                             await timelineService.createTimeline(timelineObject);
                                             // let newTimeline = await timelineService.createTimeline(timelineObject);
-                                            // console.log("new Timeline object line 553:", newTimeline);
+                                            // console.log("new Timeline object line 6152:", newTimeline);
                                             // update record
 
 
@@ -6152,17 +6543,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 6156 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 6157 :", updatedInvestment);
                                             // console.log("Updated record Status line 6158: ", record);
-await trx.commit()
+                                            await trx.commit()
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment payout failed",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -6200,15 +6592,17 @@ await trx.commit()
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 3168 :", currentInvestment);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(currentInvestment, record);
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                                    await trx.commit();
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
                                     // debugger
                                     // throw Error();
                                     //}
                                 } else {
                                     // console.log("Entering no data 3177 ==================================")
-                                    await trx.rollback()
+                                    // await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -6216,7 +6610,7 @@ await trx.commit()
                                     }
                                 }
                             } else {
-                                await trx.rollback()
+                                // await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
@@ -6225,7 +6619,7 @@ await trx.commit()
                             }
                         }
                     } else {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -6240,7 +6634,7 @@ await trx.commit()
                     console.log("Error line 3196", error.message);
                     // console.log("Error line 3197", error.message);
                     // debugger
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`Error line 3200, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
@@ -6458,7 +6852,7 @@ await trx.commit()
                                 // payoutReactivationDate: null,
 
                                 // record.status === "matured" &&
-                                //     record.status === "matured" && 
+                                //     record.status === "matured" &&
 
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -6469,10 +6863,10 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -6481,7 +6875,7 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -6509,7 +6903,7 @@ await trx.commit()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithInterest.status == 200) {
                                             let amountPaidOut = interestDueOnInvestment;
@@ -6542,7 +6936,7 @@ await trx.commit()
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -6602,7 +6996,7 @@ await trx.commit()
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -6643,7 +7037,7 @@ await trx.commit()
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal)
-                                        // if successful 
+                                        // if successful
                                         let decPl = 3;
                                         if (creditUserWalletWithPrincipal.status == 200) {
                                             let amountPaidOut = amount;
@@ -6677,7 +7071,7 @@ await trx.commit()
                                                 id: uuid(),
                                                 action: "investment payout",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -6737,7 +7131,7 @@ await trx.commit()
                                                 id: uuid(),
                                                 action: "investment payout failed",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -6915,7 +7309,7 @@ await trx.commit()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     console.log("Entering update 6920 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -6983,7 +7377,7 @@ await trx.commit()
                     console.log("check approval record 6550 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -7035,10 +7429,10 @@ await trx.commit()
                                 if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&
                                     record.isRolloverSuspended === false) || (record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isRolloverActivated === true &&
                                         record.isRolloverSuspended === false)) {
-                                    // START 
+                                    // START
                                     console.log("Approval for investment rollover processing: ===========================================>")
                                     // newStatus = "submitted";
-                                    // newStatus = "rollover"; //'pending_account_number_generation'; 
+                                    // newStatus = "rollover"; //'pending_account_number_generation';
                                     // record.status = "completed";
                                     // record.requestType = "rollover_investment";
                                     // record.requestType = "payout_investment";
@@ -7118,7 +7512,7 @@ await trx.commit()
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest)
-                                            // if successful 
+                                            // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithInterest.status == 200) {
                                                 let amountPaidOut = interestDueOnInvestment;
@@ -7142,17 +7536,18 @@ await trx.commit()
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                                 // console.log(" Current log, line 7140 :", currentInvestment);
                                                 // send for update
+                                                const trx = await Database.transaction();
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 7141 :", updatedInvestment);
                                                 // console.log("Updated record Status line 7141: ", record);
-await trx.commit()
+                                                await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
                                                     action: "investment payout and rollover",
                                                     investmentId: investmentId,//id,
-                                                    walletId: walletIdToSearch,// walletId, 
+                                                    walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -7201,17 +7596,18 @@ await trx.commit()
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                                 // console.log(" Current log, line 7201 :", currentInvestment);
                                                 // send for update
+                                                const trx = await Database.transaction();
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 7202 :", updatedInvestment);
                                                 // console.log("Updated record Status line 7202: ", record);
-await trx.commit()
+                                                await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
                                                     action: "investment rollover successful but payout failed",
                                                     investmentId: investmentId,//id,
-                                                    walletId: walletIdToSearch,// walletId, 
+                                                    walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
@@ -7290,17 +7686,18 @@ await trx.commit()
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                             // console.log(" Current log, line 7291 :", currentInvestment);
                                             // send for update
+                                            const trx = await Database.transaction();
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                             // console.log(" Current log, line 7295 :", updatedInvestment);
-await trx.commit()
+                                            await trx.commit()
                                             // create newInvestment
                                             // update timeline
                                             timelineObject = {
                                                 id: uuid(),
                                                 action: "investment rollover",
                                                 investmentId: investmentId,//id,
-                                                walletId: walletIdToSearch,// walletId, 
+                                                walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
@@ -7374,7 +7771,7 @@ await trx.commit()
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal)
-                                            // if successful 
+                                            // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal.status == 200) {
                                                 let amountPaidOut = amount;
@@ -7396,17 +7793,18 @@ await trx.commit()
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                                 // console.log(" Current log, line 7391 :", currentInvestment);
                                                 // send for update
+                                                const trx = await Database.transaction();
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 7395 :", updatedInvestment);
                                                 // console.log("Updated record Status line 7397: ", record);
-await trx.commit()
+                                                await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
                                                     action: "investment payout and rollover",
                                                     investmentId: investmentId,//id,
-                                                    walletId: walletIdToSearch,// walletId, 
+                                                    walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
@@ -7453,17 +7851,18 @@ await trx.commit()
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                                 // console.log(" Current log, line 7454 :", currentInvestment);
                                                 // send for update
+                                                const trx = await Database.transaction();
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 7458 :", updatedInvestment);
                                                 // console.log("Updated record Status line 7459: ", record);
-await trx.commit()
+                                                await trx.commit()
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
                                                     action: "investment rollover successful but payout failed",
                                                     investmentId: investmentId,//id,
-                                                    walletId: walletIdToSearch,// walletId, 
+                                                    walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
@@ -7532,13 +7931,14 @@ await trx.commit()
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 7533 :", currentInvestment);
                                     // send for update
+                                    const trx = await Database.transaction();
                                     await investmentsService.updateInvestment(currentInvestment, record);
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     // console.log(" Current log, line 7537 :", updatedInvestment);
                                     await trx.commit()
                                 } else {
                                     // console.log("Entering no data 7539 ==================================")
-                                    await trx.rollback()
+                                    // await trx.rollback()
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -7546,7 +7946,7 @@ await trx.commit()
                                     }
                                 }
                             } else {
-                                await trx.rollback()
+                                // await trx.rollback()
                                 return {
                                     status: 'OK',
                                     message: 'This investment is not mature for rollover.',
@@ -7555,7 +7955,7 @@ await trx.commit()
                             }
                         }
                     } else {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return {
                             status: 'OK',
                             message: 'Rollover of investment is currently suspended.',
@@ -7569,8 +7969,8 @@ await trx.commit()
                     console.log("Error line 4393", error.message);
                     // console.log("Error line 4394", error.message);
                     // debugger
-                    await trx.rollback()
-                    console.log(`Error line 4397, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
+                    // await trx.rollback()
+                    console.log(`Error line 7620, status: "FAILED",message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
             }
@@ -7582,7 +7982,7 @@ await trx.commit()
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 4409 =====================:", error);
+                    console.log("Error line 7632 =====================:", error);
                     throw error;
                 }
             }
@@ -7679,7 +8079,7 @@ await trx.commit()
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()
-                const trx = await Database.transaction();
+                // const trx = await Database.transaction();
                 try {
                     console.log("Entering update 7684 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
@@ -7743,7 +8143,7 @@ await trx.commit()
                     console.log("check approval record 7312 ==================================")
                     // debugger
                     if (record == undefined || !record) {
-                        await trx.rollback()
+                        // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
                     }
                     // console.log(" QUERY RESULT for record: ", record.$original);
@@ -7752,7 +8152,7 @@ await trx.commit()
                     if (!settings) {
                         throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                     }
-                    //  Check if investment payout is not suspended and activation is automated 
+                    //  Check if investment payout is not suspended and activation is automated
                     // isAllRolloverSuspended
 
                     let { isAllPayoutSuspended, liquidationPenalty } = settings; //.isAllPayoutSuspended
@@ -7792,7 +8192,7 @@ await trx.commit()
                                 // payoutReactivationDate: null,
 
                                 // record.status === "matured" &&
-                                //     record.status === "matured" && 
+                                //     record.status === "matured" &&
 
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false)
@@ -7805,10 +8205,10 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -7817,7 +8217,7 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -7854,7 +8254,7 @@ await trx.commit()
                                         rfiCode,
                                         descriptionForInterest)
                                     // debugger
-                                    // if successful 
+                                    // if successful
                                     let decPl = 3;
                                     if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
@@ -7878,17 +8278,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 7872 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 7873 :", updatedInvestment);
                                         // console.log("Updated record Status line 7875: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -7937,17 +8338,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 7939 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 7942 :", updatedInvestment);
                                         // console.log("Updated record Status line 7944: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -7996,17 +8398,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 1428 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 1431 :", updatedInvestment);
                                         // console.log("Updated record Status line 1433: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
@@ -8040,6 +8443,7 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 8045 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8049 :", updatedInvestment);
@@ -8052,7 +8456,7 @@ await trx.commit()
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
                                     // commit transaction and changes to database
-                                    await trx.rollback();
+                                    // await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -8078,10 +8482,10 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
                                     // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus; 
+                                    // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
-                                    // newStatus = "approved"; 
+                                    // newStatus = "approved";
                                     // record.status = newStatus;
                                     // record.requestType = "payout_investment";
                                     // record.remark = approval.remark;
@@ -8090,7 +8494,7 @@ await trx.commit()
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
                                     // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
-                                    record.approvalStatus = "approved"; //approval.approvalStatus; 
+                                    record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id,
                                         firstName, lastName,
@@ -8146,7 +8550,7 @@ await trx.commit()
                                         rfiCode,
                                         descriptionForInterest)
                                     // debugger
-                                    // if successful 
+                                    // if successful
                                     let decPl = 3;
                                     if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
@@ -8175,17 +8579,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 7925 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 7929 :", updatedInvestment);
                                         // console.log("Updated record Status line 7931: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment liquidation payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your liquidated investment has been paid out, please check your account. Thank you.`,
@@ -8241,17 +8646,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 6493 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8662 :", updatedInvestment);
                                         // console.log("Updated record Status line 8664: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment liquidation payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your liquidated investment has been paid out, please check your account. Thank you.`,
@@ -8307,17 +8713,18 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 8744 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8759 :", updatedInvestment);
                                         // console.log("Updated record Status line 8761: ", record);
-await trx.commit()
+                                        await trx.commit()
                                         // update timeline
                                         timelineObject = {
                                             id: uuid(),
                                             action: "investment liquidation payout",
                                             investmentId: investmentId,//id,
-                                            walletId: walletIdToSearch,// walletId, 
+                                            walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your liquidated investment has been paid out, please check your account. Thank you.`,
@@ -8352,6 +8759,7 @@ await trx.commit()
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 8809 :", currentInvestment);
                                         // send for update
+                                        const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8813 :", updatedInvestment);
@@ -8367,7 +8775,7 @@ await trx.commit()
                                     // console.log("Entering no data 8820 ==================================")
 
                                     // commit transaction and changes to database
-                                    await trx.rollback();
+                                    // await trx.rollback();
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
@@ -8380,7 +8788,7 @@ await trx.commit()
                     } else {
 
                         // commit transaction and changes to database
-                        await trx.rollback();
+                        // await trx.rollback();
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
@@ -8393,7 +8801,7 @@ await trx.commit()
                     console.log("Error line 8848", error.messages);
                     console.log("Error line 8849", error.message);
                     // debugger
-                    await trx.rollback()
+                    // await trx.rollback()
                     console.log(`Error line 8852, status: "FAILED", message: ${error.messages} ,hint: ${error.message},`)
                     throw error;
                 }
