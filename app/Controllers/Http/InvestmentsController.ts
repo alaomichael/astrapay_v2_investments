@@ -1497,9 +1497,12 @@ export default class InvestmentsController {
       let investmentId = investment.id
       // Create Unique payment reference for the customer
       let reference = DateTime.now() + randomstring.generate(4);
-      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+      let numberOfAttempts = 1;
+      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
       console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
       console.log(paymentReference);
+      let getNumberOfAttempt = paymentReference.split("/");
+      console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
       debugger;
       // @ts-ignore
       investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
