@@ -539,11 +539,6 @@ export default class ApprovalsServices {
                         }
                     }
 
-
-
-
-
-
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     console.log("selectedInvestmentRequest ========================================================")

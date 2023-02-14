@@ -63,6 +63,8 @@ export default class Investments extends BaseSchema {
       table.float('penalty').unsigned().nullable().index()
       table.boolean("is_request_sent").notNullable().defaultTo(false);
       table.string("investment_request_reference").nullable();
+      table.string("principal_payout_request_reference").nullable();
+      table.string("interest_payout_request_reference").nullable();
       table.boolean("is_investment_created").notNullable().defaultTo(false);
 
       /**

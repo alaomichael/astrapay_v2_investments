@@ -98,6 +98,12 @@ export default class Investment extends AppBaseModel {
   public investmentRequestReference: string
 
   @column()
+  public principalPayoutRequestReference: string
+
+  @column()
+  public interestPayoutRequestReference: string
+
+  @column()
   public isInvestmentCreated: boolean
 
   @column()
