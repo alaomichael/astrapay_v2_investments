@@ -20,8 +20,11 @@ import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
 import SettingsServices from 'App/Services/SettingsServices';
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
+
+const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
+const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
 
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
@@ -513,7 +516,7 @@ export default class ApprovalsController {
           // let senderEmail = email;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-          if (checkTransactionStatusByCustomerRef.length === 0) {
+          if (!checkTransactionStatusByCustomerRef) {
             // initiate a new  transaction
             // Send to the endpoint for debit of wallet
             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -683,7 +686,7 @@ export default class ApprovalsController {
                 });
             }
 
-          } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = investmentRequestReference.split("/");
@@ -1423,7 +1426,7 @@ export default class ApprovalsController {
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
-          if (checkTransactionStatusByCustomerRef.length === 0) {
+          if (!checkTransactionStatusByCustomerRef) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -1454,7 +1457,7 @@ export default class ApprovalsController {
               rfiCode,
               descriptionForPrincipal)
 
-          } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("/");
@@ -1488,7 +1491,7 @@ export default class ApprovalsController {
 
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-          if (checkTransactionStatusByCustomerRef02.length === 0) {
+          if (!checkTransactionStatusByCustomerRef02) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -1519,7 +1522,7 @@ export default class ApprovalsController {
               rfiCode,
               descriptionForInterest)
 
-          } else if (checkTransactionStatusByCustomerRef02.length > 0 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("/");
@@ -1571,7 +1574,7 @@ export default class ApprovalsController {
           //   descriptionForInterest)
           // debugger
           // if successful
-          if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status == 200) {
+          if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
             let amountPaidOut = amount + interestDueOnInvestment;
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1627,7 +1630,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
             let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1680,7 +1683,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200) {
+          } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1815,7 +1818,7 @@ export default class ApprovalsController {
               let creditUserWalletWithInterest;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
-              if (checkTransactionStatusByCustomerRef.length === 0) {
+              if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
                 // Create Unique payment reference for the customer
@@ -1846,7 +1849,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest.status == 200) {
+                if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1902,7 +1905,7 @@ export default class ApprovalsController {
 
                 }
 
-              } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = interestPayoutRequestReference.split("/");
@@ -1933,7 +1936,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest.status == 200) {
+                if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1999,7 +2002,7 @@ export default class ApprovalsController {
               //   rfiCode,
               //   descriptionForInterest)
               // // if successful
-              // if (creditUserWalletWithInterest.status == 200) {
+              // if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
               //   let amountPaidOut = interestDueOnInvestment;
               //   // update the investment details
               //   record.isInvestmentCompleted = true;
@@ -2185,7 +2188,7 @@ export default class ApprovalsController {
               let creditUserWalletWithPrincipal;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
-              if (checkTransactionStatusByCustomerRef.length === 0) {
+              if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
                 // Create Unique payment reference for the customer
@@ -2273,15 +2276,15 @@ export default class ApprovalsController {
 
                 }
 
-              } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-                console.log("getNumberOfAttempt line 1461 =====", getNumberOfAttempt[1]);
+                console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
                 let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                 let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                console.log("Customer Transaction Reference ,@ ApprovalsController line 2280 ==================")
+                console.log("Customer Transaction Reference ,@ ApprovalsController line 2287 ==================")
                 console.log(newPaymentReference);
                 principalPayoutRequestReference = newPaymentReference;
                 record.principalPayoutRequestReference = newPaymentReference;

@@ -1500,8 +1500,8 @@ export default class InvestmentsController {
       let reference = DateTime.now() + randomstring.generate(4);
       let numberOfAttempts = 1;
       let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-      console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
-      console.log(paymentReference);
+      // console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
+      // console.log(paymentReference);
       let getNumberOfAttempt = paymentReference.split("/");
       console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
       debugger;
@@ -1524,11 +1524,11 @@ export default class InvestmentsController {
       // generateRate, interestDueOnPayout, dueForPayout, payoutDueDate
       let decPl = 2;
       let interestRateByDuration = rate * (Number(investment.duration) / 360);
-      console.log(`Interest rate by Investment duration for ${duration} day(s), @ utils line 1338:`, interestRateByDuration)
+      // console.log(`Interest rate by Investment duration for ${duration} day(s), @ utils line 1338:`, interestRateByDuration)
       // convert to decimal places
       // interestRateByDuration = Number(getDecimalPlace(interestRateByDuration, decPl))
       interestRateByDuration = Number(interestRateByDuration.toFixed(decPl));
-      console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ InvestmentController line 1342:`, interestRateByDuration);
+      // console.log(`Interest rate by Investment duration for ${duration} day(s), in ${decPl} dp, @ InvestmentController line 1342:`, interestRateByDuration);
       investment.interestRate = interestRateByDuration;
       // investment.rolloverDone = payload.rolloverDone
 
@@ -1636,8 +1636,9 @@ export default class InvestmentsController {
         // check if the approval request is not existing
         let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
         if (!approvalRequestIsExisting) {
-          let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-          console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+          await approvalsService.createApproval(approvalObject);
+          // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+          // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
         }
 
         // update timeline
@@ -1737,7 +1738,7 @@ export default class InvestmentsController {
 
         // check if transaction with same customer ref exist
         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-        if (checkTransactionStatusByCustomerRef.length === 0) {
+        if (!checkTransactionStatusByCustomerRef) {
           // initiate a new  transaction
           // Send to the endpoint for debit of wallet
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -1749,7 +1750,7 @@ export default class InvestmentsController {
             rfiCode)
           debugger
           // if successful
-          if (debitUserWalletForInvestment.status == 200) {
+          if (debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
 
             // update the investment details
             investment.status = 'active'
@@ -1909,16 +1910,16 @@ export default class InvestmentsController {
               });
           }
 
-        } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+        } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
           // update the value for number of attempts
           // get the current investmentRef, split , add one to the current number, update and try again
           let getNumberOfAttempt = investmentRequestReference.split("/");
-          console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
+          // console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
           let numberOfAttempts =  Number(getNumberOfAttempt[1]) + 1;
           let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
           let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-          console.log("Customer Transaction Reference ,@ InvestmentsController line 1919 ==================")
-          console.log(newPaymentReference);
+          // console.log("Customer Transaction Reference ,@ InvestmentsController line 1919 ==================")
+          // console.log(newPaymentReference);
           investmentRequestReference = newPaymentReference;
           // Send to the endpoint for debit of wallet
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,

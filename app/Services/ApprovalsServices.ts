@@ -190,7 +190,7 @@ export default class ApprovalsServices {
                     let senderEmail = email;
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-                    if (checkTransactionStatusByCustomerRef.length === 0) {
+                    if (!checkTransactionStatusByCustomerRef) {
                         // initiate a new  transaction
                         // Send to the endpoint for debit of wallet
                         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -360,7 +360,7 @@ export default class ApprovalsServices {
                         }
 
 
-                    } else if (checkTransactionStatusByCustomerRef.length > 0 && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+                    } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
                         let getNumberOfAttempt = investmentRequestReference.split("/");

@@ -93,22 +93,49 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         }
         let metadata;
         let customerName = ` ${firstName} ${lastName}`;
-        let recepients;
+        let recepients: any[] = [];
         // debugger
         if (messageKey == "initiation") {
             let subject = "Investment Initiation";
-            recepients = [
-                {
+            // recepients = [
+                // {
+                //     "channel": "email",
+                //     "handle": email,
+                //     "name": `${firstName} ${lastName}`
+                // },
+            //     {
+            //         "channel": "email",
+            //         "handle": initiationNotificationEmail,
+            //         "name": `${rfiName}`
+            //     },
+            // ];
+            for (let index = 0; index < initiationNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = initiationNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 116", receiverDetails);
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": `${firstName} ${lastName}`
-                },
-                {
-                    "channel": "email",
-                    "handle": initiationNotificationEmail,
-                    "name": `${rfiName}`
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                await recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 125 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": `${firstName} ${lastName}`
+            };
+            await  recepients.push(customerDetails);
+
             messageKey = "investment_initiation",
                 metadata = {
                     "subject": subject,
@@ -124,18 +151,46 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "approval") {
             let subject = "Investment Approval";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": initiationNotificationEmail,
+            //         "name": `${rfiName}`
+            //     },
+            // ];
+
+            for (let index = 0; index < initiationNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = initiationNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 169", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": customerName,
-                },
-                {
-                    "channel": "email",
-                    "handle": initiationNotificationEmail,
-                    "name": `${rfiName}`
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 179 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
             messageKey = "investment_approval",
                 metadata = {
                     "subject": subject,
@@ -152,13 +207,34 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "activation") {
             let subject = "Investment Activation";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": activationNotificationEmail,
+            //         "name": `${rfiName}`
+            //     },
+            // ];
+            for (let index = 0; index < activationNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = activationNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 217", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": activationNotificationEmail,
-                    "name": `${rfiName}`
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 228 =====================:", error);
+                    throw error;
+                }
+            }
+
             messageKey = "investment_activation",
                 metadata = {
                     "subject": subject,
@@ -171,18 +247,45 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "maturity") {
             let subject = "Investment Maturity";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": maturityNotificationEmail, // approvalNotificationEmail
+            //         "name": `${rfiName}`, // Admin or Company Name
+            //     },
+            // ];
+            for (let index = 0; index < maturityNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = maturityNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 261", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": customerName,
-                },
-                {
-                    "channel": "email",
-                    "handle": maturityNotificationEmail, // approvalNotificationEmail
-                    "name": `${rfiName}`, // Admin or Company Name
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 271 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
 
             messageKey = "investment_maturity",
                 metadata = {
@@ -200,19 +303,45 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "payout") {
             let subject = "Investment Payout";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": payoutNotificationEmail,
+            //         "name": `${rfiName}`, // Admin or Company Name
+            //     },
+            // ];
+            for (let index = 0; index < payoutNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = payoutNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 315", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": customerName,
-                },
-                {
-                    "channel": "email",
-                    "handle": payoutNotificationEmail,
-                    "name": `${rfiName}`, // Admin or Company Name
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 325 =====================:", error);
+                    throw error;
+                }
+            }
 
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
             messageKey = "investment_payout",
                 metadata = {
                     "subject": subject,
@@ -227,19 +356,45 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "rollover") {
             let subject = "Investment Rollover";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": rolloverNotificationEmail,
+            //         "name": `${rfiName}`, // Admin or Company Name
+            //     },
+            // ];
+            for (let index = 0; index < rolloverNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = rolloverNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 366", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": customerName,
-                },
-                {
-                    "channel": "email",
-                    "handle": rolloverNotificationEmail,
-                    "name": `${rfiName}`, // Admin or Company Name
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 375 =====================:", error);
+                    throw error;
+                }
+            }
 
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
             messageKey = "investment_rollover",
                 metadata = {
                     "subject": subject,
@@ -255,18 +410,45 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 }
         } else if (messageKey == "liquidation") {
             let subject = "Investment Liquidation";
-            recepients = [
-                {
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": liquidationNotificationEmail,
+            //         "name": `${rfiName}`, // Admin or Company Name
+            //     },
+            // ];
+            for (let index = 0; index < liquidationNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = liquidationNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 415", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                   let payload =     {
                     "channel": "email",
-                    "handle": email,
-                    "name": customerName,
-                },
-                {
-                    "channel": "email",
-                    "handle": liquidationNotificationEmail,
-                    "name": `${rfiName}`, // Admin or Company Name
-                },
-            ];
+                    "handle": receiverDetails.email,
+                    "name": receiverName//receiverDetails.name,
+                };
+                debugger
+                 await  recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 425 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails =   {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
             messageKey = "investment_liquidation",
                 metadata = {
                     "subject": subject,
@@ -287,32 +469,33 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             "metadata": metadata,
             "recepients": recepients,
         }
-        // debugger
-        // console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 266", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
+        console.log("payload,line 459", payload);
+        debugger
+        console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 461", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
         const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
         )
-        // console.log("The ASTRAPAY API response status: @ sendNotificationWithoutPdf line 270 ", response);
-        // console.log("The ASTRAPAY API response status: @ sendNotificationWithoutPdf line 271 ", response.status);
-        // console.log("The ASTRAPAY API response: @ sendNotificationWithoutPdf line 272 ", response.data);
+        // console.log("The API response status: @ sendNotificationWithoutPdf line 465 ", response);
+        // console.log("The API response status: @ sendNotificationWithoutPdf line 466 ", response.status);
+        // console.log("The API response: @ sendNotificationWithoutPdf line 467 ", response.data);
         //         {
         //         {
         //     "status": "success",
         //     "message": "messages sent successfully",
         //     "data": null
         // }
-        console.log("The ASTRAPAY API response, line 279: ", response.status);
+        console.log("The API response, line 474: ", response.status);
         // debugger
         if (response.status === 200) {
-            // console.log("The ASTRAPAY API response, line 282: ", response.data);
+            // console.log("The  API response, line 477: ", response.data);
             return response.data;
         } else {
             // return;
-            throw Error();
+            throw Error(response);
         }
     } catch (error) {
-        console.log("The ASTRAPAY API response error: @ sendNotificationWithoutPdf line 289 ");
-        // console.error(error);
+        console.log("The API response error: @ sendNotificationWithoutPdf line 484 ");
+        console.error(error);
         console.error(error.message);
         if (error.response == undefined) {
             return { status: "FAILED TO SEND NOTIFICATION", message: error.message }
