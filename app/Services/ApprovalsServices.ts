@@ -38,7 +38,7 @@ export default class ApprovalsServices {
                     userId: investmentDetails.userId,
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
-                    message: `${investmentDetails.firstName} investment request approval record has just been created.`,
+                    message: `${investmentDetails.firstName} ,your investment request approval record has just been created.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
@@ -60,7 +60,7 @@ export default class ApprovalsServices {
                     userId: investmentDetails.userId,
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
-                    message: `${investmentDetails.firstName} investment request approval record has just been created.`,
+                    message: `${investmentDetails.firstName} , your investment request approval record has just been created.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
@@ -781,7 +781,7 @@ export default class ApprovalsServices {
                         descriptionForPrincipal)
                     // if successful
                     let decPl = 3;
-                    if (creditUserWalletWithPrincipal.status == 200) {
+                    if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                         let amountPaidOut = amount;
                         // let decPl = 2;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));

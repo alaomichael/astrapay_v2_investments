@@ -1632,7 +1632,7 @@ export default class InvestmentsController {
           processedBy: "",//investment.processedBy,
           // remark: "",
         };
-        // console.log("ApprovalRequest object line 1194:", approvalObject);
+        // console.log("ApprovalRequest objects line 1194:", approvalObject);
         // check if the approval request is not existing
         let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
         if (!approvalRequestIsExisting) {

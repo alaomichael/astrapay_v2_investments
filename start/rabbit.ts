@@ -2,6 +2,9 @@ import RfiRecordsServices from "App/Services/RfiRecordsServices";
 import { RfiRecordType } from "App/Services/types/rfirecord_type";
 import SettingServices from "App/Services/SettingsServices";
 import { SettingType } from "App/Services/types/setting_type";
+import PaymentServices from "App/Services/PaymentsServices";
+import InvestmentsService from "App/Services/InvestmentsServices";
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +19,11 @@ const Env = require("@ioc:Adonis/Core/Env");
 const RABBITMQ_HOSTNAME = Env.get("RABBITMQ_HOSTNAME");
 const RABBITMQ_EXCHANGE_NAME = Env.get("RABBITMQ_EXCHANGE_NAME");
 const RABBITMQ_QUEUE_NAME = Env.get("RABBITMQ_QUEUE_NAME");
-const RABBITMQ_CONFIG_QUEUE_NAME = Env.get("RABBITMQ_CONFIG_QUEUE_NAME");
 const RABBITMQ_ONBOARDING_ROUTING_KEY = Env.get("RABBITMQ_ONBOARDING_ROUTING_KEY");
+const RABBITMQ_CONFIG_QUEUE_NAME = Env.get("RABBITMQ_CONFIG_QUEUE_NAME");
 const RABBITMQ_CONFIG_ROUTING_KEY = Env.get("RABBITMQ_CONFIG_ROUTING_KEY");
+const RABBITMQ_TRANSACTION_QUEUE_NAME = Env.get("RABBITMQ_TRANSACTION_QUEUE_NAME");
+const RABBITMQ_TRANSACTION_ROUTING_KEY = Env.get("RABBITMQ_TRANSACTION_ROUTING_KEY");
 
 const amqplib = require('amqplib');
 
@@ -27,7 +32,9 @@ const amqplib = require('amqplib');
     try {
         const queue = RABBITMQ_QUEUE_NAME;//'tasks';
         const configQueue = RABBITMQ_CONFIG_QUEUE_NAME;
+        const transactionQueue = RABBITMQ_TRANSACTION_QUEUE_NAME;
         const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost');
+        const investmentsService = new InvestmentsService();
         // debugger
         const ch1 = await conn.createChannel();
         await ch1.assertQueue(queue);
@@ -433,14 +440,240 @@ const amqplib = require('amqplib');
             }
         });
 
+        const ch3 = await conn.createChannel();
+        await ch3.assertQueue(transactionQueue);
+        await ch3.bindQueue(transactionQueue, RABBITMQ_EXCHANGE_NAME, RABBITMQ_TRANSACTION_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
+        await ch3.checkQueue(transactionQueue);
+        await ch3.get(transactionQueue);
+        // console.log("channel details: ", ch3);
+        // debugger
+        // Listener
+        await ch3.consume(transactionQueue, async (msg) => {
+            // console.log("msg details: ", msg);
+            // debugger
+            if (msg !== null) {
+                try {
+                    // console.log('Received the whole message ======:', msg);
+                    // console.log('Received the fields message ======:', msg.fields);
+                    // console.log('Received message converted to string =========:', msg.content.toString());
+                    // console.log('Received in json format ========:', msg.content);
+                    let { fields, content } = msg;
+                    // debugger
+                    content = content.toString();
+                    // console.log('Received message converted to string, line 459 =========:', content);
+                    content = JSON.parse(content);
+                    // console.log('Received the fields message, line 461 ======:', fields);
+                    // console.log('Received message converted to json, line 462 =========:', content);
+                    // debugger
+                    let {
+                        consumerTag,//: 'amq.ctag-ihMXzcY0EI6bWrseyN52Hg',
+                        deliveryTag,//: 1,
+                        redelivered,//: true,
+                        exchange,//: 'config',
+                        routingKey,//: 'investment.configuration'
+                    } = fields;
+                    // {
+                    //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",
+                    //     "correlationId": "68678989IO09",
+                    //     "transactionId": "16759132994525197",
+                    //     "customerReference": "16708830553194Kt90",
+                    //     "batchId": "aee5adf2-d32c-44a1-b3cd-9be941c7b48b",
+                    //     "indexInBatch": 0,
+                    //     "performedBy": "485885869",
+                    //     "description": " NGN 38 investment for Tomiwa Folalu. ",
+                    //     "product": "Funds transfer",
+                    //     "subproduct": "mobilebanking.fundstransfer.wallettowallet",
+                    //     "process": "WALLET_TO_WALLET_TRANSFER",
+                    //     "senderFirstName": "Tomiwa Folalu",
+                    //     "senderOtherName": "Tomiwa Folalu",
+                    //     "senderAccountNumber": "12345678",
+                    //     "senderAccountName": "Tomiwa Folalu",
+                    //     "senderPhoneNumber": "2348161885549",
+                    //     "senderEmail": "tomiczilla@gmail.com",
+                    //     "senderBankName": "Sigma Octantis",
+                    //     "senderBankCode": "S8",
+                    //     "senderBankAlias": "S8",
+                    //     "senderBankCategory": "SIGMA_OCTANTIS",
+                    //     "beneficiaryFirstName": "Sigma Octantis",
+                    //     "beneficiaryOtherName": "Sigma Octantis",
+                    //     "beneficiaryAccountNumber": "65656565",
+                    //     "beneficiaryAccountName": "Sigma Octantis",
+                    //     "beneficiaryPhoneNumber": "07033680599",
+                    //     "beneficiaryEmail": "devmichaelalao@gmail.com",
+                    //     "beneficiaryBankName": "Sigma Octantis",
+                    //     "beneficiaryBankCode": "S8",
+                    //     "beneficiaryBankAlias": "S8",
+                    //     "beneficiaryBankCategory": "SIGMA_OCTANTIS",
+                    //     "billerId": null,
+                    //     "paymentCode": null,
+                    //     "facilitatorName": "Jane Wood",
+                    //     "facilitatorId": "485885869",
+                    //     "facilitatorPhoneNumber": "2348079859043",
+                    //     "facilitatorEmail": "test@email.com",
+                    //     "amount": 3800,
+                    //     "currency": "NGN",
+                    //     "serviceCharge": 3000,
+                    //     "serviceChargeWalletHolderId": "123456",
+                    //     "serviceChargeWalletHolderName": "SigmaOctantis",
+                    //     "serviceChargeWalletIdentifier": "1234567",
+                    //     "serviceChargeWalletName": "Mock Service Charge Wallet",
+                    //     "vat": 225,
+                    //     "vatWalletHolderId": "123456",
+                    //     "vatWalletHolderName": "SigmaOctantis",
+                    //     "vatWalletIdentifier": "1234567",
+                    //     "vatWalletName": "Mock vat Wallet",
+                    //     "commissionWalletHolderId": "12345",
+                    //     "commissionWalletHolderName": "SigmaOctantis",
+                    //     "commissionWalletIdentifier": "1234567",
+                    //     "commissionWalletName": "Mock commission Wallet",
+                    //     "lng": "64532111",
+                    //     "lat": "12234435",
+                    //     "transactionStatus": "AWAITING_APPROVAL",
+                    //     "screenStatus": "AWAITING_APPROVAL",
+                    //     "createdAt": "2023-02-09T04:28:20.417098",
+                    //     "updatedAt": "2023-02-09T04:28:20.417098",
+                    //     "systemMetadata": null,
+                    //     "customerMetadata": {
+                    //         "cool": "cool"
+                    //     },
+                    //     "timeline": [
+                    //         {
+                    //             "id": "04bd6a4e-e2c3-40fd-819a-fb8ae93f03be",
+                    //             "transactionId": "defddb06-c27d-4255-aa6a-2d483ed8de40",
+                    //             "transactionStatus": "AWAITING_APPROVAL",
+                    //             "createdAt": "2023-02-09T04:28:20.418097",
+                    //             "updatedAt": "2023-02-09T04:28:20.418097",
+                    //             "systemMetadata": null
+                    //         }
+                    //     ],
+                    //     "commissions": [],
+                    //     "clientApp": "OCTANTIS_MOBILE",
+                    //     "userAgent": "PostmanRuntime/7.30.1",
+                    //     "ffiCode": "S8",
+                    //     "ffiName": "S8",
+                    //     "ofiCode": "S8",
+                    //     "ofiName": "S8",
+                    //     "bfiCode": "S8",
+                    //     "bfiName": "S8",
+                    //     "notifiable": {
+                    //         "id": "cb3dbc59-cf32-49ed-b647-d17c70e6dfa2",
+                    //         "createdAt": "2023-02-09T04:28:20.417098",
+                    //         "updatedAt": "2023-02-09T04:28:20.417098",
+                    //         "notifications": [
+                    //             {
+                    //                 "id": "8470432e-25c3-4882-8534-a30c7da72949",
+                    //                 "notifiableId": "cb3dbc59-cf32-49ed-b647-d17c70e6dfa2",
+                    //                 "channel": "SMS",
+                    //                 "handle": "07033680599",
+                    //                 "recipientName": "Sigma Octantis",
+                    //                 "walletToBillId": "12345678",
+                    //                 "walletToBillName": "Mock Wallet",
+                    //                 "eventType": "TRANSACTION_SUCCESS",
+                    //                 "createdAt": "2023-02-09T04:28:20.417098",
+                    //                 "updatedAt": "2023-02-09T04:28:20.417098"
+                    //             }
+                    //         ]
+                    //     },
+                    //     "authorizable": {
+                    //         "id": "65cad0cd-1df2-4d3e-9c3b-7e985caaa40a",
+                    //         "createdAt": "2023-02-09T04:28:20.296422",
+                    //         "updatedAt": "2023-02-09T04:28:20.296422",
+                    //         "authorizations": [
+                    //             {
+                    //                 "id": "e881f905-7f5a-46b6-903f-ed67110d8b44",
+                    //                 "authorizableId": "65cad0cd-1df2-4d3e-9c3b-7e985caaa40a",
+                    //                 "requiredAuthorityId": "12345",
+                    //                 "requiredAuthorityName": "Mock authority",
+                    //                 "authorityId": null,
+                    //                 "authorityName": null,
+                    //                 "authorityActionAt": null,
+                    //                 "authorityAction": null,
+                    //                 "createdAt": "2023-02-09T04:28:20.412112",
+                    //                 "updatedAt": "2023-02-09T04:28:20.412112"
+                    //             }
+                    //         ]
+                    //     },
+                    //     "tenant": null,
+                    //     "senderWalletIdentifier": "12345678",
+                    //     "senderWalletName": "Tomiwa Folalu",
+                    //     "senderWalletHolderId": "5886990",
+                    //     "senderWalletHolderName": "MockWalletHolder",
+                    //     "beneficiaryWalletIdentifier": "65656565",
+                    //     "beneficiaryWalletName": "Sigma Octantis",
+                    //     "beneficiaryWalletHolderId": "5886990",
+                    //     "beneficiaryWalletHolderName": "MockWalletHolder"
+                    // }
+                    let { amount, customerReference, senderAccountNumber, senderAccountName, senderPhoneNumber, senderEmail, senderBankCode, senderBankName,
+                        currency, transactionStatus, screenStatus,
+                    } = content;
+                    console.log("fields line 606", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
+                    // let { code, name, email, street, city, state, country } = rfi;
+                    // debugger
+                    console.log("Content of message line 608 =====", amount, customerReference, senderAccountNumber, senderAccountName, senderPhoneNumber, senderEmail, senderBankCode, senderBankName,
+                        currency, transactionStatus, screenStatus,)
+                    // debugger
+                    // console.log("content line 480 ===== ", name, email, code, status,)
+                    // Check if the record is existing
+                    // const rfiRecordsService = new RfiRecordsServices();
+                    // const settingsService = new SettingServices();
+                    const paymentsService = new PaymentServices();
+                    // debugger
+                    // let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
+                    if (screenStatus === "FAILED") {
+                        console.log("screenStatus line 508 ===== ", screenStatus)
+                        console.log(`Consumer cancelled by server, Payment status is ${screenStatus}, line 509 =====`);
+                        // Send message to customer / admin
+                        // Try to debit the use again
+                        throw Error();
+                    } else if (screenStatus === "SUCCESSFUL") {
+                        // console.log("payment details @ start/rabbit.ts; line 626 ===== ", content)
+                        // Create or update investment payment status
+                        // debugger
+                        // check if investment record exist and update changed value
+                        const investment = await investmentsService.getInvestmentByInvestmentRequestReference(customerReference)
+                        if (!investment) throw Error(`The investment record with InvestmentRequestReference : ${customerReference} does not exist , please select another one and try again.`);
+                        let record = investment;
+                        const amountPaid = Number(amount / 100);// Convert Kobo to Naira  
+                        if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                        if (record.status == "active") {
+                            debugger
+                            ch3.ack(msg);
+                            throw Error(`The investment record selected is currently ${record.status} , please check and try again.`);
+                        }
+
+                        let selectedInvestmentForPaymentUpdate = await paymentsService.processInvestmentTransaction(content)
+                        if (!selectedInvestmentForPaymentUpdate) {
+                            console.log("Existing Investment record, investment payment status was not updated successfully line 632 ===== ")
+                        } else {
+                            console.log("selectedInvestmentForPaymentUpdate details line 626 ===== ", selectedInvestmentForPaymentUpdate)
+                            console.log("Existing Investment record, investment payment status updated successfully line 634 ===== ")
+                            debugger
+                            ch3.ack(msg);
+                        }
+
+                    }
+                    // debugger
+                    // ch3.ack(msg);
+                } catch (error) {
+                    console.log('Consumer cancelled by server, line 592 =====');
+                    console.log(error);
+                    ch3.nack(msg, false, false); // requeue set to false
+                    // ch3.reject(msg, false, false); // requeue set to false
+                }
+            } else {
+                console.log('Consumer cancelled by server, line 598 =====');
+                throw Error();
+            }
+        });
+
         //     // Sender
-        //     // const ch2 = await conn.createChannel();
+        //     // const ch4 = await conn.createChannel();
 
         //     // setInterval(() => {
-        //     //     ch2.sendToQueue(queue, Buffer.from('something to do'));
+        //     //     ch4.sendToQueue(queue, Buffer.from('something to do'));
         //     // }, 1000);
     } catch (error) {
-        console.log('Consumer cancelled by server, line 443 =====');
+        console.log('Consumer cancelled by server, line 610 =====');
         console.log(error);
     }
 })();

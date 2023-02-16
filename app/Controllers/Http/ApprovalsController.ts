@@ -1202,7 +1202,7 @@ export default class ApprovalsController {
               descriptionForPrincipal)
             // if successful
             let decPl = 3;
-            if (creditUserWalletWithPrincipal.status == 200) {
+            if (creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
               let amountPaidOut = amount;
               // let decPl = 3;
               amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -2219,7 +2219,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal.status == 200) {
+                if (creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2307,7 +2307,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal.status == 200) {
+                if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2373,7 +2373,7 @@ export default class ApprovalsController {
               //   rfiCode,
               //   descriptionForPrincipal)
               // // if successful
-              // if (creditUserWalletWithPrincipal.status == 200) {
+              // if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
               //   let amountPaidOut = amount;
               //   // update the investment details
               //   record.isInvestmentCompleted = true;

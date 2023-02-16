@@ -7,8 +7,7 @@ const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 
 export const sendNotificationWithPdf = async function sendNotificationWithPdf(url, rfiCode, message, subject, recepients): Promise<any> {
-    // connect to Okra
-    try {
+        try {
         // console.log("email,line 25", email);
         // console.log("subject,line 26", subject);
         // console.log("firstName,line 27", firstName);
@@ -41,26 +40,26 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
         const response = await axios.post(`${NOTIFICATION_WITH_PDF_MESSAGE_URL}/notification/attachment`,
             payload,// { headers: headers }
         )
-        // console.log("The ASTRAPAY API response status: @ sendNotificationWithPdf line 43 ", response);
-        // console.log("The ASTRAPAY API response status: @ sendNotificationWithPdf line 43 ", response.status);
-        // console.log("The ASTRAPAY API response: @ sendNotificationWithPdf line 44 ", response.data);
+        // console.log("The API response status: @ sendNotificationWithPdf line 43 ", response);
+        // console.log("The API response status: @ sendNotificationWithPdf line 43 ", response.status);
+        // console.log("The API response: @ sendNotificationWithPdf line 44 ", response.data);
         //         {
         //         {
         //     "status": "success",
         //     "message": "messages sent successfully",
         //     "data": null
         // }
-        console.log("The ASTRAPAY API response, line 53: ", response.status);
+        console.log("The API response @ sendNotificationWithPdf, line 53: ", response.status);
         // debugger
         if (response.status === 200) {
-            // console.log("The ASTRAPAY API response, line 56: ", response.data);
+            // console.log("The API response, line 56: ", response.data);
             return response.data;
         } else {
             // return;
             throw Error();
         }
     } catch (error) {
-        console.log("The ASTRAPAY API response error: @ sendNotificationWithPdf line 63 ");
+        console.log("The API response error: @ sendNotificationWithPdf line 63 ");
         // console.error(error);
         console.error(error.message);
         if (error.response == undefined) {

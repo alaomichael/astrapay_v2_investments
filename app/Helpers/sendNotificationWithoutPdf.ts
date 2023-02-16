@@ -121,7 +121,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                 await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 125 =====================:", error);
@@ -177,7 +177,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 179 =====================:", error);
@@ -227,7 +227,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 228 =====================:", error);
@@ -272,7 +272,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 271 =====================:", error);
@@ -328,7 +328,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 325 =====================:", error);
@@ -381,7 +381,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 375 =====================:", error);
@@ -435,7 +435,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "handle": receiverDetails.email,
                     "name": receiverName//receiverDetails.name,
                 };
-                debugger
+                // debugger
                  await  recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 425 =====================:", error);
@@ -470,7 +470,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             "recepients": recepients,
         }
         console.log("payload,line 459", payload);
-        debugger
+        // debugger
         console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 461", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
         const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
@@ -484,7 +484,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         //     "message": "messages sent successfully",
         //     "data": null
         // }
-        console.log("The API response, line 474: ", response.status);
+        console.log("The API response @ sendNotificationWithoutPdf, line 474: ", response.status);
         // debugger
         if (response.status === 200) {
             // console.log("The  API response, line 477: ", response.data);
