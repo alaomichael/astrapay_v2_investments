@@ -609,10 +609,10 @@ const amqplib = require('amqplib');
                     console.log("fields line 606", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
                     // let { code, name, email, street, city, state, country } = rfi;
                     // debugger
-                    console.log("Content of message line 608 =====", amount, customerReference, senderAccountNumber, senderAccountName, senderPhoneNumber, senderEmail, senderBankCode, senderBankName,
+                    console.log("Content of message @ start/rabbit.ts line 608 =====", amount, customerReference, senderAccountNumber, senderAccountName, senderPhoneNumber, senderEmail, senderBankCode, senderBankName,
                         currency, transactionStatus, screenStatus,)
                     // debugger
-                    // console.log("content line 480 ===== ", name, email, code, status,)
+                    // console.log("content line 615 ===== ", name, email, code, status,)
                     // Check if the record is existing
                     // const rfiRecordsService = new RfiRecordsServices();
                     // const settingsService = new SettingServices();
@@ -620,48 +620,100 @@ const amqplib = require('amqplib');
                     // debugger
                     // let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
                     if (screenStatus === "FAILED") {
-                        console.log("screenStatus line 508 ===== ", screenStatus)
-                        console.log(`Consumer cancelled by server, Payment status is ${screenStatus}, line 509 =====`);
+                        console.log("screenStatus line 623 ===== ", screenStatus)
+                        console.log(`Consumer cancelled by server, Payment status is ${screenStatus}, line 624 =====`);
                         // Send message to customer / admin
                         // Try to debit the use again
                         throw Error();
                     } else if (screenStatus === "SUCCESSFUL") {
-                        // console.log("payment details @ start/rabbit.ts; line 626 ===== ", content)
+                        // console.log("payment details @ start/rabbit.ts; line 629 ===== ", content)
                         // Create or update investment payment status
                         // debugger
                         // check if investment record exist and update changed value
-                        const investment = await investmentsService.getInvestmentByInvestmentRequestReference(customerReference)
-                        if (!investment) throw Error(`The investment record with InvestmentRequestReference : ${customerReference} does not exist , please select another one and try again.`);
-                        let record = investment;
-                        const amountPaid = Number(amount / 100);// Convert Kobo to Naira  
-                        if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
-                        if (record.status == "active") {
-                            debugger
-                            ch3.ack(msg);
-                            throw Error(`The investment record selected is currently ${record.status} , please check and try again.`);
-                        }
+                        const investmentDebitWallet = await investmentsService.getInvestmentByInvestmentRequestReference(customerReference);
+                        const investmentCreditWalletWithPrincipal = await investmentsService.getInvestmentByPrincipalPayoutRequestReference(customerReference);
+                        const investmentCreditWalletWithInterest = await investmentsService.getInvestmentByInterestPayoutRequestReference(customerReference);
+                        if (!investmentDebitWallet && !investmentCreditWalletWithPrincipal && !investmentCreditWalletWithInterest) throw Error(`The investment record with InvestmentRequestReference : ${customerReference} does not exist , please select another one and try again.`);
 
-                        let selectedInvestmentForPaymentUpdate = await paymentsService.processInvestmentTransaction(content)
-                        if (!selectedInvestmentForPaymentUpdate) {
-                            console.log("Existing Investment record, investment payment status was not updated successfully line 632 ===== ")
-                        } else {
-                            console.log("selectedInvestmentForPaymentUpdate details line 626 ===== ", selectedInvestmentForPaymentUpdate)
-                            console.log("Existing Investment record, investment payment status updated successfully line 634 ===== ")
-                            debugger
-                            ch3.ack(msg);
+                        if (investmentDebitWallet) {
+                            let record = investmentDebitWallet;
+                            const amountPaid = Number(amount / 100);// Convert Kobo to Naira
+                            if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                            if (record.status == "active") {
+                                debugger
+
+                                console.log(`@start/rabbit.ts : The Investment record selected is currently ${record.status} , please check and try again.`);
+                                // ch3.reject(msg, false, false); // requeue set to false
+                                ch3.ack(msg);
+                                // throw Error(`The investment record selected is currently ${record.status} , please check and try again.`);
+                            } else {
+                                let selectedInvestmentForPaymentUpdate = await paymentsService.processInvestmentTransaction(content)
+                                if (!selectedInvestmentForPaymentUpdate) {
+                                    console.log("Existing Investment record, investment payment status was not updated successfully line 632 ===== ")
+                                } else {
+                                    console.log("selectedInvestmentForPaymentUpdate details line 626 ===== ", selectedInvestmentForPaymentUpdate)
+                                    console.log("Existing Investment record, investment payment status updated successfully line 634 ===== ")
+                                    debugger
+                                    ch3.ack(msg);
+                                }
+                            }
+                        } else if (investmentCreditWalletWithPrincipal) {
+                            let record = investmentCreditWalletWithPrincipal;
+                            const amountPaid = Number(amount / 100);// Convert Kobo to Naira
+                            if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                            if (record.status == "active") {
+                                debugger
+
+                                console.log(`@start/rabbit.ts : The Investment record selected is currently ${record.status} , please check and try again.`);
+                                // ch3.reject(msg, false, false); // requeue set to false
+                                ch3.ack(msg);
+                                // throw Error(`The investment record selected is currently ${record.status} , please check and try again.`);
+                            } else {
+                                let selectedInvestmentForPaymentUpdate = await paymentsService.updatePrincipalPayout(content)
+                                if (!selectedInvestmentForPaymentUpdate) {
+                                    console.log("Existing Investment record, investment payment status was not updated successfully line 674 ===== ")
+                                } else {
+                                    console.log("selectedInvestmentForPaymentUpdate details line 676 ===== ", selectedInvestmentForPaymentUpdate)
+                                    console.log("Existing Investment record, investment payment status updated successfully line 677 ===== ")
+                                    debugger
+                                    ch3.ack(msg);
+                                }
+                            }
+                        } else if (investmentCreditWalletWithInterest) {
+                            let record = investmentCreditWalletWithInterest;
+                            const amountPaid = Number(amount / 100);// Convert Kobo to Naira
+                            if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                            if (record.status == "active") {
+                                debugger
+
+                                console.log(`@start/rabbit.ts : The Investment record selected is currently ${record.status} , please check and try again.`);
+                                // ch3.reject(msg, false, false); // requeue set to false
+                                ch3.ack(msg);
+                                // throw Error(`The investment record selected is currently ${record.status} , please check and try again.`);
+                            } else {
+                                let selectedInvestmentForPaymentUpdate = await paymentsService.updateInterestPayout(content)
+                                if (!selectedInvestmentForPaymentUpdate) {
+                                    console.log("Existing Investment record, investment payment status was not updated successfully line 696 ===== ")
+                                } else {
+                                    console.log("selectedInvestmentForPaymentUpdate details line 698 ===== ", selectedInvestmentForPaymentUpdate)
+                                    console.log("Existing Investment record, investment payment status updated successfully line 699 ===== ")
+                                    debugger
+                                    ch3.ack(msg);
+                                }
+                            }
                         }
 
                     }
                     // debugger
                     // ch3.ack(msg);
                 } catch (error) {
-                    console.log('Consumer cancelled by server, line 592 =====');
+                    console.log('Consumer cancelled by server @ start/rabbit.ts, line 710 =====');
                     console.log(error);
                     ch3.nack(msg, false, false); // requeue set to false
                     // ch3.reject(msg, false, false); // requeue set to false
                 }
             } else {
-                console.log('Consumer cancelled by server, line 598 =====');
+                console.log('Consumer cancelled by server @ start/rabbit.ts, line 716 =====');
                 throw Error();
             }
         });
@@ -673,7 +725,7 @@ const amqplib = require('amqplib');
         //     //     ch4.sendToQueue(queue, Buffer.from('something to do'));
         //     // }, 1000);
     } catch (error) {
-        console.log('Consumer cancelled by server, line 610 =====');
+        console.log('Consumer cancelled by server @ start/rabbit.ts, line 728 ======');
         console.log(error);
     }
 })();

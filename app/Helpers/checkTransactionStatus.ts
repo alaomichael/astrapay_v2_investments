@@ -24,11 +24,11 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         // console.log("charge,@ checkTransactionStatus line 21", charge);
 
         // let generateRandomNumber = Math.random().toString(36).substring(12);
-        // console.log("The ASTRAPAY API random number @ checkTransactionStatus", generateRandomNumber);
+        // console.log("The API random number @ checkTransactionStatus", generateRandomNumber);
 
         // let customerReference = randomstring.generate();
         // >> "XwPp9xazJ0ku5CZnlmgAx2Dld8SHkAeT"
-        // console.log("The ASTRAPAY API customerReference @ checkTransactionStatus", customerReference);
+        // console.log("The API customerReference @ checkTransactionStatus", customerReference);
 
         // let batchPaymentId = randomstring.generate(10);
 
@@ -123,14 +123,14 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         const response = await axios.get(`${ORCHESTRATOR_URL}/transactions?customerReference=${investmentRequestReference}`,
             { headers: headers }//payload,
         )
-        // console.log("The ASTRAPAY API response @ checkTransactionStatus line 131: ", response);
+        // console.log("The API response @ checkTransactionStatus line 131: ", response);
         // debugger
-        // console.log("The ASTRAPAY API response data @ checkTransactionStatus line 133: ", response.data);
-        // console.log("The ASTRAPAY API response data @ checkTransactionStatus line 134: ", response.status);
+        // console.log("The API response data @ checkTransactionStatus line 133: ", response.data);
+        // console.log("The API response data @ checkTransactionStatus line 134: ", response.status);
         //  && response.data.amountTransfered === CHARGE
 
         if (response.status == 200) {
-            // console.log("The ASTRAPAY API response, @ checkTransactionStatus line 118: ", response.data);
+            // console.log("The API response, @ checkTransactionStatus line 118: ", response.data);
             // debugger
             // {
             //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",
@@ -266,7 +266,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             // Return the first object in the array
             return response[0];
         } else {
-            console.log("The ASTRAPAY API response @ checkTransactionStatus line 137: ", response.code);
+            console.log("The API response @ checkTransactionStatus line 137: ", response.code);
             // debugger
             throw Error(response);
             // return response;
