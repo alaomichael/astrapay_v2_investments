@@ -6248,17 +6248,21 @@ export default class InvestmentsServices {
                                     // let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
-                                    if (!checkTransactionStatusByCustomerRef) {
+                                    // let checkTransactionStatusByCustomerRef = null;// "null"//await checkTransactionStatus(principalPayoutRequestReference);
+                                    debugger
+                                    // if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+                                    // if (!checkTransactionStatusByCustomerRef) {
+                                    if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
-                                        console.log(paymentReference);
-                                        let getNumberOfAttempt = paymentReference.split("/");
-                                        console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6259 ==================")
+                                        // console.log(paymentReference);
+                                        // let getNumberOfAttempt = paymentReference.split("/");
+                                        // console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
                                         debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6313,7 +6317,9 @@ export default class InvestmentsServices {
 
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-                                    if (!checkTransactionStatusByCustomerRef02) {
+                                    // if (!checkTransactionStatusByCustomerRef02) {
+                                    if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") {
+
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -6406,6 +6412,7 @@ export default class InvestmentsServices {
                                     console.log(" creditUserWalletWithInterest line 6406 ===============", creditUserWalletWithInterest);
                                     debugger
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                        // if (creditUserWalletWithPrincipal == undefined && creditUserWalletWithInterest == undefined) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6587,8 +6594,9 @@ export default class InvestmentsServices {
 
                                         // debugger
                                     } else {
-                                        console.log("Entering failed payout of principal and interest data block ,line 1487 ==================================")
+                                        console.log("Entering failed payout of principal and interest data block ,line 6595 ==================================")
                                         // update record
+                                        debugger
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 1484 :", currentInvestment);
                                         // send for update

@@ -1509,7 +1509,7 @@ export default class PaymentsServices {
             let record = investment;
             const amountPaid = Number(paymentDetails.amount / 100);// Convert Kobo to Naira  
             // if ( record.amount > amountPaid) throw Error(`The amount paid :${paymentDetails.currency} ${amountPaid} is less than the amount :${paymentDetails.currency} ${record.amount} to be investmented, please check and try again.`); // throw new AppException({ message: `The amount paid is less than the amount to be investmented, please check and try again.`, codeSt: "422" });
-            // if (record.status == "active") throw Error(`The investment record selected is currently ${record.status} , please check and try again.`); //throw new AppException({ message: `@PaymentsServices : The investment selected is currently ${record.status} , please check and try again.`, codeSt: "422" });
+            if (record.status == "completed_with_interest_payout_outstanding") throw Error(`The investment record selected is currently ${record.status} , please check and try again.`); //throw new AppException({ message: `@PaymentsServices : The investment selected is currently ${record.status} , please check and try again.`, codeSt: "422" });
             // const amountToInvest = amountPaid;
             //    debugger
             // payload.amount = amountToInvest;
@@ -1524,7 +1524,8 @@ export default class PaymentsServices {
                 firstName, //lastName,
                 walletId,
                 // phone,
-                // email,//currencyCode,
+                // email,
+                currencyCode,
                 rfiCode,// interestDueOnInvestment,
                 // principalPayoutRequestReference, interestPayoutRequestReference
             } = record;
@@ -2201,7 +2202,7 @@ export default class PaymentsServices {
             let record = investment;
             const amountPaid = Number(paymentDetails.amount / 100);// Convert Kobo to Naira  
             // if ( record.amount > amountPaid) throw Error(`The amount paid :${paymentDetails.currency} ${amountPaid} is less than the amount :${paymentDetails.currency} ${record.amount} to be investmented, please check and try again.`); // throw new AppException({ message: `The amount paid is less than the amount to be investmented, please check and try again.`, codeSt: "422" });
-            // if (record.status == "active") throw Error(`The investment record selected is currently ${record.status} , please check and try again.`); //throw new AppException({ message: `@PaymentsServices : The investment selected is currently ${record.status} , please check and try again.`, codeSt: "422" });
+            if (record.status == "completed_with_principal_payout_outstanding") throw Error(`The investment record selected is currently ${record.status} , please check and try again.`); //throw new AppException({ message: `@PaymentsServices : The investment selected is currently ${record.status} , please check and try again.`, codeSt: "422" });
             // const amountToInvest = amountPaid;
             //    debugger
             // payload.amount = amountToInvest;
@@ -2216,7 +2217,8 @@ export default class PaymentsServices {
                 firstName, //lastName,
                 walletId,
                 // phone,
-                // email,//currencyCode,
+                // email,
+                currencyCode,
                 rfiCode,// interestDueOnInvestment,
                 // principalPayoutRequestReference, interestPayoutRequestReference
             } = record;
