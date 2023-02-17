@@ -3005,8 +3005,8 @@ export default class InvestmentsController {
     } catch (error) {
       console.log(error)
       // debugger
-      console.log("Error line 2772", error.messages);
-      console.log("Error line 2773", error.message);
+      console.log("Error line 3008", error.messages);
+      console.log("Error line 3007", error.message);
       // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
@@ -3079,8 +3079,8 @@ export default class InvestmentsController {
     } catch (error) {
       console.log(error)
       // debugger
-      console.log("Error line 2052", error.messages);
-      console.log("Error line 2053", error.message);
+      console.log("Error line 3082", error.messages);
+      console.log("Error line 3083", error.message);
       // debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)

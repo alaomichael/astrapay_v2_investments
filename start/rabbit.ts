@@ -649,19 +649,19 @@ const amqplib = require('amqplib');
                             } else {
                                 let selectedInvestmentForPaymentUpdate = await paymentsService.processInvestmentTransaction(content)
                                 if (!selectedInvestmentForPaymentUpdate) {
-                                    console.log("Existing Investment record, investment payment status was not updated successfully line 632 ===== ")
+                                    console.log("Existing Investment record, investment payment status was not updated successfully line 652 ===== ")
                                 } else {
-                                    console.log("selectedInvestmentForPaymentUpdate details line 626 ===== ", selectedInvestmentForPaymentUpdate)
-                                    console.log("Existing Investment record, investment payment status updated successfully line 634 ===== ")
+                                    console.log("selectedInvestmentForPaymentUpdate details line 654 ===== ", selectedInvestmentForPaymentUpdate)
+                                    console.log("Existing Investment record, investment payment status updated successfully line 655 ===== ")
                                     debugger
                                     ch3.ack(msg);
                                 }
                             }
                         } else if (investmentCreditWalletWithPrincipal) {
                             let record = investmentCreditWalletWithPrincipal;
-                            const amountPaid = Number(amount / 100);// Convert Kobo to Naira
-                            if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
-                            if (record.status == "active") {
+                            // const amountPaid = Number(amount / 100);// Convert Kobo to Naira
+                            // if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                            if (record.status == "completed") {
                                 debugger
 
                                 console.log(`@start/rabbit.ts : The Investment record selected is currently ${record.status} , please check and try again.`);
@@ -681,9 +681,9 @@ const amqplib = require('amqplib');
                             }
                         } else if (investmentCreditWalletWithInterest) {
                             let record = investmentCreditWalletWithInterest;
-                            const amountPaid = Number(amount / 100);// Convert Kobo to Naira
-                            if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
-                            if (record.status == "active") {
+                            // const amountPaid = Number(amount / 100);// Convert Kobo to Naira
+                            // if (record.amount > amountPaid) throw Error(`The amount paid :${currency} ${amountPaid} is less than the amount :${currency} ${record.amount} to be investmented, please check and try again.`);
+                            if (record.status == "completed") {
                                 debugger
 
                                 console.log(`@start/rabbit.ts : The Investment record selected is currently ${record.status} , please check and try again.`);

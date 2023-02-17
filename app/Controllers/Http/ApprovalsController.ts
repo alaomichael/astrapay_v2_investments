@@ -359,7 +359,7 @@ export default class ApprovalsController {
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
       console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
-      debugger
+      // debugger
       if (approval && currentApprovalStatus == "pending") {
         console.log("Investment approval Selected for Update line 357:");
 
