@@ -516,6 +516,7 @@ export default class ApprovalsController {
           // let senderEmail = email;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+          if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           if (!checkTransactionStatusByCustomerRef) {
             // initiate a new  transaction
             // Send to the endpoint for debit of wallet
@@ -529,7 +530,7 @@ export default class ApprovalsController {
             // debugger
             // console.log("debitUserWalletForInvestment reponse data 527 ==================================", debitUserWalletForInvestment)
             // if successful
-            if (debitUserWalletForInvestment.status == 200) {
+            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
               // update the investment details
               record.status = 'active'
               // record.approvalStatus = 'approved'
@@ -618,7 +619,7 @@ export default class ApprovalsController {
                 console.log(newNotificationMessageWithoutPdf);
               }
 
-            } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
               let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
               // console.log(" Current log, line 620 :", currentInvestment);
               // send for update
@@ -690,12 +691,12 @@ export default class ApprovalsController {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = investmentRequestReference.split("/");
-            console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
+            // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
             let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
-            console.log(newPaymentReference);
+            console.log("Cu/stomer Transaction Reference ,@ InvestmentsController line 694 ==================")
+            // console.log(newPaymentReference);
             investmentRequestReference = newPaymentReference;
             // Send to the endpoint for debit of wallet
             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -708,7 +709,7 @@ export default class ApprovalsController {
             // debugger
             // console.log("debitUserWalletForInvestment reponse data 706 ==================================", debitUserWalletForInvestment)
             // if successful
-            if (debitUserWalletForInvestment.status == 200) {
+            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
               // update the investment details
               record.status = 'active'
               // record.approvalStatus = 'approved'
@@ -797,7 +798,7 @@ export default class ApprovalsController {
                 console.log(newNotificationMessageWithoutPdf);
               }
 
-            } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
               let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
               // console.log(" Current log, line 655 :", currentInvestment);
               // send for update
@@ -1202,7 +1203,7 @@ export default class ApprovalsController {
               descriptionForPrincipal)
             // if successful
             let decPl = 3;
-            if (creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
               let amountPaidOut = amount;
               // let decPl = 3;
               amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1284,7 +1285,7 @@ export default class ApprovalsController {
                 console.log(newNotificationMessageWithoutPdf);
               }
 
-            } else if (creditUserWalletWithPrincipal.status !== 200) {
+            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
               let amountPaidOut = amount;
               // let decPl = 3;
               amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1426,6 +1427,7 @@ export default class ApprovalsController {
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+          if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           if (!checkTransactionStatusByCustomerRef) {
             //@ts-ignore
             let investmentId = record.id
@@ -1433,10 +1435,10 @@ export default class ApprovalsController {
             let reference = DateTime.now() + randomstring.generate(4);
             let numberOfAttempts = 1;
             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ ApprovalsController line 1433 ==================")
-            console.log(paymentReference);
-            let getNumberOfAttempt = paymentReference.split("/");
-            console.log("getNumberOfAttempt line 1436 =====", getNumberOfAttempt[1]);
+            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1433 ==================")
+            // console.log(paymentReference);
+            // let getNumberOfAttempt = paymentReference.split("/");
+            // console.log("getNumberOfAttempt line 1436 =====", getNumberOfAttempt[1]);
             debugger;
             // @ts-ignore
             record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1491,6 +1493,7 @@ export default class ApprovalsController {
 
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
+          if(checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
           if (!checkTransactionStatusByCustomerRef02) {
             //@ts-ignore
             let investmentId = record.id
@@ -1498,10 +1501,10 @@ export default class ApprovalsController {
             let reference = DateTime.now() + randomstring.generate(4);
             let numberOfAttempts = 1;
             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ ApprovalsController line 1497 ==================")
-            console.log(paymentReference);
-            let getNumberOfAttempt = paymentReference.split("/");
-            console.log("getNumberOfAttempt line 1500 =====", getNumberOfAttempt[1]);
+            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1497 ==================")
+            // console.log(paymentReference);
+            // let getNumberOfAttempt = paymentReference.split("/");
+            // console.log("getNumberOfAttempt line 1500 =====", getNumberOfAttempt[1]);
             debugger;
             // @ts-ignore
             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1526,12 +1529,12 @@ export default class ApprovalsController {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-            console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
+            // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
             let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ ApprovalsController line 1529 ==================")
-            console.log(newPaymentReference);
+            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1529 ==================")
+            // console.log(newPaymentReference);
             interestPayoutRequestReference = newPaymentReference;
             record.interestPayoutRequestReference = newPaymentReference;
             // update record
@@ -1556,22 +1559,6 @@ export default class ApprovalsController {
 
           // NEW CODE END
 
-          // let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
-          //   beneficiaryName,
-          //   beneficiaryAccountNumber,
-          //   beneficiaryAccountName,
-          //   beneficiaryEmail,
-          //   beneficiaryPhoneNumber,
-          //   rfiCode,
-          //   descriptionForPrincipal)
-          // let creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
-          //   beneficiaryName,
-          //   beneficiaryAccountNumber,
-          //   beneficiaryAccountName,
-          //   beneficiaryEmail,
-          //   beneficiaryPhoneNumber,
-          //   rfiCode,
-          //   descriptionForInterest)
           // debugger
           // if successful
           if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
@@ -1630,7 +1617,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
             let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1676,14 +1663,14 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1694,7 +1681,6 @@ export default class ApprovalsController {
             record.isPayoutSuccessful = true;
             record.datePayoutWasDone = DateTime.now();
             // debugger
-
 
             // Save the updated record
             // await record.save();
@@ -1732,7 +1718,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1484:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -1818,6 +1804,7 @@ export default class ApprovalsController {
               let creditUserWalletWithInterest;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
+               if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
@@ -1825,10 +1812,10 @@ export default class ApprovalsController {
                 let reference = DateTime.now() + randomstring.generate(4);
                 let numberOfAttempts = 1;
                 let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-                console.log("Customer Transaction Reference ,@ ApprovalsController line 1822 ==================")
-                console.log(paymentReference);
-                let getNumberOfAttempt = paymentReference.split("/");
-                console.log("getNumberOfAttempt line 1825 =====", getNumberOfAttempt[1]);
+                // console.log("Customer Transaction Reference ,@ ApprovalsController line 1822 ==================")
+                // console.log(paymentReference);
+                // let getNumberOfAttempt = paymentReference.split("/");
+                // console.log("getNumberOfAttempt line 1825 =====", getNumberOfAttempt[1]);
                 debugger;
                 // @ts-ignore
                 record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1849,7 +1836,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1896,7 +1883,7 @@ export default class ApprovalsController {
                   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                   // console.log("newNotificationMessage line 1893:", newNotificationMessageWithoutPdf);
                   // debugger
-                  if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                  if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
                   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
@@ -1909,12 +1896,12 @@ export default class ApprovalsController {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = interestPayoutRequestReference.split("/");
-                console.log("getNumberOfAttempt line 1908 =====", getNumberOfAttempt[1]);
+                // console.log("getNumberOfAttempt line 1908 =====", getNumberOfAttempt[1]);
                 let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                 let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                console.log("Customer Transaction Reference ,@ ApprovalsController line 1912 ==================")
-                console.log(newPaymentReference);
+                // console.log("Customer Transaction Reference ,@ ApprovalsController line 1912 ==================")
+                // console.log(newPaymentReference);
                 interestPayoutRequestReference = newPaymentReference;
                 record.interestPayoutRequestReference = interestPayoutRequestReference;
                 // update record
@@ -1936,7 +1923,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1983,7 +1970,7 @@ export default class ApprovalsController {
                   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                   // console.log("newNotificationMessage line 1643:", newNotificationMessageWithoutPdf);
                   // debugger
-                  if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                  if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
                   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
@@ -1992,71 +1979,6 @@ export default class ApprovalsController {
 
                 }
               }
-
-              // let creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, id,
-              //   beneficiaryName,
-              //   beneficiaryAccountNumber,
-              //   beneficiaryAccountName,
-              //   beneficiaryEmail,
-              //   beneficiaryPhoneNumber,
-              //   rfiCode,
-              //   descriptionForInterest)
-              // // if successful
-              // if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
-              //   let amountPaidOut = interestDueOnInvestment;
-              //   // update the investment details
-              //   record.isInvestmentCompleted = true;
-              //   record.investmentCompletionDate = DateTime.now();
-              //   record.status = 'completed';
-              //   record.approvalStatus = approval.approvalStatus;//'payout'
-              //   record.isPayoutAuthorized = true;
-              //   record.isPayoutSuccessful = true;
-              //   record.datePayoutWasDone = DateTime.now();
-              //   // debugger
-
-              //   // Save the updated record
-              //   // await record.save();
-              //   // update record
-              //   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-              //   // console.log(" Current log, line 1031 :", currentInvestment);
-              //   // send for update
-              //   let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-              //   console.log(" Current log, line 1034 :", updatedInvestment);
-
-              //   // console.log("Updated record Status line 537: ", record);
-
-              //   // update timeline
-              //   timelineObject = {
-              //     id: uuid(),
-              //     action: "investment payout",
-              //     investmentId: investmentId,//id,
-              //     walletId: walletIdToSearch,// walletId,
-              //     userId: userIdToSearch,// userId,
-              //     // @ts-ignore
-              //     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-              //     createdAt: DateTime.now(),
-              //     metadata: ``,
-              //   };
-              //   // console.log("Timeline object line 1606:", timelineObject);
-              //   await timelineService.createTimeline(timelineObject);
-              //   // let newTimeline = await timelineService.createTimeline(timelineObject);
-              //   // console.log("new Timeline object line 1609:", newTimeline);
-              //   // update record
-
-              //   // Send Notification to admin and others stakeholder
-              //   let investment = record;
-              //   let messageKey = "payout";
-              //   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              //   // console.log("newNotificationMessage line 1643:", newNotificationMessageWithoutPdf);
-              //   // debugger
-              //   if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              //     console.log("Notification sent successfully");
-              //   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              //     console.log("Notification NOT sent successfully");
-              //     console.log(newNotificationMessageWithoutPdf);
-              //   }
-
-              // }
               // create new investment
               let newInvestmentPayload = {
                 rolloverDone,
@@ -2110,35 +2032,14 @@ export default class ApprovalsController {
               await timelineService.createTimeline(timelineObject);
               // let newTimeline = await timelineService.createTimeline(timelineObject);
               // console.log("new Timeline object line 1697:", newTimeline);
-              // update record
-
-              // Send Details to notification service
-              // let subject = "AstraPay Investment Rollover";
-              // let message = `
-              //   ${firstName} this is to inform you, that the sum of ${currencyCode} ${totalAmountToPayout} for your matured Investment, has been rollover.
-
-              //   Please check your account.
-
-              //   Thank you.
-
-              //   AstraPay Investment.`;
-              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // console.log("newNotificationMessage line 1711:", newNotificationMessage);
-              // // debugger
-              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              //   console.log("Notification sent successfully");
-              // } else if (newNotificationMessage.message !== "Success") {
-              //   console.log("Notification NOT sent successfully");
-              //   console.log(newNotificationMessage);
-              // }
-
+             
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "rollover";
               let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
               // console.log("newNotificationMessage line 1731:", newNotificationMessageWithoutPdf);
               // debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                 console.log("Notification sent successfully");
               } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                 console.log("Notification NOT sent successfully");
@@ -2188,6 +2089,7 @@ export default class ApprovalsController {
               let creditUserWalletWithPrincipal;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+              if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
@@ -2219,7 +2121,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2267,7 +2169,7 @@ export default class ApprovalsController {
                   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                   // console.log("newNotificationMessage line 1855:", newNotificationMessageWithoutPdf);
                   // debugger
-                  if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                  if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
                   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
@@ -2280,12 +2182,12 @@ export default class ApprovalsController {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-                console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
+                // console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
                 let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                 let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                console.log("Customer Transaction Reference ,@ ApprovalsController line 2287 ==================")
-                console.log(newPaymentReference);
+                // console.log("Customer Transaction Reference ,@ ApprovalsController line 2287 ==================")
+                // console.log(newPaymentReference);
                 principalPayoutRequestReference = newPaymentReference;
                 record.principalPayoutRequestReference = newPaymentReference;
                 // update record
@@ -2307,7 +2209,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2355,7 +2257,7 @@ export default class ApprovalsController {
                   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                   // console.log("newNotificationMessage line 1855:", newNotificationMessageWithoutPdf);
                   // debugger
-                  if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                  if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
                   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
@@ -2364,71 +2266,7 @@ export default class ApprovalsController {
 
                 }
               }
-              // let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
-              //   beneficiaryName,
-              //   beneficiaryAccountNumber,
-              //   beneficiaryAccountName,
-              //   beneficiaryEmail,
-              //   beneficiaryPhoneNumber,
-              //   rfiCode,
-              //   descriptionForPrincipal)
-              // // if successful
-              // if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
-              //   let amountPaidOut = amount;
-              //   // update the investment details
-              //   record.isInvestmentCompleted = true;
-              //   record.investmentCompletionDate = DateTime.now();
-              //   record.status = 'completed';
-              //   record.approvalStatus = approval.approvalStatus;//'payout'
-              //   record.isPayoutAuthorized = true;
-              //   record.isPayoutSuccessful = true;
-              //   record.datePayoutWasDone = DateTime.now();
-              //   // debugger
-
-              //   // Save the updated record
-              //   // await record.save();
-              //   // update record
-              //   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-              //   // console.log(" Current log, line 1031 :", currentInvestment);
-              //   // send for update
-              //   await investmentsService.updateInvestment(currentInvestment, record);
-              //   // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-              //   // console.log(" Current log, line 1034 :", updatedInvestment);
-
-              //   // console.log("Updated record Status line 537: ", record);
-
-              //   // update timeline
-              //   timelineObject = {
-              //     id: uuid(),
-              //     action: "investment payout",
-              //     investmentId: investmentId,//id,
-              //     walletId: walletIdToSearch,// walletId,
-              //     userId: userIdToSearch,// userId,
-              //     // @ts-ignore
-              //     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-              //     createdAt: DateTime.now(),
-              //     metadata: ``,
-              //   };
-              //   // console.log("Timeline object line 1448:", timelineObject);
-              //   await timelineService.createTimeline(timelineObject);
-              //   // let newTimeline = await timelineService.createTimeline(timelineObject);
-              //   // console.log("new Timeline object line 1451:", newTimeline);
-              //   // update record
-
-              //   // Send Notification to admin and others stakeholder
-              //   let investment = record;
-              //   let messageKey = "payout";
-              //   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              //   // console.log("newNotificationMessage line 1855:", newNotificationMessageWithoutPdf);
-              //   // debugger
-              //   if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              //     console.log("Notification sent successfully");
-              //   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              //     console.log("Notification NOT sent successfully");
-              //     console.log(newNotificationMessageWithoutPdf);
-              //   }
-
-              // }
+             
               // create new investment
               let newInvestmentPayload = {
                 rolloverDone,
@@ -2525,7 +2363,7 @@ export default class ApprovalsController {
           let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 1959:", newNotificationMessageWithoutPdf);
           // debugger
-          if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
             console.log("Notification NOT sent successfully");
@@ -2581,25 +2419,7 @@ export default class ApprovalsController {
             await timelineService.createTimeline(timelineObject);
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 1456:", newTimeline);
-            // update record
-
-            // Send Details to notification service
-            // let subject = "AstraPay Investment Rollover Pending";
-            // let message = `
-            //   ${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}.
-
-            //     Thank you.
-
-            //     AstraPay Investment.`;
-            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // // console.log("newNotificationMessage line 2027:", newNotificationMessage);
-            // // debugger
-            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            //   console.log("Notification sent successfully");
-            // } else if (newNotificationMessage.message !== "Success") {
-            //   console.log("Notification NOT sent successfully");
-            //   console.log(newNotificationMessage);
-            // }
+            
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "rollover_pending";
@@ -2633,31 +2453,13 @@ export default class ApprovalsController {
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 1962:", newTimeline);
             // update record
-
-            // Send Details to notification service
-            // let subject = "AstraPay Investment Rollover Activated";
-            // let message = `
-            //   ${firstName} the rollover of your matured investment is activated and will be process for rollover.
-
-            //     Thank you.
-
-            //     AstraPay Investment.`;
-            // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-            // // console.log("newNotificationMessage line 2078:", newNotificationMessage);
-            // // debugger
-            // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-            //   console.log("Notification sent successfully");
-            // } else if (newNotificationMessage.message !== "Success") {
-            //   console.log("Notification NOT sent successfully");
-            //   console.log(newNotificationMessage);
-            // }
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "activation";
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2090:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2693,7 +2495,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2143:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2726,7 +2528,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2194:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2845,7 +2647,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if ( newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2881,7 +2683,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2382:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2930,7 +2732,7 @@ export default class ApprovalsController {
             newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2424:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -3005,7 +2807,7 @@ export default class ApprovalsController {
           let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
           // debugger
-          if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
             console.log("Notification NOT sent successfully");
@@ -3072,7 +2874,7 @@ export default class ApprovalsController {
           let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
           // console.log("newNotificationMessage line 2563:", newNotificationMessageWithoutPdf);
           // debugger
-          if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
             console.log("Notification sent successfully");
           } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
             console.log("Notification NOT sent successfully");

@@ -190,6 +190,7 @@ export default class ApprovalsServices {
                     let senderEmail = email;
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+                    if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                     if (!checkTransactionStatusByCustomerRef) {
                         // initiate a new  transaction
                         // Send to the endpoint for debit of wallet
@@ -243,7 +244,7 @@ export default class ApprovalsServices {
                         let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
                         // console.log(" Current log, line 244 :", updatedInvestment);
                         // if successful
-                        if (debitUserWalletForInvestment.status == 200) {
+                        if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
                             // update the investment details
                             selectedInvestmentRequestUpdate.status = 'active'
                             selectedInvestmentRequestUpdate.approvalStatus = 'approved'
@@ -306,7 +307,7 @@ export default class ApprovalsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                        } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
                             console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
                             // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -364,12 +365,12 @@ export default class ApprovalsServices {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
                         let getNumberOfAttempt = investmentRequestReference.split("/");
-                        console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
+                        // console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                         let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                        console.log("Customer Transaction Reference ,@ InvestmentsController line 371 ==================")
-                        console.log(newPaymentReference);
+                        // console.log("Customer Transaction Reference ,@ InvestmentsController line 371 ==================")
+                        // console.log(newPaymentReference);
                         investmentRequestReference = newPaymentReference;
                         // Send to the endpoint for debit of wallet
                         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -422,7 +423,7 @@ export default class ApprovalsServices {
                         let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
                         // console.log(" Current log, line 224 :", updatedInvestment);
                         // if successful
-                        if (debitUserWalletForInvestment.status == 200) {
+                        if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
                             // update the investment details
                             selectedInvestmentRequestUpdate.status = 'active'
                             selectedInvestmentRequestUpdate.approvalStatus = 'approved'
@@ -485,7 +486,7 @@ export default class ApprovalsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                        } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
                             console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
                             // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -781,7 +782,7 @@ export default class ApprovalsServices {
                         descriptionForPrincipal)
                     // if successful
                     let decPl = 3;
-                    if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                    if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                         let amountPaidOut = amount;
                         // let decPl = 2;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -844,7 +845,7 @@ export default class ApprovalsServices {
                             console.log(newNotificationMessageWithoutPdf);
                         }
 
-                    } else if (creditUserWalletWithPrincipal.status !== 200) {
+                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                         let amountPaidOut = amount;
                         // let decPl = 3;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));

@@ -1738,6 +1738,7 @@ export default class InvestmentsController {
 
         // check if transaction with same customer ref exist
         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+        if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
         if (!checkTransactionStatusByCustomerRef) {
           // initiate a new  transaction
           // Send to the endpoint for debit of wallet
@@ -1750,7 +1751,7 @@ export default class InvestmentsController {
             rfiCode)
           debugger
           // if successful
-          if (debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
 
             // update the investment details
             investment.status = 'active'
