@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { beforeCreate, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { beforeCreate, beforeSave, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from "uuid";
 import AppBaseModel from 'App/Models/AppBaseModel'
 import RfiRecord from './RfiRecord';
@@ -127,4 +127,28 @@ export default class Type extends AppBaseModel {
   public static assignUuid(type: Type) {
     type.id = uuid();
   }
+
+  @beforeSave()
+  public static async stringifyFormats(type: Type) {
+    if (type.$dirty.availableTypes && type.$dirty.availableTypes !== undefined) {
+      // console.log("type availableTypes before stringify , line 107 =====", type.availableTypes)
+      // console.log("type availableTypes before stringify , line 108 =====", typeof type.availableTypes)
+      type.availableTypes = JSON.stringify(type.availableTypes)
+    }
+
+    // features
+    if (type.$dirty.features && type.$dirty.features !== undefined) {
+      // console.log("type features before stringify , line 107 =====", type.features)
+      // console.log("type features before stringify , line 108 =====", typeof type.features)
+      type.features = JSON.stringify(type.features)
+    }
+    // requirements
+    if (type.$dirty.requirements && type.$dirty.requirements !== undefined) {
+      // console.log("type requirements before stringify , line 107 =====", type.requirements)
+      // console.log("type requirements before stringify , line 108 =====", typeof type.requirements)
+      type.requirements = JSON.stringify(type.requirements)
+    }
+    
+  }
+
 }
