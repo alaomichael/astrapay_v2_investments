@@ -65,8 +65,9 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ffi-code":rfiCode,// "S8",
-            "user-principal": "58699700JJK"
+            "ffi-code":'S8',//rfiCode,// "S8",
+            "user-principal": "58699700JJK",
+            "user-id":senderAccountNumber,
         };
 
         const payload = {
@@ -91,8 +92,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 "senderAccountName": senderAccountName,
                 "senderPhoneNumber": senderPhoneNumber,
                 "senderEmail": senderEmail,
-                "senderBankId": rfiCode,//"S8",
-                "ofiCode":rfiCode,// "S8",
+                "senderBankId":'S8',// rfiCode,//"S8",
+                "ofiCode":'S8',//rfiCode,// "S8",
                 "lng": lng,
                 "lat": lat
             },
@@ -105,8 +106,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
-                    "beneficiaryBankId":rfiCode,// "S8",
-                    "bfiCode":rfiCode,// "S8",
+                    "beneficiaryBankId":'S8',//rfiCode,// "S8",
+                    "bfiCode":'S8',//rfiCode,// "S8",
                     "description": `${currencyCode} ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
@@ -145,8 +146,9 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 'client-app': 'OCTANTIS_MOBILE',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code': rfiCode,//'S8',
-                'user-principal': '58699700JJK'
+                'ofi-code': 'S8',//rfiCode,//'S8',
+                'user-principal': '58699700JJK',
+                "user-id":senderAccountNumber,
             };
             const payload = {
                 "batchId": batchId,
@@ -166,8 +168,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 payload, { headers: headers }
             )
 
-            console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 169: ", response.data);
-            console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 170: ", response.status);
+            // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 169: ", response.data);
+            // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
 
 

@@ -66,8 +66,9 @@ export const debitUserWallet = async function debitUserWallet(
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ffi-code": "S8",
-            "user-principal": "58699700JJK"
+            "ffi-code":"S8",// rfiCode,//"S8",
+            "user-principal": "58699700JJK",
+            "user-id":senderName,// "investment-service"
         };
 
         const payload = {
@@ -92,8 +93,8 @@ export const debitUserWallet = async function debitUserWallet(
                 "senderAccountName": senderAccountName,
                 "senderPhoneNumber": senderPhoneNumber,
                 "senderEmail": senderEmail,
-                "senderBankId": "S8",
-                "ofiCode": "S8",
+                "senderBankId":"S8",//rfiCode,// "S8",
+                "ofiCode":"S8",//rfiCode,// "S8",
                 "lng": lng,
                 "lat": lat
             },
@@ -106,8 +107,8 @@ export const debitUserWallet = async function debitUserWallet(
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
-                    "beneficiaryBankId": "S8",
-                    "bfiCode": "S8",
+                    "beneficiaryBankId":"S8",// rfiCode,//"S8",
+                    "bfiCode":"S8",//rfiCode,// "S8",
                     "description": ` ${currencyCode} ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
@@ -125,7 +126,8 @@ export const debitUserWallet = async function debitUserWallet(
                 }
             ]
         }
-        // debugger
+        console.log("The ASTRAPAY API response @ debitUserWallet line 128: ", payload);
+        debugger
         const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
@@ -146,8 +148,9 @@ export const debitUserWallet = async function debitUserWallet(
                 'client-app': 'OCTANTIS_MOBILE',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code': 'S8',
-                'user-principal': '58699700JJK'
+                'ofi-code':"S8",//rfiCode,// 'S8',
+                'user-principal': '58699700JJK',
+                "user-id":senderName,// "investment-service"
             };
             const payload = {
                 "batchId": batchId,
@@ -168,7 +171,7 @@ export const debitUserWallet = async function debitUserWallet(
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-            // debugger
+            debugger
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 169: ", response.data);
             // console.log("The ASTRAPAY API response data @ debitUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE

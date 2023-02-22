@@ -71,8 +71,9 @@ export const creditUserWallet = async function creditUserWallet(
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ffi-code":rfiCode,// "S8",
-            "user-principal": "58699700JJK"
+            "ffi-code":'S8',//rfiCode,// "S8",
+            "user-principal": "58699700JJK",
+            "user-id":senderAccountNumber,//senderName,// "investment-service"
         };
 
         const payload = {
@@ -97,8 +98,8 @@ export const creditUserWallet = async function creditUserWallet(
                 "senderAccountName": senderAccountName,
                 "senderPhoneNumber": senderPhoneNumber,
                 "senderEmail": senderEmail,
-                "senderBankId": rfiCode,//"S8",
-                "ofiCode":rfiCode,// "S8",
+                "senderBankId": 'S8',//rfiCode,//"S8",
+                "ofiCode":'S8',//rfiCode,// "S8",
                 "lng": lng,
                 "lat": lat
             },
@@ -111,8 +112,8 @@ export const creditUserWallet = async function creditUserWallet(
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
-                    "beneficiaryBankId":rfiCode,// "S8",
-                    "bfiCode":rfiCode,// "S8",
+                    "beneficiaryBankId":'S8',//rfiCode,// "S8",
+                    "bfiCode":'S8',//rfiCode,// "S8",
                     "description": description,//` ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
@@ -151,8 +152,9 @@ export const creditUserWallet = async function creditUserWallet(
                 'client-app': 'OCTANTIS_MOBILE',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code': rfiCode,//'S8',
-                'user-principal': '58699700JJK'
+                'ofi-code':'S8',// rfiCode,//'S8',
+                'user-principal': '58699700JJK',
+                'user-id':senderAccountNumber,//senderName,// "investment-service"
             };
             const payload = {
                 "batchId": batchId,

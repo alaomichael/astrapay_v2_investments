@@ -1502,8 +1502,8 @@ export default class InvestmentsController {
       let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
       // console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
       // console.log(paymentReference);
-      let getNumberOfAttempt = paymentReference.split("/");
-      console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
+      // let getNumberOfAttempt = paymentReference.split("/");
+      // console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
       debugger;
       // @ts-ignore
       investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1729,7 +1729,7 @@ export default class InvestmentsController {
         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
         // console.log("newNotificationMessage line 1708:", newNotificationMessageWithoutPdf);
         // debugger
-        if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+        if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
           console.log("Notification sent successfully");
         } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
           console.log("Notification NOT sent successfully");
@@ -1738,7 +1738,8 @@ export default class InvestmentsController {
 
         // check if transaction with same customer ref exist
         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-        if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+        debugger
+        if(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
         if (!checkTransactionStatusByCustomerRef) {
           // initiate a new  transaction
           // Send to the endpoint for debit of wallet
@@ -1825,7 +1826,7 @@ export default class InvestmentsController {
             let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
             // console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
             // debugger
-            if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithPdf && newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -1838,14 +1839,14 @@ export default class InvestmentsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+          } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // console.log(" Current log, line 1802 :", currentInvestment);
             // send for update
@@ -1890,7 +1891,7 @@ export default class InvestmentsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -1932,7 +1933,7 @@ export default class InvestmentsController {
             rfiCode)
           debugger
           // if successful
-          if (debitUserWalletForInvestment.status == 200) {
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
 
             // update the investment details
             investment.status = 'active'
@@ -2006,7 +2007,7 @@ export default class InvestmentsController {
             let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
             // console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
             // debugger
-            if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithPdf && newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2019,14 +2020,14 @@ export default class InvestmentsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+          } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // console.log(" Current log, line 1802 :", currentInvestment);
             // send for update
@@ -2071,7 +2072,7 @@ export default class InvestmentsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
             // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
@@ -2133,8 +2134,8 @@ export default class InvestmentsController {
     } catch (error) {
       console.error('update investment by investmentId Error :', error)
       // return response.json({ status: 'FAILED', data: error.message })
-      console.log("Error line 1760", error.messages);
-      console.log("Error line 1761", error.message);
+      console.log("Error line 2160", error.messages);
+      console.log("Error line 2161", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500
