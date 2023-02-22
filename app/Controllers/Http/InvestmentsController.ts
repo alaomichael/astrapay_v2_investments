@@ -1437,6 +1437,46 @@ export default class InvestmentsController {
       let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
 
       let rate;
+      // if (investmentTypeDetails) {
+      //   let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
+      //   if (status !== "active") {
+      //     return response.status(422).json({
+      //       status: 'FAILED',
+      //       message: `The investment type you selected is ${status} , please select another one and try again.`,
+      //     })
+      //   }
+      //   if (amount < lowestAmount || amount > highestAmount) {
+      //     let message
+      //     if (amount < lowestAmount) {
+      //       message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
+      //     } else if (amount > highestAmount) {
+      //       message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
+      //     }
+
+      //     return response.status(422).json({
+      //       status: 'FAILED',
+      //       message: message,
+      //     })
+      //   }
+      //   let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
+      //   // let isTenureExisting = investmentTenures.find(o =>{
+      //   //   console.log(' o.$original return line 1349 : ', o.$original.tenure)
+      //   //   return o.$original.tenure.toString() == duration.toString();
+      //   // })
+      //   // console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
+      //   //  debugger
+      //   if (isTenureExisting == false || isTenureExisting == undefined) {
+      //     // debugger
+      //     return response.status(404).json({
+      //       status: 'FAILED',
+      //       message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`,
+      //     })
+      //   }
+      //   rate = interestRate;
+      //   // debugger
+      // }
+
+      // chatGPT Optimised Code
       if (investmentTypeDetails) {
         let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
         if (status !== "active") {
@@ -1456,24 +1496,17 @@ export default class InvestmentsController {
           return response.status(422).json({
             status: 'FAILED',
             message: message,
-          })
+          });
         }
-        let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
-        // let isTenureExisting = investmentTenures.find(o =>{
-        //   console.log(' o.$original return line 1349 : ', o.$original.tenure)
-        //   return o.$original.tenure.toString() == duration.toString();
-        // })
-        // console.log(' IsTenureExisting return line 1351 : ', isTenureExisting)
-        //  debugger
-        if (isTenureExisting == false || isTenureExisting == undefined) {
-          // debugger
+
+        const isTenureExisting = investmentTenures.some((o) => o.$original.tenure == duration);
+        if (!isTenureExisting) {
           return response.status(404).json({
             status: 'FAILED',
             message: `The selected investment tenure of ${duration} is not available for this investment type, please select another one and try again.`,
-          })
+          });
         }
         rate = interestRate;
-        // debugger
       }
 
       // console.log(' Rate return line 1365 : ', rate)
