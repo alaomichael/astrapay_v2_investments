@@ -2854,7 +2854,7 @@ export default class PaymentsServices {
                     // console.log('Investment Info, line 499: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "active") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
                         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -3819,7 +3819,7 @@ export default class PaymentsServices {
                     // console.log('Investment Info, line 2331: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "payout_suspended") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
                         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -3840,7 +3840,7 @@ export default class PaymentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2260:', settings)
+                        // console.log('Approval setting line 2260:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -4343,7 +4343,7 @@ export default class PaymentsServices {
                     // console.log('Investment Info, line 2331: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "payout_suspended") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
                         console.log('Time investment was started line 2249: ', startDate)

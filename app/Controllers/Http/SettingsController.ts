@@ -123,8 +123,8 @@ export default class SettingsController {
       console.log("Request body validation line 100", payload);
       // get setting by id
       const selectedSetting = await settingsService.getSettingBySettingId(id);
-      console.log(" Selected Setting ==============================");
-      console.log(selectedSetting)
+      // console.log(" Selected Setting ==============================");
+      // console.log(selectedSetting)
       if (!selectedSetting) {
         throw new Error(`Setting with Id: ${id} does not exist, please check and try again.`);
       }
@@ -140,7 +140,7 @@ export default class SettingsController {
       //     }
       // }
       const setting = await settingsService.updateSetting(selectedSetting, payload);
-      console.log("Setting updated: ", setting);
+      // console.log("Setting updated: ", setting);
       // send to user
       return response.json({
         status: "OK",
@@ -174,8 +174,8 @@ export default class SettingsController {
       console.log("Setting query: ", request.qs());
       // get setting by id
       const selectedSetting = await settingsService.getSettingBySettingId(id);
-      console.log(" Selected Setting ==============================");
-      console.log(selectedSetting)
+      // console.log(" Selected Setting ==============================");
+      // console.log(selectedSetting)
 
       if (selectedSetting === null || selectedSetting === undefined) {
         // throw Error(`Setting with id: ${id} does not exist.`)
@@ -184,7 +184,7 @@ export default class SettingsController {
       }
 
       const setting = await settingsService.deleteSetting(selectedSetting);
-      console.log("Deleted data:", setting);
+      // console.log("Deleted data:", setting);
       return response.json({
         status: "OK",
         data: { isDeleted: setting?.$isDeleted }
