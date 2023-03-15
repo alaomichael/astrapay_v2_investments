@@ -1532,11 +1532,14 @@ export default class InvestmentsController {
       // Create Unique payment reference for the customer
       let reference = DateTime.now() + randomstring.generate(4);
       let numberOfAttempts = 1;
-      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
       // console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
       // console.log(paymentReference);
       // let getNumberOfAttempt = paymentReference.split("/");
       // console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
+      
+      // TODO: Uncomment the code below after adding numberOfAttempts column
+      // investment.numberOfAttempts = numberOfAttempts;
       debugger;
       // @ts-ignore
       investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1948,14 +1951,16 @@ export default class InvestmentsController {
         } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
           // update the value for number of attempts
           // get the current investmentRef, split , add one to the current number, update and try again
-          let getNumberOfAttempt = investmentRequestReference.split("/");
+          // TODO: Update to accomodate the addition of new column
+          let getNumberOfAttempt = investmentRequestReference.split("-");
           // console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
-          let numberOfAttempts =  Number(getNumberOfAttempt[1]) + 1;
+          let updatedNumberOfAttempts =  Number(numberOfAttempt) + 1;
           let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-          let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
+          let newPaymentReference = `${uniqueInvestmentRequestReference}`;
           // console.log("Customer Transaction Reference ,@ InvestmentsController line 1919 ==================")
           // console.log(newPaymentReference);
           investmentRequestReference = newPaymentReference;
+          investment.numberOfAttempts = updatedNumberOfAttempts;
           // Send to the endpoint for debit of wallet
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
             senderName,

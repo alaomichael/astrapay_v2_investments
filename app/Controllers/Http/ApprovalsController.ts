@@ -690,12 +690,14 @@ export default class ApprovalsController {
           } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
+          //  TODO: Add numberOfAttempts column value
             let getNumberOfAttempt = investmentRequestReference.split("/");
             // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
-            let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
+            let updatedNumberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
+            console.log(updatedNumberOfAttempts)
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-            let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-            console.log("Cu/stomer Transaction Reference ,@ InvestmentsController line 694 ==================")
+            let newPaymentReference = `${uniqueInvestmentRequestReference}`;
+            console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
             // console.log(newPaymentReference);
             investmentRequestReference = newPaymentReference;
             // Send to the endpoint for debit of wallet
