@@ -29,6 +29,8 @@ export interface InvestmentType {
     lat: string,
     principalPayoutStatus:string,
     interestPayoutStatus:string,
+    verificationRequestAttempts: number,
+    numberOfAttempts: number,
     // createdAt: DateTime,
     // startDate: DateTime,
     // payoutDate: DateTime,

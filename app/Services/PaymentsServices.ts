@@ -3293,7 +3293,7 @@ export default class PaymentsServices {
                                 firstName, lastName, userId, walletId,
                                 phone,
                                 email,
-                                rfiCode } = record;
+                                rfiCode,numberOfAttempts } = record;
                             let senderName = `${firstName} ${lastName}`;
                             let senderAccountNumber = walletId;
                             let senderAccountName = senderName;
@@ -3475,16 +3475,18 @@ export default class PaymentsServices {
                             } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                                 // update the value for number of attempts
                                 // get the current investmentRef, split , add one to the current number, update and try again
-                                let getNumberOfAttempt = investmentRequestReference.split("/");
+                                let getNumberOfAttempt = investmentRequestReference.split("-");
                                 console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
-                                let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
+                                let updatedNumberOfAttempts = numberOfAttempts + 1 ;// Number(getNumberOfAttempt[1]) + 1;
                                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-                                let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
+                                let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
                                 console.log("Customer Transaction Reference ,@ InvestmentsServices line 2125 ==================")
                                 console.log(newPaymentReference);
                                 investmentRequestReference = newPaymentReference;
+                                record.investmentRequestReference = newPaymentReference;
+                                record.numberOfAttempts = updatedNumberOfAttempts;
                                 // Send to the endpoint for debit of wallet
-                                // debugger
+                                debugger
                                 let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
                                     senderName,
                                     senderAccountNumber,
@@ -9962,6 +9964,17 @@ export default class PaymentsServices {
             predicateExists()
             predicate = predicate + "investment_service_charge_transaction_id=?"
             params.push(queryFields.investmentServiceChargeTransactionId)
+        }
+        if (queryFields.verificationRequestAttempts) {
+            predicateExists()
+            predicate = predicate + "verification_request_attempts=?";
+            params.push(queryFields.verificationRequestAttempts)
+        }
+
+        if (queryFields.numberOfAttempts) {
+            predicateExists()
+            predicate = predicate + "number_of_attempts=?";
+            params.push(queryFields.numberOfAttempts)
         }
         if (queryFields.updatedAt) {
             predicateExists()

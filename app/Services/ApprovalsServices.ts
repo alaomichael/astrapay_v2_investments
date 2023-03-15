@@ -182,7 +182,7 @@ export default class ApprovalsServices {
                         walletId, userId,
                         phone,
                         email,
-                        rfiCode, currencyCode } = selectedInvestmentRequestUpdate;
+                        rfiCode, currencyCode,numberOfAttempts } = selectedInvestmentRequestUpdate;
                     let senderName = `${firstName} ${lastName}`;
                     let senderAccountNumber = walletId;
                     let senderAccountName = senderName;
@@ -364,14 +364,17 @@ export default class ApprovalsServices {
                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
-                        let getNumberOfAttempt = investmentRequestReference.split("/");
-                        // console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
-                        let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
+                        let getNumberOfAttempt = investmentRequestReference.split("-");
+                        console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
+                        let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-                        let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
+                        let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsController line 371 ==================")
                         // console.log(newPaymentReference);
                         investmentRequestReference = newPaymentReference;
+                        debugger;
+                        selectedInvestmentRequestUpdate.investmentRequestReference = newPaymentReference;
+                        selectedInvestmentRequestUpdate.numberOfAttempts = updatedNumberOfAttempts;
                         // Send to the endpoint for debit of wallet
                         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
                             senderName,

@@ -151,6 +151,12 @@ export default class Investment extends AppBaseModel {
   @column()
   public status: string
 
+  @column({ columnName: "verification_request_attempts" })
+  public verificationRequestAttempts: number;
+
+  @column({ columnName: "number_of_attempts" })
+  public numberOfAttempts: number;
+
   @column()
   public principalPayoutStatus: string
 

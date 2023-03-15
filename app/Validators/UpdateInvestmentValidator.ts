@@ -42,5 +42,7 @@ export default class UpdateInvestmentValidator extends BaseValidator {
         rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
         isPayoutSuspended: schema.boolean.optional(),
         payoutReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
+        verificationRequestAttempts: schema.number.optional(),
+        numberOfAttempts: schema.number.optional(),
     });
 }

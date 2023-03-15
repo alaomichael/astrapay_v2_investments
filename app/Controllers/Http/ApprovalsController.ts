@@ -445,7 +445,7 @@ export default class ApprovalsController {
             walletId,
             phone,
             email,
-            rfiCode } = record;
+            rfiCode, numberOfAttempts } = record;
           let senderName = `${firstName} ${lastName}`;
           let senderAccountNumber = walletId;
           let senderAccountName = senderName;
@@ -516,7 +516,7 @@ export default class ApprovalsController {
           // let senderEmail = email;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-          if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+          if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           if (!checkTransactionStatusByCustomerRef) {
             // initiate a new  transaction
             // Send to the endpoint for debit of wallet
@@ -690,16 +690,17 @@ export default class ApprovalsController {
           } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
-          //  TODO: Add numberOfAttempts column value
-            let getNumberOfAttempt = investmentRequestReference.split("/");
-            // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
-            let updatedNumberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
-            console.log(updatedNumberOfAttempts)
+            //  TODO: Add numberOfAttempts column value
+            let getNumberOfAttempt = investmentRequestReference.split("-");
+            console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
+            let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
+            // console.log(updatedNumberOfAttempts)
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-            let newPaymentReference = `${uniqueInvestmentRequestReference}`;
+            let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
             console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
             // console.log(newPaymentReference);
             investmentRequestReference = newPaymentReference;
+            record.numberOfAttempts = updatedNumberOfAttempts;
             // Send to the endpoint for debit of wallet
             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
               senderName,
@@ -1205,7 +1206,7 @@ export default class ApprovalsController {
               descriptionForPrincipal)
             // if successful
             let decPl = 3;
-            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
               let amountPaidOut = amount;
               // let decPl = 3;
               amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1429,7 +1430,7 @@ export default class ApprovalsController {
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
-          if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+          if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           if (!checkTransactionStatusByCustomerRef) {
             //@ts-ignore
             let investmentId = record.id
@@ -1495,7 +1496,7 @@ export default class ApprovalsController {
 
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-          if(checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
+          if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
           if (!checkTransactionStatusByCustomerRef02) {
             //@ts-ignore
             let investmentId = record.id
@@ -1563,7 +1564,7 @@ export default class ApprovalsController {
 
           // debugger
           // if successful
-          if (creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+          if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
             let amountPaidOut = amount + interestDueOnInvestment;
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1619,7 +1620,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
             let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1672,7 +1673,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1806,7 +1807,7 @@ export default class ApprovalsController {
               let creditUserWalletWithInterest;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
-               if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+              if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
@@ -1838,7 +1839,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1925,7 +1926,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForInterest)
                 // if successful
-                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2012,6 +2013,8 @@ export default class ApprovalsController {
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
                 penalty: 0,
+                verificationRequestAttempts:0, 
+                numberOfAttempts:0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -2034,7 +2037,7 @@ export default class ApprovalsController {
               await timelineService.createTimeline(timelineObject);
               // let newTimeline = await timelineService.createTimeline(timelineObject);
               // console.log("new Timeline object line 1697:", newTimeline);
-             
+
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "rollover";
@@ -2080,6 +2083,8 @@ export default class ApprovalsController {
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
                 penalty: 0,
+                verificationRequestAttempts: 0,
+                numberOfAttempts: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -2091,7 +2096,7 @@ export default class ApprovalsController {
               let creditUserWalletWithPrincipal;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
-              if(checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+              if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
                 let investmentId = record.id
@@ -2123,7 +2128,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200   && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2211,7 +2216,7 @@ export default class ApprovalsController {
                   rfiCode,
                   descriptionForPrincipal)
                 // if successful
-                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2268,7 +2273,7 @@ export default class ApprovalsController {
 
                 }
               }
-             
+
               // create new investment
               let newInvestmentPayload = {
                 rolloverDone,
@@ -2300,6 +2305,8 @@ export default class ApprovalsController {
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
                 penalty: 0,
+                verificationRequestAttempts: 0,
+                numberOfAttempts: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
               console.log("newInvestmentDetails ", newInvestmentDetails)
@@ -2421,7 +2428,7 @@ export default class ApprovalsController {
             await timelineService.createTimeline(timelineObject);
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 1456:", newTimeline);
-            
+
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "rollover_pending";
@@ -2649,7 +2656,7 @@ export default class ApprovalsController {
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
             // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
             // debugger
-            if ( newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
               console.log("Notification sent successfully");
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");

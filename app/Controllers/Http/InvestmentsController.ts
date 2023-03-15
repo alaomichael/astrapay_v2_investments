@@ -1392,7 +1392,8 @@ export default class InvestmentsController {
       const { lastName, firstName,
         walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
         lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
-        rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus, interestPayoutStatus, penalty } = request.body();
+        rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus, interestPayoutStatus, penalty,
+         } = request.body();
 
       const payload: InvestmentType = {
         lastName: lastName,
@@ -1422,6 +1423,8 @@ export default class InvestmentsController {
         principalPayoutStatus: principalPayoutStatus,
         interestPayoutStatus: interestPayoutStatus,
         penalty: penalty,
+        verificationRequestAttempts:0,
+        numberOfAttempts:0,
       }
 
 
@@ -1525,21 +1528,21 @@ export default class InvestmentsController {
 
       // @ts-ignore
       payload.isRequestSent = true;
-      const investment = await investmentsService.createInvestment(payload);
+      let investment = await investmentsService.createInvestment(payload);
       // console.log("New investment request line 1380: ", investment);
       // console.log("The new newInvestmentRequest data:", newInvestmentRequest);
       let investmentId = investment.id
       // Create Unique payment reference for the customer
       let reference = DateTime.now() + randomstring.generate(4);
       let numberOfAttempts = 1;
-      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}`;
+      let paymentReference = `${TRANSACTION_PREFIX}_${reference}_${investmentId}-${numberOfAttempts}`;
       // console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
       // console.log(paymentReference);
-      // let getNumberOfAttempt = paymentReference.split("/");
+      // let getNumberOfAttempt = paymentReference.split("-");
       // console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
       
       // TODO: Uncomment the code below after adding numberOfAttempts column
-      // investment.numberOfAttempts = numberOfAttempts;
+      investment.numberOfAttempts = numberOfAttempts;
       debugger;
       // @ts-ignore
       investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1709,7 +1712,7 @@ export default class InvestmentsController {
           walletId, userId,
           phone,
           email,
-          rfiCode } = investment;
+          rfiCode,numberOfAttempts } = investment;
         let senderName = `${firstName} ${lastName}`;
         let senderAccountNumber = walletId;
         let senderAccountName = senderName;
@@ -1953,14 +1956,16 @@ export default class InvestmentsController {
           // get the current investmentRef, split , add one to the current number, update and try again
           // TODO: Update to accomodate the addition of new column
           let getNumberOfAttempt = investmentRequestReference.split("-");
-          // console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
-          let updatedNumberOfAttempts =  Number(numberOfAttempt) + 1;
+          console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
+          let updatedNumberOfAttempts = numberOfAttempts + 1;//  Number(getNumberOfAttempt[1]) + 1;
           let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-          let newPaymentReference = `${uniqueInvestmentRequestReference}`;
+          debugger;
+          let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
           // console.log("Customer Transaction Reference ,@ InvestmentsController line 1919 ==================")
           // console.log(newPaymentReference);
           investmentRequestReference = newPaymentReference;
           investment.numberOfAttempts = updatedNumberOfAttempts;
+          debugger
           // Send to the endpoint for debit of wallet
           let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
             senderName,
