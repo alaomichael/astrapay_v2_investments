@@ -3173,7 +3173,7 @@ debugger
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const { investmentId } = request.body();
       const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
-      // debugger
+      debugger
 
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2788:', investments)
@@ -3184,7 +3184,7 @@ debugger
           let { id, wallet_id, user_id } = currentInvestment;
           currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
           investmentArray.push(currentInvestment);
-          // debugger
+          debugger
         }
         return response.status(200).json({
           status: 'OK',

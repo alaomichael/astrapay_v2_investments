@@ -1437,6 +1437,7 @@ export default class ApprovalsController {
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+          debugger
           if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           if (!checkTransactionStatusByCustomerRef) {
             //@ts-ignore
@@ -1818,6 +1819,7 @@ export default class ApprovalsController {
               let creditUserWalletWithInterest;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
+              debugger
               if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore
@@ -2110,6 +2112,7 @@ export default class ApprovalsController {
               let creditUserWalletWithPrincipal;
               // check if transaction with same customer ref exist
               let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+              debugger
               if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
               if (!checkTransactionStatusByCustomerRef) {
                 //@ts-ignore

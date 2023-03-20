@@ -127,7 +127,7 @@ export default class PaymentsServices {
                         // Create Unique payment reference for the customer
                         let reference = DateTime.now() + randomstring.generate(4);
                         let numberOfAttempts = 1;
-                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 124 ==================")
                         // console.log(paymentReference);
                         let getNumberOfAttempt = paymentReference.split("/");
@@ -502,7 +502,7 @@ export default class PaymentsServices {
                         // Create Unique payment reference for the customer
                         let reference = DateTime.now() + randomstring.generate(4);
                         let numberOfAttempts = 1;
-                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 501 ==================")
                         // console.log(paymentReference);
                         // let getNumberOfAttempt = paymentReference.split("/");
@@ -841,7 +841,7 @@ export default class PaymentsServices {
                         // Create Unique payment reference for the customer
                         let reference = DateTime.now() + randomstring.generate(4);
                         let numberOfAttempts = 1;
-                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 838 ==================")
                         // console.log(paymentReference);
                         // let getNumberOfAttempt = paymentReference.split("/");
@@ -1815,7 +1815,7 @@ export default class PaymentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
-                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
@@ -6037,7 +6037,7 @@ export default class PaymentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
-                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
                                         console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
@@ -7118,7 +7118,7 @@ export default class PaymentsServices {
                                             // Create Unique payment reference for the customer
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             let numberOfAttempts = 1;
-                                            let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                                            let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                             console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                             console.log(paymentReference);
                                             let getNumberOfAttempt = paymentReference.split("/");
@@ -8476,7 +8476,7 @@ export default class PaymentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
-                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9414 ==================")
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
@@ -8924,7 +8924,7 @@ export default class PaymentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
-                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
+                                        let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9414 ==================")
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
