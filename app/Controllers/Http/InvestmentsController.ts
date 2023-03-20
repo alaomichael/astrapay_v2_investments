@@ -1478,7 +1478,7 @@ export default class InvestmentsController {
       //   rate = interestRate;
       //   // debugger
       // }
-
+debugger
       // chatGPT Optimised Code
       if (investmentTypeDetails) {
         let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
@@ -1535,7 +1535,7 @@ export default class InvestmentsController {
       // Create Unique payment reference for the customer
       let reference = DateTime.now() + randomstring.generate(4);
       let numberOfAttempts = 1;
-      let paymentReference = `${TRANSACTION_PREFIX}_${reference}_${investmentId}-${numberOfAttempts}`;
+      let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
       // console.log("Customer Transaction Reference ,@ InvestmentsController line 1488 ==================")
       // console.log(paymentReference);
       // let getNumberOfAttempt = paymentReference.split("-");
@@ -1644,7 +1644,8 @@ export default class InvestmentsController {
         // rolloverNotificationEmail,
         // liquidationNotificationEmail,
       } = settings//.isInvestmentAutomated
-      let approvalIsAutomated = isInvestmentAutomated
+      let approvalIsAutomated = isInvestmentAutomated;
+      debugger
       if ((approvalIsAutomated === false && isAutomated === false) || (approvalIsAutomated === true && isAutomated === false)) {
         // Send Approval Request to Admin
         // let approval = await approvalRequest(userId, investmentId, requestType)
@@ -1656,6 +1657,7 @@ export default class InvestmentsController {
         //     data: [],
         //   })
         // }
+debugger
         const approvalsService = new ApprovalsServices()
         let approvalObject;
 
@@ -1674,10 +1676,12 @@ export default class InvestmentsController {
         // console.log("ApprovalRequest objects line 1194:", approvalObject);
         // check if the approval request is not existing
         let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
+        debugger
         if (!approvalRequestIsExisting) {
           await approvalsService.createApproval(approvalObject);
           // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
           // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+          debugger
         }
 
         // update timeline
@@ -1694,7 +1698,7 @@ export default class InvestmentsController {
         };
         // console.log("Timeline object line 1647:", timelineObject);
         await timelineService.createTimeline(timelineObject);
-
+debugger
       } else if ((approvalIsAutomated === true && isAutomated === true)) { // || (approvalIsAutomated === false && isAutomated === true)
         // TODO
         // Send Investment Payload To Transaction Service
@@ -1955,7 +1959,7 @@ export default class InvestmentsController {
           // update the value for number of attempts
           // get the current investmentRef, split , add one to the current number, update and try again
           // TODO: Update to accomodate the addition of new column
-          let getNumberOfAttempt = investmentRequestReference.split("-");
+          let getNumberOfAttempt = investmentRequestReference.split("_");
           console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
           let updatedNumberOfAttempts = numberOfAttempts + 1;//  Number(getNumberOfAttempt[1]) + 1;
           let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
@@ -2172,7 +2176,7 @@ export default class InvestmentsController {
 
       // Sends a message to the queue
       // await Rabbit.sendToQueue('my_queue', { data: investment })
-
+debugger
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {
       console.error('update investment by investmentId Error :', error)

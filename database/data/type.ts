@@ -14,7 +14,7 @@ export const types = [
         "duration": [1,2,3,5,6,7,60,120,150,180,210,240,270,300,330,360],
         "minimumAllowedPeriodOfInvestment": "30",
         "maximumAllowedPeriodOfInvestment": "360",
-        "isAutomated": true,
+        "isAutomated": false,
         "isRolloverAllowed": true,
         "features": [
             'certificate',
@@ -39,7 +39,7 @@ export const types = [
         "duration": [1, 2, 3, 5, 6, 7, 60, 120, 150, 180, 210, 240, 270, 300, 330, 360],
         "minimumAllowedPeriodOfInvestment": "30",
         "maximumAllowedPeriodOfInvestment": "360",
-        "isAutomated": true,
+        "isAutomated": false,
         "isRolloverAllowed": true,
         "features": [
             'certificate',

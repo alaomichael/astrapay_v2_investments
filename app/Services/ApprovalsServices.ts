@@ -364,7 +364,7 @@ export default class ApprovalsServices {
                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
-                        let getNumberOfAttempt = investmentRequestReference.split("-");
+                        let getNumberOfAttempt = investmentRequestReference.split("_");
                         console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
