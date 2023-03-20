@@ -117,6 +117,7 @@ export default class InvestmentsServices {
                     // Payout the amount that is to be rollover
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                    debugger
                     if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                     if (!checkTransactionStatusByCustomerRef) {
                         //@ts-ignore
@@ -496,6 +497,7 @@ export default class InvestmentsServices {
                     }
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                    debugger
                     if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                     if (!checkTransactionStatusByCustomerRef) {
                         //@ts-ignore
@@ -845,6 +847,7 @@ export default class InvestmentsServices {
                 if (isTenureExisting == false || isTenureExisting == undefined) {
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                    debugger
                     if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                     if (!checkTransactionStatusByCustomerRef) {
                         //@ts-ignore
@@ -2553,6 +2556,7 @@ export default class InvestmentsServices {
 
                             // check if transaction with same customer ref exist
                             let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+                            debugger
                             if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                             if (!checkTransactionStatusByCustomerRef) {
                                 // initiate a new  transaction
@@ -6763,6 +6767,7 @@ export default class InvestmentsServices {
                                         // ADD NEW CODE HERE 06
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                        debugger
                                         if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                         if (!checkTransactionStatusByCustomerRef) {
                                             //@ts-ignore
@@ -7470,6 +7475,7 @@ export default class InvestmentsServices {
                                         // ADD NEW CODE HERE 02
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                        debugger
                                         if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                         if (!checkTransactionStatusByCustomerRef) {
                                             //@ts-ignore
@@ -8423,6 +8429,7 @@ export default class InvestmentsServices {
                                         // ADD NEW CODE HERE
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                        debugger
                                         if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                         if (!checkTransactionStatusByCustomerRef) {
                                             //@ts-ignore
@@ -9529,6 +9536,7 @@ export default class InvestmentsServices {
                                             // payout interest
                                             // check if transaction with same customer ref exist
                                             let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                            debugger
                                             if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                             if (!checkTransactionStatusByCustomerRef) {
                                                 //@ts-ignore
@@ -10199,6 +10207,7 @@ export default class InvestmentsServices {
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                    debugger
                                     if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                     if (!checkTransactionStatusByCustomerRef) {
                                         //@ts-ignore
@@ -10632,6 +10641,7 @@ export default class InvestmentsServices {
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                                    debugger
                                     if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                     if (!checkTransactionStatusByCustomerRef) {
                                         //@ts-ignore
