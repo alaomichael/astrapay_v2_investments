@@ -125,13 +125,13 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         )
         // console.log("The API response @ checkTransactionStatus line 131: ", response);
         // debugger
-        // console.log("The API response data @ checkTransactionStatus line 133: ", response.data);
-        // console.log("The API response data @ checkTransactionStatus line 134: ", response.status);
+        // console.log("The API response data @ checkTransactionStatus line 128: ", response.data);
+        // console.log("The API response data @ checkTransactionStatus line 129: ", response.status);
         //  && response.data.amountTransfered === CHARGE
 
         if (response.status == 200) {
-            // console.log("The API response, @ checkTransactionStatus line 118: ", response.data);
-            // debugger
+            console.log("The API response, @ checkTransactionStatus line 133: ", response.data);
+            debugger
             // {
             //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",
             //     "correlationId": "68678989IO09",
@@ -266,13 +266,13 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             // Return the first object in the array
             return response[0];
         } else {
-            console.log("The API response @ checkTransactionStatus line 137: ", response.code);
+            console.log("The API response @ checkTransactionStatus line 269: ", response.code);
             // debugger
             throw Error(response);
             // return response;
         }
     } catch (error) {
-        console.error("checkTransactionStatus method line 191", error);
+        console.error("checkTransactionStatus method line 275", error);
         // console.error("checkTransactionStatus method line 187",error.response.data.errorCode);
         // console.error("checkTransactionStatus method line 188",error.response.data.errorMessage);
         // console.error("checkTransactionStatus method line 189",error.message);

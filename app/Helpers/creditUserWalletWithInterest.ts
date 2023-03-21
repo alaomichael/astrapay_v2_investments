@@ -134,7 +134,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE
-
+        debugger
         if (response1.status == 200) {
             // console.log("The ASTRAPAY API response, @ creditUserWalletWithInterest line 118: ", response.data);
             // debugger
@@ -171,10 +171,11 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
             // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 169: ", response.data);
             // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
-
+            debugger
 
             if (response.status == 200) {
-                // debugger
+                console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 177: ", response.data);
+                debugger
                 // return response.data;
                 return response;
             } else {
@@ -188,11 +189,28 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         console.error(error.response.data.errorCode);
         console.error(error.response.data.errorMessage);
         console.error(error.message);
+        debugger
+        // if (error.response == undefined) {
+        //     return { status: "FAILED TO CREDIT WALLET", message: error.message }
+        // } else {
+        //     return { status: "FAILED TO CREDIT WALLET", message: error.response.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+        // }
         if (error.response == undefined) {
-            return { status: "FAILED TO CREDIT WALLET", message: error.message }
+            console.error("creditUserWallet method line 199", error.data);
+            console.error("creditUserWallet method line 200", error.code);
+            console.error("creditUserWallet method line 201", error.errorMessage);
+            console.error("creditUserWallet method line 202", error.message);
+            debugger
+            return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.code, errorMessage: error.errorMessage }
         } else {
-            return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
-        }
+            console.error("creditUserWallet method line 204", error.response.data);
+            console.error("creditUserWallet method line 205", error.response.data.errorCode);
+            console.error("creditUserWallet method line 206", error.response.data.error);
+            console.error("creditUserWallet method line 206", error.response.data.message);
+            debugger
+            // return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
+            return { status: "FAILED TO CREDIT WALLET", message: error.response.data.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.error }
+        }    
     }
 
 }

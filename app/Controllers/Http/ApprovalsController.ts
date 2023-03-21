@@ -693,7 +693,7 @@ export default class ApprovalsController {
                 });
             }
 
-          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             //  TODO: Add numberOfAttempts column value
@@ -1214,8 +1214,8 @@ export default class ApprovalsController {
               debugger
             // if successful
             let decPl = 3;
-            // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
-            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED") {
+            // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
+            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
               let amountPaidOut = amount;
               // let decPl = 3;
               amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1474,7 +1474,7 @@ export default class ApprovalsController {
               descriptionForPrincipal);
               debugger
 
-          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -1544,7 +1544,7 @@ export default class ApprovalsController {
               descriptionForInterest)
               debugger
 
-          } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -1582,8 +1582,8 @@ export default class ApprovalsController {
 
           // debugger
           // if successful
-          // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-          if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+          // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+          if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
             let amountPaidOut = amount + interestDueOnInvestment;
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1639,8 +1639,8 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {  
+          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {  
           let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1693,8 +1693,8 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1863,8 +1863,8 @@ export default class ApprovalsController {
                   descriptionForInterest);
                   debugger
                 // if successful
-                // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+                // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
                   let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -1920,7 +1920,7 @@ export default class ApprovalsController {
 
                 }
 
-              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -1954,8 +1954,8 @@ export default class ApprovalsController {
                   descriptionForInterest);
                   debugger
                 // if successful
-                // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {  
+                // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {  
                 let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2162,8 +2162,8 @@ export default class ApprovalsController {
                   descriptionForPrincipal);
                   debugger
                 // if successful
-                // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
-                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED") {
+                // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;
@@ -2220,7 +2220,7 @@ export default class ApprovalsController {
 
                 }
 
-              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -2255,8 +2255,8 @@ export default class ApprovalsController {
                   descriptionForPrincipal);
                   debugger
                 // if successful
-                // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
-                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED") {
+                // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
+                if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
                   let amountPaidOut = amount;
                   // update the investment details
                   record.isInvestmentCompleted = true;

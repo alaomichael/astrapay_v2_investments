@@ -1795,8 +1795,8 @@ debugger
             rfiCode)
           debugger
           // if successful
-          // if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
-          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "APPROVED") {
+          // if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.data.screenStatus === "SUCCESSFUL" ) {
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.data.screenStatus === "APPROVED") {
             // update the investment details
             investment.status = 'active'
             investment.approvalStatus = 'approved'
@@ -1955,7 +1955,7 @@ debugger
               });
           }
 
-        } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+        } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
           // update the value for number of attempts
           // get the current investmentRef, split , add one to the current number, update and try again
           // TODO: Update to accomodate the addition of new column
@@ -3172,6 +3172,10 @@ debugger
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const { investmentId } = request.body();
+// error: "TRANSACTION_LIMIT_EXCEEDED"
+// errorCode :  400
+// hint : "Request must be below transaction limit"
+// message : Transaction limit exceeded"
       const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
       debugger
 
