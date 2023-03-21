@@ -1150,7 +1150,7 @@ export default class ApprovalsController {
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
             // Send to the endpoint for debit of wallet
-            let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
 
             // update timeline
             timelineObject = {
@@ -1432,7 +1432,7 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
           let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
           // NEW CODE START
           let creditUserWalletWithPrincipal;
@@ -1807,8 +1807,8 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
 
           // Check if the user set Rollover
           // "rolloverType": "101",

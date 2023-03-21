@@ -109,11 +109,11 @@ export default class InvestmentsServices {
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
             // Send to the endpoint for debit of wallet
-            let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
 
             if (investmentTypeDetails) {
                 let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
-                if (status !== "active") {
+                if (status != "active") {
                     // Payout the amount that is to be rollover
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
@@ -219,7 +219,7 @@ export default class InvestmentsServices {
                             //         // debugger
                             //         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                             //             console.log("Notification sent successfully");
-                            //         } else if (newNotificationMessage.message !== "Success") {
+                            //         } else if (newNotificationMessage.message != "Success") {
                             //             console.log("Notification NOT sent successfully");
                             //             console.log(newNotificationMessage);
                             //         }
@@ -231,12 +231,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -295,7 +295,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -406,7 +406,7 @@ export default class InvestmentsServices {
                             //         // debugger
                             //         if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                             //             console.log("Notification sent successfully");
-                            //         } else if (newNotificationMessage.message !== "Success") {
+                            //         } else if (newNotificationMessage.message != "Success") {
                             //             console.log("Notification NOT sent successfully");
                             //             console.log(newNotificationMessage);
                             //         }
@@ -418,12 +418,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -482,7 +482,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -601,12 +601,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -665,7 +665,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -770,12 +770,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -834,7 +834,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -955,12 +955,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1019,7 +1019,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -1124,12 +1124,12 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1188,7 +1188,7 @@ export default class InvestmentsServices {
                             // debugger
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
-                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
@@ -1298,7 +1298,7 @@ export default class InvestmentsServices {
             // debugger
             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                 console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                 console.log("Notification NOT sent successfully");
                 console.log(newNotificationMessageWithoutPdf);
             }
@@ -1344,8 +1344,8 @@ export default class InvestmentsServices {
                 // Send Investment Payload To Transaction Service
                 // let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
                 // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-                investment.approvedBy = investment.approvedBy !== undefined ? investment.approvedBy : "automation"
-                investment.assignedTo = investment.assignedTo !== undefined ? investment.assignedTo : "automation"
+                investment.approvedBy = investment.approvedBy != undefined ? investment.approvedBy : "automation"
+                investment.assignedTo = investment.assignedTo != undefined ? investment.assignedTo : "automation"
                 // investment.approvalStatus = "approved"//approval.approvalStatus;
                 // Data to send for transfer of fund
                 let { amount,// lng, lat, investmentRequestReference,
@@ -1419,7 +1419,7 @@ export default class InvestmentsServices {
                 // // console.log("newNotificationMessage line 864:", newNotificationMessage);
                 // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                 //     console.log("Notification sent successfully");
-                // } else if (newNotificationMessage.message !== "Success") {
+                // } else if (newNotificationMessage.message != "Success") {
                 //     console.log("Notification NOT sent successfully");
                 //     console.log(newNotificationMessage);
                 // }
@@ -1430,7 +1430,7 @@ export default class InvestmentsServices {
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
-                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessageWithoutPdf);
                 }
@@ -1509,7 +1509,7 @@ export default class InvestmentsServices {
                 // debugger
                 if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
-                } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessageWithPdf);
                 }
@@ -1521,7 +1521,7 @@ export default class InvestmentsServices {
                 // debugger
                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                     console.log("Notification sent successfully");
-                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                     console.log("Notification NOT sent successfully");
                     console.log(newNotificationMessageWithoutPdf);
                 }
@@ -1753,8 +1753,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 1655 :", updatedInvestment);
                                 await trx.commit();
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'active') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'active') {
                                     // update status of investment
                                     // investment.requestType = requestType
                                     // investment.approvalStatus = 'approved'
@@ -1886,8 +1886,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 1294 :", updatedInvestment);
                                 await trx.commit();
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'active') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'active') {
 
                                     // const approvalsService = new ApprovalsServices()
                                     let approvalObject;
@@ -2170,7 +2170,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -2188,7 +2188,7 @@ export default class InvestmentsServices {
                                 // '100' = 'no rollover',
                                 //   '101' = 'rollover principal only',
                                 //   '102' = 'rollover principal with interest',
-                                // if (investment.rolloverTarget > 0 && investment.rolloverTarget > investment.rolloverDone && investment.rolloverType !== "100") {
+                                // if (investment.rolloverTarget > 0 && investment.rolloverTarget > investment.rolloverDone && investment.rolloverType != "100") {
                                 //   // check type of rollover
 
                                 //   if (investment.rollOverType == "101") {
@@ -2210,8 +2210,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 1655 :", updatedInvestment);
                                 await trx.commit();
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'active') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'active') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -2254,7 +2254,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -2530,9 +2530,9 @@ export default class InvestmentsServices {
                         console.log("Investment approval Selected for Update line 1845:");
                         // update the data
                         // TODO: Uncomment to use loginAdminFullName
-                        // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                        // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                        // payload.remark = remark !== undefined ? remark : approval.remark;
+                        // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                        // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                        // payload.remark = remark != undefined ? remark : approval.remark;
                         // console.log("Admin remark line 1902 ==================== ", approval.remark);
                         // console.log("Admin remark line 1903 ========*******************=========== ", remark);
                         // let newStatus;
@@ -2550,8 +2550,8 @@ export default class InvestmentsServices {
                             console.log("Activation for investment request processing line 2007: ===========================================>")
                             // TODO: Uncomment to use loginAdminFullName
                             // record.processedBy = loginAdminFullName;
-                            // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                            // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                            // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                            // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                             // record.approvalStatus = approval.approvalStatus;
 
                             // console.log("Updated record Status line 1923: ", record);
@@ -2636,7 +2636,7 @@ export default class InvestmentsServices {
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                     //     console.log("Notification sent successfully");
-                                    // } else if (newNotificationMessage.message !== "Success") {
+                                    // } else if (newNotificationMessage.message != "Success") {
                                     //     console.log("Notification NOT sent successfully");
                                     //     console.log(newNotificationMessage);
                                     // }
@@ -2656,7 +2656,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithPdf);
                                     }
@@ -2668,13 +2668,13 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
 
                                     // debugger
-                                } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                                } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
                                     console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -2710,7 +2710,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -2816,7 +2816,7 @@ export default class InvestmentsServices {
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                     //     console.log("Notification sent successfully");
-                                    // } else if (newNotificationMessage.message !== "Success") {
+                                    // } else if (newNotificationMessage.message != "Success") {
                                     //     console.log("Notification NOT sent successfully");
                                     //     console.log(newNotificationMessage);
                                     // }
@@ -2836,7 +2836,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithPdf);
                                     }
@@ -2848,13 +2848,13 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
 
                                     // debugger
-                                } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                                } else if (debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
                                     console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -2890,7 +2890,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -3113,9 +3113,9 @@ export default class InvestmentsServices {
                         console.log("Investment approval Selected for Update line 1845:");
                         // update the data
                         // TODO: Uncomment to use loginAdminFullName
-                        // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                        // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                        // payload.remark = remark !== undefined ? remark : approval.remark;
+                        // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                        // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                        // payload.remark = remark != undefined ? remark : approval.remark;
                         // console.log("Admin remark line 1902 ==================== ", approval.remark);
                         // console.log("Admin remark line 1903 ========*******************=========== ", remark);
                         // let newStatus;
@@ -3133,8 +3133,8 @@ export default class InvestmentsServices {
                             console.log("Activation for investment request processing line 2007: ===========================================>")
                             // TODO: Uncomment to use loginAdminFullName
                             // record.processedBy = loginAdminFullName;
-                            // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                            // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                            // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                            // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                             // record.approvalStatus = approval.approvalStatus;
 
                             // console.log("Updated record Status line 1923: ", record);
@@ -3211,7 +3211,7 @@ export default class InvestmentsServices {
                                 // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                 // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
                                 //     console.log("Notification sent successfully");
-                                // } else if (newNotificationMessage.message !== "Success") {
+                                // } else if (newNotificationMessage.message != "Success") {
                                 //     console.log("Notification NOT sent successfully");
                                 //     console.log(newNotificationMessage);
                                 // }
@@ -3231,7 +3231,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithPdf);
                                 }
@@ -3243,13 +3243,13 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
                                 // debugger
-                            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
                                 console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
                                 // debugger
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -3284,7 +3284,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -3595,7 +3595,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -3616,8 +3616,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
                                 await trx.commit();
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'payout_suspended') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -3660,7 +3660,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -3774,7 +3774,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -3795,8 +3795,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
                                 await trx.commit();
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'payout_suspended') {
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved'
@@ -3839,7 +3839,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -4114,7 +4114,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -4135,8 +4135,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
                                 await trx.commit()
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'payout_suspended') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -4179,7 +4179,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -4293,7 +4293,7 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
@@ -4314,8 +4314,8 @@ export default class InvestmentsServices {
                                 // console.log(" Current log, line 2379 :", updatedInvestment);
                                 await trx.commit()
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'payout_suspended') {
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved'
@@ -4357,7 +4357,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -4651,14 +4651,14 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
                                 // debugger
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -4697,7 +4697,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -4823,14 +4823,14 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
 
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved';
@@ -4870,7 +4870,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -5152,14 +5152,14 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
 
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -5199,7 +5199,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -5325,14 +5325,14 @@ export default class InvestmentsServices {
                                 // debugger
                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                     console.log("Notification sent successfully");
-                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                     console.log("Notification NOT sent successfully");
                                     console.log(newNotificationMessageWithoutPdf);
                                 }
 
 
-                            } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                            } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
+                                if (investment.status != 'completed' && investment.status == 'rollover_suspended') {
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved';
@@ -5371,7 +5371,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         console.log("Notification NOT sent successfully");
                                         console.log(newNotificationMessageWithoutPdf);
                                     }
@@ -5611,9 +5611,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 6163:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 6169 ==================== ", approval.remark);
                             // console.log("Admin remark line 6170 ========*******************=========== ", remark);
                             // let newStatus;
@@ -5651,8 +5651,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -5663,8 +5663,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -5679,8 +5679,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     // let creditUserWalletWithPrincipal;
                                     // let creditUserWalletWithInterest;
@@ -5892,14 +5892,14 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
 
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-                                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -5953,14 +5953,14 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
 
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-                                           } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                           } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6013,7 +6013,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -6258,9 +6258,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 3272:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 1220 ==================== ", approval.remark);
                             // console.log("Admin remark line 1221 ========*******************=========== ", remark);
                             // let newStatus;
@@ -6298,8 +6298,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -6310,8 +6310,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -6326,8 +6326,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     if (status == "completed_with_interest_payout_outstanding") {
@@ -6423,7 +6423,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -6431,7 +6431,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6483,7 +6483,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -6582,7 +6582,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -6590,7 +6590,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6642,7 +6642,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -6716,7 +6716,7 @@ export default class InvestmentsServices {
                                         //     // debugger
                                         //     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         //         console.log("Notification sent successfully");
-                                        //     } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        //     } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         //         console.log("Notification NOT sent successfully");
                                         //         console.log(newNotificationMessageWithoutPdf);
                                         //     }
@@ -6724,7 +6724,7 @@ export default class InvestmentsServices {
                                         //     // commit transaction and changes to database
                                         //     // await trx.commit();
                                         //     // debugger
-                                        // } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                        // } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                         //     let amountPaidOut = interestDueOnInvestment
                                         //     // let decPl = 3;
                                         //     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6776,7 +6776,7 @@ export default class InvestmentsServices {
                                         //     // debugger
                                         //     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                         //         console.log("Notification sent successfully");
-                                        //     } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        //     } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                         //         console.log("Notification NOT sent successfully");
                                         //         console.log(newNotificationMessageWithoutPdf);
                                         //     }
@@ -6881,7 +6881,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -6889,7 +6889,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6942,7 +6942,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7040,7 +7040,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7048,7 +7048,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7101,7 +7101,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7352,9 +7352,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 8020:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 1220 ==================== ", approval.remark);
                             // console.log("Admin remark line 1221 ========*******************=========== ", remark);
                             // let newStatus;
@@ -7392,8 +7392,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -7404,8 +7404,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -7420,8 +7420,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
 
@@ -7597,7 +7597,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7605,7 +7605,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7657,7 +7657,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7757,7 +7757,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -7765,7 +7765,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7817,7 +7817,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8069,9 +8069,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 3272:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 1220 ==================== ", approval.remark);
                             // console.log("Admin remark line 1221 ========*******************=========== ", remark);
                             // let newStatus;
@@ -8109,8 +8109,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -8121,8 +8121,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -8137,8 +8137,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     if (status == "completed_with_interest_payout_outstanding") {
@@ -8234,7 +8234,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8242,7 +8242,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8294,7 +8294,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8391,7 +8391,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8399,7 +8399,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8451,7 +8451,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8559,7 +8559,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8567,7 +8567,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8619,7 +8619,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8717,7 +8717,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -8725,7 +8725,7 @@ export default class InvestmentsServices {
                                                 // commit transaction and changes to database
                                                 await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8777,7 +8777,7 @@ export default class InvestmentsServices {
                                                 // debugger
                                                 if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                     console.log("Notification sent successfully");
-                                                } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                     console.log("Notification NOT sent successfully");
                                                     console.log(newNotificationMessageWithoutPdf);
                                                 }
@@ -9026,9 +9026,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 3860:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 1880 ==================== ", approval.remark);
                             // console.log("Admin remark line 1881 ========*******************=========== ", remark);
                             // let newStatus;
@@ -9069,8 +9069,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     record.approvalStatus = "approved";
                                     // Data to send for transfer of fund
                                     let { id,
@@ -9116,8 +9116,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
 
                                     // Check if the user set Rollover
                                     // "rolloverType": "101",
@@ -9127,8 +9127,8 @@ export default class InvestmentsServices {
                                     //   '101' = 'rollover principal only',
                                     //   '102' = 'rollover principal with interest',
                                     //   '103' = 'rollover interest only',
-                                    if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured" && isRolloverSuspended === false)) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
-                                        // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
+                                    if ((isRolloverActivated == true && rolloverType != "100" && status === "matured" && isRolloverSuspended === false)) { // || (isRolloverActivated == true && rolloverType != "100" && status === "matured")
+                                        // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType != "100") {
                                         // check type of rollover
                                         if (rolloverType == "101") {
                                             //   '101' = 'rollover principal only',
@@ -9225,12 +9225,12 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
 
-                                                } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                                } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                     let amountPaidOut = interestDueOnInvestment;
                                                     // let decPl = 3;
                                                     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9285,7 +9285,7 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
@@ -9381,12 +9381,12 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
 
-                                                } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                                } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                                     let amountPaidOut = interestDueOnInvestment;
                                                     // let decPl = 3;
                                                     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9441,7 +9441,7 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
@@ -9534,7 +9534,7 @@ export default class InvestmentsServices {
                                             // debugger
                                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                 console.log("Notification sent successfully");
-                                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                            } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                 console.log("Notification NOT sent successfully");
                                                 console.log(newNotificationMessageWithoutPdf);
                                             }
@@ -9672,12 +9672,12 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
 
-                                                } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                                } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                     let amountPaidOut = amount;
                                                     // let decPl = 3;
                                                     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9730,7 +9730,7 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
@@ -9823,12 +9823,12 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
 
-                                                } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                                                } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200) {
                                                     let amountPaidOut = amount;
                                                     // let decPl = 3;
                                                     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9881,7 +9881,7 @@ export default class InvestmentsServices {
                                                     // debugger
                                                     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                                         console.log("Notification sent successfully");
-                                                    } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                                         console.log("Notification NOT sent successfully");
                                                         console.log(newNotificationMessageWithoutPdf);
                                                     }
@@ -10164,9 +10164,9 @@ export default class InvestmentsServices {
                             console.log("Investment approval Selected for Update line 7514:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark !== undefined ? remark : approval.remark;
+                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
+                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
+                            // payload.remark = remark != undefined ? remark : approval.remark;
                             // console.log("Admin remark line 6000 ==================== ", approval.remark);
                             // console.log("Admin remark line 6001 ========*******************=========== ", remark);
                             // let newStatus;
@@ -10206,8 +10206,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -10218,8 +10218,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // // Data to send for transfer of fund
                                     // let { amount, lng, lat, id,
@@ -10251,8 +10251,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
@@ -10456,7 +10456,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -10464,8 +10464,8 @@ export default class InvestmentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -10517,7 +10517,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -10525,8 +10525,8 @@ export default class InvestmentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -10540,7 +10540,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        // debugger
+                                        debugger
                                         // Save the updated record
                                         // await record.save();
                                         // update record
@@ -10578,7 +10578,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -10634,8 +10634,8 @@ export default class InvestmentsServices {
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
+                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
                                     // record.approvalStatus = approval.approvalStatus;
 
                                     // newStatus = "submitted";
@@ -10646,8 +10646,8 @@ export default class InvestmentsServices {
                                     // record.isInvestmentApproved = true;
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy !== undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo !== undefined ? loginUserData.assignedTo : "automation";
+                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
+                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     // let { amount, lng, lat, id,
@@ -10668,8 +10668,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // Calculate penalty to be deducted
                                     let currentDate = new Date();//.toDateString();  // new Date().toISOString(); //DateTime.now()
                                     // debugger
@@ -10860,7 +10860,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        // debugger
+                                        debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -10906,7 +10906,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -10914,8 +10914,8 @@ export default class InvestmentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -10929,7 +10929,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        // debugger
+                                        debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -10974,7 +10974,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }
@@ -10982,8 +10982,9 @@ export default class InvestmentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
-                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+                                    // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "APPROVED") {
+                                    //   debugger
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -10997,7 +10998,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        // debugger
+                                        debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -11041,7 +11042,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                             console.log("Notification sent successfully");
-                                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                        } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
                                             console.log("Notification NOT sent successfully");
                                             console.log(newNotificationMessageWithoutPdf);
                                         }

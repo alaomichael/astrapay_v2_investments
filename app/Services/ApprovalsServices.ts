@@ -725,7 +725,7 @@ export default class ApprovalsServices {
                     let beneficiaryPhoneNumber = phone;
                     let beneficiaryEmail = email;
                     // Send to the endpoint for debit of wallet
-                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
 
                     // update timeline
                     timelineObject = {

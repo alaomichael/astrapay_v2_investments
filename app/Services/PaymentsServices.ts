@@ -111,7 +111,7 @@ export default class PaymentsServices {
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
             // Send to the endpoint for debit of wallet
-            let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
 
             if (investmentTypeDetails) {
                 let { status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
@@ -1807,8 +1807,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
@@ -6032,8 +6032,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
@@ -6669,8 +6669,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     if (status == "completed_with_interest_payout_outstanding") {
@@ -7750,8 +7750,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
 
@@ -8482,8 +8482,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
@@ -8909,8 +8909,8 @@ export default class PaymentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // Calculate penalty to be deducted
                                     let currentDate = new Date();//.toDateString();  // new Date().toISOString(); //DateTime.now()
                                     // debugger
