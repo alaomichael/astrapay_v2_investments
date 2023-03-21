@@ -784,6 +784,7 @@ export default class ApprovalsServices {
                         beneficiaryPhoneNumber,
                         rfiCode,
                         descriptionForPrincipal)
+                        debugger
                     // if successful
                     let decPl = 3;
                     if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {

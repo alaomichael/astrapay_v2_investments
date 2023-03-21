@@ -150,9 +150,10 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal)
+                            debugger
                         // if successful
                         let decPl = 3;
-                        if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -234,7 +235,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -305,15 +306,16 @@ export default class PaymentsServices {
                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
-                        let getNumberOfAttempt = principalPayoutRequestReference.split("/");
+                        let getNumberOfAttempt = principalPayoutRequestReference.split("_");
                         // console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-                        let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
+                        let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 371 ==================")
                         // console.log(newPaymentReference);
                         principalPayoutRequestReference = newPaymentReference;
                         record.principalPayoutRequestReference = principalPayoutRequestReference;
+                        record.numberOfAttempts = numberOfAttempts;
                         // update record
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                         // console.log(" Current log, line 310 :", currentInvestment);
@@ -331,10 +333,11 @@ export default class PaymentsServices {
                             beneficiaryEmail,
                             beneficiaryPhoneNumber,
                             rfiCode,
-                            descriptionForPrincipal)
+                            descriptionForPrincipal);
+                            debugger
                         // if successful
                         let decPl = 3;
-                        if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -416,7 +419,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -526,10 +529,11 @@ export default class PaymentsServices {
                             beneficiaryEmail,
                             beneficiaryPhoneNumber,
                             rfiCode,
-                            descriptionForPrincipal)
+                            descriptionForPrincipal);
+                            debugger
                         // if successful
                         let decPl = 3;
-                        if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -594,7 +598,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -689,10 +693,11 @@ export default class PaymentsServices {
                             beneficiaryEmail,
                             beneficiaryPhoneNumber,
                             rfiCode,
-                            descriptionForPrincipal)
+                            descriptionForPrincipal);
+                            debugger
                         // if successful
                         let decPl = 3;
-                        if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -757,7 +762,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -864,10 +869,11 @@ export default class PaymentsServices {
                             beneficiaryEmail,
                             beneficiaryPhoneNumber,
                             rfiCode,
-                            descriptionForPrincipal)
+                            descriptionForPrincipal);
+                            debugger
                         // if successful
                         let decPl = 3;
-                        if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -932,7 +938,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1028,7 +1034,8 @@ export default class PaymentsServices {
                             beneficiaryEmail,
                             beneficiaryPhoneNumber,
                             rfiCode,
-                            descriptionForPrincipal)
+                            descriptionForPrincipal);
+                            debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
@@ -1096,7 +1103,7 @@ export default class PaymentsServices {
                                 console.log(newNotificationMessageWithoutPdf);
                             }
 
-                        } else if (creditUserWalletWithPrincipal.status !== 200) {
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                             let amountPaidOut = amount;
                             // let decPl = 3;
                             amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -1838,7 +1845,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -1869,7 +1877,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -1935,7 +1944,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
                                     }
 
                                     // NEW CODE END
@@ -1945,7 +1955,7 @@ export default class PaymentsServices {
                                     // TO BE USED START
 
                                     let decPl = 3;
-                                    if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -2007,7 +2017,7 @@ export default class PaymentsServices {
                                         }
 
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -2067,7 +2077,7 @@ export default class PaymentsServices {
                                         }
 
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6060,7 +6070,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -6091,7 +6102,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger;
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -6126,7 +6138,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -6157,7 +6170,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
                                     }
 
                                     // NEW CODE END
@@ -6167,7 +6181,7 @@ export default class PaymentsServices {
                                     // TO BE USED START
 
                                     let decPl = 3;
-                                    if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6229,7 +6243,7 @@ export default class PaymentsServices {
                                         }
 
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6289,7 +6303,7 @@ export default class PaymentsServices {
                                         }
 
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6697,7 +6711,7 @@ export default class PaymentsServices {
                                                 descriptionForInterest)
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = interestDueOnInvestment;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6756,7 +6770,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6848,10 +6862,11 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForInterest)
+                                                descriptionForInterest);
+                                                debugger
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = interestDueOnInvestment;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6910,7 +6925,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithInterest.status !== 200) {
+                                            } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                                 let amountPaidOut = interestDueOnInvestment
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -6984,7 +6999,7 @@ export default class PaymentsServices {
                                         //     descriptionForInterest)
                                         // // if successful
                                         // let decPl = 3;
-                                        // if (creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
+                                        // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL" ) {
                                         //     let amountPaidOut = interestDueOnInvestment;
                                         //     // let decPl = 3;
                                         //     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7043,7 +7058,7 @@ export default class PaymentsServices {
                                         //     // commit transaction and changes to database
                                         //     // await trx.commit();
                                         //     // debugger
-                                        // } else if (creditUserWalletWithInterest.status !== 200) {
+                                        // } else if (creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                         //     let amountPaidOut = interestDueOnInvestment
                                         //     // let decPl = 3;
                                         //     amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7141,10 +7156,11 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForPrincipal)
+                                                descriptionForPrincipal);
+                                                debugger
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7204,7 +7220,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7296,10 +7312,11 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForPrincipal)
+                                                descriptionForPrincipal);
+                                                debugger
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7359,7 +7376,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7773,7 +7790,8 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForInterest)
+                                                descriptionForInterest);
+                                                debugger
 
                                         } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
                                             // update the value for number of attempts
@@ -7804,7 +7822,8 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForInterest)
+                                                descriptionForInterest);
+                                                debugger
                                         }
 
                                     } //else 
@@ -7843,10 +7862,11 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForPrincipal)
+                                                descriptionForPrincipal);
+                                                debugger
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7908,7 +7928,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8000,10 +8020,11 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForPrincipal)
+                                                descriptionForPrincipal);
+                                                debugger
                                             // if successful
                                             let decPl = 3;
-                                            if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                                            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8065,7 +8086,7 @@ export default class PaymentsServices {
                                                 // commit transaction and changes to database
                                                 // await trx.commit();
                                                 // debugger
-                                            } else if (creditUserWalletWithPrincipal.status !== 200) {
+                                            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
                                                 let amountPaidOut = amount;
                                                 // let decPl = 3;
                                                 amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8499,7 +8520,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
@@ -8529,7 +8551,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                            debugger
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -8564,7 +8587,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -8595,7 +8619,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
                                     }
 
 
@@ -8622,7 +8647,7 @@ export default class PaymentsServices {
                                     // debugger
                                     // if successful
                                     let decPl = 3;
-                                    if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8683,7 +8708,7 @@ export default class PaymentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -8743,7 +8768,7 @@ export default class PaymentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9012,7 +9037,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -9043,7 +9069,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForInterest)
+                                            descriptionForInterest);
+                                            debugger
                                     }
 
 
@@ -9072,7 +9099,7 @@ export default class PaymentsServices {
                                     // debugger
                                     // if successful
                                     let decPl = 3;
-                                    if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9140,7 +9167,7 @@ export default class PaymentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9207,7 +9234,7 @@ export default class PaymentsServices {
                                         // commit transaction and changes to database
                                         // await trx.commit();
                                         // debugger
-                                    } else if (creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+                                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -9283,8 +9310,12 @@ export default class PaymentsServices {
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8813 :", updatedInvestment);
-                                        // console.log(" creditUserWalletWithPrincipal line 8814 ================", creditUserWalletWithPrincipal );
-                                        // console.log(" creditUserWalletWithInterest line 8815 ================", creditUserWalletWithInterest );
+                                        console.log(" creditUserWalletWithPrincipal line 9305 ================", creditUserWalletWithPrincipal );
+                                        console.log(" creditUserWalletWithInterest line 9306 ================", creditUserWalletWithInterest );
+                                        console.log(" creditUserWalletWithPrincipal .status line 9307 ================", creditUserWalletWithPrincipal.status );
+                                        console.log(" creditUserWalletWithInterest .status line 9308 ================", creditUserWalletWithInterest.status );
+                                        console.log(" creditUserWalletWithPrincipal message line 9309 ================", creditUserWalletWithPrincipal.message );
+                                        console.log(" creditUserWalletWithInterest message line 9310 ================", creditUserWalletWithInterest.message );
                                         // debugger
 
                                         // commit transaction and changes to database

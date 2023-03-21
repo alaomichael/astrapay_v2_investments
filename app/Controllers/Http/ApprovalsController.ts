@@ -1211,6 +1211,7 @@ export default class ApprovalsController {
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForPrincipal)
+              debugger
             // if successful
             let decPl = 3;
             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
@@ -1469,7 +1470,8 @@ export default class ApprovalsController {
               beneficiaryEmail,
               beneficiaryPhoneNumber,
               rfiCode,
-              descriptionForPrincipal)
+              descriptionForPrincipal);
+              debugger
 
           } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
@@ -1501,7 +1503,8 @@ export default class ApprovalsController {
               beneficiaryEmail,
               beneficiaryPhoneNumber,
               rfiCode,
-              descriptionForPrincipal)
+              descriptionForPrincipal);
+              debugger
           }
 
           // check if transaction with same customer ref exist
@@ -1538,6 +1541,7 @@ export default class ApprovalsController {
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForInterest)
+              debugger
 
           } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.screenStatus === "FAILED") {
             // update the value for number of attempts
@@ -1569,14 +1573,15 @@ export default class ApprovalsController {
               beneficiaryEmail,
               beneficiaryPhoneNumber,
               rfiCode,
-              descriptionForInterest)
+              descriptionForInterest);
+              debugger
           }
 
           // NEW CODE END
 
           // debugger
           // if successful
-          if (creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+          if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
             let amountPaidOut = amount + interestDueOnInvestment;
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1632,7 +1637,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
             let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1685,7 +1690,7 @@ export default class ApprovalsController {
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
             record.isInvestmentCompleted = true;
@@ -1851,7 +1856,8 @@ export default class ApprovalsController {
                   beneficiaryEmail,
                   beneficiaryPhoneNumber,
                   rfiCode,
-                  descriptionForInterest)
+                  descriptionForInterest);
+                  debugger
                 // if successful
                 if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = interestDueOnInvestment;
@@ -1940,7 +1946,8 @@ export default class ApprovalsController {
                   beneficiaryEmail,
                   beneficiaryPhoneNumber,
                   rfiCode,
-                  descriptionForInterest)
+                  descriptionForInterest);
+                  debugger
                 // if successful
                 if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = interestDueOnInvestment;
@@ -2146,7 +2153,8 @@ export default class ApprovalsController {
                   beneficiaryEmail,
                   beneficiaryPhoneNumber,
                   rfiCode,
-                  descriptionForPrincipal)
+                  descriptionForPrincipal);
+                  debugger
                 // if successful
                 if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
@@ -2237,7 +2245,8 @@ export default class ApprovalsController {
                   beneficiaryEmail,
                   beneficiaryPhoneNumber,
                   rfiCode,
-                  descriptionForPrincipal)
+                  descriptionForPrincipal);
+                  debugger
                 // if successful
                 if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
                   let amountPaidOut = amount;
