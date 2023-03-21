@@ -625,7 +625,7 @@ const amqplib = require('amqplib');
                         // Send message to customer / admin
                         // Try to debit the use again
                         throw Error();
-                    } else if (screenStatus === "SUCCESSFUL") {
+                    } else if (screenStatus === "SUCCESSFUL" || screenStatus === "APPROVED") {
                         // console.log("payment details @ start/rabbit.ts; line 629 ===== ", content)
                         // Create or update investment payment status
                         // debugger

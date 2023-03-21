@@ -1795,8 +1795,8 @@ debugger
             rfiCode)
           debugger
           // if successful
-          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
-
+          // if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "SUCCESSFUL" ) {
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status === 200 && debitUserWalletForInvestment.screenStatus === "APPROVED") {
             // update the investment details
             investment.status = 'active'
             investment.approvalStatus = 'approved'

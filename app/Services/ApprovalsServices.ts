@@ -787,7 +787,8 @@ export default class ApprovalsServices {
                         debugger
                     // if successful
                     let decPl = 3;
-                    if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                    // if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.screenStatus === "APPROVED") {
                         let amountPaidOut = amount;
                         // let decPl = 2;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
