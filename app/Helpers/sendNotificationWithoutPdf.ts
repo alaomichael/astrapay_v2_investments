@@ -98,11 +98,11 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         if (messageKey == "initiation") {
             let subject = "Investment Initiation";
             // recepients = [
-                // {
-                //     "channel": "email",
-                //     "handle": email,
-                //     "name": `${firstName} ${lastName}`
-                // },
+            // {
+            //     "channel": "email",
+            //     "handle": email,
+            //     "name": `${firstName} ${lastName}`
+            // },
             //     {
             //         "channel": "email",
             //         "handle": initiationNotificationEmail,
@@ -116,25 +116,25 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     console.log(" receiverDetails , line 116", receiverDetails);
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                await recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 125 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": `${firstName} ${lastName}`
             };
-            await  recepients.push(customerDetails);
+            await recepients.push(customerDetails);
 
             messageKey = "investment_initiation",
                 metadata = {
@@ -172,20 +172,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 179 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": customerName,
@@ -222,13 +222,13 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 228 =====================:", error);
                     throw error;
@@ -267,20 +267,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 271 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": customerName,
@@ -323,20 +323,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 325 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": customerName,
@@ -376,20 +376,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 375 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": customerName,
@@ -430,20 +430,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
-                   let payload =     {
-                    "channel": "email",
-                    "handle": receiverDetails.email,
-                    "name": receiverName//receiverDetails.name,
-                };
-                // debugger
-                 await  recepients.push(payload);
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
                 } catch (error) {
                     console.log("Error line 425 =====================:", error);
                     throw error;
                 }
             }
 
-            let customerDetails =   {
+            let customerDetails = {
                 "channel": "email",
                 "handle": email,
                 "name": customerName,
@@ -460,6 +460,106 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "payoutDate": payoutDate,
                     "liquidationDate": completionDate,
                     "penaltyDeducted": ` ${currencyCode} ${penalty}`,
+                }
+        } else if (messageKey == "payout_initiation_former") {
+            let subject = "Investment Payout Initiation";
+
+            for (let index = 0; index < payoutNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = payoutNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 315", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 325 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails = {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
+            messageKey = "investment_payout",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+                    "amountPaid": ` ${currencyCode} ${amountPaid}`,
+                    "paymentDate": datePayoutWasDone,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
+                };
+            // metadata = {
+            //     "subject": subject,
+            //     "customerName": customerName,
+            //     "amount": ` ${currencyCode} ${amountPaid}`,
+            //     "duration": duration,
+            //     "rolloverType": rolloverType,
+            //     "customerPhone": phone,
+            //     "customerEmail": email,
+            //     "investmentType": investmentType,
+            //     "investmentTypeName": investmentTypeName,
+            //     "investmentId": id,
+            //     "startDate": startDate,
+            //     "payoutDate": payoutDate,
+            // }
+        } else if (messageKey == "payout_initiation") {
+            let subject = "Investment Payout Initiation";
+
+            for (let index = 0; index < initiationNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = initiationNotificationEmail[index];
+                    // debugger
+                    console.log(" receiverDetails , line 538", receiverDetails);
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 549 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails = {
+                "channel": "email",
+                "handle": email,
+                "name": `${firstName} ${lastName}`
+            };
+            await recepients.push(customerDetails);
+
+            // messageKey = "investment_payout_initiation",
+            messageKey = "investment_initiation",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "amount": ` ${currencyCode} ${amountPaid}`,
+                    "duration": duration,
+                    "rolloverType": rolloverType,
+                    "customerPhone": phone,
+                    "customerEmail": email,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
                 }
         }
         // debugger

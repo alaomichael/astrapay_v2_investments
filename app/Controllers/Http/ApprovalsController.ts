@@ -288,15 +288,20 @@ export default class ApprovalsController {
 
   public async update({ request, response, loginUserData }: HttpContextContract) {
     try {
-      console.log("Entering update 408 ==================================")
+      console.log("Entering update 291 ==================================")
       // const investmentlogsService = new InvestmentLogsServices();
       const investmentsService = new InvestmentsServices();
       await request.validate(UpdateApprovalValidator);
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-        rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = request.body();
+      const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,isPayoutSuspended,  } = request.body();
+        let {        rolloverReactivationDate, payoutReactivationDate, } = request.body();
+rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({days:3});
+payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({days:3});
+console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
+console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
+debugger
       // remark
       // check if the request is not existing
       let approval;
@@ -2047,7 +2052,7 @@ debugger
                 numberOfAttempts:0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
-              console.log("newInvestmentDetails ", newInvestmentDetails)
+              console.log("newInvestmentDetails line 2050", newInvestmentDetails)
               // debugger
             } else if (rolloverType == "102") {
               // Rollover Principal and interest
@@ -2117,7 +2122,7 @@ debugger
                 numberOfAttempts: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
-              console.log("newInvestmentDetails ", newInvestmentDetails)
+              console.log("newInvestmentDetails line 2120", newInvestmentDetails)
               // debugger
             } else if (rolloverType == "103") {
               //   '103' = 'rollover interest only',
@@ -2350,7 +2355,7 @@ debugger
                 numberOfAttempts: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
-              console.log("newInvestmentDetails ", newInvestmentDetails)
+              console.log("newInvestmentDetails line 2353", newInvestmentDetails)
               // debugger
             }
           }
