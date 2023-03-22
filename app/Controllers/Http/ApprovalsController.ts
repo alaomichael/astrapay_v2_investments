@@ -1232,6 +1232,7 @@ export default class ApprovalsController {
               record!.investmentCompletionDate = DateTime.now();
               //@ts-ignore
               record!.status = 'completed';
+              record.principalPayoutStatus = "completed";
               // record.approvalStatus = approval.approvalStatus;//'payout'
               //@ts-ignore
               record!.isPayoutAuthorized = true;
@@ -1599,6 +1600,8 @@ export default class ApprovalsController {
             record.isPayoutAuthorized = true;
             record.isPayoutSuccessful = true;
             record.datePayoutWasDone = DateTime.now();
+            record.principalPayoutStatus = "completed";
+            record.interestPayoutStatus = "completed";
             // debugger
 
 
@@ -1652,7 +1655,8 @@ export default class ApprovalsController {
             record.isInvestmentCompleted = true;
             record.investmentCompletionDate = DateTime.now();
             record.status = 'completed_with_interest_payout_outstanding';
-            record.approvalStatus = approval.approvalStatus;//'payout'
+            record.principalPayoutStatus = "completed";
+                        record.approvalStatus = approval.approvalStatus;//'payout'
             record.isPayoutAuthorized = true;
             record.isPayoutSuccessful = true;
             record.datePayoutWasDone = DateTime.now();
@@ -1706,6 +1710,7 @@ export default class ApprovalsController {
             record.isInvestmentCompleted = true;
             record.investmentCompletionDate = DateTime.now();
             record.status = 'completed_with_principal_payout_outstanding';
+            record.interestPayoutStatus = "completed";
             record.approvalStatus = approval.approvalStatus;//'payout'
             record.isPayoutAuthorized = true;
             record.isPayoutSuccessful = true;
@@ -1718,8 +1723,9 @@ export default class ApprovalsController {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 532 :", currentInvestment);
             // send for update
-            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            console.log(" Current log, line 535 :", updatedInvestment);
+            await investmentsService.updateInvestment(currentInvestment, record);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            // console.log(" Current log, line 1726 :", updatedInvestment);
 
             // console.log("Updated record Status line 537: ", record);
 
@@ -1876,6 +1882,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
+                                   record.interestPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
@@ -1967,6 +1974,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
+                                    record.interestPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
@@ -2175,6 +2183,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
+                  record.principalPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
@@ -2268,6 +2277,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
+                  record.principalPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
