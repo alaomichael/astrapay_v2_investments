@@ -498,7 +498,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-                    "amountPaid": ` ${currencyCode} ${amountPaid}`,
+                    "amountPaid": amountPaid,
                     "paymentDate": datePayoutWasDone,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
@@ -506,7 +506,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             // metadata = {
             //     "subject": subject,
             //     "customerName": customerName,
-            //     "amount": ` ${currencyCode} ${amountPaid}`,
+            //     "amount": amountPaid,
             //     "duration": duration,
             //     "rolloverType": rolloverType,
             //     "customerPhone": phone,
@@ -552,7 +552,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": ` ${currencyCode} ${amountPaid}`,
+                    "amount": amountPaid,
                     "duration": duration,
                     "rolloverType": rolloverType,
                     "customerPhone": phone,

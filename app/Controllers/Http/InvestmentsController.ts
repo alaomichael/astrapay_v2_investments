@@ -2926,7 +2926,7 @@ debugger
     const investmentsService = new InvestmentsServices();
     try {
       const investments = await investmentsService.collateMaturedInvestment(request.qs())
-      // debugger
+      debugger
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2000:', investments)
         // debugger

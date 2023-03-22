@@ -295,13 +295,13 @@ export default class ApprovalsController {
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,isPayoutSuspended,  } = request.body();
-        let {        rolloverReactivationDate, payoutReactivationDate, } = request.body();
-rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({days:3});
-payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({days:3});
-console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
-console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
-debugger
+      const { approvalStatus, assignedTo, processedBy, isRolloverSuspended, isPayoutSuspended, } = request.body();
+      let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
+      rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ days: 3 });
+      payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ days: 3 });
+      console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
+      console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
+      debugger
       // remark
       // check if the request is not existing
       let approval;
@@ -442,7 +442,7 @@ debugger
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 428 =========:", updatedInvestment);
-              debugger
+          debugger
 
 
           // console.log("Updated record Status line 431: ", record);
@@ -526,7 +526,7 @@ debugger
           let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
           debugger
           if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-              debugger
+          debugger
 
           if (!checkTransactionStatusByCustomerRef) {
             // initiate a new  transaction
@@ -951,11 +951,11 @@ debugger
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessageWithoutPdf);
           }
-        } else if (approval.requestType === "start_investment_rollover" &&  record.status === "initiated") {
+        } else if (approval.requestType === "start_investment_rollover" && record.status === "initiated") {
           // get the request by request id
           // update status based on admin action
           // approval.approvalStatus === "approved" &&
-debugger
+          debugger
           if (approval.approvalStatus === "approved") {
             // update the neccesary field
             // console.log("record ========================================================")
@@ -1217,7 +1217,7 @@ debugger
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForPrincipal)
-              debugger
+            debugger
             // if successful
             let decPl = 3;
             // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -1414,8 +1414,8 @@ debugger
           // console.log("new Timeline object line 1031:", newTimeline);
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing: ===========================================>")
-          
-          newStatus = "approved"; 
+
+          newStatus = "approved";
           record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
@@ -1478,7 +1478,7 @@ debugger
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForPrincipal);
-              debugger
+            debugger
 
           } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
             // update the value for number of attempts
@@ -1511,7 +1511,7 @@ debugger
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForPrincipal);
-              debugger
+            debugger
           }
 
           // check if transaction with same customer ref exist
@@ -1548,7 +1548,7 @@ debugger
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForInterest)
-              debugger
+            debugger
 
           } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
             // update the value for number of attempts
@@ -1581,7 +1581,7 @@ debugger
               beneficiaryPhoneNumber,
               rfiCode,
               descriptionForInterest);
-              debugger
+            debugger
           }
 
           // NEW CODE END
@@ -1645,9 +1645,9 @@ debugger
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {  
-          let amountPaidOut = amount
+            // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+            let amountPaidOut = amount
             // update the investment details
             record.isInvestmentCompleted = true;
             record.investmentCompletionDate = DateTime.now();
@@ -1699,7 +1699,7 @@ debugger
               console.log(newNotificationMessageWithoutPdf);
             }
 
-          // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+            // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
           } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
             let amountPaidOut = interestDueOnInvestment
             // update the investment details
@@ -1867,7 +1867,7 @@ debugger
                   beneficiaryPhoneNumber,
                   rfiCode,
                   descriptionForInterest);
-                  debugger
+                debugger
                 // if successful
                 // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                 if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
@@ -1939,7 +1939,7 @@ debugger
                 interestPayoutRequestReference = newPaymentReference;
                 record.interestPayoutRequestReference = interestPayoutRequestReference;
                 record.numberOfAttempts = numberOfAttempts;
-                
+
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                 // console.log(" Current log, line 1918 :", currentInvestment);
@@ -1958,11 +1958,11 @@ debugger
                   beneficiaryPhoneNumber,
                   rfiCode,
                   descriptionForInterest);
-                  debugger
+                debugger
                 // if successful
                 // if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
-                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {  
-                let amountPaidOut = interestDueOnInvestment;
+                if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                  let amountPaidOut = interestDueOnInvestment;
                   // update the investment details
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
@@ -2048,8 +2048,8 @@ debugger
                 principalPayoutStatus: "pending",
                 interestPayoutStatus: "pending",
                 penalty: 0,
-                verificationRequestAttempts:0, 
-                numberOfAttempts:0,
+                verificationRequestAttempts: 0,
+                numberOfAttempts: 0,
               }
               let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               console.log("newInvestmentDetails line 2050", newInvestmentDetails)
@@ -2149,7 +2149,7 @@ debugger
                 record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                 record.numberOfAttempts = numberOfAttempts;
 
-                
+
                 principalPayoutRequestReference = paymentReference;
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                 // debugger
@@ -2166,7 +2166,7 @@ debugger
                   beneficiaryPhoneNumber,
                   rfiCode,
                   descriptionForPrincipal);
-                  debugger
+                debugger
                 // if successful
                 // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
                 if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
@@ -2240,7 +2240,7 @@ debugger
                 record.principalPayoutRequestReference = newPaymentReference;
                 record.numberOfAttempts = numberOfAttempts;
 
-                
+
                 // update record
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                 // console.log(" Current log, line 1470 :", currentInvestment);
@@ -2259,7 +2259,7 @@ debugger
                   beneficiaryPhoneNumber,
                   rfiCode,
                   descriptionForPrincipal);
-                  debugger
+                debugger
                 // if successful
                 // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
                 if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
@@ -2674,7 +2674,7 @@ debugger
             }
 
           }
-      
+
 
           if (isPayoutSuspended === true && isRolloverSuspended === true) {
             newStatus = "payout_and_rollover_suspended";
@@ -2761,7 +2761,7 @@ debugger
 
           }
 
-           if (isPayoutSuspended === true) {
+          if (isPayoutSuspended === true) {
             newStatus = "payout_suspended";
             record.status = newStatus;
             // update timeline
@@ -2796,7 +2796,7 @@ debugger
             }
 
           }
-          
+
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 1593 :", currentInvestment);
