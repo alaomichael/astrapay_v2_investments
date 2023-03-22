@@ -533,7 +533,7 @@ export default class ApprovalsController {
               senderPhoneNumber,
               senderEmail,
               rfiCode)
-            // debugger
+            debugger
             // console.log("debitUserWalletForInvestment reponse data 527 ==================================", debitUserWalletForInvestment)
             // if successful
             if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
@@ -946,10 +946,11 @@ export default class ApprovalsController {
             console.log("Notification NOT sent successfully");
             console.log(newNotificationMessageWithoutPdf);
           }
-        } else if (approval.requestType === "start_investment_rollover" && record.status === "initiated") {
+        } else if (approval.requestType === "start_investment_rollover" &&  record.status === "initiated") {
           // get the request by request id
           // update status based on admin action
-
+          // approval.approvalStatus === "approved" &&
+debugger
           if (approval.approvalStatus === "approved") {
             // update the neccesary field
             // console.log("record ========================================================")
@@ -1408,8 +1409,8 @@ export default class ApprovalsController {
           // console.log("new Timeline object line 1031:", newTimeline);
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing: ===========================================>")
-          // newStatus = "submitted";
-          newStatus = "approved"; //'pending_account_number_generation';
+          
+          newStatus = "approved"; 
           record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
@@ -1433,7 +1434,7 @@ export default class ApprovalsController {
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
           let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
           // NEW CODE START
           let creditUserWalletWithPrincipal;
           let creditUserWalletWithInterest;
@@ -1510,7 +1511,7 @@ export default class ApprovalsController {
 
           // check if transaction with same customer ref exist
           let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-          if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
+          if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
           if (!checkTransactionStatusByCustomerRef02) {
             //@ts-ignore
             let investmentId = record.id
@@ -1753,7 +1754,7 @@ export default class ApprovalsController {
             throw Error();
           }
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_rollover" && isRolloverSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
-          console.log("Approval for investment rollover processing: ===========================================>")
+          console.log("Approval for investment rollover activation processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation';
           // record.status = newStatus;
@@ -2355,7 +2356,7 @@ export default class ApprovalsController {
           }
 
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
-          console.log("Approval for investment rollover processing: ===========================================>")
+          console.log("Approval for investment rollover suspension processing: ===========================================>")
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation';
           // record.status = newStatus;
@@ -2668,42 +2669,7 @@ export default class ApprovalsController {
             }
 
           }
-
-          if (isPayoutSuspended === true) {
-            newStatus = "payout_suspended";
-            record.status = newStatus;
-            // update timeline
-            timelineObject = {
-              id: uuid(),
-              action: "investment payout pending",
-              investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId,
-              userId: userIdToSearch,// userId,
-              // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              createdAt: DateTime.now(),
-              metadata: ``,
-            };
-            // console.log("Timeline object line 1491:", timelineObject);
-            await timelineService.createTimeline(timelineObject);
-            // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log("new Timeline object line 1494:", newTimeline);
-            // update record
-
-            // Send Notification to admin and others stakeholder
-            let investment = record;
-            let messageKey = "payout_pending";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
-
-          }
+      
 
           if (isPayoutSuspended === true && isRolloverSuspended === true) {
             newStatus = "payout_and_rollover_suspended";
@@ -2789,6 +2755,43 @@ export default class ApprovalsController {
             }
 
           }
+
+           if (isPayoutSuspended === true) {
+            newStatus = "payout_suspended";
+            record.status = newStatus;
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment payout pending",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId,
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 1491:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
+            // let newTimeline = await timelineService.createTimeline(timelineObject);
+            // console.log("new Timeline object line 1494:", newTimeline);
+            // update record
+
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageKey = "payout_pending";
+            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
+            // debugger
+            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              console.log("Notification sent successfully");
+            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              console.log("Notification NOT sent successfully");
+              console.log(newNotificationMessageWithoutPdf);
+            }
+
+          }
+          
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 1593 :", currentInvestment);
@@ -2932,7 +2935,7 @@ export default class ApprovalsController {
 
 
         } else {
-          console.log("Entering no record for update 1730 ==================================")
+          console.log("Entering no record for update 2937 ==================================")
           return response
             .status(404)
             .json({
@@ -2960,9 +2963,9 @@ export default class ApprovalsController {
           });
       }
     } catch (error) {
-      console.log("Error line 1750", error.messages);
-      console.log("Error line 1751", error.code);
-      console.log("Error line 1752", error.message);
+      console.log("Error line 2965", error.messages);
+      console.log("Error line 2966", error.code);
+      console.log("Error line 2967", error.message);
       // let { status, message,messages,errorCode,errorMessage} = error;
       let { message, messages, } = error;
       // debugger

@@ -92,15 +92,17 @@ export default class ApprovalsServices {
                 updatedAtTo = DateTime.now().toISO();//.toISODate();
             }
             const queryGetter = await this.queryBuilder(queryParams)
+            // debugger
             let responseData = await Approval.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
                 .orderBy("updated_at", "desc")
                 .offset(offset)
                 .limit(limit)
 
-            console.log("Response data in approval service:", responseData)
-            return responseData
+            // console.log("Response data in approval service:", responseData)
+            return responseData;
         } catch (error) {
             console.log(error)
+            debugger
             throw error
         }
     }
@@ -141,7 +143,7 @@ export default class ApprovalsServices {
     public async getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId: string, userId: string, walletId: string, requestType: string, approvalStatus: string): Promise<Approval | null> {
         try {
             const approval = await Approval.query().where({
-                userId: userId, walletId: walletId, investmentId: investmentId, requestType: requestType, approvalStatus: approvalStatus
+                user_id: userId, wallet_id: walletId, investment_id: investmentId, request_type: requestType, approval_status: approvalStatus
             }).first();
             return approval;
         } catch (error) {
@@ -590,13 +592,15 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                     //  TODO: Debit user wallet to activate the investment
                     // Data to send for transfer of fund
-                    let { //amount, //lng, lat, investmentRequestReference,
+                    let { 
+                        amount, 
+                        //lng, lat, investmentRequestReference,
                         firstName, //lastName,
                         walletId, userId,
                         // phone,
                         //email,
                         rfiCode,
-                        // currencyCode
+                        currencyCode
                     } = selectedInvestmentRequestUpdate;
                     // debugger
                     // update timeline
