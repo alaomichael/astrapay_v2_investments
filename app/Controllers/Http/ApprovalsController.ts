@@ -1656,7 +1656,7 @@ export default class ApprovalsController {
             record.investmentCompletionDate = DateTime.now();
             record.status = 'completed_with_interest_payout_outstanding';
             record.principalPayoutStatus = "completed";
-                        record.approvalStatus = approval.approvalStatus;//'payout'
+            record.approvalStatus = approval.approvalStatus;//'payout'
             record.isPayoutAuthorized = true;
             record.isPayoutSuccessful = true;
             record.datePayoutWasDone = DateTime.now();
@@ -1882,7 +1882,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
-                                   record.interestPayoutStatus = "completed";
+                  record.interestPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
@@ -1974,7 +1974,7 @@ export default class ApprovalsController {
                   record.isInvestmentCompleted = true;
                   record.investmentCompletionDate = DateTime.now();
                   record.status = 'completed';
-                                    record.interestPayoutStatus = "completed";
+                  record.interestPayoutStatus = "completed";
                   record.approvalStatus = approval.approvalStatus;//'payout'
                   record.isPayoutAuthorized = true;
                   record.isPayoutSuccessful = true;
@@ -2058,9 +2058,10 @@ export default class ApprovalsController {
                 penalty: 0,
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
-              }
-              let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
-              console.log("newInvestmentDetails line 2050", newInvestmentDetails)
+              };
+              await investmentsService.createNewInvestment(newInvestmentPayload, amount)
+              // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
+              // console.log("newInvestmentDetails line 2050", newInvestmentDetails)
               // debugger
             } else if (rolloverType == "102") {
               // Rollover Principal and interest
@@ -2128,9 +2129,10 @@ export default class ApprovalsController {
                 penalty: 0,
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
-              }
-              let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
-              console.log("newInvestmentDetails line 2120", newInvestmentDetails)
+              };
+              await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
+              // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
+              // console.log("newInvestmentDetails line 2120", newInvestmentDetails)
               // debugger
             } else if (rolloverType == "103") {
               //   '103' = 'rollover interest only',
@@ -2364,8 +2366,9 @@ export default class ApprovalsController {
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
               }
-              let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
-              console.log("newInvestmentDetails line 2353", newInvestmentDetails)
+              await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
+              // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
+              // console.log("newInvestmentDetails line 2353", newInvestmentDetails)
               // debugger
             }
           }
