@@ -2993,6 +2993,9 @@ export default class ApprovalsController {
           // } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && isRolloverSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover suspension processing: ===========================================>")
+          
+          console.log("Timeline object line 2997:", record);
+          debugger
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation';
           // record.status = newStatus;
@@ -3061,6 +3064,7 @@ export default class ApprovalsController {
           // console.log(" Current log, line 1455 :", currentInvestment);
           // send for update
           await investmentsService.updateInvestment(currentInvestment, record);
+          debugger
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1459 :", updatedInvestment);
 
