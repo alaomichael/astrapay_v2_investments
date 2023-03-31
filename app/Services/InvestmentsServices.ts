@@ -2058,7 +2058,7 @@ export default class InvestmentsServices {
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 499: ', investment)
                     // debugger
-                    if (investment && investment.$original.status == "active") {
+                    if (investment && investment.$original.status == "active" && investment.$original.status != "payout_suspended" && investment.$original.status != "rollover_suspended") {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration, investmentTypeId } = investment.$original;
                         // @ts-ignore
