@@ -367,7 +367,7 @@ export default class ApprovalsController {
       // console.log(" QUERY RESULT for record: ", record.$original);
       console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
       debugger
-      if ((approval && currentApprovalStatus == "pending") || (approval && currentApprovalStatus == "suspend_payout") || (approval && currentApprovalStatus == "suspend_rollover")) {
+      if ((approval && currentApprovalStatus == "pending") || (approval && currentApprovalStatus == "suspend_payout") || (approval && currentApprovalStatus == "suspend_rollover") || (approval && currentApprovalStatus == "rollover") || (approval && currentApprovalStatus == "activate_rollover") || (approval && currentApprovalStatus == "activate_payout") ) {
         console.log("Investment approval Selected for Update line 357:");
         
         
@@ -3945,7 +3945,7 @@ export default class ApprovalsController {
             data: approval//.map((inv) => inv.$original),
           });
       } else {
-        console.log("Entering update 1748 ==================================")
+        console.log("Entering update 3948 ==================================")
         debugger
         return response
           .status(404)
