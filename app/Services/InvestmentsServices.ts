@@ -2307,8 +2307,8 @@ export default class InvestmentsServices {
                     }
                 } catch (error) {
                     console.error(error)
-                    console.log("Error line 1709", error.messages);
-                    console.log("Error line 1710", error.message);
+                    console.log("Error line 2309", error.messages);
+                    console.log("Error line 2310", error.message);
                     // await trx.rollback()
                     console.log(`status: "FAILED",message: ${error.messages} ,hint: ${error.message}`)
                     throw error;
