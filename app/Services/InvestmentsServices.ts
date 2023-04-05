@@ -2336,6 +2336,7 @@ export default class InvestmentsServices {
         }
     }
 
+
     public async sumOfMaturedInvestment(queryParams: any): Promise<Investment | any> {
         // const trx = await Database.transaction();
         try {
@@ -2392,6 +2393,300 @@ export default class InvestmentsServices {
             if (!responseData) {
                 console.log(`There is no matured investment or payout has been completed. Please, check and try again.`)
                 throw new AppException({ message: `There is no matured investment or payout has been completed. Please, check and try again.`, codeSt: "404" })
+            }
+            // await trx.commit()
+            return responseData;
+        } catch (error) {
+            console.log(error)
+            // await trx.rollback();
+            throw error;
+        }
+    }
+
+    public async sumOfActivatedInvestment(queryParams: any): Promise<Investment | any> {
+        // const trx = await Database.transaction();
+        try {
+            // console.log("Query params in investment service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate } = queryParams;
+
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!startDate) {
+                queryParams.startDate = DateTime.now().toISO();//.toISODate();
+                startDate = DateTime.now().toISO();//.toISODate();
+            }
+            // console.log("queryParams line 142 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 149 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 151 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                // .useTransaction(trx) // 👈
+                .sum('amount as totalAmountInvested')
+                .where('start_date', '<=', startDate)
+                .andWhere('is_investment_created', true)
+                .first()
+            // .where('payout_date', '>=', payoutDateFrom)
+            // .where('payout_date', '<=', payoutDateTo)
+            // .offset(offset)
+            // .limit(limit)
+            // .forUpdate()
+
+            // console.log("responseData.totalAmountDueForPayout ",responseData.totalAmountDueForPayout) // prints the sum of the values in the 'column_name' column
+            // console.log("Investment Info, line 583: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no activated investment. Please, check and try again.`)
+                throw new AppException({ message: `There is no activated investment. Please, check and try again.`, codeSt: "404" })
+            }
+            // await trx.commit()
+            return responseData;
+        } catch (error) {
+            console.log(error)
+            // await trx.rollback();
+            throw error;
+        }
+    }
+    
+    public async sumOfPaidOutInvestment(queryParams: any): Promise<Investment | any> {
+        // const trx = await Database.transaction();
+        try {
+            // console.log("Query params in investment service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate } = queryParams;
+
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!startDate) {
+                queryParams.startDate = DateTime.now().toISO();//.toISODate();
+                startDate = DateTime.now().toISO();//.toISODate();
+            }
+            // console.log("queryParams line 142 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 149 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 151 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                // .useTransaction(trx) // 👈
+                .sum('total_amount_to_payout as totalAmountPaidOut')
+                .where('payout_date', '<=', payoutDateTo)
+                .where('start_date', '<=', startDate)
+                .orWhere('status', 'completed')
+                .orWhere('status', 'liquidated')
+                .andWhere('is_investment_completed', true)
+                .andWhere('is_payout_successful', true)
+                .first()
+            // .where('payout_date', '>=', payoutDateFrom)
+
+            // .offset(offset)
+            // .limit(limit)
+            // .forUpdate()
+
+            // console.log("responseData.totalAmountDueForPayout ",responseData.totalAmountDueForPayout) // prints the sum of the values in the 'column_name' column
+            // console.log("Investment Info, line 583: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no paid out investment. Please, check and try again.`)
+                throw new AppException({ message: `There is no paid out investment. Please, check and try again.`, codeSt: "404" })
+            }
+            // await trx.commit()
+            return responseData;
+        } catch (error) {
+            console.log(error)
+            // await trx.rollback();
+            throw error;
+        }
+    }
+
+    public async sumOfYetToBePaidoutInvestment(queryParams: any): Promise<Investment | any> {
+        // const trx = await Database.transaction();
+        try {
+            // console.log("Query params in investment service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate } = queryParams;
+
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!startDate) {
+                queryParams.startDate = DateTime.now().toISO();//.toISODate();
+                startDate = DateTime.now().toISO();//.toISODate();
+            }
+            // console.log("queryParams line 2585 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 2587 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 2589 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                // .useTransaction(trx) // 👈
+                .sum('total_amount_to_payout as totalAmountYetToBePaidOut')
+                .where('payout_date', '<=', payoutDateTo)
+                .where('start_date', '<=', startDate)
+                .whereNot('status', 'completed')
+                .whereNot('status', 'liquidated')
+                .andWhere('is_investment_completed', false)
+                .andWhere('is_payout_successful', false)
+                .first()
+            // .where('payout_date', '>=', payoutDateFrom)
+
+            // .offset(offset)
+            // .limit(limit)
+            // .forUpdate()
+
+            // console.log("responseData.totalAmountDueForPayout ",responseData.totalAmountDueForPayout) // prints the sum of the values in the 'column_name' column
+            // console.log("Investment Info, line 26142585: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no yet to be paid out investment. Please, check and try again.`)
+                throw new AppException({ message: `There is no yet to be paid out investment. Please, check and try again.`, codeSt: "404" })
+            }
+            // await trx.commit()
+            return responseData;
+        } catch (error) {
+            console.log(error)
+            // await trx.rollback();
+            throw error;
+        }
+    }
+
+    public async sumOfLiquidatedInvestment(queryParams: any): Promise<Investment | any> {
+        // const trx = await Database.transaction();
+        try {
+            // console.log("Query params in investment service line 40:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate } = queryParams;
+
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!payoutDateFrom) {
+                // default to last 3 months
+                queryParams.payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                payoutDateFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!payoutDateTo) {
+                queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
+                payoutDateTo = DateTime.now().toISO();//.toISODate();
+            }
+            if (!startDate) {
+                queryParams.startDate = DateTime.now().toISO();//.toISODate();
+                startDate = DateTime.now().toISO();//.toISODate();
+            }
+            // console.log("queryParams line 2657 =========================")
+            // console.log(queryParams)
+            // console.log("updatedAtFrom line 2659 =========================")
+            // console.log(updatedAtFrom)
+            // console.log("updatedAtTo line 2661 =========================")
+            // console.log(updatedAtTo)
+            offset = Number(offset);
+            limit = Number(limit);
+            //    const settingsService = new SettingsServices();
+            // const timelineService = new TimelinesServices();
+
+            let responseData = await Database
+                .from('investments')
+                // .useTransaction(trx) // 👈
+                .sum('total_amount_to_payout as totalAmountOfLiquidatedInvestment')
+                .where('status', 'liquidated')
+                .where('start_date', '<=', startDate)
+                .andWhere('is_investment_completed', true)
+                .andWhere('is_payout_successful',true)
+                .first()
+            // .where('payout_date', '>=', payoutDateFrom)
+            // .where('payout_date', '<=', payoutDateTo)
+            // .offset(offset)
+            // .limit(limit)
+            // .forUpdate()
+
+            // console.log("responseData.totalAmountDueForPayout ",responseData.totalAmountDueForPayout) // prints the sum of the values in the 'column_name' column
+            // console.log("Investment Info, line 583: ", investments);
+            // console.log(responseData)
+            // debugger
+            if (!responseData) {
+                console.log(`There is no liquidated investment. Please, check and try again.`)
+                throw new AppException({ message: `There is no liquidated investment. Please, check and try again.`, codeSt: "404" })
             }
             // await trx.commit()
             return responseData;

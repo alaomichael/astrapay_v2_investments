@@ -3019,6 +3019,190 @@ debugger
     }
   }
 
+  public async sumOfActivatedInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.sumOfActivatedInvestment(request.qs())
+      // debugger
+      if (investments) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+
+        return response.status(200).json({
+          status: 'OK',
+          data: investments,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'OK',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 3048", error.messages);
+      console.log("Error line 3049", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
+  // sum_of_paidout_investment
+  public async sumOfPaidOutInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.sumOfPaidOutInvestment(request.qs())
+      // debugger
+      if (investments) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+
+        return response.status(200).json({
+          status: 'OK',
+          data: investments,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'OK',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 3098", error.messages);
+      console.log("Error line 3099", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
+  // sumOfYetToBePaidoutInvestment
+  // sum_of_paidout_investment
+  public async sumOfYetToBePaidoutInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.sumOfYetToBePaidoutInvestment(request.qs())
+      // debugger
+      if (investments) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+
+        return response.status(200).json({
+          status: 'OK',
+          data: investments,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'OK',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 3148", error.messages);
+      console.log("Error line 3149", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
+  // sum_of_liquidated_investment
+  public async sumOfLiquidatedInvestment({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const investments = await investmentsService.sumOfLiquidatedInvestment(request.qs())
+      // debugger
+      if (investments) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+
+        return response.status(200).json({
+          status: 'OK',
+          data: investments,//.map((inv) => inv.$original),
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'OK',
+          message: 'no investment matched your search',
+          data: [],
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 3138", error.messages);
+      console.log("Error line 3139", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
   public async rolloverMaturedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
