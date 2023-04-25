@@ -43,6 +43,7 @@ import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
+import { generateString } from 'App/Helpers/generateCertificateNumber'
 // import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
@@ -68,6 +69,8 @@ export default class InvestmentsController {
     }
     // return recommendation(s)
     let totalCount = sortedInvestments.length;
+    let newCert = await generateString();
+    console.log("New certificate Number:", newCert)
     return response.status(200).json({
       status: "OK",
       data: sortedInvestments,
@@ -3110,8 +3113,6 @@ debugger
     }
   }
 
-  // sumOfYetToBePaidoutInvestment
-  // sum_of_paidout_investment
   public async sumOfYetToBePaidoutInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
