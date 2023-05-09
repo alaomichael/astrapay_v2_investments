@@ -18,22 +18,24 @@ import InvestmentsService from "App/Services/InvestmentsServices";
 const Env = require("@ioc:Adonis/Core/Env");
 const RABBITMQ_HOSTNAME = Env.get("RABBITMQ_HOSTNAME");
 const RABBITMQ_EXCHANGE_NAME = Env.get("RABBITMQ_EXCHANGE_NAME");
-const RABBITMQ_QUEUE_NAME = Env.get("RABBITMQ_QUEUE_NAME");
+const INVESTMENT_RABBITMQ_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_QUEUE_NAME");
 const RABBITMQ_ONBOARDING_ROUTING_KEY = Env.get("RABBITMQ_ONBOARDING_ROUTING_KEY");
-const RABBITMQ_CONFIG_QUEUE_NAME = Env.get("RABBITMQ_CONFIG_QUEUE_NAME");
-const RABBITMQ_CONFIG_ROUTING_KEY = Env.get("RABBITMQ_CONFIG_ROUTING_KEY");
-const RABBITMQ_TRANSACTION_QUEUE_NAME = Env.get("RABBITMQ_TRANSACTION_QUEUE_NAME");
-const RABBITMQ_TRANSACTION_ROUTING_KEY = Env.get("RABBITMQ_TRANSACTION_ROUTING_KEY");
+const INVESTMENT_RABBITMQ_CONFIG_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_CONFIG_QUEUE_NAME");
+const INVESTMENT_RABBITMQ_CONFIG_ROUTING_KEY = Env.get("INVESTMENT_RABBITMQ_CONFIG_ROUTING_KEY");
+const INVESTMENT_RABBITMQ_TRANSACTION_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_TRANSACTION_QUEUE_NAME");
+const INVESTMENT_RABBITMQ_TRANSACTION_ROUTING_KEY = Env.get("INVESTMENT_RABBITMQ_TRANSACTION_ROUTING_KEY");
 
 const amqplib = require('amqplib');
 
 // const rabbitMQService = 
 (async () => {
     try {
-        const queue = RABBITMQ_QUEUE_NAME;//'tasks';
-        const configQueue = RABBITMQ_CONFIG_QUEUE_NAME;
-        const transactionQueue = RABBITMQ_TRANSACTION_QUEUE_NAME;
-        const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost');
+        const queue = INVESTMENT_RABBITMQ_QUEUE_NAME;//'tasks';
+        const configQueue = INVESTMENT_RABBITMQ_CONFIG_QUEUE_NAME;
+        const transactionQueue = INVESTMENT_RABBITMQ_TRANSACTION_QUEUE_NAME;
+        // const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost')
+        const conn = await amqplib.connect(RABBITMQ_HOSTNAME);
+        // console.log("RabbitMQ Connected",conn)
         const investmentsService = new InvestmentsService();
         // debugger
         const ch1 = await conn.createChannel();
@@ -64,18 +66,20 @@ const amqplib = require('amqplib');
                         routingKey,//: 'investment.configuration'
                     } = fields;
 
-                    // "id": "069ee6a3-13e7-4b56-91fb-5fb109fefddf",
-                    // "name": "comapny namekujjkkkk",
-                    // "email": "business@gmail.com",
-                    // "code": "code",
-                    // "createdBy": "08102872652",
-                    // "status": "Onboarding",
-                    // "address": {
-                    //   "street": "joceyB, Mokola",
-                    //   "city": "ibadan",
-                    //   "state": "Oyo",
-                    //   "country": "Nigeria"
-                    // },
+                    //                    {"rfi":{
+                    //     "id": "069ee6a3-13e7-4b56-91fb-5fb109fefddf",
+                    //     "name": "company namekujjkkkk",
+                    //     "email": "business@gmail.com",
+                    //     "code": "code",
+                    //     "createdBy": "08102872652",
+                    //     "status": "Onboarding",
+                    //     "address": {
+                    //         "street": "joceyB, Mokola",
+                    //         "city": "ibadan",
+                    //         "state": "Oyo",
+                    //         "country": "Nigeria"
+                    //     }}
+                    // }
 
                     let { id, name, email, code, status, address, } = content.rfi;
                     console.log("fields line 76 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
@@ -278,7 +282,7 @@ const amqplib = require('amqplib');
 
         const ch2 = await conn.createChannel();
         await ch2.assertQueue(configQueue);
-        await ch2.bindQueue(configQueue, RABBITMQ_EXCHANGE_NAME, RABBITMQ_CONFIG_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
+        await ch2.bindQueue(configQueue, RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_CONFIG_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
         await ch2.checkQueue(configQueue);
         await ch2.get(configQueue);
         // console.log("channel details: ", ch2);
@@ -442,7 +446,7 @@ const amqplib = require('amqplib');
 
         const ch3 = await conn.createChannel();
         await ch3.assertQueue(transactionQueue);
-        await ch3.bindQueue(transactionQueue, RABBITMQ_EXCHANGE_NAME, RABBITMQ_TRANSACTION_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
+        await ch3.bindQueue(transactionQueue, RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_TRANSACTION_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
         await ch3.checkQueue(transactionQueue);
         await ch3.get(transactionQueue);
         // console.log("channel details: ", ch3);
