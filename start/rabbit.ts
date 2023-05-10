@@ -36,7 +36,7 @@ const amqplib = require('amqplib');
         // const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost')
         // debugger
         // debugger
-        const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); // amqplib.connect(RABBITMQ_HOSTNAME);
+        const conn = await amqplib.connect(RABBITMQ_HOSTNAME);// amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); 
         // console.log("RabbitMQ Connected",conn)
         const investmentsService = new InvestmentsService();
         // debugger
