@@ -34,7 +34,9 @@ const amqplib = require('amqplib');
         const configQueue = INVESTMENT_RABBITMQ_CONFIG_QUEUE_NAME;
         const transactionQueue = INVESTMENT_RABBITMQ_TRANSACTION_QUEUE_NAME;
         // const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost')
-        const conn = await amqplib.connect(RABBITMQ_HOSTNAME);
+        // debugger
+        // debugger
+        const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); // amqplib.connect(RABBITMQ_HOSTNAME);
         // console.log("RabbitMQ Connected",conn)
         const investmentsService = new InvestmentsService();
         // debugger
