@@ -122,7 +122,7 @@ export default class ApprovalsController {
       //     requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       // });
       // const payload: any = await request.validate({ schema: approvalSchema });
-      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy,// remark,
+      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy,rfiCode// remark,
       } = request.body();
       const payload: ApprovalType = {
         walletId: walletId,
@@ -132,6 +132,7 @@ export default class ApprovalsController {
         approvalStatus: approvalStatus,
         assignedTo: assignedTo,
         processedBy: processedBy,
+        rfiCode: rfiCode,
         // remark: remark,
       }
 
@@ -379,6 +380,7 @@ export default class ApprovalsController {
           approvalStatus: approvalStatus,
           assignedTo: assignedTo,
           processedBy: processedBy,
+          rfiCode: approval.rfiCode,
           // remark: approval.remark,
 
         }

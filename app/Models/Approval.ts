@@ -9,6 +9,9 @@ export default class Approval extends AppBaseModel {
   public id: string;
 
   @column()
+  public rfiCode: string;
+
+  @column()
   public walletId: string;
 
   @column()

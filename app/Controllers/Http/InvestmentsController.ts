@@ -1396,7 +1396,7 @@ export default class InvestmentsController {
         walletId, userId, investmentTypeId, investmentTypeName, rfiCode, currencyCode,
         lng, lat, rfiRecordId, phone, email, investorFundingWalletId, amount, duration, rolloverType,
         rolloverTarget, investmentType, tagName, isRolloverActivated, principalPayoutStatus, interestPayoutStatus, penalty,
-         } = request.body();
+      } = request.body();
 
       const payload: InvestmentType = {
         lastName: lastName,
@@ -1426,8 +1426,8 @@ export default class InvestmentsController {
         principalPayoutStatus: principalPayoutStatus,
         interestPayoutStatus: interestPayoutStatus,
         penalty: penalty,
-        verificationRequestAttempts:0,
-        numberOfAttempts:0,
+        verificationRequestAttempts: 0,
+        numberOfAttempts: 0,
       }
 
 
@@ -1481,7 +1481,7 @@ export default class InvestmentsController {
       //   rate = interestRate;
       //   // debugger
       // }
-debugger
+      debugger
       // chatGPT Optimised Code
       if (investmentTypeDetails) {
         let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
@@ -1543,7 +1543,7 @@ debugger
       // console.log(paymentReference);
       // let getNumberOfAttempt = paymentReference.split("-");
       // console.log("getNumberOfAttempt line 1505 =====", getNumberOfAttempt[1]);
-      
+
       // TODO: Uncomment the code below after adding numberOfAttempts column
       investment.numberOfAttempts = numberOfAttempts;
       debugger;
@@ -1660,13 +1660,14 @@ debugger
         //     data: [],
         //   })
         // }
-debugger
+        debugger
         const approvalsService = new ApprovalsServices()
         let approvalObject;
 
         // TODO: Send to the Admin for approval
         // update approvalObject
         approvalObject = {
+          rfiCode: rfiCode,
           walletId: investment.walletId,
           investmentId: investment.id,
           userId: investment.userId,
@@ -1701,7 +1702,7 @@ debugger
         };
         // console.log("Timeline object line 1647:", timelineObject);
         await timelineService.createTimeline(timelineObject);
-debugger
+        debugger
       } else if ((approvalIsAutomated === true && isAutomated === true)) { // || (approvalIsAutomated === false && isAutomated === true)
         // TODO
         // Send Investment Payload To Transaction Service
@@ -1719,7 +1720,7 @@ debugger
           walletId, userId,
           phone,
           email,
-          rfiCode,numberOfAttempts } = investment;
+          rfiCode, numberOfAttempts } = investment;
         let senderName = `${firstName} ${lastName}`;
         let senderAccountNumber = walletId;
         let senderAccountName = senderName;
@@ -1785,7 +1786,7 @@ debugger
         // check if transaction with same customer ref exist
         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
         debugger
-        if(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+        if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
         if (!checkTransactionStatusByCustomerRef) {
           // initiate a new  transaction
           // Send to the endpoint for debit of wallet
@@ -2179,7 +2180,7 @@ debugger
 
       // Sends a message to the queue
       // await Rabbit.sendToQueue('my_queue', { data: investment })
-debugger
+      debugger
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {
       console.error('update investment by investmentId Error :', error)
@@ -2544,6 +2545,7 @@ debugger
             // TODO: Send to the Admin for approval
             // update approvalObject
             approvalObject = {
+              rfiCode: rfiCode,
               walletId: walletId,
               investmentId: investmentId,
               userId: userId,
@@ -3357,10 +3359,10 @@ debugger
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const { investmentId } = request.body();
-// error: "TRANSACTION_LIMIT_EXCEEDED"
-// errorCode :  400
-// hint : "Request must be below transaction limit"
-// message : Transaction limit exceeded"
+      // error: "TRANSACTION_LIMIT_EXCEEDED"
+      // errorCode :  400
+      // hint : "Request must be below transaction limit"
+      // message : Transaction limit exceeded"
       const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
       debugger
 
@@ -3653,6 +3655,7 @@ debugger
             // TODO: Send to the Admin for approval
             // update approvalObject
             approvalObject = {
+              rfiCode: rfiCode,
               walletId: walletId,
               investmentId: investmentId,
               userId: userId,

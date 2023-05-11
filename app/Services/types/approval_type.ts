@@ -6,6 +6,7 @@ export interface ApprovalType {
     approvalStatus: string,
     assignedTo: string,
     processedBy: string,
+    rfiCode: string,
     // remark: string,
     // remark: Array<RemarkType>,
 }

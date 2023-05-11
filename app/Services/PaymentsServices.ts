@@ -1292,6 +1292,7 @@ export default class PaymentsServices {
             //     // TODO: Send to the Admin for approval
             //     // update approvalObject
             //     approvalObject = {
+                // rfiCode:rfiCode,
             //         walletId: investment.walletId,
             //         investmentId: investment.id,
             //         userId: investment.userId,
@@ -2539,6 +2540,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                   rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -2594,6 +2596,7 @@ export default class PaymentsServices {
                                     // TODO: Send to the Admin for approval
                                     // update approvalObject
                                     approvalObject = {
+                                        rfiCode:rfiCode,
                                         walletId: walletId,
                                         investmentId: investmentId,
                                         userId: userId,
@@ -2667,6 +2670,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -2709,6 +2713,7 @@ export default class PaymentsServices {
                                     // TODO: Send to the Admin for approval
                                     // update approvalObject
                                     approvalObject = {
+                                        rfiCode:rfiCode,
                                         walletId: walletId,
                                         investmentId: investmentId,
                                         userId: userId,
@@ -2930,6 +2935,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -3899,6 +3905,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4078,6 +4085,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4417,6 +4425,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4596,6 +4605,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4944,6 +4954,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5114,6 +5125,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5443,6 +5455,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5616,6 +5629,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
+                                    rfiCode:rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
