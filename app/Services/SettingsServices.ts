@@ -3,13 +3,81 @@ import Settings from 'App/Models/Setting'
 
 import { SettingType } from 'App/Services/types/setting_type'
 import Database from '@ioc:Adonis/Lucid/Database'
+import Event from '@ioc:Adonis/Core/Event'
 // import { parse } from 'url'
+import { ServiceAccountType } from './types/service_account';
+import RfiRecordsServices from './RfiRecordsServices'
 Database.query()
 
 export default class SettingsServices {
     public async createSetting(createSetting: SettingType): Promise<Settings> {
         try {
             const setting = await Settings.create(createSetting)
+            const RfiRecordsService = new RfiRecordsServices()
+            debugger
+            // Emit event to ServicAccount Service 
+            if (setting) {
+                const { id,
+                    rfiName,
+                    rfiCode,
+                    investmentWalletId,
+                    payoutWalletId, } = setting;
+                const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
+                if (setting.investmentWalletId) {
+                    console.log("setting.investmentWalletId ", setting.investmentWalletId)
+                    const serviceAccount: ServiceAccountType = {
+                        accountNumber: investmentWalletId,//"2056750534",
+                        id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+                        // @ts-ignore
+                        rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                        name: rfiName,//"Investment Deposit Wallet Service Account",
+                        accountName: rfiName,//"Astra polaris",
+                        bfiCode: rfiCode, //"apmfb",
+                        bfiName: rfiName,//"Astra Polaris",
+                        rfiCode: rfiCode,//"ASD",
+                        customerReference: `investmentWalletId_${id}`,//"123456",
+                        serviceName: "Investment Service",
+                        serviceDescription: "Investment service",
+                        serviceAccountDescription: "description",
+                        // createdAt: "2023-05-08T12:13:48.115+00:00",
+                        // updatedAt: "2023-05-08T12:24:40.358+00:00"
+                    }
+                    debugger
+                    Event.emit('service_account::send_service_account', {
+                        action: "Service Account persist",
+                        serviceAccount: serviceAccount
+                    });
+                    debugger
+                }
+
+                if (setting.payoutWalletId) {
+                    console.log("setting.payoutWalletId ", setting.payoutWalletId)
+                    const serviceAccount: ServiceAccountType = {
+                        accountNumber: payoutWalletId,//"2056750534",
+                        id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+                        // @ts-ignore
+                        rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                        name: rfiName,//"Investment Deposit Wallet Service Account",
+                        accountName: rfiName,//"Astra polaris",
+                        bfiCode: rfiCode, //"apmfb",
+                        bfiName: rfiName,//"Astra Polaris",
+                        rfiCode: rfiCode,//"ASD",
+                        customerReference: `payoutWalletId_${id}`,//"123456",
+                        serviceName: "Investment Service",
+                        serviceDescription: "Investment service",
+                        serviceAccountDescription: "description",
+                        // createdAt: "2023-05-08T12:13:48.115+00:00",
+                        // updatedAt: "2023-05-08T12:24:40.358+00:00"
+                    }
+                    debugger
+                    Event.emit('service_account::send_service_account', {
+                        action: "Service Account persist",
+                        serviceAccount: serviceAccount
+
+                    });
+                    debugger
+                }
+            }
             return setting
         } catch (error) {
             console.log(error)
@@ -23,7 +91,7 @@ export default class SettingsServices {
             const { limit, offset = 0 } = queryParams
             const queryGetter = await this.queryBuilder(queryParams)
             const responseData = await Settings.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)//.first()
-            .orderBy("updated_at", "desc").offset(offset).limit(limit)
+                .orderBy("updated_at", "desc").offset(offset).limit(limit)
             return responseData
         } catch (error) {
             console.log(error)
@@ -75,6 +143,58 @@ export default class SettingsServices {
         try {
             let saveSetting = await selectedSetting.merge(updateSetting)
             await saveSetting.save();
+
+            if (updateSetting.investmentWalletId) {
+                console.log("updateSetting.investmentWalletId ", updateSetting.investmentWalletId)
+                const serviceAccount: ServiceAccountType = {
+                    accountNumber: "2056750534",
+                    id: "7a427ed5-8f6a-4349-acd7-875d74a38329",
+                    rfiId: "9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                    name: "Investment Deposit Wallet Service Account",
+                    accountName: "Astra polaris",
+                    bfiCode: "apmfb",
+                    bfiName: "Astra Polaris",
+                    rfiCode: "ASD",
+                    customerReference: "investmentWalletId",//"123456",
+                    serviceName: "Investment Service",
+                    serviceDescription: "Investment service",
+                    serviceAccountDescription: "description here",
+                    // createdAt: "2023-05-08T12:13:48.115+00:00",
+                    // updatedAt: "2023-05-08T12:24:40.358+00:00"
+                }
+                Event.emit('service_account::send_service_account', {
+                    action: "Service Account persist",
+                    serviceAccount: serviceAccount
+                });
+            }
+
+            if (updateSetting.payoutWalletId) {
+
+                console.log("updateSetting.payoutWalletId ", updateSetting.payoutWalletId)
+                const serviceAccount: ServiceAccountType = {
+                    accountNumber: "2056750534",
+                    id: "7a427ed5-8f6a-4349-acd7-875d74a38329",
+                    rfiId: "9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                    name: "Investment Deposit Wallet Service Account",
+                    accountName: "Astra polaris",
+                    bfiCode: "apmfb",
+                    bfiName: "Astra Polaris",
+                    rfiCode: "ASD",
+                    customerReference: "payoutWalletId",//"123456",
+                    serviceName: "Investment Service",
+                    serviceDescription: "Investment service",
+                    serviceAccountDescription: "description here",
+                    // createdAt: "2023-05-08T12:13:48.115+00:00",
+                    // updatedAt: "2023-05-08T12:24:40.358+00:00"
+                }
+                Event.emit('service_account::send_service_account', {
+                    action: "Service Account persist",
+                    serviceAccount: serviceAccount
+
+                });
+
+            }
+            debugger
             return saveSetting
         } catch (error) {
             console.log(error)
@@ -158,37 +278,37 @@ export default class SettingsServices {
             predicate = predicate + "rfi_image_url=?"
             params.push(queryFields.rfiImageUrl)
         }
-        
+
         if (queryFields.initiationNotificationEmail) {
             predicateExists()
             predicate = predicate + "initiation_notification_email=?"
             params.push(queryFields.initiationNotificationEmail)
         }
-        
+
         if (queryFields.activationNotificationEmail) {
             predicateExists()
             predicate = predicate + "activation_notification_email=?"
             params.push(queryFields.activationNotificationEmail)
         }
-        
+
         if (queryFields.maturityNotificationEmail) {
             predicateExists()
             predicate = predicate + "maturity_notification_email=?"
             params.push(queryFields.maturityNotificationEmail)
         }
-        
+
         if (queryFields.payoutNotificationEmail) {
             predicateExists()
             predicate = predicate + "payout_notification_email=?"
             params.push(queryFields.payoutNotificationEmail)
         }
-        
+
         if (queryFields.rolloverNotificationEmail) {
             predicateExists()
             predicate = predicate + "rollover_notification_email=?"
             params.push(queryFields.rolloverNotificationEmail)
         }
-        
+
         if (queryFields.liquidationNotificationEmail) {
             predicateExists()
             predicate = predicate + "liquidation_notification_email=?"
@@ -210,7 +330,7 @@ export default class SettingsServices {
             predicate = predicate + "is_payout_automated=?";
             params.push(queryFields.isPayoutAutomated)
         }
-        
+
         if (queryFields.liquidationPenalty) {
             predicateExists()
             predicate = predicate + "liquidation_penalty=?";

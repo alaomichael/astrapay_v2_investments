@@ -140,6 +140,7 @@ export default class SettingsController {
       //     }
       // }
       const setting = await settingsService.updateSetting(selectedSetting, payload);
+      debugger
       // console.log("Setting updated: ", setting);
       // send to user
       return response.json({
