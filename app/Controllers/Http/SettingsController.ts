@@ -5,8 +5,6 @@ import Event from "@ioc:Adonis/Core/Event";
 import CreateSettingValidator from "App/Validators/CreateSettingValidator";
 import { SettingType } from "App/Services/types/setting_type";
 import UpdateSettingValidator from "App/Validators/UpdateSettingValidator";
-import RfiRecordsServices from "App/Services/RfiRecordsServices";
-import { ServiceAccountType } from "App/Services/types/service_account";
 
 export default class SettingsController {
 
