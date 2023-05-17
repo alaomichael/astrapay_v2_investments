@@ -23,7 +23,8 @@
       "environment": [
         "web"
       ]
-    }
+    },
+    "./start/events"
   ],
   "providers": [
     "./providers/AppProvider",

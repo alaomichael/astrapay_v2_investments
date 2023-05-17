@@ -5,6 +5,8 @@ import Event from "@ioc:Adonis/Core/Event";
 import CreateSettingValidator from "App/Validators/CreateSettingValidator";
 import { SettingType } from "App/Services/types/setting_type";
 import UpdateSettingValidator from "App/Validators/UpdateSettingValidator";
+import RfiRecordsServices from "App/Services/RfiRecordsServices";
+import { ServiceAccountType } from "App/Services/types/service_account";
 
 export default class SettingsController {
 
@@ -58,6 +60,71 @@ export default class SettingsController {
         id: setting.id,
         extras: setting
       });
+      // const RfiRecordsService = new RfiRecordsServices()
+      // debugger
+      // // Emit event to ServicAccount Service 
+      // if (setting) {
+      //   const { id,
+      //     rfiName,
+      //     rfiCode,
+      //     investmentWalletId,
+      //     payoutWalletId, } = setting;
+      //   const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
+      //   if (setting.investmentWalletId) {
+      //     console.log("setting.investmentWalletId ", setting.investmentWalletId)
+      //     const serviceAccount: ServiceAccountType = {
+      //       accountNumber: investmentWalletId,//"2056750534",
+      //       id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+      //       // @ts-ignore
+      //       rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+      //       name: rfiName,//"Investment Deposit Wallet Service Account",
+      //       accountName: rfiName,//"Astra polaris",
+      //       bfiCode: rfiCode, //"apmfb",
+      //       bfiName: rfiName,//"Astra Polaris",
+      //       rfiCode: rfiCode,//"ASD",
+      //       customerReference: `investmentWalletId_${id}`,//"123456",
+      //       serviceName: "Investment Service",
+      //       serviceDescription: "Investment service",
+      //       serviceAccountDescription: "description",
+      //       // createdAt: "2023-05-08T12:13:48.115+00:00",
+      //       // updatedAt: "2023-05-08T12:24:40.358+00:00"
+      //     }
+      //     debugger
+      //     Event.emit('service_account::send_service_account', {
+      //       action: "Service Account persist",
+      //       serviceAccount: serviceAccount
+      //     });
+      //     debugger
+      //   }
+
+      //   if (setting.payoutWalletId) {
+      //     console.log("setting.payoutWalletId ", setting.payoutWalletId)
+      //     const serviceAccount: ServiceAccountType = {
+      //       accountNumber: payoutWalletId,//"2056750534",
+      //       id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+      //       // @ts-ignore
+      //       rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+      //       name: rfiName,//"Investment Deposit Wallet Service Account",
+      //       accountName: rfiName,//"Astra polaris",
+      //       bfiCode: rfiCode, //"apmfb",
+      //       bfiName: rfiName,//"Astra Polaris",
+      //       rfiCode: rfiCode,//"ASD",
+      //       customerReference: `payoutWalletId_${id}`,//"123456",
+      //       serviceName: "Investment Service",
+      //       serviceDescription: "Investment service",
+      //       serviceAccountDescription: "description",
+      //       // createdAt: "2023-05-08T12:13:48.115+00:00",
+      //       // updatedAt: "2023-05-08T12:24:40.358+00:00"
+      //     }
+      //     debugger
+      //     Event.emit('service_account::send_service_account', {
+      //       action: "Service Account persist",
+      //       serviceAccount: serviceAccount
+
+      //     });
+      //     debugger
+      //   }
+      // }
       return response.json({ status: "OK", data: setting });
     } catch (error) {
       // console.log("Error line 55", error.messages);

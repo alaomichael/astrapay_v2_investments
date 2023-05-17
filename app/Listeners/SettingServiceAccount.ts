@@ -2,7 +2,7 @@ import type { EventsList } from "@ioc:Adonis/Core/Event";
 import Env from "@ioc:Adonis/Core/Env";
 const RABBITMQ_HOSTNAME = Env.get("RABBITMQ_HOSTNAME");
 const RABBITMQ_EXCHANGE_NAME = Env.get("RABBITMQ_EXCHANGE_NAME");
-const INVESTMENT_RABBITMQ_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_QUEUE_NAME");
+// const INVESTMENT_RABBITMQ_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_QUEUE_NAME");
 
 const amqplib = require('amqplib');
 const INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY = Env.get("INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY")
@@ -18,28 +18,30 @@ export default class SettingServiceAccount {
             debugger
             if (action && serviceAccount) {
                 //  publish to queue
-                const queue = INVESTMENT_RABBITMQ_QUEUE_NAME;//'tasks';
-
-                // const conn = await amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); //amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}` || 'amqp://localhost')
-                // debugger
-                // debugger
                 const conn = await amqplib.connect(RABBITMQ_HOSTNAME);// amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); 
                 // console.log("RabbitMQ Connected",conn)
                 // debugger
                 const ch1 = await conn.createChannel();
-                await ch1.assertQueue(queue);
-                await ch1.bindQueue(queue, RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY); //bindQueue(queue, RABBITMQ_EXCHANGE_NAME, severity);
-                await ch1.checkQueue(queue);
-                await ch1.get(queue);
+                await ch1.assertExchange(RABBITMQ_EXCHANGE_NAME, 'direct', { durable: true });
                 // console.log("channel details: ", ch1);
                 let message = {
                     action,
                     serviceAccount
                 };
                 const stringifiedMessage = await JSON.stringify(message)
-                debugger
+                // console.log(" stringifiedMessage ",typeof stringifiedMessage)
+                // const buffer = Buffer.from(stringifiedMessage, 'utf-8');
+                let buffer;
+                try {
+                    buffer = Buffer.from(stringifiedMessage, 'utf-8');
+                } catch (err) {
+                    console.error('Error creating buffer:', err);
+                }
+
+                // console.log(buffer);
+                // debugger
                 // Publisher
-                await ch1.publish(queue, Buffer.from(stringifiedMessage));
+               await ch1.publish(RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY, buffer);
                 console.log("service account has been sent to queue.")
                 debugger
                 await ch1.close();
