@@ -81,7 +81,7 @@ const databaseConfig: DatabaseConfig = {
       debug: Application.inDev,
       pool: {
         min: 0,
-        max: 10,
+        max: 90,
         idleTimeoutMillis: 20 * 60 * 1000, // 20 secs 
         createTimeoutMillis: 20 * 60 * 1000, // 20 secs //300*10000,
         acquireTimeoutMillis: 20 * 60 * 1000, // 20 secs  //30000000,
@@ -141,7 +141,7 @@ const databaseConfig: DatabaseConfig = {
       // }
       pool: {
         min: 0,
-        max: 10,
+        max: 90,
         idleTimeoutMillis: 20 * 60 * 1000, // 20 secs 
         createTimeoutMillis: 20 * 60 * 1000, // 20 secs //300*10000,
         acquireTimeoutMillis: 20 * 60 * 1000, // 20 secs  //30000000,
