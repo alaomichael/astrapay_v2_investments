@@ -148,7 +148,7 @@ export default class SettingsServices {
 
             let saveSetting = await selectedSetting.merge(updateSetting)
             await saveSetting.save();
-
+            debugger
             if (investmentWalletId) {
                 console.log("updateSetting.investmentWalletId ", updateSetting.investmentWalletId)
                 const serviceAccount: ServiceAccountType = {
