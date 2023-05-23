@@ -38,7 +38,7 @@ export default class SettingsServices {
                         customerReference: `investmentWalletId_${id}`,//"123456",
                         serviceName: "Investment Service",
                         serviceDescription: "Investment service",
-                        serviceAccountDescription: "description",
+                        serviceAccountDescription: "Investment service account",
                         // createdAt: "2023-05-08T12:13:48.115+00:00",
                         // updatedAt: "2023-05-08T12:24:40.358+00:00"
                     }
@@ -65,7 +65,7 @@ export default class SettingsServices {
                         customerReference: `payoutWalletId_${id}`,//"123456",
                         serviceName: "Investment Service",
                         serviceDescription: "Investment service",
-                        serviceAccountDescription: "description",
+                        serviceAccountDescription: "Investment service account",
                         // createdAt: "2023-05-08T12:13:48.115+00:00",
                         // updatedAt: "2023-05-08T12:24:40.358+00:00"
                     }
@@ -141,58 +141,66 @@ export default class SettingsServices {
 
     public async updateSetting(selectedSetting: any, updateSetting: SettingType): Promise<Settings | null> {
         try {
+            const RfiRecordsService = new RfiRecordsServices()
+            const { id, rfiName, rfiCode, } = selectedSetting;
+            const { investmentWalletId, payoutWalletId, } = updateSetting;
+            const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
+
             let saveSetting = await selectedSetting.merge(updateSetting)
             await saveSetting.save();
 
-            if (updateSetting.investmentWalletId) {
+            if (investmentWalletId) {
                 console.log("updateSetting.investmentWalletId ", updateSetting.investmentWalletId)
                 const serviceAccount: ServiceAccountType = {
-                    accountNumber: "2056750534",
-                    id: "7a427ed5-8f6a-4349-acd7-875d74a38329",
-                    rfiId: "9d72e2a1-c7d2-41a1-9d99-6430019596a5",
-                    name: "Investment Deposit Wallet Service Account",
-                    accountName: "Astra polaris",
-                    bfiCode: "apmfb",
-                    bfiName: "Astra Polaris",
-                    rfiCode: "ASD",
-                    customerReference: "investmentWalletId",//"123456",
+                    accountNumber: investmentWalletId,//"2056750534",
+                    id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+                    // @ts-ignore
+                    rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                    name: rfiName,//"Investment Deposit Wallet Service Account",
+                    accountName: rfiName,//"Astra polaris",
+                    bfiCode: rfiCode, //"apmfb",
+                    bfiName: rfiName,//"Astra Polaris",
+                    rfiCode: rfiCode,//"ASD",
+                    customerReference: `investmentWalletId_${id}`,//"123456",
                     serviceName: "Investment Service",
                     serviceDescription: "Investment service",
-                    serviceAccountDescription: "description here",
+                    serviceAccountDescription: "Investment deposit service account",
                     // createdAt: "2023-05-08T12:13:48.115+00:00",
                     // updatedAt: "2023-05-08T12:24:40.358+00:00"
                 }
+                debugger
                 Event.emit('service_account::send_service_account', {
                     action: "Service Account persist",
                     serviceAccount: serviceAccount
                 });
+                debugger
             }
 
-            if (updateSetting.payoutWalletId) {
-
+            if (payoutWalletId) {
                 console.log("updateSetting.payoutWalletId ", updateSetting.payoutWalletId)
                 const serviceAccount: ServiceAccountType = {
-                    accountNumber: "2056750534",
-                    id: "7a427ed5-8f6a-4349-acd7-875d74a38329",
-                    rfiId: "9d72e2a1-c7d2-41a1-9d99-6430019596a5",
-                    name: "Investment Deposit Wallet Service Account",
-                    accountName: "Astra polaris",
-                    bfiCode: "apmfb",
-                    bfiName: "Astra Polaris",
-                    rfiCode: "ASD",
-                    customerReference: "payoutWalletId",//"123456",
+                    accountNumber: payoutWalletId,//"2056750534",
+                    id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+                    // @ts-ignore
+                    rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+                    name: rfiName,//"Investment Deposit Wallet Service Account",
+                    accountName: rfiName,//"Astra polaris",
+                    bfiCode: rfiCode, //"apmfb",
+                    bfiName: rfiName,//"Astra Polaris",
+                    rfiCode: rfiCode,//"ASD",
+                    customerReference: `payoutWalletId_${id}`,//"123456",
                     serviceName: "Investment Service",
                     serviceDescription: "Investment service",
-                    serviceAccountDescription: "description here",
+                    serviceAccountDescription: "Investment payout service account",
                     // createdAt: "2023-05-08T12:13:48.115+00:00",
                     // updatedAt: "2023-05-08T12:24:40.358+00:00"
                 }
+                debugger
                 Event.emit('service_account::send_service_account', {
                     action: "Service Account persist",
                     serviceAccount: serviceAccount
-
                 });
-
+                debugger
             }
             debugger
             return saveSetting
