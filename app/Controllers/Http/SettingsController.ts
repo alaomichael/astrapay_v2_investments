@@ -185,7 +185,7 @@ export default class SettingsController {
         isAllRolloverSuspended: isAllRolloverSuspended,
         liquidationPenalty: liquidationPenalty,
       }
-      console.log("Request body validation line 100", payload);
+      // console.log("Request body validation line 100", payload);
       // get setting by id
       const selectedSetting = await settingsService.getSettingBySettingId(id);
       // console.log(" Selected Setting ==============================");
