@@ -65,9 +65,9 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ffi-code":'S8',//rfiCode,// "S8",
+            "ffi-code": 's8',//rfiCode,// "s8",
             "user-principal": "58699700JJK",
-            "user-id":senderAccountNumber,
+            "user-id": senderAccountNumber,
         };
 
         const payload = {
@@ -92,8 +92,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 "senderAccountName": senderAccountName,
                 "senderPhoneNumber": senderPhoneNumber,
                 "senderEmail": senderEmail,
-                "senderBankId":'S8',// rfiCode,//"S8",
-                "ofiCode":'S8',//rfiCode,// "S8",
+                "senderBankId": 's8',// rfiCode,//"s8",
+                "ofiCode": 's8',//rfiCode,// "s8",
                 "lng": lng,
                 "lat": lat
             },
@@ -106,8 +106,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
-                    "beneficiaryBankId":'S8',//rfiCode,// "S8",
-                    "bfiCode":'S8',//rfiCode,// "S8",
+                    "beneficiaryBankId": 's8',//rfiCode,// "s8",
+                    "bfiCode": 's8',//rfiCode,// "s8",
                     "description": `${currencyCode} ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
@@ -146,9 +146,9 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 'client-app': 'OCTANTIS_MOBILE',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code': 'S8',//rfiCode,//'S8',
+                'ofi-code': 's8',//rfiCode,//'s8',
                 'user-principal': '58699700JJK',
-                "user-id":senderAccountNumber,
+                "user-id": senderAccountNumber,
             };
             const payload = {
                 "batchId": batchId,
@@ -210,7 +210,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
             debugger
             // return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
             return { status: "FAILED TO CREDIT WALLET", message: error.response.data.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.error }
-        }    
+        }
     }
 
 }

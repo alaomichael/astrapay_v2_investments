@@ -22,7 +22,7 @@ export const creditUserWallet = async function creditUserWallet(
     beneficiaryPhoneNumber,
     rfiCode, description
 ): Promise<any> {
-    
+
     try {
         let amountConvertedToKobo = amount * 100;
         // let userWalletId = walletId;
@@ -59,7 +59,7 @@ export const creditUserWallet = async function creditUserWallet(
         let senderName = rfiName;
         // let approvalIsAutomated = false
         console.log("investmentWalletId setting line 59:", investmentWalletId);
-        
+
         // let reference = DateTime.now() + randomstring.generate(4);
         // customerReference = `${TRANSACTION_PREFIX}-${reference}-${customerReference}`;
         // console.log("Customer Transaction Reference , line 69 ==================")
@@ -71,9 +71,9 @@ export const creditUserWallet = async function creditUserWallet(
             "client-app": "OCTANTIS_MOBILE",
             "lng": lng,
             "lat": lat,
-            "ffi-code":'S8',//rfiCode,// "S8",
+            "ffi-code": 's8',//rfiCode,// "s8",
             "user-principal": "58699700JJK",
-            "user-id":senderAccountNumber,//senderName,// "investment-service"
+            "user-id": senderAccountNumber,//senderName,// "investment-service"
         };
 
         const payload = {
@@ -98,8 +98,8 @@ export const creditUserWallet = async function creditUserWallet(
                 "senderAccountName": senderAccountName,
                 "senderPhoneNumber": senderPhoneNumber,
                 "senderEmail": senderEmail,
-                "senderBankId": 'S8',//rfiCode,//"S8",
-                "ofiCode":'S8',//rfiCode,// "S8",
+                "senderBankId": 's8',//rfiCode,//"s8",
+                "ofiCode": 's8',//rfiCode,// "s8",
                 "lng": lng,
                 "lat": lat
             },
@@ -112,8 +112,8 @@ export const creditUserWallet = async function creditUserWallet(
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
-                    "beneficiaryBankId":'S8',//rfiCode,// "S8",
-                    "bfiCode":'S8',//rfiCode,// "S8",
+                    "beneficiaryBankId": 's8',//rfiCode,// "s8",
+                    "bfiCode": 's8',//rfiCode,// "s8",
                     "description": description,//` ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
@@ -152,9 +152,9 @@ export const creditUserWallet = async function creditUserWallet(
                 'client-app': 'OCTANTIS_MOBILE',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code':'S8',// rfiCode,//'S8',
+                'ofi-code': 's8',// rfiCode,//'s8',
                 'user-principal': '58699700JJK',
-                'user-id':senderAccountNumber,//senderName,// "investment-service"
+                'user-id': senderAccountNumber,//senderName,// "investment-service"
             };
             const payload = {
                 "batchId": batchId,
@@ -173,7 +173,7 @@ export const creditUserWallet = async function creditUserWallet(
             const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
-debugger
+            debugger
             // console.log("The ASTRAPAY API response data @ creditUserWallet line 169: ", response.data);
             // console.log("The ASTRAPAY API response data @ creditUserWallet line 170: ", response.status);
             //  && response.data.amountTransfered === CHARGE
@@ -215,7 +215,7 @@ debugger
             debugger
             // return { status: "FAILED TO CREDIT WALLET", message: error.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.errorMessage }
             return { status: "FAILED TO CREDIT WALLET", message: error.response.data.message, errorCode: error.response.data.errorCode, errorMessage: error.response.data.error }
-        }    
+        }
     }
 
 }
