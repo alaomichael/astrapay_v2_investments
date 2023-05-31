@@ -27,6 +27,7 @@ export default class TypesController {
             // if (!limit) throw new Error("Limit query parameter is required for this request.");
             const type = await typesService.getTypes(request.qs()); // Type.all();
             let sortedTypes = type;
+            // debugger
             console.log("type line 29 ===================");
             console.log(type);
             if (limit) {

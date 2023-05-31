@@ -41,6 +41,7 @@ export default class TypesServices {
                 .limit(limit)
 
             // console.log("Response data in type service:", responseData)
+            // debugger
             return responseData
         } catch (error) {
             console.log(error)
