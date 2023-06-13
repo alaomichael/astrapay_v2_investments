@@ -4,7 +4,7 @@ import { TypeType } from 'App/Services/types/type_type'
 import Database from '@ioc:Adonis/Lucid/Database'
 // import { parse } from 'url'
 import Type from 'App/Models/Type'
-import { DateTime } from 'luxon'
+// import { DateTime } from 'luxon'
 // import { v4 as uuid } from "uuid";
 Database.query()
 
