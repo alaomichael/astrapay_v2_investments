@@ -1611,7 +1611,7 @@ export default class InvestmentsController {
       // console.log('Approval setting line 1433:', settings[0])
       const settingsService = new SettingsServices();
       const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
-      // debugger
+      debugger
       if (!settings) {
         throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
       }
@@ -2183,7 +2183,7 @@ export default class InvestmentsController {
       debugger
       return response.status(201).json({ status: 'OK', data: investment })
     } catch (error) {
-      console.error('update investment by investmentId Error :', error)
+      console.error('update investment by investmentId Error line 2186 :', error)
       // return response.json({ status: 'FAILED', data: error.message })
       console.log("Error line 2160", error.messages);
       console.log("Error line 2161", error.message);

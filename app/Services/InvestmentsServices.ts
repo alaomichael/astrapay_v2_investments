@@ -10323,7 +10323,7 @@ export default class InvestmentsServices {
     public async liquidateInvestment(investmentId: string, queryParams?: any, loginUserData?: any): Promise<Investment[] | any> {
         // const trx = await Database.transaction();
         try {
-            // console.log("Query params in investment service line 40:", queryParams)
+            // console.log("Query params in investment service line 10326:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -10346,11 +10346,11 @@ export default class InvestmentsServices {
                 queryParams.payoutDateTo = DateTime.now().toISO();//.toISODate();
                 payoutDateTo = DateTime.now().toISO();//.toISODate();
             }
-            // console.log("queryParams line 142 =========================")
+            // console.log("queryParams line 10342 =========================")
             // console.log(queryParams)
-            // console.log("updatedAtFrom line 149 =========================")
+            // console.log("updatedAtFrom line 10349 =========================")
             // console.log(updatedAtFrom)
-            // console.log("updatedAtTo line 151 =========================")
+            // console.log("updatedAtTo line 10351 =========================")
             // console.log(updatedAtTo)
             offset = Number(offset);
             limit = Number(limit);

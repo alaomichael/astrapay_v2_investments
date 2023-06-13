@@ -8248,7 +8248,7 @@ export default class PaymentsServices {
     public async liquidateInvestment(investmentId: string, queryParams?: any, loginUserData?: any): Promise<Investment[] | any> {
         // const trx = await Database.transaction();
         try {
-            // console.log("Query params in investment service line 40:", queryParams)
+            // console.log("Query params in investment service line 8251:", queryParams)
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {

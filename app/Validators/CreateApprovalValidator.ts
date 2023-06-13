@@ -13,7 +13,7 @@ export default class CreateApprovalValidator extends BaseValidator {
         requestType: schema.string(),
         approvalStatus: schema.string(),
         assignedTo: schema.string.optional(),
-        rfiCode: schema.string.optional(),
+        rfiCode: schema.string(),
         // remark: schema.string.optional(),
         remark: schema.array.optional().members(
             schema.object.optional().members({
