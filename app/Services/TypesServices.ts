@@ -22,18 +22,21 @@ export default class TypesServices {
     public async getTypes(queryParams: any): Promise<Type[] | any> {
         try {
             console.log("Query params in type service:", queryParams)
-            let { limit, offset = 0, updatedAtFrom, updatedAtTo } = queryParams;
-            if (!updatedAtFrom) {
-                // default to last 3 months
-                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
-                updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
-            }
-            // debugger;
-            if (!updatedAtTo) {
-                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
-                updatedAtTo = DateTime.now().toISO();//.toISODate();
-            }
+            // let { limit, offset = 0, updatedAtFrom, updatedAtTo } = queryParams;
+            let { limit, offset = 0,   } = queryParams;
+            // if (!updatedAtFrom) {
+            //     // default to last 3 months
+            //     queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            //     updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            // }
+            // // debugger;
+            // if (!updatedAtTo) {
+            //     queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+            //     updatedAtTo = DateTime.now().toISO();//.toISODate();
+            // }
             const queryGetter = await this.queryBuilder(queryParams)
+            console.log("queryGetter ",queryGetter )
+            debugger
             let responseData = await Type.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
                 .orderBy("updated_at", "desc")
                 .preload("investmentTenures", (query) => { query.orderBy("tenure", "asc"); })
