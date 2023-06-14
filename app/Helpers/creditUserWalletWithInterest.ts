@@ -14,12 +14,13 @@ const { URLSearchParams } = require('url');
 
 export const creditUserWalletWithInterest = async function creditUserWalletWithInterest(
     amount, lng, lat, investmentRequestReference,
-    senderName,
-    senderAccountNumber,
-    senderAccountName,
-    senderPhoneNumber,
-    senderEmail,
-    rfiCode
+    beneficiaryAccountName,
+    beneficiaryAccountNumber,
+    beneficiaryName,
+    beneficiaryPhoneNumber,
+    beneficiaryEmail,
+    rfiCode,
+
 ): Promise<any> {
     // connect to Okra
     try {
@@ -47,18 +48,19 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         // console.log("Admin setting line 47 @ creditUserWalletWithInterest:", settings);
         //  get the loan currency
         // @ts-ignore
-        let { currencyCode, investmentWalletId, payoutWalletId, rfiName } = settings;
-        let beneficiaryAccountNumber = investmentWalletId;
-        let beneficiaryAccountName = rfiName;
+        let { currencyCode, investmentWalletId, payoutWalletId, rfiName, payoutNotificationEmail } = settings;
+        let senderAccountNumber = payoutWalletId;
+        let senderName = rfiName;
         // @ts-ignore
         let { phone, email } = rfiRecords
-        let beneficiaryEmail = email;
-        let beneficiaryPhoneNumber = phone;
-        let beneficiaryName = rfiName;
+        let senderEmail = email;
+        let senderPhoneNumber = phone;
+        let senderAccountName = rfiName;
         // let approvalIsAutomated = false
-        console.log("payoutWalletId setting line 59:", payoutWalletId);
+        console.log("payoutNotificationEmail [0].email  line 60:", payoutNotificationEmail[0].email);
+        console.log("investmentWalletId setting line 61:", investmentWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
-
+debugger
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
@@ -79,6 +81,11 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 },
                 "notifications": [
                     {
+                        "channel": "SMS",
+                        "handle": beneficiaryPhoneNumber,
+                        "recipientName": beneficiaryName,
+                        "eventType": "TRANSACTION_SUCCESS"
+                    }, {
                         "channel": "SMS",
                         "handle": phone,
                         "recipientName": rfiName,
@@ -101,14 +108,14 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
                 {
                     "amount": amount,
                     "customerReference": investmentRequestReference,
-                    "beneficiaryName": rfiName,
+                    "beneficiaryName": beneficiaryName,
                     "beneficiaryAccountNumber": beneficiaryAccountNumber,
                     "beneficiaryAccountName": beneficiaryAccountName,
                     "beneficiaryPhoneNumber": beneficiaryPhoneNumber,
                     "beneficiaryEmail": beneficiaryEmail,
                     "beneficiaryBankId": 's8',//rfiCode,// "s8",
                     "bfiCode": 's8',//rfiCode,// "s8",
-                    "description": `${currencyCode} ${amount} investment for ${senderName}. `,
+                    "description": `${currencyCode} ${amount} investment interest payout for ${beneficiaryName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
                     "subproduct": "mobilebanking.investment.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
                     "customerMetadata": {

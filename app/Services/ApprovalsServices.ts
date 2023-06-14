@@ -181,12 +181,12 @@ export default class ApprovalsServices {
                     // Data to send for transfer of fund
                     let { amount, lng, lat, investmentRequestReference,
                         firstName, lastName,
-                        walletId, userId,
+                        walletId, userId,investorFundingWalletId,
                         phone,
                         email,
                         rfiCode, currencyCode,numberOfAttempts } = selectedInvestmentRequestUpdate;
                     let senderName = `${firstName} ${lastName}`;
-                    let senderAccountNumber = walletId;
+                    let senderAccountNumber = investorFundingWalletId;//walletId;
                     let senderAccountName = senderName;
                     let senderPhoneNumber = phone;
                     let senderEmail = email;
@@ -311,7 +311,7 @@ export default class ApprovalsServices {
                             }
 
                         } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
+                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 1009 ============`);
                             // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                             // console.log(" Current log, line 313 :", currentInvestment);
@@ -707,7 +707,7 @@ export default class ApprovalsServices {
                         id,
                         lastName,
                         firstName,
-                        walletId,
+                        walletId, investorFundingWalletId,
                         userId,
                         // investmentTypeId,
                         rfiCode,
@@ -724,7 +724,7 @@ export default class ApprovalsServices {
                         // end
                     } = record;
                     let beneficiaryName = `${firstName} ${lastName}`;
-                    let beneficiaryAccountNumber = walletId;
+                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                     let beneficiaryAccountName = beneficiaryName;
                     let beneficiaryPhoneNumber = phone;
                     let beneficiaryEmail = email;
@@ -739,7 +739,7 @@ export default class ApprovalsServices {
                         walletId: walletId,// walletId,
                         userId: userId,// userId,
                         // @ts-ignore
-                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${walletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };

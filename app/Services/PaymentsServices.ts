@@ -68,7 +68,7 @@ export default class PaymentsServices {
                 id,
                 lastName,
                 firstName,
-                walletId,
+                walletId,investorFundingWalletId,
                 userId,
                 investmentTypeId,
                 rfiCode,
@@ -106,7 +106,7 @@ export default class PaymentsServices {
             // }
 
             let beneficiaryName = `${firstName} ${lastName}`;
-            let beneficiaryAccountNumber = walletId;
+            let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
             let beneficiaryAccountName = beneficiaryName;
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
@@ -1545,7 +1545,7 @@ export default class PaymentsServices {
                 // principalPayoutRequestReference, interestPayoutRequestReference
             } = record;
             // let beneficiaryName = `${firstName} ${lastName}`;
-            // let beneficiaryAccountNumber = walletId;
+            // let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
             // let beneficiaryAccountName = beneficiaryName;
             // let beneficiaryPhoneNumber = phone;
             // let beneficiaryEmail = email;
@@ -1798,12 +1798,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -6036,12 +6036,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -6673,12 +6673,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -7754,12 +7754,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -8486,12 +8486,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -8913,12 +8913,12 @@ export default class PaymentsServices {
                                     //     rfiCode, interestDueOnInvestment } = record;
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;

@@ -457,13 +457,13 @@ export default class ApprovalsController {
           // Data to send for transfer of fund
           let { amount, lng, lat, investmentRequestReference,
             firstName, lastName,
-            walletId,
+            walletId,investorFundingWalletId,
             phone,
             email,
             rfiCode,// numberOfAttempts 
           } = record;
           let senderName = `${firstName} ${lastName}`;
-          let senderAccountNumber = walletId;
+          let senderAccountNumber = investorFundingWalletId;//walletId;
           let senderAccountName = senderName;
           let senderPhoneNumber = phone;
           let senderEmail = email;
@@ -1142,7 +1142,7 @@ export default class ApprovalsController {
               id,
               lastName,
               firstName,
-              walletId,
+              walletId, investorFundingWalletId,
               userId,
               // investmentTypeId,
               rfiCode,
@@ -1159,7 +1159,7 @@ export default class ApprovalsController {
               // end
             } = record;
             let beneficiaryName = `${firstName} ${lastName}`;
-            let beneficiaryAccountNumber = walletId;
+            let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
             let beneficiaryAccountName = beneficiaryName;
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
@@ -1476,7 +1476,7 @@ export default class ApprovalsController {
             principalPayoutRequestReference,
           } = record;
           let beneficiaryName = `${firstName} ${lastName}`;
-          let beneficiaryAccountNumber = walletId;
+          let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
           let beneficiaryAccountName = beneficiaryName;
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
@@ -2054,12 +2054,12 @@ export default class ApprovalsController {
           // Data to send for transfer of fund
           let { amount, lng, lat, id, userId,
             firstName, lastName,
-            walletId,
+            walletId, investorFundingWalletId,
             phone,
             email,
             rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
           let beneficiaryName = `${firstName} ${lastName}`;
-          let beneficiaryAccountNumber = walletId;
+          let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
           let beneficiaryAccountName = beneficiaryName;
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
@@ -2441,7 +2441,7 @@ export default class ApprovalsController {
             principalPayoutRequestReference,
           } = record;
           let beneficiaryName = `${firstName} ${lastName}`;
-          let beneficiaryAccountNumber = walletId;
+          let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
           let beneficiaryAccountName = beneficiaryName;
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
@@ -3262,12 +3262,12 @@ export default class ApprovalsController {
           // Data to send for transfer of fund
           let { amount, lng, lat, id, userId,
             lastName,
-            walletId,
+            walletId, investorFundingWalletId,
             phone,
             email,
             interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
           let beneficiaryName = `${firstName} ${lastName}`;
-          let beneficiaryAccountNumber = walletId;
+          let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
           let beneficiaryAccountName = beneficiaryName;
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;

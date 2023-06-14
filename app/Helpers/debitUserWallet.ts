@@ -84,6 +84,12 @@ export const debitUserWallet = async function debitUserWallet(
                         "handle": phone,
                         "recipientName": rfiName,
                         "eventType": "TRANSACTION_SUCCESS"
+                    },
+                    {
+                        "channel": "SMS",
+                        "handle": senderPhoneNumber,
+                        "recipientName": senderName,
+                        "eventType": "TRANSACTION_SUCCESS"
                     }
                 ]
             },

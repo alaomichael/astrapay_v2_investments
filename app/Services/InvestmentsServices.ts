@@ -67,7 +67,7 @@ export default class InvestmentsServices {
                 id,
                 lastName,
                 firstName,
-                walletId,
+                walletId,investorFundingWalletId,
                 userId,
                 investmentTypeId,
                 rfiCode,
@@ -104,7 +104,7 @@ export default class InvestmentsServices {
             // }
 
             let beneficiaryName = `${firstName} ${lastName}`;
-            let beneficiaryAccountNumber = walletId;
+            let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
             let beneficiaryAccountName = beneficiaryName;
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
@@ -5989,12 +5989,12 @@ export default class InvestmentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, numberOfAttempts } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -6636,12 +6636,12 @@ export default class InvestmentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -7730,12 +7730,12 @@ export default class InvestmentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -8447,12 +8447,12 @@ export default class InvestmentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference, } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -9431,7 +9431,7 @@ export default class InvestmentsServices {
 
                                     } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -10549,7 +10549,7 @@ export default class InvestmentsServices {
                                     //     email,
                                     //     rfiCode, interestDueOnInvestment } = record;
                                     // let beneficiaryName = `${firstName} ${lastName}`;
-                                    // let beneficiaryAccountNumber = walletId;
+                                    // let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     // let beneficiaryAccountName = beneficiaryName;
                                     // let beneficiaryPhoneNumber = phone;
                                     // let beneficiaryEmail = email;
@@ -10561,12 +10561,12 @@ export default class InvestmentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -10978,12 +10978,12 @@ export default class InvestmentsServices {
                                     //     rfiCode, interestDueOnInvestment } = record;
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,
+                                        walletId,investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber = walletId;
+                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -11011,7 +11011,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     // NEW CODE START
                                     // let beneficiaryName = `${firstName} ${lastName}`;
-                                    // let beneficiaryAccountNumber = walletId;
+                                    // let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     // let beneficiaryAccountName = beneficiaryName;
                                     // let beneficiaryPhoneNumber = phone;
                                     // let beneficiaryEmail = email;
@@ -11165,15 +11165,15 @@ export default class InvestmentsServices {
                                     // NEW CODE END
                                     // if successful
                                     let decPl = 3;
-                                    console.log(" creditUserWalletWithPrincipal line 10821 ================", creditUserWalletWithPrincipal);
-                                    console.log(" creditUserWalletWithInterest line 10822 ================", creditUserWalletWithInterest);
-                                    console.log(" creditUserWalletWithPrincipal status line 10823 ================", creditUserWalletWithPrincipal.status);
-                                    console.log(" creditUserWalletWithInterest status line 10824 ================", creditUserWalletWithInterest.status);
-                                    console.log(" creditUserWalletWithPrincipal screenStatus line 10825 ================", creditUserWalletWithPrincipal.screenStatus);
-                                    console.log(" creditUserWalletWithInterest screenStatus line 10826 ================", creditUserWalletWithInterest.screenStatus);
-                                    console.log(" creditUserWalletWithPrincipal data.screenStatus line 10821 ================", creditUserWalletWithPrincipal.data.screenStatus);
-                                    console.log(" creditUserWalletWithInterest data.screenStatus line 10822 ================", creditUserWalletWithInterest.data.screenStatus);
-                                    debugger
+                                    // console.log(" creditUserWalletWithPrincipal line 10821 ================", creditUserWalletWithPrincipal);
+                                    // console.log(" creditUserWalletWithInterest line 10822 ================", creditUserWalletWithInterest);
+                                    // console.log(" creditUserWalletWithPrincipal status line 10823 ================", creditUserWalletWithPrincipal.status);
+                                    // console.log(" creditUserWalletWithInterest status line 10824 ================", creditUserWalletWithInterest.status);
+                                    // console.log(" creditUserWalletWithPrincipal screenStatus line 10825 ================", creditUserWalletWithPrincipal.screenStatus);
+                                    // console.log(" creditUserWalletWithInterest screenStatus line 10826 ================", creditUserWalletWithInterest.screenStatus);
+                                    // console.log(" creditUserWalletWithPrincipal data.screenStatus line 10821 ================", creditUserWalletWithPrincipal.data.screenStatus);
+                                    // console.log(" creditUserWalletWithInterest data.screenStatus line 10822 ================", creditUserWalletWithInterest.data.screenStatus);
+                                    // debugger
                                     // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
                                         let amountPaidOut = amount + interestDueOnInvestment;
@@ -11389,12 +11389,12 @@ export default class InvestmentsServices {
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8813 :", updatedInvestment);
-                                        console.log(" creditUserWalletWithPrincipal line 11021 ================", creditUserWalletWithPrincipal);
-                                        console.log(" creditUserWalletWithInterest line 11022 ================", creditUserWalletWithInterest);
-                                        console.log(" creditUserWalletWithPrincipal status line 11023 ================", creditUserWalletWithPrincipal.status);
-                                        console.log(" creditUserWalletWithInterest status line 11024 ================", creditUserWalletWithInterest.status);
-                                        console.log(" creditUserWalletWithPrincipal message line 11025 ================", creditUserWalletWithPrincipal.message);
-                                        console.log(" creditUserWalletWithInterest message line 11026 ================", creditUserWalletWithInterest.message);
+                                        // console.log(" creditUserWalletWithPrincipal line 11021 ================", creditUserWalletWithPrincipal);
+                                        // console.log(" creditUserWalletWithInterest line 11022 ================", creditUserWalletWithInterest);
+                                        // console.log(" creditUserWalletWithPrincipal status line 11023 ================", creditUserWalletWithPrincipal.status);
+                                        // console.log(" creditUserWalletWithInterest status line 11024 ================", creditUserWalletWithInterest.status);
+                                        // console.log(" creditUserWalletWithPrincipal message line 11025 ================", creditUserWalletWithPrincipal.message);
+                                        // console.log(" creditUserWalletWithInterest message line 11026 ================", creditUserWalletWithInterest.message);
 
                                         debugger
                                         // creditUserWalletWithPrincipal && 
