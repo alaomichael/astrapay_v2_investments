@@ -104,7 +104,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         //             "bfiCode": "s8",
         //             "description": ` ${currencyCode} ${amount} investment for ${senderName}. `,
         //             "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
-        //             "subproduct": "investment.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
+        //             "subproduct": "mobilebanking.investment.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
         //             "customerMetadata": {
         //                 "cool": "cool"
         //             },
@@ -142,7 +142,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             //     "performedBy": "485885869",
             //     "description": " NGN 38 investment for Tomiwa Folalu. ",
             //     "product": "Funds transfer",
-            //     "subproduct": "investment.fundstransfer.wallettowallet",
+            //     "subproduct": "mobilebanking.investment.fundstransfer.wallettowallet",
             //     "process": "WALLET_TO_WALLET_TRANSFER",
             //     "senderFirstName": "Tomiwa Folalu",
             //     "senderOtherName": "Tomiwa Folalu",

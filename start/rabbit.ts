@@ -488,7 +488,7 @@ const amqplib = require('amqplib');
                     //     "performedBy": "485885869",
                     //     "description": " NGN 38 investment for Tomiwa Folalu. ",
                     //     "product": "Funds transfer",
-                    //     "subproduct": "investment.fundstransfer.wallettowallet",
+                    //     "subproduct": "mobilebanking.investment.fundstransfer.wallettowallet",
                     //     "process": "WALLET_TO_WALLET_TRANSFER",
                     //     "senderFirstName": "Tomiwa Folalu",
                     //     "senderOtherName": "Tomiwa Folalu",

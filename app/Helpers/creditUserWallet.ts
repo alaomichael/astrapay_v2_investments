@@ -116,7 +116,7 @@ export const creditUserWallet = async function creditUserWallet(
                     "bfiCode": 's8',//rfiCode,// "s8",
                     "description": description,//` ${amount} investment for ${senderName}. `,
                     "product": "Funds transfer",// "product": "WALLET_TO_WALLET_TRANSFER",
-                    "subproduct": "investment.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
+                    "subproduct": "mobilebanking.investment.fundstransfer.wallettowallet",// "subproduct": "WALLET_TO_WALLET_TRANSFER",
                     "customerMetadata": {
                         "cool": "cool"
                     },
