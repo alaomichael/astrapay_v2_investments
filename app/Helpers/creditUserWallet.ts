@@ -132,7 +132,9 @@ export const creditUserWallet = async function creditUserWallet(
             ]
         }
         // debugger
-        const response1 = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers`,
+        console.log("rfiCode", rfiCode);
+        // const response1 = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers`,
+        const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
         // console.log("The ASTRAPAY API response @ creditUserWallet line 131: ", response1);
@@ -170,7 +172,9 @@ export const creditUserWallet = async function creditUserWallet(
                     }
                 ]
             }
-            const response = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers/authorizations`,
+            console.log("rfiCode", rfiCode);
+            // const response = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers/authorizations`,
+            const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
             debugger

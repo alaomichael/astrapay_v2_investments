@@ -133,8 +133,10 @@ export const debitUserWallet = async function debitUserWallet(
             ]
         }
         console.log("The ASTRAPAY API response @ debitUserWallet line 128: ", payload);
+        console.log("rfiCode", rfiCode);
         debugger
-        const response1 = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers`,
+        // const response1 = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers`,
+        const response1 = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers`,
             payload, { headers: headers }
         )
         // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
@@ -174,7 +176,9 @@ export const debitUserWallet = async function debitUserWallet(
             }
 
             // debugger
-            const response = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers/authorizations`,
+            console.log("rfiCode", rfiCode);
+            // const response = await axios.post(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/fundstransfers/authorizations`,
+            const response = await axios.post(`${ORCHESTRATOR_URL}/fundstransfers/authorizations`,
                 payload, { headers: headers }
             )
             debugger
