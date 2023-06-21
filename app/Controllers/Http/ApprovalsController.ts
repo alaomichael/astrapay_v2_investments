@@ -457,7 +457,8 @@ export default class ApprovalsController {
           // Data to send for transfer of fund
           let { amount, lng, lat, investmentRequestReference,
             firstName, lastName,
-            walletId,investorFundingWalletId,
+            // walletId,
+            investorFundingWalletId,
             phone,
             email,
             rfiCode,// numberOfAttempts 
