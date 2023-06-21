@@ -531,12 +531,13 @@ export default class ApprovalsController {
           // let senderPhoneNumber = phone;
           // let senderEmail = email;
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
-          debugger
-          if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
+          // debugger
+          // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
           debugger
 
-          if (!checkTransactionStatusByCustomerRef) {
+          // if (!checkTransactionStatusByCustomerRef)
+          if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
             // initiate a new  transaction
             // Send to the endpoint for debit of wallet
             let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -1504,10 +1505,11 @@ export default class ApprovalsController {
               // NEW CODE START
               let creditUserWalletWithInterest;
               // check if transaction with same customer ref exist
-              let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
+              let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
               debugger
-              if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-              if (!checkTransactionStatusByCustomerRef) {
+              // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+              // if (!checkTransactionStatusByCustomerRef) 
+              if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                 //@ts-ignore
                 let investmentId = record.id
                 // Create Unique payment reference for the customer
@@ -1805,10 +1807,11 @@ export default class ApprovalsController {
               // NEW CODE START
               let creditUserWalletWithPrincipal;
               // check if transaction with same customer ref exist
-              let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+              let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
               debugger
-              if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-              if (!checkTransactionStatusByCustomerRef) {
+              // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+              // if (!checkTransactionStatusByCustomerRef) 
+              if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                 //@ts-ignore
                 let investmentId = record.id
                 // Create Unique payment reference for the customer
@@ -2070,10 +2073,11 @@ export default class ApprovalsController {
           let creditUserWalletWithPrincipal;
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
           debugger
-          if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-          if (!checkTransactionStatusByCustomerRef) {
+          // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+          // if (!checkTransactionStatusByCustomerRef) 
+          if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -2141,9 +2145,10 @@ export default class ApprovalsController {
           }
 
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-          if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-          if (!checkTransactionStatusByCustomerRef02) {
+          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+          // if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
+          // if (!checkTransactionStatusByCustomerRef02) 
+            if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -2471,10 +2476,11 @@ export default class ApprovalsController {
                 // NEW CODE START
                 let creditUserWalletWithInterest;
                 // check if transaction with same customer ref exist
-                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference);
+                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
                 debugger
-                if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                if (!checkTransactionStatusByCustomerRef) {
+                // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+                // if (!checkTransactionStatusByCustomerRef) 
+                if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                   //@ts-ignore
                   let investmentId = record.id
                   // Create Unique payment reference for the customer
@@ -2772,10 +2778,11 @@ export default class ApprovalsController {
                 // NEW CODE START
                 let creditUserWalletWithPrincipal;
                 // check if transaction with same customer ref exist
-                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
                 debugger
-                if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                if (!checkTransactionStatusByCustomerRef) {
+                // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+                // if (!checkTransactionStatusByCustomerRef) 
+                if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                   //@ts-ignore
                   let investmentId = record.id
                   // Create Unique payment reference for the customer
@@ -3281,10 +3288,11 @@ export default class ApprovalsController {
           let creditUserWalletWithPrincipal;
           let creditUserWalletWithInterest;
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference);
+          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
           debugger
-          if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-          if (!checkTransactionStatusByCustomerRef) {
+          // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+          // if (!checkTransactionStatusByCustomerRef) 
+            if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -3352,9 +3360,10 @@ export default class ApprovalsController {
           }
 
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference);
-          if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-          if (!checkTransactionStatusByCustomerRef02) {
+          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+          // if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
+          // if (!checkTransactionStatusByCustomerRef02) 
+            if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer

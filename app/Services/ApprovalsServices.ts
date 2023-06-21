@@ -191,10 +191,11 @@ export default class ApprovalsServices {
                     let senderPhoneNumber = phone;
                     let senderEmail = email;
                     // check if transaction with same customer ref exist
-                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference);
+                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
                     debugger
-                    if(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                    if (!checkTransactionStatusByCustomerRef) {
+                    // if(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+                    // if (!checkTransactionStatusByCustomerRef)
+                    if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") {
                         // initiate a new  transaction
                         // Send to the endpoint for debit of wallet
                         let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,

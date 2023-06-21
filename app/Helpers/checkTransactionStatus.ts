@@ -13,7 +13,7 @@ const { URLSearchParams } = require('url');
 // const randomstring = require("randomstring");
 
 export const checkTransactionStatus = async function checkTransactionStatus(
-    investmentRequestReference
+    investmentRequestReference,rfiCode
 ): Promise<any> {
 
     try {
@@ -120,7 +120,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         //     ]
         // }
         // debugger
-        const response = await axios.get(`${ORCHESTRATOR_URL}/transactions?customerReference=${investmentRequestReference}`,
+        const response = await axios.get(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/transactions?customerReference=${investmentRequestReference}`,
             { headers: headers }//payload,
         )
         // console.log("The API response @ checkTransactionStatus line 131: ", response);
