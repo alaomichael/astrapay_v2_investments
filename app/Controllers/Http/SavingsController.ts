@@ -49,7 +49,7 @@ export default class SavingsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no saving matched your search',
-        data: [],
+        data: {},
       })
     }
     // return saving(s)

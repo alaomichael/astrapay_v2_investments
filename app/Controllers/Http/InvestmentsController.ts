@@ -64,7 +64,7 @@ export default class InvestmentsController {
       return response.status(200).json({
         status: "OK",
         message: "no investment request matched your search",
-        data: [],
+        data: {},
       });
     }
     // return recommendation(s)
@@ -138,7 +138,7 @@ export default class InvestmentsController {
       //       return response.status(200).json({
       //         status: 'OK',
       //         message: 'no investment matched your search',
-      //         data: [],
+      //         data: {},
       //       })
       //     }
 
@@ -147,7 +147,7 @@ export default class InvestmentsController {
       //     return response.status(200).json({
       //       status: 'OK',
       //       message: 'no investment matched your search',
-      //       data: [],
+      //       data: {},
       //     })
       //   }
       // console.log("investments params: ", params);
@@ -163,7 +163,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: "OK",
           message: "no investment request matched your search",
-          data: [],
+          data: {},
         });
       }
       // return recommendation(s)
@@ -271,7 +271,7 @@ export default class InvestmentsController {
           .json({ status: "OK", data: investmentWithPreloadedData });
       } else {
         return response
-          .json({ status: "OK", data: [] });
+          .json({ status: "OK", data: {} });
       }
     } catch (error) {
       console.log("Error line 218", error.messages);
@@ -344,7 +344,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: 'OK',
           message: 'no investment payout matched your search',
-          data: [],
+          data: {},
         })
       }
       // return payouts
@@ -1051,7 +1051,7 @@ export default class InvestmentsController {
     //     return response.status(400).json({
     //       status: 'OK',
     //       message: 'no investment rate matched your search, please try again.',
-    //       data: [],
+    //       data: {},
     //     })
     //   }
 
@@ -1520,7 +1520,7 @@ export default class InvestmentsController {
         return response.status(400).json({
           status: 'OK',
           message: 'no investment rate matched your search, please try again.',
-          data: [],
+          data: {},
         })
       }
 
@@ -1657,7 +1657,7 @@ export default class InvestmentsController {
         //   return response.status(400).json({
         //     status: 'OK',
         //     message: 'investment approval request was not successful, please try again.',
-        //     data: [],
+        //     data: {},
         //   })
         // }
         debugger
@@ -1784,7 +1784,7 @@ export default class InvestmentsController {
         }
 
         // check if transaction with same customer ref exist
-        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference,rfiCode);
+        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
         debugger
         // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
         // if (!checkTransactionStatusByCustomerRef) 
@@ -1908,7 +1908,7 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1921,7 +1921,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             // let subject = "AstraPay Investment Activation Failed";
             // let message = `
-            //       ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+            //       ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
             //       Thank you.
 
@@ -2093,7 +2093,7 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2106,7 +2106,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             // let subject = "AstraPay Investment Activation Failed";
             // let message = `
-            //       ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+            //       ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
             //       Thank you.
 
@@ -2366,7 +2366,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: 'OK',
           message: 'no investment approval request matched your search',
-          data: [],
+          data: {},
         })
       }
       // return rate(s)
@@ -2425,7 +2425,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2536,7 +2536,7 @@ export default class InvestmentsController {
             //     return response.status(400).json({
             //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
-            //       data: [],
+            //       data: {},
             //     })
             //   }
             // }
@@ -2639,7 +2639,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2691,7 +2691,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2744,7 +2744,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2798,7 +2798,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2850,7 +2850,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2903,7 +2903,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -2955,7 +2955,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3000,7 +3000,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3045,7 +3045,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3091,7 +3091,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3136,7 +3136,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3182,7 +3182,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3236,7 +3236,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3310,7 +3310,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3389,7 +3389,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3462,7 +3462,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3535,7 +3535,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -3646,7 +3646,7 @@ export default class InvestmentsController {
             //     return response.status(400).json({
             //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
-            //       data: [],
+            //       data: {},
             //     })
             //   }
             // }
@@ -3787,7 +3787,7 @@ export default class InvestmentsController {
                 return response.status(400).json({
                   status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
-                  data: [],
+                  data: {},
                 })
               }
             }
@@ -3912,7 +3912,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: [],
+          data: {},
         })
       }
     } catch (error) {
@@ -4139,7 +4139,7 @@ export default class InvestmentsController {
                     status: 'OK',
                     message:
                       'payment processing approval request was not successful, please try again.',
-                    data: [],
+                    data: {},
                   })
                 }
                 // investment = await Investment.query().where('id', investmentId)
@@ -4255,7 +4255,7 @@ export default class InvestmentsController {
                             status: 'OK',
                             message:
                               'payment processing approval request was not successful, please try again.',
-                            data: [],
+                            data: {},
                           })
                         }
                       } catch (error) {
@@ -4388,7 +4388,7 @@ export default class InvestmentsController {
                   //     return response.status(400).json({
                   //       status: 'OK',
                   //       message: 'no investment rate matched your search, please try again.',
-                  //       data: [],
+                  //       data: {},
                   //     })
                   //   }
                   //   let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -4470,7 +4470,7 @@ export default class InvestmentsController {
                   //         status: 'OK',
                   //         message:
                   //           'investment approval request was not successful, please try again.',
-                  //         data: [],
+                  //         data: {},
                   //       })
                   //     }
                   //     // update timeline
@@ -4641,7 +4641,7 @@ export default class InvestmentsController {
                         // return response.status(400).json({
                         //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
-                        //   data: [],
+                        //   data: {},
                         // })
                       }
                       // initiate a new investment
@@ -4756,7 +4756,7 @@ export default class InvestmentsController {
                         // return response.status(400).json({
                         //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
-                        //   data: [],
+                        //   data: {},
                         // })
                       }
 
@@ -4931,7 +4931,7 @@ export default class InvestmentsController {
                 return response.status(400).json({
                   status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
-                  data: [],
+                  data: {},
                 })
               }
               // console.log('Payout investment data line 2780:', payload)

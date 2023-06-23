@@ -63,14 +63,14 @@ export default class PayoutsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment payout matched your search',
-        data: [],
+        data: {},
       })
     }
     // return payouts
     // sortedPayouts.map((payout)=> {payout.$original}),
     return response.status(200).json({
       status: 'OK',
-      data: sortedPayouts.map((payout) =>payout.$original),
+      data: sortedPayouts.map((payout) => payout.$original),
     })
   }
 
@@ -164,7 +164,7 @@ export default class PayoutsController {
   //       return response.status(404).json({
   //         status: 'OK',
   //         message: 'no investment matched your search',
-  //         data: [],
+  //         data: {},
   //       })
   //     }
   //   } catch (error) {

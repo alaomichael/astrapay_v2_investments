@@ -168,8 +168,8 @@ export default class ApprovalsServices {
                 // update status based on admin action
                 if (saveApproval.approvalStatus === "approved") {
                     // update the neccesary field
-                    console.log("selectedInvestmentRequest ========================================================")
-                    console.log(selectedInvestmentRequest)
+                    // console.log("selectedInvestmentRequest ========================================================")
+                    // console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_approved";
@@ -245,7 +245,8 @@ export default class ApprovalsServices {
                         let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                         // console.log(" Current log, line 241 :", currentInvestment);
                         // send for update
-                        let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                        await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                        // let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
                         // console.log(" Current log, line 244 :", updatedInvestment);
                         // if successful
                         if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
@@ -263,8 +264,9 @@ export default class ApprovalsServices {
                             currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                             // console.log(" Current log, line 259 :", currentInvestment);
                             // send for update
-                            updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
-                            console.log(" Current log, line 257 :", updatedInvestment);
+                            await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                            // updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                            // console.log(" Current log, line 257 :", updatedInvestment);
 
                             // console.log("Updated record Status line 261: ", record);
                             timelineObject = {
@@ -312,7 +314,7 @@ export default class ApprovalsServices {
                             }
 
                         } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 1009 ============`);
+                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 315 ============`);
                             // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                             // console.log(" Current log, line 313 :", currentInvestment);
@@ -327,7 +329,7 @@ export default class ApprovalsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -369,7 +371,7 @@ export default class ApprovalsServices {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
                         let getNumberOfAttempt = investmentRequestReference.split("_");
-                        console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
+                        // console.log("getNumberOfAttempt line 367 =====", getNumberOfAttempt[1]);
                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                         let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
@@ -427,7 +429,8 @@ export default class ApprovalsServices {
                         let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                         // console.log(" Current log, line 221 :", currentInvestment);
                         // send for update
-                        let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                        await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                        // let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
                         // console.log(" Current log, line 224 :", updatedInvestment);
                         // if successful
                         if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
@@ -445,8 +448,9 @@ export default class ApprovalsServices {
                             currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                             // console.log(" Current log, line 325441 :", currentInvestment);
                             // send for update
-                            updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
-                            console.log(" Current log, line 257 :", updatedInvestment);
+                            await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                            // updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                            // console.log(" Current log, line 257 :", updatedInvestment);
 
                             // console.log("Updated record Status line 259: ", record);
                             timelineObject = {
@@ -494,7 +498,7 @@ export default class ApprovalsServices {
                             }
 
                         } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 1009 ============`);
+                            console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 500 ============`);
                             // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                             // console.log(" Current log, line 280 :", currentInvestment);
@@ -509,7 +513,7 @@ export default class ApprovalsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -582,8 +586,8 @@ export default class ApprovalsServices {
 
                 if (saveApproval.approvalStatus === "approved") {
                     // update the neccesary field
-                    console.log("selectedInvestmentRequest ========================================================")
-                    console.log(selectedInvestmentRequest)
+                    // console.log("selectedInvestmentRequest ========================================================")
+                    // console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     // selectedInvestmentRequestUpdate.status = "investment_approved";
@@ -636,7 +640,8 @@ export default class ApprovalsServices {
                     let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                     // console.log(" Current log, line 508 :", currentInvestment);
                     // send for update
-                    let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                    await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                    // let updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
                     // console.log(" Current log, line 511 :", updatedInvestment);
                     // if successful
                     // if (debitUserWalletForInvestment.status == 200) {
@@ -654,8 +659,9 @@ export default class ApprovalsServices {
                     currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                     // console.log(" Current log, line 341 :", currentInvestment);
                     // send for update
-                    updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
-                    console.log(" Current log, line 344 :", updatedInvestment);
+                    await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                    // updatedInvestment = await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+                    // console.log(" Current log, line 344 :", updatedInvestment);
 
                     // console.log("Updated record Status line 1281: ", record);
                     timelineObject = {
@@ -692,8 +698,8 @@ export default class ApprovalsServices {
 
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
-                    console.log("selectedInvestmentRequest ========================================================")
-                    console.log(selectedInvestmentRequest)
+                    // console.log("selectedInvestmentRequest ========================================================")
+                    // console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_declined";
@@ -735,12 +741,12 @@ export default class ApprovalsServices {
                     // update timeline
                     timelineObject = {
                         id: uuid(),
-                        action: "investment activation failed",
+                        action: "investment activation declined",
                         investmentId: investmentId,//id,
                         walletId: walletId,// walletId,
                         userId: userId,// userId,
                         // @ts-ignore
-                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to admin approval decline. Thank you.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -753,7 +759,7 @@ export default class ApprovalsServices {
                     // Send Details to notification service
                     //     let subject = "AstraPay Investment Activation Failed";
                     //     let message = `
-                    // ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+                    // ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
                     // Thank you.
 
@@ -833,7 +839,7 @@ export default class ApprovalsServices {
                             walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
+                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover, please check your device. Thank you.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -935,8 +941,8 @@ export default class ApprovalsServices {
                 // update status based on admin action
                 if (saveApproval.approvalStatus === "approved") {
                     // update the neccesary field
-                    console.log("selectedInvestmentPayoutRequest ========================================================")
-                    console.log(selectedInvestmentPayoutRequest)
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     selectedInvestmentPayoutRequestUpdate.status = "approved";
@@ -946,11 +952,11 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
-                    console.log("selectedInvestmentPayoutRequest ========================================================")
-                    console.log(selectedInvestmentPayoutRequest)
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "investment_payout_declined" //saveApproval.approvalStatus;
-                    selectedInvestmentPayoutRequestUpdate.status = "investment_payout_declined";
+                    // selectedInvestmentPayoutRequestUpdate.status = "investment_payout_declined";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
@@ -972,8 +978,8 @@ export default class ApprovalsServices {
                     await timelineService.createTimeline(timelineObject);
                 } else if (saveApproval.approvalStatus === "suspend_payout" && saveApproval.isPayoutSuspended === true) {
                     // update the neccesary field
-                    console.log("selectedInvestmentPayoutRequest ========================================================")
-                    console.log(selectedInvestmentPayoutRequest)
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "payout_suspended" //saveApproval.approvalStatus;
                     // selectedInvestmentPayoutRequestUpdate.status = "payout_suspended";
@@ -998,8 +1004,8 @@ export default class ApprovalsServices {
                     await timelineService.createTimeline(timelineObject);
                 } else if (saveApproval.approvalStatus === "suspend_rollover" && saveApproval.isRolloverSuspended === true) {
                     // update the neccesary field
-                    console.log("selectedInvestmentPayoutRequest ========================================================")
-                    console.log(selectedInvestmentPayoutRequest)
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "rollover_suspended" //saveApproval.approvalStatus;
                     // selectedInvestmentPayoutRequestUpdate.status = "rollover_suspended";
@@ -1030,8 +1036,8 @@ export default class ApprovalsServices {
                 // update status based on admin action
                 if (saveApproval.approvalStatus === "approved") {
                     // update the neccesary field
-                    console.log("selectedInvestmentTerminationRequest ========================================================")
-                    console.log(selectedInvestmentTerminationRequest)
+                    // console.log("selectedInvestmentTerminationRequest ========================================================")
+                    // console.log(selectedInvestmentTerminationRequest)
                     let selectedInvestmentTerminationRequestUpdate = selectedInvestmentTerminationRequest;
                     selectedInvestmentTerminationRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
                     selectedInvestmentTerminationRequestUpdate.status = "liquidation_approved";

@@ -38,7 +38,7 @@ export default class TypesController {
                 return response.status(200).json({
                     status: "OK",
                     message: "no type request matched your search",
-                    data: [],
+                    data: {},
                 });
             }
             for (let index = 0; index < sortedTypes.length; index++) {
@@ -92,7 +92,7 @@ export default class TypesController {
             const typesService = new TypesServices();
             // let type = await Type.query().where({ id: typeId }).preload("timelines", (query) => {query.orderBy("createdAt", "desc"); }).first();
             let type = await typesService.getTypeByTypeId(typeId);
-            if (!type) return response.json({ status: "FAILED", data: [] });
+            if (!type) return response.json({ status: "FAILED", data: {} });
             // let updatedResponseWithType = {
             //     ...type.$original,
             //     // @ts-ignore
@@ -158,7 +158,7 @@ export default class TypesController {
                 minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
                 maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
             }
-// debugger
+            // debugger
             // TODO: Uncomment to use LoginUserData
             console.log("loginUserData  ==================", loginUserData)
             // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);

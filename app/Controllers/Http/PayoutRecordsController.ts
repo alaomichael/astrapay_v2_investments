@@ -13,7 +13,7 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 export default class PayoutRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PayoutRecord params: ', params)
-    const { search, limit,userId, investmentId,status } = request.qs()
+    const { search, limit, userId, investmentId, status } = request.qs()
     console.log('PayoutRecord query: ', request.qs())
     const countPayouts = await PayoutRecord.query().where('status', 'paid').getCount()
     console.log('PayoutRecord Investment count: ', countPayouts)
@@ -30,25 +30,25 @@ export default class PayoutRecordsController {
         return payoutRecord.walletHolderDetails.lastName!.startsWith(search)
       })
     }
-       if (status) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.status.includes(status)
-         })
-       }
+    if (status) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.status.includes(status)
+      })
+    }
 
-       if (userId) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.userId === userId
-         })
-       }
-       if (investmentId) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.investmentId === investmentId
-         })
-       }
+    if (userId) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.userId === userId
+      })
+    }
+    if (investmentId) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.investmentId === investmentId
+      })
+    }
     if (limit) {
       sortedPayouts = sortedPayouts.slice(0, Number(limit))
     }
@@ -56,7 +56,7 @@ export default class PayoutRecordsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment payout record matched your search',
-        data: [],
+        data: {},
       })
     }
     // return payoutRecord

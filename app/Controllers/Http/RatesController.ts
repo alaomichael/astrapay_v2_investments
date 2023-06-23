@@ -82,7 +82,7 @@ export default class RatesController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment rate matched your search',
-        data: [],
+        data: {},
       })
     }
     // return rate(s)

@@ -50,7 +50,7 @@ export default class UsersController {
       return response.status(200).json({
         status: 'OK',
         message: 'no user matched your search',
-        data: [],
+        data: {},
       })
     }
     // return user(s)

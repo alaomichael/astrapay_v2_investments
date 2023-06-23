@@ -79,7 +79,7 @@ export default class TaxRecordsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment taxRecord matched your search',
-        data: [],
+        data: {},
       })
     }
     // return taxRecord(s)

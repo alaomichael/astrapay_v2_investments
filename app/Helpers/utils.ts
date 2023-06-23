@@ -399,56 +399,56 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
   }
 }
 
-const createNewInvestment = async function ( payloadAmount,
-                  payloadDuration,
-                  payloadInvestmentType,
-                  investmentData) {
-                      console.log('Investment data line 362: ', investmentData)
-                  console.log('Investment payloadAmount data line 363: ', payloadAmount)
-                  console.log('Investment payloadDuration data line 364: ', payloadDuration)
-                  console.log(
-                    'Investment payloadInvestmentType data line 366: ',
-                    payloadInvestmentType
-                  )
+const createNewInvestment = async function (payloadAmount,
+  payloadDuration,
+  payloadInvestmentType,
+  investmentData) {
+  console.log('Investment data line 362: ', investmentData)
+  console.log('Investment payloadAmount data line 363: ', payloadAmount)
+  console.log('Investment payloadDuration data line 364: ', payloadDuration)
+  console.log(
+    'Investment payloadInvestmentType data line 366: ',
+    payloadInvestmentType
+  )
   try {
     // let requestType = 'start_investment'
-      let payload
-                  // destructure / extract the needed data from the investment
-                  let {
-                    amount,
-                    rolloverType,
-                    rolloverTarget,
-                    rolloverDone,
-                    investmentType,
-                    duration,
-                    userId,
-                    tagName,
-                    currencyCode,
-                    long,
-                    lat,
-                    walletHolderDetails,
-                  } = investmentData
-                  // copy the investment data to payload
-                  payload = {
-                    amount,
-                    rolloverType,
-                    rolloverTarget,
-                    rolloverDone,
-                    investmentType,
-                    duration,
-                    userId,
-                    tagName,
-                    currencyCode,
-                    long,
-                    lat,
-                    walletHolderDetails,
-                  }
-                  payload.amount = payloadAmount
-                  //  payload.interestRate = rate
-                  console.log('PAYLOAD line 2325 :', payload)
+    let payload
+    // destructure / extract the needed data from the investment
+    let {
+      amount,
+      rolloverType,
+      rolloverTarget,
+      rolloverDone,
+      investmentType,
+      duration,
+      userId,
+      tagName,
+      currencyCode,
+      long,
+      lat,
+      walletHolderDetails,
+    } = investmentData
+    // copy the investment data to payload
+    payload = {
+      amount,
+      rolloverType,
+      rolloverTarget,
+      rolloverDone,
+      investmentType,
+      duration,
+      userId,
+      tagName,
+      currencyCode,
+      long,
+      lat,
+      walletHolderDetails,
+    }
+    payload.amount = payloadAmount
+    //  payload.interestRate = rate
+    console.log('PAYLOAD line 2325 :', payload)
 
     const response = await axios.post(`${API_URL}/investments`, {
-      amount:payloadAmount,
+      amount: payloadAmount,
       rolloverType,
       rolloverTarget,
       rolloverDone,
@@ -503,7 +503,7 @@ const createNewInvestment = async function ( payloadAmount,
 //                     return response.status(400).json({
 //                       status: 'OK',
 //                       message: 'no investment rate matched your search, please try again.',
-//                       data: [],
+//                       data: {},
 //                     })
 //                   }
 //                   let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -585,7 +585,7 @@ const createNewInvestment = async function ( payloadAmount,
 //                         status: 'OK',
 //                         message:
 //                           'investment approval request was not successful, please try again.',
-//                         data: [],
+//                         data: {},
 //                       })
 //                     }
 //                     // update timeline

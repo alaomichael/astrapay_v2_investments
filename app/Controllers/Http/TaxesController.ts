@@ -64,7 +64,7 @@ export default class TaxesController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment tax matched your search',
-        data: [],
+        data: {},
       })
     }
     // return tax(s)

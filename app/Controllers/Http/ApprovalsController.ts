@@ -42,8 +42,8 @@ export default class ApprovalsController {
       // if (!limit) throw new Error("Limit query parameter is required for this request.");
       const approval = await approvalsService.getApprovals(request.qs()); // Approval.all();
       let sortedApprovals = approval;
-      console.log("approval line 40 ===================");
-      console.log(approval);
+      // console.log("approval line 40 ===================");
+      // console.log(approval);
       if (limit) {
         sortedApprovals = sortedApprovals.slice(0, Number(limit));
       }
@@ -51,31 +51,31 @@ export default class ApprovalsController {
         return response.status(200).json({
           status: "OK",
           message: "no approval request matched your search",
-          data: [],
+          data: {},
         });
       }
 
       for (let index = 0; index < sortedApprovals.length; index++) {
         const approval = sortedApprovals[index];
-        console.log("approval line 59 ===================");
-        console.log(approval);
+        // console.log("approval line 59 ===================");
+        // console.log(approval);
 
-        console.log("approval line 62 ===================");
-        console.log(approval.$original.investmentId);
+        // console.log("approval line 62 ===================");
+        // console.log(approval.$original.investmentId);
         let investment;
         if (approval.$original.investmentId) {
           investment = await investmentsService.getInvestmentByInvestmentId(approval.$original.investmentId);
         }
-        console.log("investment line 75 ===================");
-        console.log(investment);
-        // if ((investment == null || investment == undefined) && (linkAccount == null || linkAccount == undefined)) return response.json({ status: "FAILED", data: [] });
+        // console.log("investment line 75 ===================");
+        // console.log(investment);
+        // if ((investment == null || investment == undefined) && (linkAccount == null || linkAccount == undefined)) return response.json({ status: "FAILED", data: {} });
         if (investment) {
           let approvalWithInvestmentDetails = {
             ...approval.$original,
             investmentDetails: investment.$original,
           };
-          console.log("approvalWithInvestmentDetails line 69 ===================");
-          console.log(approvalWithInvestmentDetails);
+          // console.log("approvalWithInvestmentDetails line 69 ===================");
+          // console.log(approvalWithInvestmentDetails);
           approvalArray.push(approvalWithInvestmentDetails);
         }
         // approvalArray.push(approval);
@@ -122,7 +122,7 @@ export default class ApprovalsController {
       //     requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       // });
       // const payload: any = await request.validate({ schema: approvalSchema });
-      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy,rfiCode// remark,
+      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy, rfiCode// remark,
       } = request.body();
       const payload: ApprovalType = {
         walletId: walletId,
@@ -161,15 +161,16 @@ export default class ApprovalsController {
         //     investment_id: payload.investmentId,
         // });
 
-        console.log("Existing Approval Request details: ", requestIsExisting);
+        // console.log("Existing Approval Request details: ", requestIsExisting);
         if (!requestIsExisting) {
           approval = await approvalsService.createApproval(payload);
           // approval = await Approval.create(payload);
           // @ts-ignore
           // approval.status = 'active'
           // await approval.save();
-          console.log("The new approval request:", approval);
-          console.log("A New approval request has been Created.");
+          // console.log("The new approval request:", approval);
+          // console.log("A New approval request has been Created.");
+
           // TODO: Use Remark
           // if (remark) {
           //   for (let index = 0; index < remark.length; index++) {
@@ -259,6 +260,7 @@ export default class ApprovalsController {
           status: "FAILED",
           message:
             "No approval data matched your approval request search, please try again.",
+            data: {},
         });
       }
     } catch (error) {
@@ -303,8 +305,8 @@ export default class ApprovalsController {
       rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ days: 3 });
       payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ days: 3 });
 
-      console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
-      console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
+      // console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
+      // console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
       debugger
       // remark
       // check if the request is not existing
@@ -364,13 +366,13 @@ export default class ApprovalsController {
       if (!approval || record == undefined || !record) {
         return response
           .status(404)
-          .json({ status: "FAILED", message: "Not Found,try again." });
+          .json({ status: "FAILED", message: "Not Found,try again.", data: {} });
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
-      console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
+      // console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
       debugger
       if ((approval && currentApprovalStatus == "pending") || (approval && currentApprovalStatus == "suspend_payout") || (approval && currentApprovalStatus == "suspend_rollover") || (approval && currentApprovalStatus == "rollover") || (approval && currentApprovalStatus == "activate_rollover") || (approval && currentApprovalStatus == "activate_payout")) {
-        console.log("Investment approval Selected for Update line 357:");
+        // console.log("Investment approval Selected for Update line 357:");
 
         let payload: ApprovalType = {
           walletId: approval.walletId,
@@ -421,9 +423,9 @@ export default class ApprovalsController {
         // let { email } = contactDetails;
         // let email = email;
         let timelineObject;
-        console.log("Approval.requestType: ===========================================>", approval.requestType)
-        console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-        console.log("Approval.approvalStatus: ===========================================>", record.status)
+        // console.log("Approval.requestType: ===========================================>", approval.requestType)
+        // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
+        // console.log("Approval.approvalStatus: ===========================================>", record.status)
         isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
         isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
         debugger
@@ -654,7 +656,7 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -667,7 +669,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               // let subject = "AstraPay Investment Activation Failed";
               // let message = `
-              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
               //     Thank you.
 
@@ -713,12 +715,12 @@ export default class ApprovalsController {
             // get the current investmentRef, split , add one to the current number, update and try again
             //  TODO: Add numberOfAttempts column value
             let getNumberOfAttempt = investmentRequestReference.split("_");
-            console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
+            // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
             let updatedNumberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
             // console.log(updatedNumberOfAttempts)
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
             let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
+            // console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
             // console.log(newPaymentReference);
             investmentRequestReference = newPaymentReference;
             record.numberOfAttempts = updatedNumberOfAttempts;
@@ -837,7 +839,7 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -850,7 +852,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               // let subject = "AstraPay Investment Activation Failed";
               // let message = `
-              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
               //     Thank you.
 
@@ -1034,7 +1036,8 @@ export default class ApprovalsController {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // console.log(" Current log, line 720 :", currentInvestment);
             // send for update
-            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
             // console.log(" Current log, line 723 :", updatedInvestment);
             // if successful
             // if (debitUserWalletForInvestment.status == 200) {
@@ -1052,8 +1055,9 @@ export default class ApprovalsController {
             currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // console.log(" Current log, line 738 :", currentInvestment);
             // send for update
-            updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
-            console.log(" Current log, line 741 :", updatedInvestment);
+            await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            // updatedInvestment = await investmentsService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+            // console.log(" Current log, line 741 :", updatedInvestment);
 
             // console.log("Updated record Status line 743: ", record);
             timelineObject = {
@@ -1176,7 +1180,7 @@ export default class ApprovalsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
+              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has been declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1189,7 +1193,7 @@ export default class ApprovalsController {
             // Send Details to notification service
             // let subject = "AstraPay Investment Activation Failed";
             // let message = `
-            //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again.
+            //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
 
             //     Thank you.
 
@@ -1272,7 +1276,7 @@ export default class ApprovalsController {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined approval for the investment rollover, please check your device. Thank you.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1496,7 +1500,8 @@ export default class ApprovalsController {
           //   '102' = 'rollover principal with interest',
           //   '103' = 'rollover interest only',
           if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "payout_suspended") ||
-            (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
+            (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) { 
+              // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
             // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
             debugger
             // check type of rollover
@@ -1563,8 +1568,9 @@ export default class ApprovalsController {
                   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                   // console.log(" Current log, line 1864 :", currentInvestment);
                   // send for update
-                  let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                  console.log(" Current log, line 1865 :", updatedInvestment);
+                  await investmentsService.updateInvestment(currentInvestment, record);
+                  // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                  // console.log(" Current log, line 1865 :", updatedInvestment);
 
                   // console.log("Updated record Status line 1869: ", record);
 
@@ -1576,7 +1582,7 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1655,8 +1661,9 @@ export default class ApprovalsController {
                   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                   // console.log(" Current log, line 1031 :", currentInvestment);
                   // send for update
-                  let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                  console.log(" Current log, line 1034 :", updatedInvestment);
+                  await investmentsService.updateInvestment(currentInvestment, record);
+                  // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                  // console.log(" Current log, line 1034 :", updatedInvestment);
 
                   // console.log("Updated record Status line 537: ", record);
 
@@ -1668,7 +1675,7 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1819,8 +1826,8 @@ export default class ApprovalsController {
                 let reference = DateTime.now() + randomstring.generate(4);
                 let numberOfAttempts = 1;
                 let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-                console.log("Customer Transaction Reference ,@ ApprovalsController line 2191 ==================")
-                console.log(paymentReference);
+                // console.log("Customer Transaction Reference ,@ ApprovalsController line 2191 ==================")
+                // console.log(paymentReference);
                 let getNumberOfAttempt = paymentReference.split("_");
                 console.log("getNumberOfAttempt line 2194 =====", getNumberOfAttempt[1]);
                 debugger;
@@ -1881,7 +1888,7 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1910,7 +1917,7 @@ export default class ApprovalsController {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
+                // console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
                 let numberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                 let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
@@ -1975,7 +1982,7 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -2115,12 +2122,12 @@ export default class ApprovalsController {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-            console.log("getNumberOfAttempt line 1461 =====", getNumberOfAttempt[1]);
+            // console.log("getNumberOfAttempt line 1461 =====", getNumberOfAttempt[1]);
             let numberOfAttempts = record.numberOfAttempts + 1; //Number(getNumberOfAttempt[1]) + 1;
             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
             let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ ApprovalsController line 1465 ==================")
-            console.log(newPaymentReference);
+            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1465 ==================")
+            // console.log(newPaymentReference);
             principalPayoutRequestReference = newPaymentReference;
             record.principalPayoutRequestReference = newPaymentReference;
             record.numberOfAttempts = numberOfAttempts;
@@ -2146,10 +2153,10 @@ export default class ApprovalsController {
           }
 
           // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
           // if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
           // if (!checkTransactionStatusByCustomerRef02) 
-            if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+          if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
             //@ts-ignore
             let investmentId = record.id
             // Create Unique payment reference for the customer
@@ -2256,7 +2263,7 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2298,8 +2305,9 @@ export default class ApprovalsController {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 1668 :", currentInvestment);
             // send for update
-            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            console.log(" Current log, line 1671 :", updatedInvestment);
+             await investmentsService.updateInvestment(currentInvestment, record);
+            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            // console.log(" Current log, line 1671 :", updatedInvestment);
 
             // console.log("Updated record Status line 537: ", record);
 
@@ -2311,7 +2319,7 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2368,7 +2376,7 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2455,7 +2463,7 @@ export default class ApprovalsController {
           let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
           let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
           let isDueForPayout = await dueForPayout(startDate, duration)
-          console.log('Is due for payout status line 2450:', isDueForPayout)
+          // console.log('Is due for payout status line 2450:', isDueForPayout)
           if (isDueForPayout) {
 
             // Check if the user set Rollover
@@ -2477,7 +2485,7 @@ export default class ApprovalsController {
                 // NEW CODE START
                 let creditUserWalletWithInterest;
                 // check if transaction with same customer ref exist
-                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                 debugger
                 // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                 // if (!checkTransactionStatusByCustomerRef) 
@@ -2534,8 +2542,9 @@ export default class ApprovalsController {
                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                     // console.log(" Current log, line 1864 :", currentInvestment);
                     // send for update
-                    let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                    console.log(" Current log, line 1865 :", updatedInvestment);
+                    await investmentsService.updateInvestment(currentInvestment, record);
+                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                    // console.log(" Current log, line 1865 :", updatedInvestment);
 
                     // console.log("Updated record Status line 1869: ", record);
 
@@ -2547,7 +2556,7 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2626,8 +2635,9 @@ export default class ApprovalsController {
                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                     // console.log(" Current log, line 1031 :", currentInvestment);
                     // send for update
-                    let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                    console.log(" Current log, line 1034 :", updatedInvestment);
+                    await investmentsService.updateInvestment(currentInvestment, record);
+                    // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                    // console.log(" Current log, line 1034 :", updatedInvestment);
 
                     // console.log("Updated record Status line 537: ", record);
 
@@ -2639,7 +2649,7 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2779,7 +2789,7 @@ export default class ApprovalsController {
                 // NEW CODE START
                 let creditUserWalletWithPrincipal;
                 // check if transaction with same customer ref exist
-                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                 debugger
                 // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                 // if (!checkTransactionStatusByCustomerRef) 
@@ -2790,16 +2800,14 @@ export default class ApprovalsController {
                   let reference = DateTime.now() + randomstring.generate(4);
                   let numberOfAttempts = 1;
                   let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-                  console.log("Customer Transaction Reference ,@ ApprovalsController line 2191 ==================")
-                  console.log(paymentReference);
+                  // console.log("Customer Transaction Reference ,@ ApprovalsController line 2191 ==================")
+                  // console.log(paymentReference);
                   let getNumberOfAttempt = paymentReference.split("_");
                   console.log("getNumberOfAttempt line 2194 =====", getNumberOfAttempt[1]);
                   debugger;
                   // @ts-ignore
                   record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                   record.numberOfAttempts = numberOfAttempts;
-
-
                   principalPayoutRequestReference = paymentReference;
                   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                   // debugger
@@ -2852,7 +2860,7 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2881,7 +2889,7 @@ export default class ApprovalsController {
                   // update the value for number of attempts
                   // get the current investmentRef, split , add one to the current number, update and try again
                   let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                  console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
+                  // console.log("getNumberOfAttempt line 2283 =====", getNumberOfAttempt[1]);
                   let numberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                   let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                   let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
@@ -2890,7 +2898,6 @@ export default class ApprovalsController {
                   principalPayoutRequestReference = newPaymentReference;
                   record.principalPayoutRequestReference = newPaymentReference;
                   record.numberOfAttempts = numberOfAttempts;
-
 
                   // update record
                   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -2946,7 +2953,7 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3025,7 +3032,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_rollover" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment rollover suspension processing: ===========================================>")
 
-          console.log("Timeline object line 2997:", record);
+          // console.log("Timeline object line 2997:", record);
           debugger
           // newStatus = "submitted";
           // newStatus = "rollover"; //'pending_account_number_generation';
@@ -3035,13 +3042,14 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
           record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
           record.isRolloverSuspended = isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
-          newStatus = "rollover_suspended";
-          record.status = newStatus;
+          // TODO: Just commented out on frontend request on 23-06-2023
+          // newStatus = "rollover_suspended";
+          // record.status = newStatus;
           // update timeline
           timelineObject = {
             id: uuid(),
@@ -3102,10 +3110,10 @@ export default class ApprovalsController {
           // } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && isPayoutSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
-          newStatus = "payout_activated"; // "matured"
-          // newStatus = "payout_suspended"; 
-          record.status = newStatus;
-          record.requestType = "payout_investment";
+          // TODO: Just commented out on frontend request on 23-06-2023
+          // newStatus = "payout_activated"; 
+          // record.status = newStatus;
+          // record.requestType = "payout_investment";
           record.isRolloverSuspended = isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
           record.isPayoutSuspended = isPayoutSuspended;
@@ -3119,7 +3127,7 @@ export default class ApprovalsController {
           record.approvalStatus = "approved"; //approval.approvalStatus;
           // Data to send for transfer of fund
           let { firstName,// email,
-            totalAmountToPayout,startDate,duration } = record; // interestDueOnInvestment,
+            totalAmountToPayout, startDate, duration } = record; // interestDueOnInvestment,
 
           // console.log("Updated record Status line 1439: ", record);
           // if (isRolloverSuspended === true) {
@@ -3191,8 +3199,9 @@ export default class ApprovalsController {
           // }
 
           if (isPayoutSuspended === true) {
-            newStatus = "payout_suspended";
-            record.status = newStatus;
+            // TODO: Just commented out on frontend request on 23-06-2023
+            // newStatus = "payout_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -3285,332 +3294,333 @@ export default class ApprovalsController {
           let isDueForPayout = await dueForPayout(startDate, duration)
           console.log('Is due for payout status line 3277:', isDueForPayout)
           if (isDueForPayout) {
-          // NEW CODE START
-          let creditUserWalletWithPrincipal;
-          let creditUserWalletWithInterest;
-          // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
-          debugger
-          // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-          // if (!checkTransactionStatusByCustomerRef) 
+            // NEW CODE START
+            let creditUserWalletWithPrincipal;
+            let creditUserWalletWithInterest;
+            // check if transaction with same customer ref exist
+            let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
+            debugger
+            // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
+            // if (!checkTransactionStatusByCustomerRef) 
             if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
-            //@ts-ignore
-            let investmentId = record.id
-            // Create Unique payment reference for the customer
-            let reference = DateTime.now() + randomstring.generate(4);
-            let numberOfAttempts = 1;
-            let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1433 ==================")
-            // console.log(paymentReference);
-            // let getNumberOfAttempt = paymentReference.split("/");
-            // console.log("getNumberOfAttempt line 1436 =====", getNumberOfAttempt[1]);
-            debugger;
-            // @ts-ignore
-            record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-            principalPayoutRequestReference = paymentReference;
-            record.numberOfAttempts = numberOfAttempts;
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-            // debugger
-            // console.log(" Current log, line 3288 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // initiate a new  transaction
-            // Payout Principal
-            creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
-              beneficiaryName,
-              beneficiaryAccountNumber,
-              beneficiaryAccountName,
-              beneficiaryEmail,
-              beneficiaryPhoneNumber,
-              rfiCode,
-              descriptionForPrincipal);
-            debugger
+              //@ts-ignore
+              let investmentId = record.id
+              // Create Unique payment reference for the customer
+              let reference = DateTime.now() + randomstring.generate(4);
+              let numberOfAttempts = 1;
+              let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
+              // console.log("Customer Transaction Reference ,@ ApprovalsController line 1433 ==================")
+              // console.log(paymentReference);
+              // let getNumberOfAttempt = paymentReference.split("/");
+              // console.log("getNumberOfAttempt line 1436 =====", getNumberOfAttempt[1]);
+              debugger;
+              // @ts-ignore
+              record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
+              principalPayoutRequestReference = paymentReference;
+              record.numberOfAttempts = numberOfAttempts;
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+              // debugger
+              // console.log(" Current log, line 3288 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // initiate a new  transaction
+              // Payout Principal
+              creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                beneficiaryName,
+                beneficiaryAccountNumber,
+                beneficiaryAccountName,
+                beneficiaryEmail,
+                beneficiaryPhoneNumber,
+                rfiCode,
+                descriptionForPrincipal);
+              debugger
 
-          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
-            // update the value for number of attempts
-            // get the current investmentRef, split , add one to the current number, update and try again
-            let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-            console.log("getNumberOfAttempt line 3307 =====", getNumberOfAttempt[1]);
-            let numberOfAttempts = record.numberOfAttempts + 1; //Number(getNumberOfAttempt[1]) + 1;
-            let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-            let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
-            console.log("Customer Transaction Reference ,@ ApprovalsController line 3311 ==================")
-            console.log(newPaymentReference);
-            principalPayoutRequestReference = newPaymentReference;
-            record.principalPayoutRequestReference = newPaymentReference;
-            record.numberOfAttempts = numberOfAttempts;
-            // update record
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-            // console.log(" Current log, line 1470 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            // console.log(" Current log, line 1474 :", updatedInvestment);
+            } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+              // update the value for number of attempts
+              // get the current investmentRef, split , add one to the current number, update and try again
+              let getNumberOfAttempt = principalPayoutRequestReference.split("_");
+              // console.log("getNumberOfAttempt line 3307 =====", getNumberOfAttempt[1]);
+              let numberOfAttempts = record.numberOfAttempts + 1; //Number(getNumberOfAttempt[1]) + 1;
+              let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
+              let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
+              // console.log("Customer Transaction Reference ,@ ApprovalsController line 3311 ==================")
+              // console.log(newPaymentReference);
+              principalPayoutRequestReference = newPaymentReference;
+              record.principalPayoutRequestReference = newPaymentReference;
+              record.numberOfAttempts = numberOfAttempts;
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+              // console.log(" Current log, line 1470 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 1474 :", updatedInvestment);
 
-            // console.log("Updated record Status line 1476: ", record);
-            // Payout Principal
-            creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
-              beneficiaryName,
-              beneficiaryAccountNumber,
-              beneficiaryAccountName,
-              beneficiaryEmail,
-              beneficiaryPhoneNumber,
-              rfiCode,
-              descriptionForPrincipal);
-            debugger
-          }
+              // console.log("Updated record Status line 1476: ", record);
+              // Payout Principal
+              creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                beneficiaryName,
+                beneficiaryAccountNumber,
+                beneficiaryAccountName,
+                beneficiaryEmail,
+                beneficiaryPhoneNumber,
+                rfiCode,
+                descriptionForPrincipal);
+              debugger
+            }
 
-          // check if transaction with same customer ref exist
-          let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
-          // if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-          // if (!checkTransactionStatusByCustomerRef02) 
+            // check if transaction with same customer ref exist
+            let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
+            // if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
+            // if (!checkTransactionStatusByCustomerRef02) 
             if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
-            //@ts-ignore
-            let investmentId = record.id
-            // Create Unique payment reference for the customer
-            let reference = DateTime.now() + randomstring.generate(4);
-            let numberOfAttempts = 1;
-            let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1497 ==================")
-            // console.log(paymentReference);
-            // let getNumberOfAttempt = paymentReference.split("_");
-            // console.log("getNumberOfAttempt line 1500 =====", getNumberOfAttempt[1]);
-            debugger;
-            // @ts-ignore
-            record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-            record.numberOfAttempts = numberOfAttempts;
-            interestPayoutRequestReference = paymentReference;
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-            // debugger
-            // console.log(" Current log, line 1507 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // initiate a new  transaction
-            // Payout Interest
-            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
-              beneficiaryName,
-              beneficiaryAccountNumber,
-              beneficiaryAccountName,
-              beneficiaryEmail,
-              beneficiaryPhoneNumber,
-              rfiCode,
-              descriptionForInterest)
-            debugger
-
-          } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
-            // update the value for number of attempts
-            // get the current investmentRef, split , add one to the current number, update and try again
-            let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-            // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
-            let numberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
-            let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-            let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
-            // console.log("Customer Transaction Reference ,@ ApprovalsController line 1529 ==================")
-            // console.log(newPaymentReference);
-            interestPayoutRequestReference = newPaymentReference;
-            record.interestPayoutRequestReference = newPaymentReference;
-            record.numberOfAttempts = numberOfAttempts;
-            // update record
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-            // console.log(" Current log, line 1534 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            // console.log(" Current log, line 1538 :", updatedInvestment);
-
-            // console.log("Updated record Status line 1540: ", record);
-            // Payout Interest
-            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
-              beneficiaryName,
-              beneficiaryAccountNumber,
-              beneficiaryAccountName,
-              beneficiaryEmail,
-              beneficiaryPhoneNumber,
-              rfiCode,
-              descriptionForInterest);
-            debugger
-          }
-
-          // NEW CODE END
-
-          // debugger
-          // if successful
-          // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
-          if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
-            let amountPaidOut = amount + interestDueOnInvestment;
-            // update the investment details
-            record.isInvestmentCompleted = true;
-            record.investmentCompletionDate = DateTime.now();
-            record.status = 'completed';
-            record.approvalStatus = approval.approvalStatus;//'payout'
-            record.isPayoutAuthorized = true;
-            record.isPayoutSuccessful = true;
-            record.datePayoutWasDone = DateTime.now();
-            record.principalPayoutStatus = "completed";
-            record.interestPayoutStatus = "completed";
-            // debugger
-
-
-            // Save the updated record
-            // await record.save();
-            // update record
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-            // console.log(" Current log, line 532 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            // console.log(" Current log, line 535 :", updatedInvestment);
-
-            // console.log("Updated record Status line 537: ", record);
-
-            // update timeline
-            timelineObject = {
-              id: uuid(),
-              action: "investment payout",
-              investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId,
-              userId: userIdToSearch,// userId,
+              //@ts-ignore
+              let investmentId = record.id
+              // Create Unique payment reference for the customer
+              let reference = DateTime.now() + randomstring.generate(4);
+              let numberOfAttempts = 1;
+              let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
+              // console.log("Customer Transaction Reference ,@ ApprovalsController line 1497 ==================")
+              // console.log(paymentReference);
+              // let getNumberOfAttempt = paymentReference.split("_");
+              // console.log("getNumberOfAttempt line 1500 =====", getNumberOfAttempt[1]);
+              debugger;
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-              createdAt: DateTime.now(),
-              metadata: ``,
-            };
-            // console.log("Timeline object line 551:", timelineObject);
-            await timelineService.createTimeline(timelineObject);
-            // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log("new Timeline object line 553:", newTimeline);
-            // update record
+              record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
+              record.numberOfAttempts = numberOfAttempts;
+              interestPayoutRequestReference = paymentReference;
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+              // debugger
+              // console.log(" Current log, line 1507 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // initiate a new  transaction
+              // Payout Interest
+              creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                beneficiaryName,
+                beneficiaryAccountNumber,
+                beneficiaryAccountName,
+                beneficiaryEmail,
+                beneficiaryPhoneNumber,
+                rfiCode,
+                descriptionForInterest)
+              debugger
 
-            // Send Notification to admin and others stakeholder
-            let investment = record;
-            let messageKey = "payout";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 1338:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
+            } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
+              // update the value for number of attempts
+              // get the current investmentRef, split , add one to the current number, update and try again
+              let getNumberOfAttempt = principalPayoutRequestReference.split("_");
+              // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
+              let numberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
+              let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
+              let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
+              // console.log("Customer Transaction Reference ,@ ApprovalsController line 1529 ==================")
+              // console.log(newPaymentReference);
+              interestPayoutRequestReference = newPaymentReference;
+              record.interestPayoutRequestReference = newPaymentReference;
+              record.numberOfAttempts = numberOfAttempts;
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+              // console.log(" Current log, line 1534 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 1538 :", updatedInvestment);
+
+              // console.log("Updated record Status line 1540: ", record);
+              // Payout Interest
+              creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                beneficiaryName,
+                beneficiaryAccountNumber,
+                beneficiaryAccountName,
+                beneficiaryEmail,
+                beneficiaryPhoneNumber,
+                rfiCode,
+                descriptionForInterest);
+              debugger
             }
 
-            // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
-            let amountPaidOut = amount
-            // update the investment details
-            record.isInvestmentCompleted = true;
-            record.investmentCompletionDate = DateTime.now();
-            record.status = 'completed_with_interest_payout_outstanding';
-            record.principalPayoutStatus = "completed";
-            record.approvalStatus = approval.approvalStatus;//'payout'
-            record.isPayoutAuthorized = true;
-            record.isPayoutSuccessful = true;
-            record.datePayoutWasDone = DateTime.now();
+            // NEW CODE END
+
             // debugger
-            // Save the updated record
-            // await record.save();
-            // update record
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-            // console.log(" Current log, line 1668 :", currentInvestment);
-            // send for update
-            let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            console.log(" Current log, line 3490 :", updatedInvestment);
+            // if successful
+            // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+            if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+              let amountPaidOut = amount + interestDueOnInvestment;
+              // update the investment details
+              record.isInvestmentCompleted = true;
+              record.investmentCompletionDate = DateTime.now();
+              record.status = 'completed';
+              record.approvalStatus = approval.approvalStatus;//'payout'
+              record.isPayoutAuthorized = true;
+              record.isPayoutSuccessful = true;
+              record.datePayoutWasDone = DateTime.now();
+              record.principalPayoutStatus = "completed";
+              record.interestPayoutStatus = "completed";
+              // debugger
 
-            // console.log("Updated record Status line 537: ", record);
 
-            // update timeline
-            timelineObject = {
-              id: uuid(),
-              action: "investment payout",
-              investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId,
-              userId: userIdToSearch,// userId,
-              // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-              createdAt: DateTime.now(),
-              metadata: ``,
-            };
-            // console.log("Timeline object line 551:", timelineObject);
-            await timelineService.createTimeline(timelineObject);
-            // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log("new Timeline object line 553:", newTimeline);
-            // update record
+              // Save the updated record
+              // await record.save();
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+              // console.log(" Current log, line 532 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 535 :", updatedInvestment);
 
-            // Send Notification to admin and others stakeholder
-            let investment = record;
-            let messageKey = "payout";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
+              // console.log("Updated record Status line 537: ", record);
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment payout",
+                investmentId: investmentId,//id,
+                walletId: walletIdToSearch,// walletId,
+                userId: userIdToSearch,// userId,
+                // @ts-ignore
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 551:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 553:", newTimeline);
+              // update record
+
+              // Send Notification to admin and others stakeholder
+              let investment = record;
+              let messageKey = "payout";
+              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // console.log("newNotificationMessage line 1338:", newNotificationMessageWithoutPdf);
+              // debugger
+              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessageWithoutPdf);
+              }
+
+              // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
+              let amountPaidOut = amount
+              // update the investment details
+              record.isInvestmentCompleted = true;
+              record.investmentCompletionDate = DateTime.now();
+              record.status = 'completed_with_interest_payout_outstanding';
+              record.principalPayoutStatus = "completed";
+              record.approvalStatus = approval.approvalStatus;//'payout'
+              record.isPayoutAuthorized = true;
+              record.isPayoutSuccessful = true;
+              record.datePayoutWasDone = DateTime.now();
+              // debugger
+              // Save the updated record
+              // await record.save();
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+              // console.log(" Current log, line 1668 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 3490 :", updatedInvestment);
+              
+              // console.log("Updated record Status line 537: ", record);
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment payout",
+                investmentId: investmentId,//id,
+                walletId: walletIdToSearch,// walletId,
+                userId: userIdToSearch,// userId,
+                // @ts-ignore
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 551:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 553:", newTimeline);
+              // update record
+
+              // Send Notification to admin and others stakeholder
+              let investment = record;
+              let messageKey = "payout";
+              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+              // debugger
+              if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessageWithoutPdf);
+              }
+
+              // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
+            } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+              let amountPaidOut = interestDueOnInvestment
+              // update the investment details
+              record.isInvestmentCompleted = true;
+              record.investmentCompletionDate = DateTime.now();
+              record.status = 'completed_with_principal_payout_outstanding';
+              record.interestPayoutStatus = "completed";
+              record.approvalStatus = approval.approvalStatus;//'payout'
+              record.isPayoutAuthorized = true;
+              record.isPayoutSuccessful = true;
+              record.datePayoutWasDone = DateTime.now();
+              // debugger
+
+              // Save the updated record
+              // await record.save();
+              // update record
+              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+              // console.log(" Current log, line 532 :", currentInvestment);
+              // send for update
+              await investmentsService.updateInvestment(currentInvestment, record);
+              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+              // console.log(" Current log, line 1726 :", updatedInvestment);
+
+              // console.log("Updated record Status line 537: ", record);
+
+              // update timeline
+              timelineObject = {
+                id: uuid(),
+                action: "investment payout",
+                investmentId: investmentId,//id,
+                walletId: walletIdToSearch,// walletId,
+                userId: userIdToSearch,// userId,
+                // @ts-ignore
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                createdAt: DateTime.now(),
+                metadata: ``,
+              };
+              // console.log("Timeline object line 551:", timelineObject);
+              await timelineService.createTimeline(timelineObject);
+              // let newTimeline = await timelineService.createTimeline(timelineObject);
+              // console.log("new Timeline object line 553:", newTimeline);
+              // update record
+
+
+              // Send Notification to admin and others stakeholder
+              let investment = record;
+              let messageKey = "payout";
+              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // console.log("newNotificationMessage line 1484:", newNotificationMessageWithoutPdf);
+              // debugger
+              if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                console.log("Notification sent successfully");
+              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                console.log("Notification NOT sent successfully");
+                console.log(newNotificationMessageWithoutPdf);
+              }
+
+            } else {
+              throw Error(`Unable to Payout the investment with ID: ${id}, at this time. Please try again later. Thank you.`);
             }
-
-            // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
-          } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
-            let amountPaidOut = interestDueOnInvestment
-            // update the investment details
-            record.isInvestmentCompleted = true;
-            record.investmentCompletionDate = DateTime.now();
-            record.status = 'completed_with_principal_payout_outstanding';
-            record.interestPayoutStatus = "completed";
-            record.approvalStatus = approval.approvalStatus;//'payout'
-            record.isPayoutAuthorized = true;
-            record.isPayoutSuccessful = true;
-            record.datePayoutWasDone = DateTime.now();
-            // debugger
-
-            // Save the updated record
-            // await record.save();
-            // update record
-            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-            // console.log(" Current log, line 532 :", currentInvestment);
-            // send for update
-            await investmentsService.updateInvestment(currentInvestment, record);
-            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-            // console.log(" Current log, line 1726 :", updatedInvestment);
-
-            // console.log("Updated record Status line 537: ", record);
-
-            // update timeline
-            timelineObject = {
-              id: uuid(),
-              action: "investment payout",
-              investmentId: investmentId,//id,
-              walletId: walletIdToSearch,// walletId,
-              userId: userIdToSearch,// userId,
-              // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-              createdAt: DateTime.now(),
-              metadata: ``,
-            };
-            // console.log("Timeline object line 551:", timelineObject);
-            await timelineService.createTimeline(timelineObject);
-            // let newTimeline = await timelineService.createTimeline(timelineObject);
-            // console.log("new Timeline object line 553:", newTimeline);
-            // update record
-
-
-            // Send Notification to admin and others stakeholder
-            let investment = record;
-            let messageKey = "payout";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 1484:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
-
-          } else {
-            throw Error(`Unable to Payout the investment with ID: ${id}, at this time. Please try again later. Thank you.`);
-          }
-          // End of New Payout code block
+            // End of New Payout code block
           } else {
             record.status = "active";
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -3623,10 +3633,10 @@ export default class ApprovalsController {
           // } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && isPayoutSuspended === true && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
-          // newStatus = "submitted";
-          newStatus = "payout_suspended"; //'pending_account_number_generation';
-          record.status = newStatus;
-          record.requestType = "payout_investment";
+          // TODO: Just commented out on frontend request on 23-06-2023
+          // newStatus = "payout_suspended";
+          // record.status = newStatus;
+          // record.requestType = "payout_investment";
           record.isRolloverSuspended = isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
           record.isPayoutSuspended = isPayoutSuspended;
@@ -3644,8 +3654,9 @@ export default class ApprovalsController {
 
           // console.log("Updated record Status line 2227: ", record);
           if (isRolloverSuspended === true) {
-            newStatus = "rollover_suspended";
-            record.status = newStatus;
+            // TODO: Just commented out on frontend request on 23-06-2023
+            // newStatus = "rollover_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -3698,8 +3709,9 @@ export default class ApprovalsController {
 
 
           if (isPayoutSuspended === true && isRolloverSuspended === true) {
-            newStatus = "payout_and_rollover_suspended";
-            record.status = newStatus;
+            // TODO: Just commented out on frontend request on 23-06-2023
+            // newStatus = "payout_and_rollover_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -3783,8 +3795,9 @@ export default class ApprovalsController {
           }
 
           if (isPayoutSuspended === true) {
-            newStatus = "payout_suspended";
-            record.status = newStatus;
+            // TODO: Just commented out on frontend request on 23-06-2023
+            // newStatus = "payout_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -3840,9 +3853,10 @@ export default class ApprovalsController {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 2446 :", currentInvestment);
           // send for update
-          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 2449 :", updatedInvestment);
-
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 2449 :", updatedInvestment);
+          
           await investmentsService.liquidateInvestment(investmentId);
 
           // console.log("Updated record Status line 2451: ", record);
@@ -3908,9 +3922,10 @@ export default class ApprovalsController {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 1790 :", currentInvestment);
           // send for update
-          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-          console.log(" Current log, line 1793 :", updatedInvestment);
-
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 1793 :", updatedInvestment);
+          
           // console.log("Updated record Status line 1795: ", record);
           // update timeline
           timelineObject = {
@@ -4059,8 +4074,8 @@ export default class ApprovalsController {
       //   status: "FAILED",
       //   message: error.messages.errors,
       // });
-      console.log("Error line 1796", error.messages);
-      console.log("Error line 1797", error.message);
+      console.log("Error line 4076", error.messages);
+      console.log("Error line 4077", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500

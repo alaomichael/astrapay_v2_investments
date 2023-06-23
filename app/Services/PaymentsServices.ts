@@ -68,7 +68,7 @@ export default class PaymentsServices {
                 id,
                 lastName,
                 firstName,
-                walletId,investorFundingWalletId,
+                walletId, investorFundingWalletId,
                 userId,
                 investmentTypeId,
                 rfiCode,
@@ -106,7 +106,7 @@ export default class PaymentsServices {
             // }
 
             let beneficiaryName = `${firstName} ${lastName}`;
-            let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
+            let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
             let beneficiaryAccountName = beneficiaryName;
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
@@ -118,10 +118,10 @@ export default class PaymentsServices {
                 if (status !== "active") {
                     // Payout the amount that is to be rollover
                     // check if transaction with same customer ref exist
-                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                     debugger
                     // if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                         //@ts-ignore
                         // let investmentId = record.id;
                         // Create Unique payment reference for the customer
@@ -150,7 +150,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal)
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -334,7 +334,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal);
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -496,10 +496,10 @@ export default class PaymentsServices {
                         message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
                     }
                     // check if transaction with same customer ref exist
-                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                     debugger
                     // if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                         //@ts-ignore
                         // let investmentId = record.id
                         // Create Unique payment reference for the customer
@@ -530,7 +530,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal);
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -694,7 +694,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal);
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -837,10 +837,10 @@ export default class PaymentsServices {
                 let isTenureExisting = investmentTenures.find(o => o.$original.tenure == duration)
                 if (isTenureExisting == false || isTenureExisting == undefined) {
                     // check if transaction with same customer ref exist
-                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                     debugger
                     // if (checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                         //@ts-ignore
                         // let investmentId = record.id
                         // Create Unique payment reference for the customer
@@ -870,7 +870,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal);
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -1035,7 +1035,7 @@ export default class PaymentsServices {
                             beneficiaryPhoneNumber,
                             rfiCode,
                             descriptionForPrincipal);
-                            debugger
+                        debugger
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -1283,7 +1283,7 @@ export default class PaymentsServices {
             //     //   return response.status(400).json({
             //     //     status: 'OK',
             //     //     message: 'investment approval request was not successful, please try again.',
-            //     //     data: [],
+            //     //     data: {},
             //     //   })
             //     // }
             //     const approvalsService = new ApprovalsServices()
@@ -1292,7 +1292,7 @@ export default class PaymentsServices {
             //     // TODO: Send to the Admin for approval
             //     // update approvalObject
             //     approvalObject = {
-                // rfiCode:rfiCode,
+            // rfiCode:rfiCode,
             //         walletId: investment.walletId,
             //         investmentId: investment.id,
             //         userId: investment.userId,
@@ -1798,12 +1798,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -1814,10 +1814,10 @@ export default class PaymentsServices {
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                     debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -1847,7 +1847,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger
+                                        debugger
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -1879,13 +1879,13 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger
+                                        debugger
                                     }
 
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                     // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                     if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -1946,7 +1946,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
                                     }
 
                                     // NEW CODE END
@@ -2159,7 +2159,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
                             } else {
@@ -2167,7 +2167,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: [],
+                                    data: {},
                                 }
                             }
                         }
@@ -2176,7 +2176,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: [],
+                            data: {},
                         }
                     }
                 } catch (error) {
@@ -2530,7 +2530,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -2540,7 +2540,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                   rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -2596,7 +2596,7 @@ export default class PaymentsServices {
                                     // TODO: Send to the Admin for approval
                                     // update approvalObject
                                     approvalObject = {
-                                        rfiCode:rfiCode,
+                                        rfiCode: rfiCode,
                                         walletId: walletId,
                                         investmentId: investmentId,
                                         userId: userId,
@@ -2660,7 +2660,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -2670,7 +2670,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -2713,7 +2713,7 @@ export default class PaymentsServices {
                                     // TODO: Send to the Admin for approval
                                     // update approvalObject
                                     approvalObject = {
-                                        rfiCode:rfiCode,
+                                        rfiCode: rfiCode,
                                         walletId: walletId,
                                         investmentId: investmentId,
                                         userId: userId,
@@ -2757,7 +2757,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -2925,7 +2925,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -2935,7 +2935,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -3103,7 +3103,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -3313,7 +3313,7 @@ export default class PaymentsServices {
                                 firstName, lastName, userId, walletId,
                                 phone,
                                 email,
-                                rfiCode,numberOfAttempts } = record;
+                                rfiCode, numberOfAttempts } = record;
                             let senderName = `${firstName} ${lastName}`;
                             let senderAccountNumber = walletId;
                             let senderAccountName = senderName;
@@ -3321,10 +3321,10 @@ export default class PaymentsServices {
                             let senderEmail = email;
 
                             // check if transaction with same customer ref exist
-                            let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference,rfiCode);
+                            let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
                             debugger
                             // if ( checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                              if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                            if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                 // initiate a new  transaction
                                 // Send to the endpoint for debit of wallet
                                 // debugger
@@ -3498,7 +3498,7 @@ export default class PaymentsServices {
                                 // get the current investmentRef, split , add one to the current number, update and try again
                                 let getNumberOfAttempt = investmentRequestReference.split("-");
                                 console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
-                                let updatedNumberOfAttempts = numberOfAttempts + 1 ;// Number(getNumberOfAttempt[1]) + 1;
+                                let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                 let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
                                 console.log("Customer Transaction Reference ,@ InvestmentsServices line 2125 ==================")
@@ -3693,7 +3693,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                     }
                 } catch (error) {
@@ -3895,7 +3895,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -3905,7 +3905,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4075,7 +4075,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -4085,7 +4085,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4233,7 +4233,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -4415,7 +4415,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -4425,7 +4425,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4595,7 +4595,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -4605,7 +4605,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -4752,7 +4752,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -4944,7 +4944,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -4954,7 +4954,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5115,7 +5115,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -5125,7 +5125,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5267,7 +5267,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -5445,7 +5445,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -5455,7 +5455,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5619,7 +5619,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: [],
+                                //       data: {},
                                 //     })
                                 //   }
                                 // }
@@ -5629,7 +5629,7 @@ export default class PaymentsServices {
                                 // TODO: Send to the Admin for approval
                                 // update approvalObject
                                 approvalObject = {
-                                    rfiCode:rfiCode,
+                                    rfiCode: rfiCode,
                                     walletId: walletId,
                                     investmentId: investmentId,
                                     userId: userId,
@@ -5770,7 +5770,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: [],
+                            data: {},
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -6036,12 +6036,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -6052,10 +6052,10 @@ export default class PaymentsServices {
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                     debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -6085,7 +6085,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger
+                                        debugger
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -6117,13 +6117,13 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger;
+                                        debugger;
                                     }
 
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                     // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                      if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -6153,7 +6153,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -6185,7 +6185,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
                                     }
 
                                     // NEW CODE END
@@ -6398,7 +6398,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
                             } else {
@@ -6406,7 +6406,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: [],
+                                    data: {},
                                 }
                             }
                         }
@@ -6415,7 +6415,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: [],
+                            data: {},
                         }
                     }
                 } catch (error) {
@@ -6673,12 +6673,12 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
-                                    let beneficiaryAccountNumber =investorFundingWalletId;// walletId;
+                                    let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
@@ -6690,9 +6690,9 @@ export default class PaymentsServices {
                                     if (status == "completed_with_interest_payout_outstanding") {
                                         // ADD NEW CODE HERE
                                         // check if transaction with same customer ref exist
-                                        let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                        let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                         // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                          if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                        if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
                                             let investmentId = record.id
                                             // Create Unique payment reference for the customer
@@ -6877,7 +6877,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                                debugger
+                                            debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
@@ -7138,10 +7138,10 @@ export default class PaymentsServices {
                                     if (status == "completed_with_principal_payout_outstanding") {
                                         // ADD NEW CODE HERE 06
                                         // check if transaction with same customer ref exist
-                                        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                         debugger
                                         // if ( checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                          if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                        if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
                                             let investmentId = record.id
                                             // Create Unique payment reference for the customer
@@ -7171,7 +7171,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                                debugger
+                                            debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7327,7 +7327,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                                debugger
+                                            debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7478,7 +7478,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
                             } else {
@@ -7486,7 +7486,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: [],
+                                    data: {},
                                 }
                             }
                         }
@@ -7495,7 +7495,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: [],
+                            data: {},
                         }
                     }
 
@@ -7754,7 +7754,7 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference } = record;
@@ -7773,9 +7773,9 @@ export default class PaymentsServices {
                                         // ADD NEW CODE HERE 02
                                         // let creditUserWalletWithInterest;
                                         // check if transaction with same customer ref exist
-                                        let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                        let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                         // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                          if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                        if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
                                             let investmentId = record.id
                                             // Create Unique payment reference for the customer
@@ -7805,7 +7805,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                                debugger
+                                            debugger
 
                                         } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                             // update the value for number of attempts
@@ -7837,17 +7837,17 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                                debugger
+                                            debugger
                                         }
 
                                     } //else 
                                     if (status == "completed_with_principal_payout_outstanding") {
                                         // ADD NEW CODE HERE 02
                                         // check if transaction with same customer ref exist
-                                        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                        let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                         debugger
                                         // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                          if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                        if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
                                             let investmentId = record.id
                                             // Create Unique payment reference for the customer
@@ -7877,7 +7877,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                                debugger
+                                            debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8035,7 +8035,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                                debugger
+                                            debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8189,7 +8189,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
                             } else {
@@ -8197,7 +8197,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: [],
+                                    data: {},
                                 }
                             }
                         }
@@ -8206,7 +8206,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: [],
+                            data: {},
                         }
                     }
 
@@ -8486,7 +8486,7 @@ export default class PaymentsServices {
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
@@ -8502,10 +8502,10 @@ export default class PaymentsServices {
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                     debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -8535,7 +8535,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger
+                                        debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
@@ -8566,13 +8566,13 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                            debugger
+                                        debugger
                                     }
 
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                     // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                      if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -8602,7 +8602,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -8634,7 +8634,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
                                     }
 
 
@@ -8869,7 +8869,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
                             } else if (isDueForPayout === false) {
@@ -8913,7 +8913,7 @@ export default class PaymentsServices {
                                     //     rfiCode, interestDueOnInvestment } = record;
                                     let { amount, lng, lat, id, userId,
                                         firstName, lastName,
-                                        walletId,investorFundingWalletId,
+                                        walletId, investorFundingWalletId,
                                         phone,
                                         email,
                                         rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
@@ -8954,10 +8954,10 @@ export default class PaymentsServices {
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
                                     debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
-                                      if ((!checkTransactionStatusByCustomerRef)||(checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -9020,9 +9020,9 @@ export default class PaymentsServices {
                                     }
 
                                     // check if transaction with same customer ref exist
-                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference,rfiCode);
+                                    let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
                                     // if (checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef02.message);
-                                      if ((!checkTransactionStatusByCustomerRef02)||(checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS") ) {
+                                    if ((!checkTransactionStatusByCustomerRef02) || (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
                                         let investmentId = record.id
                                         // Create Unique payment reference for the customer
@@ -9052,7 +9052,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -9084,7 +9084,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                            debugger
+                                        debugger
                                     }
 
 
@@ -9324,12 +9324,12 @@ export default class PaymentsServices {
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8813 :", updatedInvestment);
-                                        console.log(" creditUserWalletWithPrincipal line 9305 ================", creditUserWalletWithPrincipal );
-                                        console.log(" creditUserWalletWithInterest line 9306 ================", creditUserWalletWithInterest );
-                                        console.log(" creditUserWalletWithPrincipal .status line 9307 ================", creditUserWalletWithPrincipal.status );
-                                        console.log(" creditUserWalletWithInterest .status line 9308 ================", creditUserWalletWithInterest.status );
-                                        console.log(" creditUserWalletWithPrincipal message line 9309 ================", creditUserWalletWithPrincipal.message );
-                                        console.log(" creditUserWalletWithInterest message line 9310 ================", creditUserWalletWithInterest.message );
+                                        console.log(" creditUserWalletWithPrincipal line 9305 ================", creditUserWalletWithPrincipal);
+                                        console.log(" creditUserWalletWithInterest line 9306 ================", creditUserWalletWithInterest);
+                                        console.log(" creditUserWalletWithPrincipal .status line 9307 ================", creditUserWalletWithPrincipal.status);
+                                        console.log(" creditUserWalletWithInterest .status line 9308 ================", creditUserWalletWithInterest.status);
+                                        console.log(" creditUserWalletWithPrincipal message line 9309 ================", creditUserWalletWithPrincipal.message);
+                                        console.log(" creditUserWalletWithInterest message line 9310 ================", creditUserWalletWithInterest.message);
                                         // debugger
 
                                         // commit transaction and changes to database
@@ -9344,7 +9344,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: [],
+                                        data: {},
                                     }
                                 }
 
@@ -9357,7 +9357,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: [],
+                            data: {},
                         }
                     }
                 } catch (error) {

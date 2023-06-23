@@ -72,6 +72,8 @@
     "@adonisjs/mail": "^8.1.2",
     "@adonisjs/repl": "^3.1.10",
     "@adonisjs/session": "^6.1.2",
+    "@elastic/elasticsearch": "^8.8.1",
+    "@elastic/enterprise-search": "^8.6.0",
     "@shagital/adonisjs-crud-generator": "^3.0.3",
     "adonis-jsonable": "^0.2.1",
     "adonis-pdf": "^0.0.22",
