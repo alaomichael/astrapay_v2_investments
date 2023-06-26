@@ -2560,8 +2560,9 @@ export default class InvestmentsController {
             // check if the approval request is not existing
             let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
             if (!approvalRequestIsExisting) {
-              let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-              console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+              await approvalsService.createApproval(approvalObject);
+              // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+              // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
             }
 
             // investment = await Investment.query().where('id', investmentId)
