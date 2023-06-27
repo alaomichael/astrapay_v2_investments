@@ -29,6 +29,15 @@ const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
 // const ASTRAPAY_BEARER_TOKEN = Env.get("ASTRAPAY_BEARER_TOKEN");
 // import AppException from 'App/Exceptions/AppException';
 
+// const ELASTICSEARCH_CONNECTION = Env.get("ELASTICSEARCH_CONNECTION");
+// const ELASTICSEARCH_HOST = Env.get("ELASTICSEARCH_HOST");
+// const ELASTICSEARCH_PORT = Env.get("ELASTICSEARCH_PORT");
+
+// const { Client } = require('@elastic/elasticsearch');
+// const esClient = new Client({ node: `${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}` });
+
+// console.log("esClient on investment ", esClient)
+
 Database.query()
 
 export default class InvestmentsServices {
@@ -1573,6 +1582,192 @@ export default class InvestmentsServices {
             throw error
         }
     }
+
+    public async getInvestmentsFromElasticSearch(queryParams: any): Promise<Investment[] | any> {
+        try {
+            console.log("Query params in investment service:", queryParams)
+            let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
+            if (!updatedAtFrom) {
+                // default to last 3 months
+                queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+            }
+            // debugger;
+            if (!updatedAtTo) {
+                queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+            }
+
+            // console.log(" updatedAtFrom line 406 ==============================================================");
+            // console.log(queryParams);
+            // debugger;
+            const queryGetter = await this.queryBuilder(queryParams)
+            // debugger;
+            let responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
+                // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
+                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
+                .orderBy("updated_at", "desc")
+                .offset(offset)
+                .limit(limit);
+
+
+            // // Example: Index a document
+            // await esClient.index({
+            //     index: 'your_index_name',
+            //     body: [
+            //         { name: 'Product 1', price: 9.99 },
+            //         { name: 'Product 2', price: 19.99 },
+            //         { name: 'Product 3', price: 29.99 },
+            //         // Add more documents as needed
+            //     ]
+            // });
+
+            // // Example: Search documents
+            // const keyword = req.input('searchKeyword'); // Assuming 'searchKeyword' is the name of the input field
+
+            // const { body } = await esClient.search({
+            //     index: 'products',
+            //     body: {
+            //         query: {
+            //             match: {
+            //                 name: keyword
+            //             }
+            //         }
+            //     }
+            // });
+
+            // const keyword = 'apple'; // Replace with your dynamic keyword
+            // const minPrice = 10; // Replace with your dynamic minimum price
+
+            // const { body } = await esClient.search({
+            //     index: 'products',
+            //     body: {
+            //         query: {
+            //             bool: {
+            //                 must: [
+            //                     {
+            //                         match: {
+            //                             name: keyword
+            //                         }
+            //                     },
+            //                     {
+            //                         range: {
+            //                             price: {
+            //                                 gte: minPrice
+            //                             }
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     }
+            // });
+
+            // // Dynamic field name and keyword
+            // const fieldName = 'name'; // Replace with your dynamic field name
+            // const keyword = 'apple'; // Replace with your dynamic keyword
+            // const minPrice = 10; // Replace with your dynamic minimum price
+
+            // const { body } = await esClient.search({
+            //     index: 'products',
+            //     body: {
+            //         query: {
+            //             bool: {
+            //                 must: [
+            //                     {
+            //                         prefix: {
+            //                             [fieldName]: keyword
+            //                         }
+            //                     },
+            //                     {
+            //                         range: {
+            //                             price: {
+            //                                 gte: minPrice
+            //                             }
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     }
+            // });
+
+// modify it to accomadate multiple fieldName with their keyword
+// Using "match"
+//             const fieldKeywords = [
+//                 { fieldName: 'name', keyword: 'apple' },
+//                 { fieldName: 'description', keyword: 'juicy' },
+//                 // Add more field name and keyword pairs as needed
+//             ];
+
+//             const minPrice = 10; // Replace with your dynamic minimum price
+
+//             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
+//                 match: { [fieldName]: keyword }
+//             }));
+
+//             // Add the range query for price
+//             mustQueries.push({
+//                 range: { price: { gte: minPrice } }
+//             });
+
+//             // Perform the search using the dynamic field names and keywords
+//             const { body } = await esClient.search({
+//                 index: 'products',
+//                 body: {
+//                     query: {
+//                         bool: {
+//                             must: mustQueries
+//                         }
+//                     }
+//                 }
+//             });
+
+// // modify it to accomadate multiple fieldName with their keyword
+// // Using "match"
+//             // Assume you have an array of field name and keyword pairs
+//             const fieldKeywords = [
+//                 { fieldName: 'name', keyword: 'apple' },
+//                 { fieldName: 'description', keyword: 'juicy' },
+//                 // Add more field name and keyword pairs as needed
+//             ];
+
+//             const minPrice = 10; // Replace with your dynamic minimum price
+
+//             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
+//                 prefix: { [fieldName]: keyword }
+//             }));
+
+//             // Add the range query for price
+//             mustQueries.push({
+//                 range: { price: { gte: minPrice } }
+//             });
+
+//             // Perform the search using the dynamic field names and keywords
+//             const { body } = await esClient.search({
+//                 index: 'products',
+//                 body: {
+//                     query: {
+//                         bool: {
+//                             must: mustQueries
+//                         }
+//                     }
+//                 }
+//             });
+
+
+
+            // Example: Perform other Elasticsearch operations as needed
+            // Refer to the Elasticsearch JavaScript client documentation for more details: https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/index.html
+
+            // console.log("Response data in investment service:", responseData)
+            // debugger;
+            return responseData
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
 
     public async collateAboutToBeMatureInvestment(queryParams: any): Promise<Investment[] | any> {
         // const trx = await Database.transaction();

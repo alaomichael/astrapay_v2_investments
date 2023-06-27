@@ -300,14 +300,15 @@ export default class ApprovalsController {
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
       const { approvalStatus, assignedTo, processedBy, } = request.body();
-      let { isRolloverSuspended, isPayoutSuspended, } = request.body();
+      const { isRolloverSuspended, isPayoutSuspended, } = request.body();
+      debugger
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
       rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ days: 3 });
       payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ days: 3 });
 
       // console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
       // console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
-      debugger
+      // debugger
       // remark
       // check if the request is not existing
       let approval;
@@ -426,9 +427,9 @@ export default class ApprovalsController {
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
         // console.log("Approval.approvalStatus: ===========================================>", record.status)
-        isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
-        isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
-        debugger
+        // isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
+        // isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
+        // debugger
         if (approval.requestType === "start_investment" && approval.approvalStatus === "approved" && record.status === "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment request processing line 511: ===========================================>")
           // newStatus = "submitted";
@@ -2418,6 +2419,7 @@ export default class ApprovalsController {
           record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
           record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
           record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
+          record.isRolloverSuspended = isRolloverSuspended;
           // Data to send for transfer of fund
           let { id,
             rolloverDone,
@@ -3047,6 +3049,7 @@ export default class ApprovalsController {
           // TODO: Just commented out on frontend request on 23-06-2023
           newStatus = "rollover_suspended";
           record.status = newStatus;
+          debugger
           // update timeline
           timelineObject = {
             id: uuid(),
@@ -3110,9 +3113,9 @@ export default class ApprovalsController {
           // TODO: Just commented out on frontend request on 23-06-2023
           newStatus = "payout_activated"; 
           record.status = newStatus;
-                    record.isRolloverSuspended = isRolloverSuspended;
+          record.isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
-          record.isPayoutSuspended = isPayoutSuspended;
+          record.isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
           record.payoutReactivationDate = payoutReactivationDate;
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
@@ -3633,9 +3636,9 @@ export default class ApprovalsController {
           newStatus = "payout_suspended";
           record.status = newStatus;
           // record.requestType = "payout_investment";
-          record.isRolloverSuspended = isRolloverSuspended;
+          record.isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
-          record.isPayoutSuspended = isPayoutSuspended;
+          record.isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
           record.payoutReactivationDate = payoutReactivationDate;
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
