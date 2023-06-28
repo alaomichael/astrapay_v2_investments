@@ -51,7 +51,7 @@ export default class extends BaseSeeder {
                                 currentType.createdBy = "seeding";
                                 // remove the array of duration property from currentType object
                                 const { duration, ...currentTypeWithOutDurationProperty } = currentType;
-                                console.log(currentTypeWithOutDurationProperty)
+                                // console.log(currentTypeWithOutDurationProperty)
                                 // console.log(currentType);
                                 // console.log(" currentType.duration line 114 =============", currentType.duration);
                                 let newInvestmentType = await Type.create(currentTypeWithOutDurationProperty)

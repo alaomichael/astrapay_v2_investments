@@ -22,12 +22,12 @@ export default class RfiRecordsController {
     public async showByExternalRfiRecordId({ params, request, response, }: HttpContextContract) {
         console.log("RfiRecord params: ", params);
         const { externalRfiRecordId } = request.params();
-        console.log("RfiRecord params externalRfiRecordId: ", externalRfiRecordId);
+        // console.log("RfiRecord params externalRfiRecordId: ", externalRfiRecordId);
         try {
             const rfiRecordsService = new RfiRecordsServices();
             // let rfiRecord = await RfiRecord.query().where({ id: externalRfiRecordId }).preload("timelines", (query) => {query.orderBy("createdAt", "desc"); }).first();
             let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
-            if (!rfiRecord) return response.json({ status: "FAILED", data: {} });
+            if (!rfiRecord) return response.json({ status: "FAILED", data: null });
             return response
                 .status(200)
                 .json({ status: "OK", data: rfiRecord });
@@ -54,12 +54,12 @@ export default class RfiRecordsController {
     public async showByRfiRecordId({ params, request, response, }: HttpContextContract) {
         console.log("RfiRecord params: ", params);
         const { rfiRecordId } = request.params();
-        console.log("RfiRecord params rfiRecordId: ", rfiRecordId);
+        // console.log("RfiRecord params rfiRecordId: ", rfiRecordId);
         try {
             const rfiRecordsService = new RfiRecordsServices();
             // let rfiRecord = await RfiRecord.query().where({ id: rfiRecordId }).preload("timelines", (query) => {query.orderBy("createdAt", "desc"); }).first();
             let rfiRecord = await rfiRecordsService.getRfiRecordByRfiRecordId(rfiRecordId);
-            if (!rfiRecord) return response.json({ status: "FAILED", data: {} });
+            if (!rfiRecord) return response.json({ status: "FAILED", data: null });
             return response
                 .status(200)
                 .json({ status: "OK", data: rfiRecord });
@@ -156,12 +156,12 @@ export default class RfiRecordsController {
                 // otherInformation: otherInformation,
                 // generalVerificationRequirementId: generalVerificationRequirementId,
             }
-            console.log("Request body validation line 104", payload);
+            // console.log("Request body validation line 104", payload);
             // debugger
             // get rfirecord by id
             const selectedRfiRecord = await rfirecordsService.getRfiRecordByRfiRecordId(id);
-            console.log(" Selected RfiRecord ==============================");
-            console.log(selectedRfiRecord)
+            // console.log(" Selected RfiRecord ==============================");
+            // console.log(selectedRfiRecord)
             if (!selectedRfiRecord) {
                 throw new Error(`RfiRecord with Id: ${id} does not exist, please check and try again.`);
             }
@@ -211,8 +211,8 @@ export default class RfiRecordsController {
             console.log("RfiRecord query: ", request.qs());
             // get rfirecord by id
             const selectedRfiRecord = await rfirecordsService.getRfiRecordByRfiRecordId(id);
-            console.log(" Selected RfiRecord ==============================");
-            console.log(selectedRfiRecord)
+            // console.log(" Selected RfiRecord ==============================");
+            // console.log(selectedRfiRecord)
 
             if (selectedRfiRecord === null || selectedRfiRecord === undefined) {
                 // throw Error(`RfiRecord with id: ${id} does not exist.`)
@@ -221,7 +221,7 @@ export default class RfiRecordsController {
             }
 
             const rfirecord = await rfirecordsService.deleteRfiRecord(selectedRfiRecord);
-            console.log("Deleted data:", rfirecord);
+            // console.log("Deleted data:", rfirecord);
             return response.json({
                 status: "OK",
                 data: { isDeleted: rfirecord?.$isDeleted }

@@ -57,8 +57,8 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         let senderPhoneNumber = phone;
         let senderAccountName = rfiName;
         // let approvalIsAutomated = false
-        console.log("payoutNotificationEmail [0].email  line 60:", payoutNotificationEmail[0].email);
-        console.log("investmentWalletId setting line 61:", investmentWalletId);
+        // console.log("payoutNotificationEmail [0].email  line 60:", payoutNotificationEmail[0].email);
+        // console.log("investmentWalletId setting line 61:", investmentWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
 debugger
         const headers = {
@@ -185,7 +185,7 @@ debugger
             debugger
 
             if (response.status == 200) {
-                console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 177: ", response.data);
+                // console.log("The ASTRAPAY API response data @ creditUserWalletWithInterest line 177: ", response.data);
                 debugger
                 // return response.data;
                 return response;

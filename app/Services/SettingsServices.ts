@@ -24,7 +24,7 @@ export default class SettingsServices {
                     payoutWalletId, } = setting;
                 const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
                 if (setting.investmentWalletId) {
-                    console.log("setting.investmentWalletId ", setting.investmentWalletId)
+                    // console.log("setting.investmentWalletId ", setting.investmentWalletId)
                     const serviceAccount: ServiceAccountType = {
                         accountNumber: investmentWalletId,//"2056750534",
                         id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
@@ -51,7 +51,7 @@ export default class SettingsServices {
                 }
 
                 if (setting.payoutWalletId) {
-                    console.log("setting.payoutWalletId ", setting.payoutWalletId)
+                    // console.log("setting.payoutWalletId ", setting.payoutWalletId)
                     const serviceAccount: ServiceAccountType = {
                         accountNumber: payoutWalletId,//"2056750534",
                         id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
@@ -150,7 +150,7 @@ export default class SettingsServices {
             await saveSetting.save();
             debugger
             if (investmentWalletId) {
-                console.log("updateSetting.investmentWalletId ", updateSetting.investmentWalletId)
+                // console.log("updateSetting.investmentWalletId ", updateSetting.investmentWalletId)
                 const serviceAccount: ServiceAccountType = {
                     accountNumber: investmentWalletId,//"2056750534",
                     id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
@@ -177,7 +177,7 @@ export default class SettingsServices {
             }
 
             if (payoutWalletId) {
-                console.log("updateSetting.payoutWalletId ", updateSetting.payoutWalletId)
+                // console.log("updateSetting.payoutWalletId ", updateSetting.payoutWalletId)
                 const serviceAccount: ServiceAccountType = {
                     accountNumber: payoutWalletId,//"2056750534",
                     id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",

@@ -318,7 +318,7 @@ export default class InvestmentsServices {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                        console.log("getNumberOfAttempt line 305 =====", getNumberOfAttempt[1]);
+                        // console.log("getNumberOfAttempt line 305 =====", getNumberOfAttempt[1]);
                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -1041,7 +1041,7 @@ export default class InvestmentsServices {
                         // update the value for number of attempts
                         // get the current investmentRef, split , add one to the current number, update and try again
                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                        console.log("getNumberOfAttempt line 1011 =====", getNumberOfAttempt[1]);
+                        // console.log("getNumberOfAttempt line 1011 =====", getNumberOfAttempt[1]);
                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -1323,7 +1323,7 @@ export default class InvestmentsServices {
                 //   return response.status(400).json({
                 //     status: 'OK',
                 //     message: 'investment approval request was not successful, please try again.',
-                //     data: {},
+                //     data: null,
                 //   })
                 // }
                 const approvalsService = new ApprovalsServices()
@@ -1346,8 +1346,9 @@ export default class InvestmentsServices {
                 // check if the approval request is not existing
                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
                 if (!approvalRequestIsExisting) {
-                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                    console.log("new ApprovalRequest object line 1740:", newApprovalRequest);
+                    await approvalsService.createApproval(approvalObject);
+                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                    // console.log("new ApprovalRequest object line 1740:", newApprovalRequest);
                 }
 
             } else if (approvalIsAutomated === true) {
@@ -1396,8 +1397,9 @@ export default class InvestmentsServices {
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                 // console.log(" Current log, line 840 :", currentInvestment);
                 // send for update
-                let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                console.log(" Current log, line 843 :", updatedInvestment);
+                await investmentsService.updateInvestment(currentInvestment, investment);
+                // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                // console.log(" Current log, line 843 :", updatedInvestment);
 
                 // console.log("Updated record Status line 845: ", record);
 
@@ -1691,68 +1693,68 @@ export default class InvestmentsServices {
             //     }
             // });
 
-// modify it to accomadate multiple fieldName with their keyword
-// Using "match"
-//             const fieldKeywords = [
-//                 { fieldName: 'name', keyword: 'apple' },
-//                 { fieldName: 'description', keyword: 'juicy' },
-//                 // Add more field name and keyword pairs as needed
-//             ];
+            // modify it to accomadate multiple fieldName with their keyword
+            // Using "match"
+            //             const fieldKeywords = [
+            //                 { fieldName: 'name', keyword: 'apple' },
+            //                 { fieldName: 'description', keyword: 'juicy' },
+            //                 // Add more field name and keyword pairs as needed
+            //             ];
 
-//             const minPrice = 10; // Replace with your dynamic minimum price
+            //             const minPrice = 10; // Replace with your dynamic minimum price
 
-//             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
-//                 match: { [fieldName]: keyword }
-//             }));
+            //             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
+            //                 match: { [fieldName]: keyword }
+            //             }));
 
-//             // Add the range query for price
-//             mustQueries.push({
-//                 range: { price: { gte: minPrice } }
-//             });
+            //             // Add the range query for price
+            //             mustQueries.push({
+            //                 range: { price: { gte: minPrice } }
+            //             });
 
-//             // Perform the search using the dynamic field names and keywords
-//             const { body } = await esClient.search({
-//                 index: 'products',
-//                 body: {
-//                     query: {
-//                         bool: {
-//                             must: mustQueries
-//                         }
-//                     }
-//                 }
-//             });
+            //             // Perform the search using the dynamic field names and keywords
+            //             const { body } = await esClient.search({
+            //                 index: 'products',
+            //                 body: {
+            //                     query: {
+            //                         bool: {
+            //                             must: mustQueries
+            //                         }
+            //                     }
+            //                 }
+            //             });
 
-// // modify it to accomadate multiple fieldName with their keyword
-// // Using "match"
-//             // Assume you have an array of field name and keyword pairs
-//             const fieldKeywords = [
-//                 { fieldName: 'name', keyword: 'apple' },
-//                 { fieldName: 'description', keyword: 'juicy' },
-//                 // Add more field name and keyword pairs as needed
-//             ];
+            // // modify it to accomadate multiple fieldName with their keyword
+            // // Using "match"
+            //             // Assume you have an array of field name and keyword pairs
+            //             const fieldKeywords = [
+            //                 { fieldName: 'name', keyword: 'apple' },
+            //                 { fieldName: 'description', keyword: 'juicy' },
+            //                 // Add more field name and keyword pairs as needed
+            //             ];
 
-//             const minPrice = 10; // Replace with your dynamic minimum price
+            //             const minPrice = 10; // Replace with your dynamic minimum price
 
-//             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
-//                 prefix: { [fieldName]: keyword }
-//             }));
+            //             const mustQueries = fieldKeywords.map(({ fieldName, keyword }) => ({
+            //                 prefix: { [fieldName]: keyword }
+            //             }));
 
-//             // Add the range query for price
-//             mustQueries.push({
-//                 range: { price: { gte: minPrice } }
-//             });
+            //             // Add the range query for price
+            //             mustQueries.push({
+            //                 range: { price: { gte: minPrice } }
+            //             });
 
-//             // Perform the search using the dynamic field names and keywords
-//             const { body } = await esClient.search({
-//                 index: 'products',
-//                 body: {
-//                     query: {
-//                         bool: {
-//                             must: mustQueries
-//                         }
-//                     }
-//                 }
-//             });
+            //             // Perform the search using the dynamic field names and keywords
+            //             const { body } = await esClient.search({
+            //                 index: 'products',
+            //                 body: {
+            //                     query: {
+            //                         bool: {
+            //                             must: mustQueries
+            //                         }
+            //                     }
+            //                 }
+            //             });
 
 
 
@@ -1904,7 +1906,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2040,7 +2042,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2141,7 +2143,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -2213,8 +2215,8 @@ export default class InvestmentsServices {
             // console.log(updatedAtFrom)
             // console.log("updatedAtTo line 151 =========================")
             // console.log(updatedAtTo)
-            console.log("payoutDateTo line 2015 =========================")
-            console.log(payoutDateTo)
+            // console.log("payoutDateTo line 2015 =========================")
+            // console.log(payoutDateTo)
             offset = Number(offset);
             limit = Number(limit);
             //    const settingsService = new SettingsServices();
@@ -2318,7 +2320,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2498,7 +2500,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -3253,7 +3255,7 @@ export default class InvestmentsServices {
                                 // update the value for number of attempts
                                 // get the current investmentRef, split , add one to the current number, update and try again
                                 let getNumberOfAttempt = investmentRequestReference.split("_");
-                                console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
+                                // console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
                                 let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                 let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -3271,7 +3273,7 @@ export default class InvestmentsServices {
                                     senderPhoneNumber,
                                     senderEmail,
                                     rfiCode)
-                                debugger
+                                // debugger
                                 // console.log("debitUserWalletForInvestment reponse data 2138 ==================================", debitUserWalletForInvestment)
                                 // if successful
                                 if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
@@ -3448,7 +3450,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -3840,7 +3842,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -3998,10 +4000,10 @@ export default class InvestmentsServices {
                         // TESTING
                         // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         // let duration = 4
-                        console.log('Time investment was started line 2249: ', startDate)
+                        // console.log('Time investment was started line 2249: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2252:', isDueForPayout)
+                        // console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
                         // debugger
                         const settingsService = new SettingsServices();
@@ -4042,7 +4044,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4066,8 +4068,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                                                        await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4222,7 +4225,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4246,8 +4249,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4380,7 +4384,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -4516,13 +4520,13 @@ export default class InvestmentsServices {
                     // console.log('Investment Info, line 2331: ', investment)
                     // debugger
                     if (investment && investment.$original.status == "payout_suspended") {
-                        console.log('investment search data :', investment.$original)
+                        // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
-                        console.log('Time investment was started line 2249: ', startDate)
+                        // console.log('Time investment was started line 2249: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2252:', isDueForPayout)
+                        // console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
                         // debugger
                         const settingsService = new SettingsServices();
@@ -4531,7 +4535,7 @@ export default class InvestmentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2260:', settings)
+                        // console.log('Approval setting line 2260:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -4563,7 +4567,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4587,8 +4591,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4743,7 +4748,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4900,7 +4905,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -5092,7 +5097,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5263,7 +5268,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5415,7 +5420,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -5550,10 +5555,10 @@ export default class InvestmentsServices {
                     if (investment && investment.$original.status == "rollover_suspended") {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
-                        console.log('Time investment was started line 2904: ', startDate)
+                        // console.log('Time investment was started line 2904: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2907:', isDueForPayout)
+                        // console.log('Is due for payout status line 2907:', isDueForPayout)
                         // debugger
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -5561,7 +5566,7 @@ export default class InvestmentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2916:', settings)
+                        // console.log('Approval setting line 2916:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -5593,7 +5598,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5617,8 +5622,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5767,7 +5773,7 @@ export default class InvestmentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5791,8 +5797,9 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5918,7 +5925,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -6026,8 +6033,8 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 3391 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 3391 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -6147,11 +6154,11 @@ export default class InvestmentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 6185: ', startDate)
+                            // console.log('Time investment was started line 6185: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 6189:', isDueForPayout)
+                            // console.log('Is due for payout status line 6189:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -6242,12 +6249,12 @@ export default class InvestmentsServices {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 5698 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 5698 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1; //Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 5702 ==================")
-                                        console.log(newPaymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 5702 ==================")
+                                        // console.log(newPaymentReference);
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
                                         record.numberOfAttempts = updatedNumberOfAttempts;
@@ -6313,7 +6320,7 @@ export default class InvestmentsServices {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 5766 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 5766 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -6347,8 +6354,8 @@ export default class InvestmentsServices {
 
                                     // if successful
                                     let decPl = 3;
-                                    console.log(" creditUserWalletWithPrincipal line 6405 ===============", creditUserWalletWithPrincipal);
-                                    console.log(" creditUserWalletWithInterest line 6406 ===============", creditUserWalletWithInterest);
+                                    // console.log(" creditUserWalletWithPrincipal line 6405 ===============", creditUserWalletWithPrincipal);
+                                    // console.log(" creditUserWalletWithInterest line 6406 ===============", creditUserWalletWithInterest);
                                     debugger
                                     // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
@@ -6557,7 +6564,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -6565,7 +6572,7 @@ export default class InvestmentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -6574,7 +6581,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -6680,8 +6687,8 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 3924 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 3924 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -6793,11 +6800,11 @@ export default class InvestmentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 2325: ', startDate)
+                            // console.log('Time investment was started line 2325: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 2329:', isDueForPayout)
+                            // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -7499,8 +7506,8 @@ export default class InvestmentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForPrincipal)
-                                            debugger
+                                                descriptionForPrincipal);
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7650,7 +7657,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -7658,7 +7665,7 @@ export default class InvestmentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -7667,7 +7674,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
 
@@ -7774,8 +7781,8 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 7929 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 7929 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is liquidated for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -7887,11 +7894,11 @@ export default class InvestmentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 8042: ', startDate)
+                            // console.log('Time investment was started line 8042: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 8046:', isDueForPayout)
+                            // console.log('Is due for payout status line 8046:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -8196,7 +8203,7 @@ export default class InvestmentsServices {
                                             principalPayoutRequestReference = newPaymentReference;
                                             record.principalPayoutRequestReference = principalPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
-                                            debugger
+                                            // debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                                             // console.log(" Current log, line 8468 :", currentInvestment);
@@ -8215,7 +8222,7 @@ export default class InvestmentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8358,10 +8365,10 @@ export default class InvestmentsServices {
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     await trx.commit();
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
-                                    console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
+                                    // console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
 
-                                    console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
-                                    debugger
+                                    // console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
+                                    // debugger
                                     // throw Error();
                                     //}
                                 } else {
@@ -8370,7 +8377,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -8378,7 +8385,7 @@ export default class InvestmentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -8387,7 +8394,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
 
@@ -8492,8 +8499,8 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 2725 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 2725 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -8604,11 +8611,11 @@ export default class InvestmentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 2325: ', startDate)
+                            // console.log('Time investment was started line 2325: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 2329:', isDueForPayout)
+                            // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -9306,8 +9313,8 @@ export default class InvestmentsServices {
 
                                     }
                                     // debugger
-                                    console.log(" creditUserWalletWithPrincipal, line 9950 :", creditUserWalletWithPrincipal);
-                                    console.log(" creditUserWalletWithInterest , line 9951 :", creditUserWalletWithInterest);
+                                    // console.log(" creditUserWalletWithPrincipal, line 9950 :", creditUserWalletWithPrincipal);
+                                    // console.log(" creditUserWalletWithInterest , line 9951 :", creditUserWalletWithInterest);
                                     // update record
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 9954 :", currentInvestment);
@@ -9324,7 +9331,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -9332,7 +9339,7 @@ export default class InvestmentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -9341,7 +9348,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
 
@@ -9561,11 +9568,11 @@ export default class InvestmentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 3841: ', startDate)
+                            // console.log('Time investment was started line 3841: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 3845:', isDueForPayout)
+                            // console.log('Is due for payout status line 3845:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //   record.isPayoutAuthorized === true,
@@ -10257,7 +10264,7 @@ export default class InvestmentsServices {
                                                 // update the value for number of attempts
                                                 // get the current investmentRef, split , add one to the current number, update and try again
                                                 let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                                                console.log("getNumberOfAttempt line 9635 =====", getNumberOfAttempt[1]);
+                                                // console.log("getNumberOfAttempt line 9635 =====", getNumberOfAttempt[1]);
                                                 let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                                 let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -10461,7 +10468,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -10469,7 +10476,7 @@ export default class InvestmentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'This investment is not mature for rollover.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -10478,7 +10485,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Rollover of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -10562,7 +10569,7 @@ export default class InvestmentsServices {
             // } else {
             //     selectedDate = currentDate;
             // }
-            console.log("investmentId   ======", investmentId)
+            // console.log("investmentId   ======", investmentId)
             // debugger
             let responseData = await Database
                 .from('investments')
@@ -10703,7 +10710,7 @@ export default class InvestmentsServices {
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 10139:', isDueForPayout)
+                            // console.log('Is due for payout status line 10139:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -10774,7 +10781,7 @@ export default class InvestmentsServices {
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
-                                    debugger
+                                    // debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                     if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
@@ -10788,7 +10795,7 @@ export default class InvestmentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9417 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         record.numberOfAttempts = numberOfAttempts;
@@ -10808,12 +10815,12 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                        debugger
+                                        // debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 10186 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 10186 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1;//  Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -10840,7 +10847,7 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                        debugger
+                                        // debugger
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -10858,7 +10865,7 @@ export default class InvestmentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9480 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         record.numberOfAttempts = numberOfAttempts;
@@ -10878,13 +10885,13 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 10253 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 10253 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -10911,7 +10918,7 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
                                     }
 
 
@@ -11056,7 +11063,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        debugger
+                                        // debugger
                                         // Save the updated record
                                         // await record.save();
                                         // update record
@@ -11107,7 +11114,7 @@ export default class InvestmentsServices {
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 8045 :", currentInvestment);
-                                        debugger
+                                        // debugger
                                         // send for update
                                         const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
@@ -11120,9 +11127,9 @@ export default class InvestmentsServices {
                                         throw Error();
                                     }
 
-                                    console.log("creditUserWalletWithPrincipal line 12004 ====", creditUserWalletWithPrincipal);
-                                    console.log("creditUserWalletWithInterest line 12006 ====", creditUserWalletWithInterest);
-                                    debugger
+                                    // console.log("creditUserWalletWithPrincipal line 12004 ====", creditUserWalletWithPrincipal);
+                                    // console.log("creditUserWalletWithInterest line 12006 ====", creditUserWalletWithInterest);
+                                    // debugger
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
                                     // commit transaction and changes to database
@@ -11130,7 +11137,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else if (isDueForPayout === false) {
@@ -11203,7 +11210,7 @@ export default class InvestmentsServices {
                                     debugger
                                     // console.log(" interestDueOnInvestment before penalty deduction =======", interestDueOnInvestment)
                                     interestDueOnInvestment = interestDueOnInvestment - penalty;
-                                    console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
+                                    // console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
                                     // debugger
                                     // NEW CODE START
                                     // let beneficiaryName = `${firstName} ${lastName}`;
@@ -11250,12 +11257,12 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal)
-                                        debugger
+                                        // debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 10615 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 10615 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -11283,7 +11290,7 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal)
-                                        debugger
+                                        // debugger
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -11301,7 +11308,7 @@ export default class InvestmentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 12174 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         record.numberOfAttempts = numberOfAttempts;
@@ -11321,13 +11328,13 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
-                                        debugger
+                                        // debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
-                                        console.log("getNumberOfAttempt line 10683 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 10683 =====", getNumberOfAttempt[1]);
                                         let updatedNumberOfAttempts = numberOfAttempts + 1; //Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
@@ -11354,7 +11361,7 @@ export default class InvestmentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
-                                        debugger
+                                        // debugger
                                     }
 
 
@@ -11385,7 +11392,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        debugger
+                                        // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -11454,7 +11461,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        debugger
+                                        // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -11523,7 +11530,7 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
-                                        debugger
+                                        // debugger
                                         record.penalty = penalty;
                                         record.interestDueOnInvestment = interestDueOnInvestment;
                                         record.totalAmountToPayout = amount + interestDueOnInvestment;
@@ -11592,23 +11599,23 @@ export default class InvestmentsServices {
                                         // console.log(" creditUserWalletWithPrincipal message line 11025 ================", creditUserWalletWithPrincipal.message);
                                         // console.log(" creditUserWalletWithInterest message line 11026 ================", creditUserWalletWithInterest.message);
 
-                                        debugger
+                                        // debugger
                                         // creditUserWalletWithPrincipal && 
 
                                         // commit transaction and changes to database
                                         await trx.commit();
                                         if (creditUserWalletWithPrincipal.status && creditUserWalletWithPrincipal.message && creditUserWalletWithInterest.status && creditUserWalletWithInterest.message) {
                                             throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message} and creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
-                                            debugger
+                                            // debugger
                                         } else if (creditUserWalletWithPrincipal.status && creditUserWalletWithPrincipal.message && !creditUserWalletWithInterest.status && !creditUserWalletWithInterest.message) {
                                             throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
-                                            debugger
+                                            // debugger
                                         } else if (creditUserWalletWithInterest.status && creditUserWalletWithInterest.message && !creditUserWalletWithPrincipal.status && !creditUserWalletWithPrincipal.message) {
                                             throw Error(`creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
-                                            debugger
+                                            // debugger
                                         } else {
                                             throw Error(`Failed payout of principal and interest, please try again later.`);
-                                            debugger
+                                            // debugger
                                         }
 
                                     }
@@ -11620,7 +11627,7 @@ export default class InvestmentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
 
@@ -11633,7 +11640,7 @@ export default class InvestmentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -12286,8 +12293,8 @@ export default class InvestmentsServices {
             }
             predicateExists()
             predicate = predicate + "(" + orPredicate + ")"
-            console.log(" predicate line 6112 ================================================================");
-            console.log(predicate);
+            // console.log(" predicate line 6112 ================================================================");
+            // console.log(predicate);
         }
 
         if (queryFields.label) {

@@ -1283,7 +1283,7 @@ export default class PaymentsServices {
             //     //   return response.status(400).json({
             //     //     status: 'OK',
             //     //     message: 'investment approval request was not successful, please try again.',
-            //     //     data: {},
+            //     //     data: null,
             //     //   })
             //     // }
             //     const approvalsService = new ApprovalsServices()
@@ -1892,10 +1892,10 @@ export default class PaymentsServices {
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
-                                        console.log(paymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
+                                        // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
                                         debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -1920,12 +1920,12 @@ export default class PaymentsServices {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("/");
-                                        console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
                                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
-                                        console.log(newPaymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
+                                        // console.log(newPaymentReference);
                                         interestPayoutRequestReference = newPaymentReference;
                                         record.interestPayoutRequestReference = interestPayoutRequestReference;
                                         // update record
@@ -2159,7 +2159,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -2167,7 +2167,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -2176,7 +2176,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -2530,7 +2530,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2660,7 +2660,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2757,7 +2757,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -2885,7 +2885,7 @@ export default class PaymentsServices {
                         // console.log('Time investment was started line 1469: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 1472:', isDueForPayout)
+                        // console.log('Is due for payout status line 1472:', isDueForPayout)
                         // let amt = investment.amount
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -2893,7 +2893,7 @@ export default class PaymentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 1480:', settings)
+                        // console.log('Approval setting line 1480:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -2925,7 +2925,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -2949,8 +2949,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -3103,7 +3104,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 494");
                         //                 await trx.commit();
@@ -3497,17 +3498,17 @@ export default class PaymentsServices {
                                 // update the value for number of attempts
                                 // get the current investmentRef, split , add one to the current number, update and try again
                                 let getNumberOfAttempt = investmentRequestReference.split("-");
-                                console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
+                                // console.log("getNumberOfAttempt line 2121 =====", getNumberOfAttempt[1]);
                                 let updatedNumberOfAttempts = numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
                                 let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                 let newPaymentReference = `${uniqueInvestmentRequestReference}-${updatedNumberOfAttempts}`;
-                                console.log("Customer Transaction Reference ,@ InvestmentsServices line 2125 ==================")
-                                console.log(newPaymentReference);
+                                // console.log("Customer Transaction Reference ,@ InvestmentsServices line 2125 ==================")
+                                // console.log(newPaymentReference);
                                 investmentRequestReference = newPaymentReference;
                                 record.investmentRequestReference = newPaymentReference;
                                 record.numberOfAttempts = updatedNumberOfAttempts;
                                 // Send to the endpoint for debit of wallet
-                                debugger
+                                // debugger
                                 let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
                                     senderName,
                                     senderAccountNumber,
@@ -3515,7 +3516,7 @@ export default class PaymentsServices {
                                     senderPhoneNumber,
                                     senderEmail,
                                     rfiCode)
-                                debugger
+                                // debugger
                                 // console.log("debitUserWalletForInvestment reponse data 2138 ==================================", debitUserWalletForInvestment)
                                 // if successful
                                 if (debitUserWalletForInvestment.status == 200) {
@@ -3693,7 +3694,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -3851,10 +3852,10 @@ export default class PaymentsServices {
                         // TESTING
                         // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         // let duration = 4
-                        console.log('Time investment was started line 2249: ', startDate)
+                        // console.log('Time investment was started line 2249: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2252:', isDueForPayout)
+                        // console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
                         // debugger
                         const settingsService = new SettingsServices();
@@ -3895,7 +3896,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -3919,8 +3920,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4075,7 +4077,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4099,8 +4101,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4233,7 +4236,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -4371,10 +4374,10 @@ export default class PaymentsServices {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
-                        console.log('Time investment was started line 2249: ', startDate)
+                        // console.log('Time investment was started line 2249: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2252:', isDueForPayout)
+                        // console.log('Is due for payout status line 2252:', isDueForPayout)
                         // let amt = investment.amount
                         // debugger
                         const settingsService = new SettingsServices();
@@ -4383,7 +4386,7 @@ export default class PaymentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2260:', settings)
+                        // console.log('Approval setting line 2260:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -4415,7 +4418,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4439,8 +4442,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4595,7 +4599,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4619,8 +4623,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest =await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -4752,7 +4757,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 2743");
                         //                 await trx.commit();
@@ -4900,10 +4905,10 @@ export default class PaymentsServices {
                         // TESTING
                         // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                         // let duration = 4
-                        console.log('Time investment was started line 2904: ', startDate)
+                        // console.log('Time investment was started line 2904: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2907:', isDueForPayout)
+                        // console.log('Is due for payout status line 2907:', isDueForPayout)
                         // let amt = investment.amount
                         // debugger
                         const settingsService = new SettingsServices();
@@ -4912,7 +4917,7 @@ export default class PaymentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2916:', settings)
+                        // console.log('Approval setting line 2916:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -4944,7 +4949,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -4968,8 +4973,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5115,7 +5121,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5139,8 +5145,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
+                                     await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5267,7 +5274,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -5402,10 +5409,10 @@ export default class PaymentsServices {
                     if (investment && investment.$original.status == "rollover_suspended") {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
-                        console.log('Time investment was started line 2904: ', startDate)
+                        // console.log('Time investment was started line 2904: ', startDate)
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2907:', isDueForPayout)
+                        // console.log('Is due for payout status line 2907:', isDueForPayout)
                         // debugger
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -5413,7 +5420,7 @@ export default class PaymentsServices {
                             throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
                         }
 
-                        console.log('Approval setting line 2916:', settings)
+                        // console.log('Approval setting line 2916:', settings)
                         // let { isPayoutAutomated, fundingSourceTerminal, isInvestmentAutomated, isRolloverAutomated, } = settings;
                         let { isPayoutAutomated, } = settings;
                         if (isDueForPayout) {
@@ -5445,7 +5452,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5469,8 +5476,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
+                                    await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 2972:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5619,7 +5627,7 @@ export default class PaymentsServices {
                                 //     return response.status(400).json({
                                 //       status: 'OK',
                                 //       message: 'payout approval request was not successful, please try again.',
-                                //       data: {},
+                                //       data: null,
                                 //     })
                                 //   }
                                 // }
@@ -5643,8 +5651,9 @@ export default class PaymentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                    let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-                                    console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
+                                     await approvalsService.createApproval(approvalObject);
+                                    // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+                                    // console.log("new ApprovalRequest object line 3150:", newApprovalRequest);
                                 }
 
                                 // investment = await Investment.query().where('id', investmentId)
@@ -5770,7 +5779,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'no investment matched your search',
-                            data: {},
+                            data: null,
                         }
                         //                 console.log("No Investment is pending disbursement, line 3285");
                         //                 await trx.commit();
@@ -5997,11 +6006,11 @@ export default class PaymentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 6185: ', startDate)
+                            // console.log('Time investment was started line 6185: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 6189:', isDueForPayout)
+                            // console.log('Is due for payout status line 6189:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -6062,10 +6071,10 @@ export default class PaymentsServices {
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
-                                        console.log(paymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
+                                        // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
                                         debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6091,12 +6100,12 @@ export default class PaymentsServices {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-                                        console.log("getNumberOfAttempt line 6276 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 6276 =====", getNumberOfAttempt[1]);
                                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 6280 ==================")
-                                        console.log(newPaymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6280 ==================")
+                                        // console.log(newPaymentReference);
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
                                         // update record
@@ -6117,7 +6126,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                        debugger;
+                                        // debugger;
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -6130,11 +6139,11 @@ export default class PaymentsServices {
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         let numberOfAttempts = 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
-                                        console.log(paymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
+                                        // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                        // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         interestPayoutRequestReference = paymentReference;
@@ -6153,18 +6162,18 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("/");
-                                        console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
                                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
-                                        console.log(newPaymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
+                                        // console.log(newPaymentReference);
                                         interestPayoutRequestReference = newPaymentReference;
                                         record.interestPayoutRequestReference = interestPayoutRequestReference;
                                         // update record
@@ -6185,7 +6194,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
                                     }
 
                                     // NEW CODE END
@@ -6398,7 +6407,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -6406,7 +6415,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -6415,7 +6424,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -6521,8 +6530,8 @@ export default class PaymentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 3924 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 3924 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -6634,11 +6643,11 @@ export default class PaymentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 2325: ', startDate)
+                            // console.log('Time investment was started line 2325: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 2329:', isDueForPayout)
+                            // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -6699,10 +6708,10 @@ export default class PaymentsServices {
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             let numberOfAttempts = 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}/${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
-                                            console.log(paymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
+                                            // console.log(paymentReference);
                                             let getNumberOfAttempt = paymentReference.split("/");
-                                            console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                            // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6850,12 +6859,12 @@ export default class PaymentsServices {
                                             // update the value for number of attempts
                                             // get the current investmentRef, split , add one to the current number, update and try again
                                             let getNumberOfAttempt = interestPayoutRequestReference.split("/");
-                                            console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
+                                            // console.log("getNumberOfAttempt line 817 =====", getNumberOfAttempt[1]);
                                             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                             let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 7052 ==================")
-                                            console.log(newPaymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 7052 ==================")
+                                            // console.log(newPaymentReference);
                                             interestPayoutRequestReference = newPaymentReference;
                                             record.interestPayoutRequestReference = interestPayoutRequestReference;
                                             // update record
@@ -6877,7 +6886,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
@@ -7148,11 +7157,11 @@ export default class PaymentsServices {
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             let numberOfAttempts = 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
-                                            console.log(paymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
+                                            // console.log(paymentReference);
                                             let getNumberOfAttempt = paymentReference.split("/");
                                             console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
-                                            debugger;
+                                            // debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             interestPayoutRequestReference = paymentReference;
@@ -7171,7 +7180,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7301,12 +7310,12 @@ export default class PaymentsServices {
                                             // update the value for number of attempts
                                             // get the current investmentRef, split , add one to the current number, update and try again
                                             let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-                                            console.log("getNumberOfAttempt line 7495 =====", getNumberOfAttempt[1]);
+                                            // console.log("getNumberOfAttempt line 7495 =====", getNumberOfAttempt[1]);
                                             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                             let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
-                                            console.log(newPaymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6412 ==================")
+                                            // console.log(newPaymentReference);
                                             principalPayoutRequestReference = newPaymentReference;
                                             record.principalPayoutRequestReference = principalPayoutRequestReference;
                                             // update record
@@ -7327,7 +7336,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7478,7 +7487,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -7486,7 +7495,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -7495,7 +7504,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
 
@@ -7602,8 +7611,8 @@ export default class PaymentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 7929 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 7929 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is liquidated for payout or wallet has been successfully credited. Please, check and try again.`)
@@ -7715,11 +7724,11 @@ export default class PaymentsServices {
                             // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
                             // let startDate = DateTime.now().minus({ days: 5 }).toISO()
                             // let duration = 4
-                            console.log('Time investment was started line 8042: ', startDate)
+                            // console.log('Time investment was started line 8042: ', startDate)
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 8046:', isDueForPayout)
+                            // console.log('Is due for payout status line 8046:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -7786,7 +7795,7 @@ export default class PaymentsServices {
                                             // console.log(paymentReference);
                                             // let getNumberOfAttempt = paymentReference.split("/");
                                             // console.log("getNumberOfAttempt line 8110 =====", getNumberOfAttempt[1]);
-                                            debugger;
+                                            // debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             interestPayoutRequestReference = paymentReference;
@@ -7805,18 +7814,18 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                            debugger
+                                            // debugger
 
                                         } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                             // update the value for number of attempts
                                             // get the current investmentRef, split , add one to the current number, update and try again
                                             let getNumberOfAttempt = interestPayoutRequestReference.split("/");
-                                            console.log("getNumberOfAttempt line 8135 =====", getNumberOfAttempt[1]);
+                                            // console.log("getNumberOfAttempt line 8135 =====", getNumberOfAttempt[1]);
                                             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                             let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 8139 ==================")
-                                            console.log(newPaymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8139 ==================")
+                                            // console.log(newPaymentReference);
                                             interestPayoutRequestReference = newPaymentReference;
                                             record.interestPayoutRequestReference = interestPayoutRequestReference;
                                             // update record
@@ -7837,7 +7846,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest);
-                                            debugger
+                                            // debugger
                                         }
 
                                     } //else 
@@ -7877,7 +7886,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8008,12 +8017,12 @@ export default class PaymentsServices {
                                             // update the value for number of attempts
                                             // get the current investmentRef, split , add one to the current number, update and try again
                                             let getNumberOfAttempt = principalPayoutRequestReference.split("_");
-                                            console.log("getNumberOfAttempt line 8458 =====", getNumberOfAttempt[1]);
+                                            // console.log("getNumberOfAttempt line 8458 =====", getNumberOfAttempt[1]);
                                             let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                             let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                             let newPaymentReference = `${uniqueInvestmentRequestReference}_${numberOfAttempts}`;
-                                            console.log("Customer Transaction Reference ,@ InvestmentsServices line 8462 ==================")
-                                            console.log(newPaymentReference);
+                                            // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8462 ==================")
+                                            // console.log(newPaymentReference);
                                             principalPayoutRequestReference = newPaymentReference;
                                             record.principalPayoutRequestReference = principalPayoutRequestReference;
                                             record.numberOfAttempts = numberOfAttempts;
@@ -8035,7 +8044,7 @@ export default class PaymentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8177,10 +8186,10 @@ export default class PaymentsServices {
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     await trx.commit();
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
-                                    console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
+                                    // console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
 
-                                    console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
-                                    debugger
+                                    // console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
+                                    // debugger
                                     // throw Error();
                                     //}
                                 } else {
@@ -8189,7 +8198,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else {
@@ -8197,7 +8206,7 @@ export default class PaymentsServices {
                                 return {
                                     status: 'OK',
                                     message: 'this investment is not mature for payout.',
-                                    data: {},
+                                    data: null,
                                 }
                             }
                         }
@@ -8206,7 +8215,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
 
@@ -8291,7 +8300,7 @@ export default class PaymentsServices {
             // } else {
             //     selectedDate = currentDate;
             // }
-            console.log("investmentId   ======", investmentId)
+            // console.log("investmentId   ======", investmentId)
             // debugger
             let responseData = await Database
                 .from('investments')
@@ -8315,8 +8324,8 @@ export default class PaymentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            console.log(" responseData line 5907 ==============")
-            console.log(responseData)
+            // console.log(" responseData line 5907 ==============")
+            // console.log(responseData)
             // debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is eligible for liquidation or wallet has been successfully credited. Please, check and try again.`)
@@ -8432,7 +8441,7 @@ export default class PaymentsServices {
                             // let timelineObject
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 7540:', isDueForPayout)
+                            // console.log('Is due for payout status line 7540:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
@@ -8503,7 +8512,7 @@ export default class PaymentsServices {
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
-                                    debugger
+                                    // debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                     if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
@@ -8516,7 +8525,7 @@ export default class PaymentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9417 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         principalPayoutRequestReference = paymentReference;
@@ -8535,17 +8544,17 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                        debugger
+                                        // debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("/");
-                                        console.log("getNumberOfAttempt line 9441 =====", getNumberOfAttempt[1]);
+                                        // console.log("getNumberOfAttempt line 9441 =====", getNumberOfAttempt[1]);
                                         let numberOfAttempts = Number(getNumberOfAttempt[1]) + 1;
                                         let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
                                         let newPaymentReference = `${uniqueInvestmentRequestReference}/${numberOfAttempts}`;
-                                        console.log("Customer Transaction Reference ,@ InvestmentsServices line 9445 ==================")
-                                        console.log(newPaymentReference);
+                                        // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9445 ==================")
+                                        // console.log(newPaymentReference);
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
                                         // update record
@@ -8566,7 +8575,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
-                                        debugger
+                                        // debugger
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -8583,7 +8592,7 @@ export default class PaymentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9480 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         interestPayoutRequestReference = paymentReference;
@@ -8602,7 +8611,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -8634,7 +8643,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
                                     }
 
 
@@ -8859,9 +8868,9 @@ export default class PaymentsServices {
                                         throw Error();
                                     }
 
-                                    console.log("creditUserWalletWithPrincipal line 12004 ====", creditUserWalletWithPrincipal);
-                                    console.log("creditUserWalletWithInterest line 12006 ====", creditUserWalletWithInterest);
-                                    debugger
+                                    // console.log("creditUserWalletWithPrincipal line 12004 ====", creditUserWalletWithPrincipal);
+                                    // console.log("creditUserWalletWithInterest line 12006 ====", creditUserWalletWithInterest);
+                                    // debugger
                                 } else {
                                     // console.log("Entering no data 7805 ==================================")
                                     // commit transaction and changes to database
@@ -8869,7 +8878,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
                             } else if (isDueForPayout === false) {
@@ -8933,16 +8942,16 @@ export default class PaymentsServices {
                                     // debugger
                                     let accruedInterest = ((interestDueOnInvestment / duration) * daysOfInvestment)
                                     let penalty = (accruedInterest * (Number(liquidationPenalty) / 100));
-                                    console.log(" accruedInterest =======", accruedInterest)
-                                    console.log(" daysOfInvestment =======", daysOfInvestment)
-                                    console.log(" penalty before rounding up to 3 decimal place =======", penalty)
-                                    console.log(" penalty rounded up to 3 decimal place =======", penalty.toFixed(3))
+                                    // console.log(" accruedInterest =======", accruedInterest)
+                                    // console.log(" daysOfInvestment =======", daysOfInvestment)
+                                    // console.log(" penalty before rounding up to 3 decimal place =======", penalty)
+                                    // console.log(" penalty rounded up to 3 decimal place =======", penalty.toFixed(3))
                                     penalty = Number(penalty.toFixed(3));
                                     interestDueOnInvestment = accruedInterest;
-                                    debugger
-                                    console.log(" interestDueOnInvestment before penalty deduction =======", interestDueOnInvestment)
+                                    // debugger
+                                    // console.log(" interestDueOnInvestment before penalty deduction =======", interestDueOnInvestment)
                                     interestDueOnInvestment = interestDueOnInvestment - penalty;
-                                    console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
+                                    // console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
                                     // debugger
                                     // NEW CODE START
                                     // let beneficiaryName = `${firstName} ${lastName}`;
@@ -8955,7 +8964,7 @@ export default class PaymentsServices {
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
                                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
-                                    debugger
+                                    // debugger
                                     // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                     if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                         //@ts-ignore
@@ -8968,7 +8977,7 @@ export default class PaymentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9417 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         principalPayoutRequestReference = paymentReference;
@@ -9033,7 +9042,7 @@ export default class PaymentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 12174 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         interestPayoutRequestReference = paymentReference;
@@ -9052,7 +9061,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -9084,7 +9093,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest);
-                                        debugger
+                                        // debugger
                                     }
 
 
@@ -9324,12 +9333,12 @@ export default class PaymentsServices {
                                         await investmentsService.updateInvestment(currentInvestment, record);
                                         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                         // console.log(" Current log, line 8813 :", updatedInvestment);
-                                        console.log(" creditUserWalletWithPrincipal line 9305 ================", creditUserWalletWithPrincipal);
-                                        console.log(" creditUserWalletWithInterest line 9306 ================", creditUserWalletWithInterest);
-                                        console.log(" creditUserWalletWithPrincipal .status line 9307 ================", creditUserWalletWithPrincipal.status);
-                                        console.log(" creditUserWalletWithInterest .status line 9308 ================", creditUserWalletWithInterest.status);
-                                        console.log(" creditUserWalletWithPrincipal message line 9309 ================", creditUserWalletWithPrincipal.message);
-                                        console.log(" creditUserWalletWithInterest message line 9310 ================", creditUserWalletWithInterest.message);
+                                        // console.log(" creditUserWalletWithPrincipal line 9305 ================", creditUserWalletWithPrincipal);
+                                        // console.log(" creditUserWalletWithInterest line 9306 ================", creditUserWalletWithInterest);
+                                        // console.log(" creditUserWalletWithPrincipal .status line 9307 ================", creditUserWalletWithPrincipal.status);
+                                        // console.log(" creditUserWalletWithInterest .status line 9308 ================", creditUserWalletWithInterest.status);
+                                        // console.log(" creditUserWalletWithPrincipal message line 9309 ================", creditUserWalletWithPrincipal.message);
+                                        // console.log(" creditUserWalletWithInterest message line 9310 ================", creditUserWalletWithInterest.message);
                                         // debugger
 
                                         // commit transaction and changes to database
@@ -9344,7 +9353,7 @@ export default class PaymentsServices {
                                     return {
                                         status: 'OK',
                                         message: 'no investment matched your search',
-                                        data: {},
+                                        data: null,
                                     }
                                 }
 
@@ -9357,7 +9366,7 @@ export default class PaymentsServices {
                         return {
                             status: 'OK',
                             message: 'Payout of investment is currently suspended.',
-                            data: {},
+                            data: null,
                         }
                     }
                 } catch (error) {
@@ -9499,7 +9508,7 @@ export default class PaymentsServices {
             }
 
             // console.log(" updatedAtFrom line 8103 ==============================================================");
-            console.log(queryParams);
+            // console.log(queryParams);
             // debugger;
             const queryGetter = await this.queryBuilder(queryParams)
             // debugger;

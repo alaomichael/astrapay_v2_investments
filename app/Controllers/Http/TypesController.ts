@@ -29,8 +29,8 @@ export default class TypesController {
             let sortedTypes = type;
             debugger
             // debugger
-            console.log("type line 29 ===================");
-            console.log(type);
+            // console.log("type line 29 ===================");
+            // console.log(type);
             if (limit) {
                 sortedTypes = sortedTypes.slice(0, Number(limit));
             }
@@ -38,13 +38,13 @@ export default class TypesController {
                 return response.status(200).json({
                     status: "OK",
                     message: "no type request matched your search",
-                    data: {},
+                    data: null,
                 });
             }
             for (let index = 0; index < sortedTypes.length; index++) {
                 const type = sortedTypes[index];
-                console.log("type line 89 ===================");
-                console.log(type);
+                // console.log("type line 89 ===================");
+                // console.log(type);
                 // let typeWithOtherDetails = {
                 //     ...type.$original,
                 //     // accountOpeningDetails: accountOpening.$original
@@ -92,7 +92,7 @@ export default class TypesController {
             const typesService = new TypesServices();
             // let type = await Type.query().where({ id: typeId }).preload("timelines", (query) => {query.orderBy("createdAt", "desc"); }).first();
             let type = await typesService.getTypeByTypeId(typeId);
-            if (!type) return response.json({ status: "FAILED", data: {} });
+            if (!type) return response.json({ status: "FAILED", data: null });
             // let updatedResponseWithType = {
             //     ...type.$original,
             //     // @ts-ignore
@@ -182,11 +182,12 @@ export default class TypesController {
             // console.log("New type details, line 146 =========");
             // console.log(type);
             const tenures = duration;
-            console.log("The new investment type:", type);
+            // console.log("The new investment type:", type);
             console.log("A New Type has been Created.");
             // create type tenure/duration
-            const typeTenure = await tenuresService.createTenure(tenures, type.id);
-            console.log("The new investment tenure:", typeTenure);
+            await tenuresService.createTenure(tenures, type.id);
+            // const typeTenure = await tenuresService.createTenure(tenures, type.id);
+            // console.log("The new investment tenure:", typeTenure);
 
             return response
                 .status(201)
@@ -229,7 +230,7 @@ export default class TypesController {
             // check if the request is not existing
             let type;
             let typeRequestIsExisting = await typesService.getTypeByTypeId(typeId)
-            console.log("Existing Type Request details: ", typeRequestIsExisting);
+            // console.log("Existing Type Request details: ", typeRequestIsExisting);
             if (!typeRequestIsExisting) {
                 //    return error message to user
                 // throw new Error(`Type Request with Id: ${id} does not exist, please check and try again.`);
@@ -254,13 +255,13 @@ export default class TypesController {
             // console.log("Login Admin FullName, line 212 ==================")
             // console.log(loginAdminFullName)
             type = typeRequestIsExisting //await typesService.getTypeByTypeId(id);
-            console.log(" QUERY RESULT: ", type);
+            // console.log(" QUERY RESULT: ", type);
             if (!type) {
                 return response
                     .status(404)
                     .json({ status: "FAILED", message: "Not Found,try again." });
             } else if (type) {
-                console.log("Type Selected for Update line 221:", type);
+                // console.log("Type Selected for Update line 221:", type);
                 return response
                     .status(200)
                     .json({
@@ -300,7 +301,7 @@ export default class TypesController {
             // check if the request is not existing
             let type;
             let typeRequestIsExisting = await typesService.getTypeByTypeId(typeId)
-            console.log("Existing Type Request details: ", typeRequestIsExisting);
+            // console.log("Existing Type Request details: ", typeRequestIsExisting);
             if (!typeRequestIsExisting) {
                 //    return error message to user
                 // throw new Error(`Type Request with Id: ${id} does not exist, please check and try again.`);
@@ -325,13 +326,13 @@ export default class TypesController {
             // console.log("Login Admin FullName, line 978 ==================")
             // console.log(loginAdminFullName)
             type = typeRequestIsExisting //await typesService.getTypeByTypeId(id);
-            console.log(" QUERY RESULT: ", type);
+            // console.log(" QUERY RESULT: ", type);
             if (!type) {
                 return response
                     .status(404)
                     .json({ status: "FAILED", message: "Not Found,try again." });
             } else if (type) {
-                console.log("Type Selected for Update line 273:", type);
+                // console.log("Type Selected for Update line 273:", type);
                 let formerTypeTenures;
                 const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
                     features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
@@ -386,7 +387,7 @@ export default class TypesController {
                         (tenure) => tenure.tenure
                         //.$original.tenure
                     );
-                    console.log("Type tenure selected: ", formerTypeTenures);
+                    // console.log("Type tenure selected: ", formerTypeTenures);
                     // delete all type tenure/duration
                     const typeTenureDelete = tenuresService.deleteRelatedTenure(typeId);
                     console.log("Type tenure deleted: ", typeTenureDelete);
@@ -398,7 +399,7 @@ export default class TypesController {
                 type = await typesService.updateType(type, payload);
                 // console.log("Type updated: ", type);
                 await type.save();
-                console.log("Update Type Request line 317:", type);
+                // console.log("Update Type Request line 317:", type);
 
                 // Send Details to notification service
                 // let email, firstName;
@@ -520,13 +521,13 @@ export default class TypesController {
             // console.log("Login Admin FullName, line 518 ==================")
             // console.log(loginAdminFullName)
             type = typeRequestIsExisting //await typesService.getTypeByTypeId(id);
-            console.log(" QUERY RESULT: ", type);
+            // console.log(" QUERY RESULT: ", type);
             if (!type) {
                 return response
                     .status(404)
                     .json({ status: "FAILED", message: "Not Found,try again." });
             } else if (type) {
-                console.log("Type Selected for Update line 273:", type);
+                // console.log("Type Selected for Update line 273:", type);
                 const { interestRate, } = request.body();
                 // update the data
                 // TODO: Uncomment to use loginAdminFullName
@@ -537,10 +538,11 @@ export default class TypesController {
                 // Former Type Details
                 // let formerTypeInterestRate = type.interestRate;
                 // type = await typesService.updateType(type, payload);
-                let updatedInterestRate = await typesService.updateTypeInterestRate(type, interestRate);
+                await typesService.updateTypeInterestRate(type, interestRate);
+                // let updatedInterestRate = await typesService.updateTypeInterestRate(type, interestRate);
                 // console.log("Type updated: ", type);
                 // await type.save();
-                console.log("Update Type Request line 541:", updatedInterestRate);
+                // console.log("Update Type Request line 541:", updatedInterestRate);
                 // debugger
                 // Send Details to notification service
                 //                 let email, firstName;
@@ -616,17 +618,17 @@ export default class TypesController {
             // const { typeId } = request.qs();
             console.log("type query line 349 =============== : ", request.qs());
             const { typeId } = params;
-            console.log("typeId for query line 351 =============== : ", typeId);
+            // console.log("typeId for query line 351 =============== : ", typeId);
             let type = await Type.query().where({
                 id: typeId,
             });
-            console.log(" QUERY RESULT: ", type);
+            // console.log(" QUERY RESULT: ", type);
 
             if (type.length > 0) {
                 type = await Type.query()
                     .where({ id: typeId })
                     .delete();
-                console.log("Deleted data:", type);
+                // console.log("Deleted data:", type);
                 return response
                     .status(200)
                     .json({ status: "OK", message: "Type Deleted." });

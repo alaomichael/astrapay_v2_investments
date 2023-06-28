@@ -64,7 +64,7 @@ export default class TaxesController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment tax matched your search',
-        data: {},
+        data: null,
       })
     }
     // return tax(s)
@@ -88,7 +88,7 @@ export default class TaxesController {
     const tax = await Tax.create(payload)
 
     await tax.save()
-    console.log('The new tax rate:', tax)
+    // console.log('The new tax rate:', tax)
 
     // TODO
     console.log('A New tax has been Created.')
@@ -110,9 +110,9 @@ export default class TaxesController {
       let tax = await Tax.query().where({
         state: state,
       })
-      console.log(' QUERY RESULT: ', tax)
+      // console.log(' QUERY RESULT: ', tax)
       if (tax.length > 0) {
-        console.log('Investment tax Selected for Update:', tax)
+        // console.log('Investment tax Selected for Update:', tax)
         if (tax) {
           tax[0].state = request.input('state') ? request.input('state') : tax[0].state
           tax[0].lga = request.input('lga') ? request.input('lga') : tax[0].lga
@@ -128,7 +128,7 @@ export default class TaxesController {
           if (tax) {
             // send to user
             await tax[0].save()
-            console.log('Update Investment tax:', tax)
+            // console.log('Update Investment tax:', tax)
             return tax
           }
           return // 422
@@ -153,7 +153,7 @@ export default class TaxesController {
     let tax = await Tax.query().where({
       id: id,
     })
-    console.log(' QUERY RESULT: ', tax)
+    // console.log(' QUERY RESULT: ', tax)
 
     if (tax.length > 0) {
       tax = await Tax.query()
@@ -161,7 +161,7 @@ export default class TaxesController {
           id: id,
         })
         .delete()
-      console.log('Deleted data:', tax)
+      // console.log('Deleted data:', tax)
       return response.send('tax Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

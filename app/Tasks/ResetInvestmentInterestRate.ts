@@ -55,9 +55,10 @@ export default class ResetInvestmentInterestRate extends BaseTask {
        let listOfInvestmentType = await typesServices.getTypes(queryParams);   
         for (let index = 0; index < listOfInvestmentType.length; index++) {
             const currentInvestmentType = listOfInvestmentType[index];
-           let updatedInterestRate = await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
-            console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
-            console.log(updatedInterestRate!.interestRate);  
+            await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
+        //    let updatedInterestRate = await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
+        //     console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
+        //     console.log(updatedInterestRate!.interestRate);  
         }
         
         // console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");

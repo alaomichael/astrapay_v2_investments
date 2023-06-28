@@ -33,8 +33,8 @@ export default class RatesController {
 
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
-        console.log(' Rate Duration:', rate.duration)
-        console.log(' Query Duration:', duration)
+        // console.log(' Rate Duration:', rate.duration)
+        // console.log(' Query Duration:', duration)
         // @ts-ignore
         return rate.duration === duration
       })
@@ -76,13 +76,13 @@ export default class RatesController {
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
-    console.log('sortedRates line 79: ', sortedRates)
+    // console.log('sortedRates line 79: ', sortedRates)
 
     if (sortedRates.length < 1) {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment rate matched your search',
-        data: {},
+        data: null,
       })
     }
     // return rate(s)
@@ -122,7 +122,7 @@ export default class RatesController {
     // @ts-ignore
     // rate.status = 'active'
     await rate.save()
-    console.log('The new investment:', rate)
+    // console.log('The new investment:', rate)
 
     console.log('A New Rate has been Created.')
 
@@ -150,9 +150,9 @@ export default class RatesController {
         type_name: typeName,
         id: rateId,
       })
-      console.log(' QUERY RESULT: ', rate)
+      // console.log(' QUERY RESULT: ', rate)
       if (rate.length > 0) {
-        console.log('Investment rate Selected for Update:', rate)
+        // console.log('Investment rate Selected for Update:', rate)
         if (rate) {
           rate[0].productName = request.input('newProductName')
             ? request.input('newProductName')
@@ -186,7 +186,7 @@ export default class RatesController {
           if (rate) {
             // send to user
             await rate[0].save()
-            console.log('Update Investment rate:', rate)
+            // console.log('Update Investment rate:', rate)
             return response.status(200).json({
               status: 'OK',
               data: rate.map((rate) => {
@@ -221,7 +221,7 @@ export default class RatesController {
       type_name: typeName,
       id: rateId,
     })
-    console.log(' QUERY RESULT: ', rate)
+    // console.log(' QUERY RESULT: ', rate)
 
     if (rate.length > 0) {
       rate = await Rate.query()
@@ -230,7 +230,7 @@ export default class RatesController {
           id: rateId,
         })
         .delete()
-      console.log('Deleted data:', rate)
+      // console.log('Deleted data:', rate)
       return response.send('Rate Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

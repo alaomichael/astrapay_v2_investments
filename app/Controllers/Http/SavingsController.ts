@@ -49,7 +49,7 @@ export default class SavingsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no saving matched your search',
-        data: {},
+        data: null,
       })
     }
     // return saving(s)
@@ -86,11 +86,11 @@ export default class SavingsController {
       }),
     })
     const payload: any = await request.validate({ schema: userSchema })
-    console.log('The new saving payload:', payload)
+    // console.log('The new saving payload:', payload)
     const saving = await Saving.create(payload)
 
     await saving.save()
-    console.log('The new saving rate:', saving)
+    // console.log('The new saving rate:', saving)
 
     // TODO
     console.log('A New saving has been Created.')
@@ -138,9 +138,9 @@ export default class SavingsController {
           userId: userId,
         })
         .first()
-      console.log(' QUERY RESULT: ', saving)
+      // console.log(' QUERY RESULT: ', saving)
       if (saving) {
-        console.log('Investment saving Selected for Update:', saving)
+        // console.log('Investment saving Selected for Update:', saving)
         if (saving) {
           saving.merge(payload)
           // @ts-ignore
@@ -148,7 +148,7 @@ export default class SavingsController {
           if (saving) {
             // send to saving
             await saving.save()
-            console.log('Update Investment saving:', saving)
+            // console.log('Update Investment saving:', saving)
             return saving
           }
           return // 422
@@ -173,7 +173,7 @@ export default class SavingsController {
     let saving = await Saving.query().where({
       id: id,
     })
-    console.log(' QUERY RESULT: ', saving)
+    // console.log(' QUERY RESULT: ', saving)
 
     if (saving.length > 0) {
       saving = await Saving.query()
@@ -181,7 +181,7 @@ export default class SavingsController {
           id: id,
         })
         .delete()
-      console.log('Deleted data:', saving)
+      // console.log('Deleted data:', saving)
       return response.send('saving Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

@@ -12,9 +12,9 @@ export const createNewLoanWallet = async function createNewLoanWallet(
 ): Promise<any> {
     // connect to Okra
     try {
-        console.log("holderName,line 25", holderName);
-        console.log("holderId,line 26", holderId);
-        console.log("walletType,line 27", walletType);
+        // console.log("holderName,line 25", holderName);
+        // console.log("holderId,line 26", holderId);
+        // console.log("walletType,line 27", walletType);
         const headers = {
             "Token": ASTRAPAY_BEARER_TOKEN
         }

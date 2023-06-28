@@ -29,7 +29,7 @@ export default class PayoutsController {
     // const payout = await Investment.query().offset(0).limit(1)
     const payout = await Payout.all()
     let sortedPayouts = payout
-    console.log('PAYOUT Investment line 26: ', payout)
+    // console.log('PAYOUT Investment line 26: ', payout)
     if (search) {
       sortedPayouts = sortedPayouts.filter((payout) => {
         // @ts-ignore
@@ -63,7 +63,7 @@ export default class PayoutsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment payout matched your search',
-        data: {},
+        data: null,
       })
     }
     // return payouts
@@ -164,7 +164,7 @@ export default class PayoutsController {
   //       return response.status(404).json({
   //         status: 'OK',
   //         message: 'no investment matched your search',
-  //         data: {},
+  //         data: null,
   //       })
   //     }
   //   } catch (error) {

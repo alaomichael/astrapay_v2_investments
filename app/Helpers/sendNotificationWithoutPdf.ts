@@ -113,7 +113,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = initiationNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 116", receiverDetails);
+                    // console.log(" receiverDetails , line 116", receiverDetails);
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
                     let payload = {
@@ -168,7 +168,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = initiationNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 169", receiverDetails);
+                    // console.log(" receiverDetails , line 169", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -218,7 +218,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = activationNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 217", receiverDetails);
+                    // console.log(" receiverDetails , line 217", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -263,7 +263,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = maturityNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 261", receiverDetails);
+                    // console.log(" receiverDetails , line 261", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -319,7 +319,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = payoutNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 315", receiverDetails);
+                    // console.log(" receiverDetails , line 315", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -372,7 +372,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = rolloverNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 366", receiverDetails);
+                    // console.log(" receiverDetails , line 366", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -426,7 +426,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = liquidationNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 415", receiverDetails);
+                    // console.log(" receiverDetails , line 415", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -468,7 +468,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = payoutNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 315", receiverDetails);
+                    // console.log(" receiverDetails , line 315", receiverDetails);
                     // debugger;
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
@@ -524,7 +524,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 try {
                     const receiverDetails = initiationNotificationEmail[index];
                     // debugger
-                    console.log(" receiverDetails , line 538", receiverDetails);
+                    // console.log(" receiverDetails , line 538", receiverDetails);
                     let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
                     // debugger;
                     let payload = {
@@ -569,9 +569,9 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             "metadata": metadata,
             "recepients": recepients,
         }
-        console.log("payload,line 459", payload);
+        // console.log("payload,line 459", payload);
         // debugger
-        console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 461", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
+        // console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 461", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
         const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
         )
@@ -584,7 +584,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         //     "message": "messages sent successfully",
         //     "data": null
         // }
-        console.log("The API response @ sendNotificationWithoutPdf, line 474: ", response.status);
+        // console.log("The API response @ sendNotificationWithoutPdf, line 474: ", response.status);
         // debugger
         if (response.status === 200) {
             // console.log("The  API response, line 477: ", response.data);

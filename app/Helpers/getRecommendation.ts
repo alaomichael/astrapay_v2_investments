@@ -20,7 +20,7 @@ export const getRecommendation = async function getRecommendation(
     // console.log("User details line 11,@ getRecommendation.ts:", userDetails);
     // console.log("settings line 12,@ getRecommendation.ts:", setting);
     //  console.log("wallet id line 13,@ getRecommendation.ts:", walletId);
-    console.log("User id line 14,@ getRecommendation.ts:", userId);
+    // console.log("User id line 14,@ getRecommendation.ts:", userId);
     let {
       bvnVerificationWeight,
       bvnVerificationScaleRange,
@@ -32,10 +32,10 @@ export const getRecommendation = async function getRecommendation(
       locationScaleRange,
     } = setting;
 
-    console.log(
-      "performance id line 34,@ getRecommendation.ts:",
-      typeof performanceOnPastLoanWeight
-    );
+    // console.log(
+    //   "performance id line 34,@ getRecommendation.ts:",
+    //   typeof performanceOnPastLoanWeight
+    // );
 
     let { creditRegistryRating,
       okraRating,
@@ -49,7 +49,7 @@ export const getRecommendation = async function getRecommendation(
     let performanceOnPastLoanScore;
     // let locationScore = 0;
     // let okraScore;
-    console.log("Okra rating,@ getRecommendation.ts, line 51:", okraRating);
+    // console.log("Okra rating,@ getRecommendation.ts, line 51:", okraRating);
     let walletBalance = availableWalletBalance;// userDetails.balance;
     let averageBalance = 0;
     let astraPayBalance = walletBalance;
@@ -71,7 +71,7 @@ export const getRecommendation = async function getRecommendation(
       maximumObtainableScoreForPerformanceOnPastLoan +
       maximumObtainableScoreForLocation;
 
-    console.log(" Overall Obtainable Score, line 73:", overallObtainableScore);
+    // console.log(" Overall Obtainable Score, line 73:", overallObtainableScore);
 
     averageBalance = calculateAverageBalance(
       astraPayBalance,
@@ -80,26 +80,25 @@ export const getRecommendation = async function getRecommendation(
       walletBalance
     );
     performanceRating = convertPerformanceRatingToString(performanceRating);
-    console.log(
-      "Performance rating, line 83 @ getRecommendation: " + performanceRating
-    );
+    // console.log(
+    //   "Performance rating, line 83 @ getRecommendation: " + performanceRating
+    // );
     performanceOnPastLoanScore = calculatePerformanceOnPastLoanScore(
       performanceRating,
       performanceOnPastLoanScore,
       performanceOnPastLoanScaleRange,
       performanceOnPastLoanWeight
     );
-    console.log(
-      "performance On PastLoan Score, line 86 @ getRecommendation: " +
-      performanceOnPastLoanScore
-    );
+    // console.log(
+    //   "performance On PastLoan Score, line 86 @ getRecommendation: " +
+    //   performanceOnPastLoanScore
+    // );
 
-    creditRegistryRating =
-      convertCreditRegistryRatingToString(creditRegistryRating);
-    console.log(
-      "creditRegistry Rating, line 93 @ getRecommendation: " +
-      creditRegistryRating
-    );
+    creditRegistryRating = convertCreditRegistryRatingToString(creditRegistryRating);
+    // console.log(
+    //   "creditRegistry Rating, line 93 @ getRecommendation: " +
+    //   creditRegistryRating
+    // );
 
     creditRegistryScore = calculateCreditRegistryScore(
       creditRegistryWeight,
@@ -107,31 +106,31 @@ export const getRecommendation = async function getRecommendation(
       creditRegistryRating,
       creditRegistryScore,
     );
-    console.log(
-      "creditRegistry Score, line 104 @ getRecommendation: " +
-      creditRegistryScore
-    );
+    // console.log(
+    //   "creditRegistry Score, line 104 @ getRecommendation: " +
+    //   creditRegistryScore
+    // );
 
     bvnVerificationWeight;
     bvnVerificationScaleRange;
     bvnVerificationStatus;
     bvnScore;
     // '0' means false, while '1' means true
-    console.log("is bvn verified: ", bvnVerificationStatus);
+    // console.log("is bvn verified: ", bvnVerificationStatus);
     if ( bvnVerificationStatus == true) {
       bvnScore = bvnVerificationScaleRange * bvnVerificationWeight;
     } else {
       bvnScore = 0 * bvnVerificationWeight;
     }
-    console.log(" BvnScore ,line 119 @ getRecommendation: ", bvnScore);
+    // console.log(" BvnScore ,line 119 @ getRecommendation: ", bvnScore);
 
     scoreObtained = creditRegistryScore + performanceOnPastLoanScore + bvnScore;
-    console.log(" scoreObtained ,line 122 @ getRecommendation: ", scoreObtained);
-    console.log(" averageBalance ,line 123 @ getRecommendation: ", typeof averageBalance);
-    console.log(" averageBalance ,line 124 @ getRecommendation: ", averageBalance);
+    // console.log(" scoreObtained ,line 122 @ getRecommendation: ", scoreObtained);
+    // console.log(" averageBalance ,line 123 @ getRecommendation: ", typeof averageBalance);
+    // console.log(" averageBalance ,line 124 @ getRecommendation: ", averageBalance);
 
     recommendedAmount = (scoreObtained / overallObtainableScore) * averageBalance;
-    console.log(" recommendedAmount ,line 125 @ getRecommendation: ", recommendedAmount);
+    // console.log(" recommendedAmount ,line 125 @ getRecommendation: ", recommendedAmount);
 
     return recommendedAmount;
   } catch (error) {
@@ -158,36 +157,36 @@ function calculatePerformanceOnPastLoanScore(
       // );
       performanceOnPastLoanScore =
         Number(performanceOnPastLoanScaleRange * performanceOnPastLoanWeight);
-      console.log("Performance score on past loan,line 147:", performanceOnPastLoanScore)
+      // console.log("Performance score on past loan,line 147:", performanceOnPastLoanScore)
       break;
     case "very good":
       performanceOnPastLoanScore =
         Number((performanceOnPastLoanScaleRange - 1) * performanceOnPastLoanWeight);
-      console.log("Performance score on past loan,line 144:", performanceOnPastLoanScore)
+      // console.log("Performance score on past loan,line 144:", performanceOnPastLoanScore)
       break;
     case "good":
       performanceOnPastLoanScore =
         Number((performanceOnPastLoanScaleRange - 2) * performanceOnPastLoanWeight);
-      console.log("Performance score on past loan,line 149:", performanceOnPastLoanScore)
+      // console.log("Performance score on past loan,line 149:", performanceOnPastLoanScore)
       break;
     case "fair":
       performanceOnPastLoanScore =
         Number((performanceOnPastLoanScaleRange - 3) * performanceOnPastLoanWeight);
-      console.log("Performance score on past loan,line 154:", performanceOnPastLoanScore)
+      // console.log("Performance score on past loan,line 154:", performanceOnPastLoanScore)
       break;
     case "poor":
       performanceOnPastLoanScore =
         Number((performanceOnPastLoanScaleRange - 4) * performanceOnPastLoanWeight);
-      console.log("Performance score on past loan,line 159:", performanceOnPastLoanScore)
+      // console.log("Performance score on past loan,line 159:", performanceOnPastLoanScore)
       break;
 
     default:
       performanceOnPastLoanScore =
         Number((performanceOnPastLoanScaleRange - 5) * performanceOnPastLoanWeight);
-      console.log(
-        " default performance On PastLoan Score, line 166 @ getRecommendation: " +
-        performanceOnPastLoanScore
-      );
+      // console.log(
+      //   " default performance On PastLoan Score, line 166 @ getRecommendation: " +
+      //   performanceOnPastLoanScore
+      // );
       break;
   }
   return performanceOnPastLoanScore;
@@ -228,7 +227,7 @@ function calculateAverageBalance(
 ) {
   if (astraPayBalance && astraPolarisBalance) {
     averageBalance = (astraPayBalance + astraPolarisBalance) / 2;
-    console.log("Average balance is:", averageBalance);
+    // console.log("Average balance is:", averageBalance);
     console.log("wallet balance is:", walletBalance);
   }
   return averageBalance;
@@ -251,51 +250,51 @@ function calculateCreditRegistryScore(
       //   typeof creditRegistryWeight
       // );
       creditRegistryScore = Number(creditRegistryScaleRange * creditRegistryWeight);
-      console.log(
-        "Credit Registry Score, line 246 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   "Credit Registry Score, line 246 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
     case "very good":
       creditRegistryScore =
         Number((creditRegistryScaleRange - 1) * creditRegistryWeight);
-      console.log(
-        "Credit Registry Score, line 254 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   "Credit Registry Score, line 254 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
     case "good":
       creditRegistryScore =
         Number((creditRegistryScaleRange - 2) * creditRegistryWeight);
-      console.log(
-        "Credit Registry Score, line 262 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   "Credit Registry Score, line 262 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
     case "fair":
       creditRegistryScore =
         Number((creditRegistryScaleRange - 3) * creditRegistryWeight);
-      console.log(
-        "Credit Registry Score, line 270 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   "Credit Registry Score, line 270 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
     case "poor":
       creditRegistryScore =
         Number((creditRegistryScaleRange - 4) * creditRegistryWeight);
-      console.log(
-        "Credit Registry Score, line 278 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   "Credit Registry Score, line 278 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
 
     default:
       creditRegistryScore =
         Number((creditRegistryScaleRange - 5) * creditRegistryWeight);
-      console.log(
-        " default credit Registry Score, line 287 @ getRecommendation: " +
-        creditRegistryScore
-      );
+      // console.log(
+      //   " default credit Registry Score, line 287 @ getRecommendation: " +
+      //   creditRegistryScore
+      // );
       break;
   }
   return creditRegistryScore;

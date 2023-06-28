@@ -11,7 +11,7 @@ export const generateString = async function generateString() {
         return randomNumber;
     }
     const result = prefix + year + month + generateRandomNumber();
-    console.log(result)
+    // console.log(result)
     return result;
 }
 

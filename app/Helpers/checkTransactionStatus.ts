@@ -132,7 +132,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         //  && response.data.amountTransfered === CHARGE
 
         if (response.status == 200) {
-            console.log("The API response, @ checkTransactionStatus line 133: ", response.data);
+            // console.log("The API response, @ checkTransactionStatus line 133: ", response.data);
             debugger
             // {
             //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",

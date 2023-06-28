@@ -87,7 +87,7 @@ export default class TenuresServices {
             // get tenure by type
             // delete all the tenure
             let selectedTenure = await Tenures.query().where('type_id', typeId).delete();
-            console.log("The tenure is deleted successfully: ", selectedTenure);
+            // console.log("The tenure is deleted successfully: ", selectedTenure);
             //@ts-ignore
             return selectedTenure;
         } catch (error) {

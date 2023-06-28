@@ -127,7 +127,7 @@ const getDecimalPlace = (n, r = 2) => {
     // console.log("The value of the next digit is", n.toString()[indexOfDecimalPoint + r + 2]);
     // console.log("The value of the next digit after the one above is", n.toString()[indexOfDecimalPoint + r + 3]);
     let valueToAdd = 1 * 10 ** (-(r)); // eg 0.0001;
-    console.log(valueToAdd);
+    // console.log(valueToAdd);
     valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r);
     // console.log("valueToReturn line 132 ================");
     // console.log(valueToReturn);
@@ -169,12 +169,12 @@ const interestDueOnPayout = (amount, rate, duration) => {
     if (duration > 1) {
       day = 'days'
     }
-    console.log(
-      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    )
-    console.log(
-      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    )
+    // console.log(
+    //   `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
+    // )
+    // console.log(
+    //   `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
+    // )
     return resolve(interestDue)
   })
 }
@@ -218,7 +218,7 @@ const dueForPayout = (created_at, duration) => {
     // console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2022-04-29'))
 
     let isDueForPayout
-    console.log('Current Date line 159 utils.ts: ' + created_at)
+    // console.log('Current Date line 159 utils.ts: ' + created_at)
     let investmentCreationDate = new Date(created_at).getTime()
     let durationToMs = parseInt(duration) * 24 * 60 * 60 * 1000
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
@@ -250,18 +250,18 @@ const dueForPayout = (created_at, duration) => {
     if (investmentDuration > 1) {
       day = 'days'
     }
-    console.log('Investment duration is : ' + investmentDuration + ` ${day}`)
+    // console.log('Investment duration is : ' + investmentDuration + ` ${day}`)
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
-      console.log(
-        `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      )
+      // console.log(
+      //   `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      // )
     } else {
       isDueForPayout = false
-      console.log(
-        `Your investment will be due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      )
+      // console.log(
+      //   `Your investment will be due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      // )
     }
     return resolve(isDueForPayout)
   })
@@ -282,7 +282,7 @@ const investmentDuration = async function getNumberOfDays(start, end) {
 
   // Calculating the no. of days between two dates
   const diffInDays = await Math.round(diffInTime / oneDay)
-  console.log('Duration of the investment is: ', diffInDays)
+  // console.log('Duration of the investment is: ', diffInDays)
   // let currentDate = new Date().toISOString() //.toLocaleString()
   // console.log('currentDate : ', currentDate)
 
@@ -326,7 +326,7 @@ const approvalRequest = async function (userId, investmentId, requestType) {
       investmentId,
       requestType,
     })
-    console.log('The API response for approval request line 280: ', response.data)
+    // console.log('The API response for approval request line 280: ', response.data)
     if (response && response.data.status === 'OK') {
       console.log('Approval request status is OK')
       return response.data
@@ -347,7 +347,7 @@ const getTaxRate = async function (state, income) {
     const response = await axios.get(`${API_URL}/admin/investments/taxes`, {
       state,
     })
-    console.log('The API response for tax rate request: ', response[0].rate)
+    // console.log('The API response for tax rate request: ', response[0].rate)
     if (response && response[0].rate !== undefined && response[0].rate > 0) {
       console.log('tax request status is OK')
       return response[0].rate
@@ -367,7 +367,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
     )
-    console.log('The API response: ', response.data)
+    // console.log('The API response: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
       return response.data.data[0].interestRate
     } else {
@@ -387,7 +387,7 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
     )
-    console.log('The API response line 346: ', response.data)
+    // console.log('The API response line 346: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
       console.log('The API response line 348: ', response.data.data[0].interestRate)
       return response.data.data[0].interestRate
@@ -403,13 +403,10 @@ const createNewInvestment = async function (payloadAmount,
   payloadDuration,
   payloadInvestmentType,
   investmentData) {
-  console.log('Investment data line 362: ', investmentData)
-  console.log('Investment payloadAmount data line 363: ', payloadAmount)
+  // console.log('Investment data line 362: ', investmentData)
+  // console.log('Investment payloadAmount data line 363: ', payloadAmount)
   console.log('Investment payloadDuration data line 364: ', payloadDuration)
-  console.log(
-    'Investment payloadInvestmentType data line 366: ',
-    payloadInvestmentType
-  )
+  console.log('Investment payloadInvestmentType data line 366: ', payloadInvestmentType )
   try {
     // let requestType = 'start_investment'
     let payload
@@ -445,7 +442,7 @@ const createNewInvestment = async function (payloadAmount,
     }
     payload.amount = payloadAmount
     //  payload.interestRate = rate
-    console.log('PAYLOAD line 2325 :', payload)
+    // console.log('PAYLOAD line 2325 :', payload)
 
     const response = await axios.post(`${API_URL}/investments`, {
       amount: payloadAmount,
@@ -461,7 +458,7 @@ const createNewInvestment = async function (payloadAmount,
       lat,
       walletHolderDetails,
     })
-    console.log('The API response for new investment creation request line 420: ', response.data)
+    // console.log('The API response for new investment creation request line 420: ', response.data)
     if (response && response.data.status === 'OK') {
       console.log('New investment created successfully, request status is OK')
       return response.data
@@ -503,7 +500,7 @@ const createNewInvestment = async function (payloadAmount,
 //                     return response.status(400).json({
 //                       status: 'OK',
 //                       message: 'no investment rate matched your search, please try again.',
-//                       data: {},
+//                       data: null,
 //                     })
 //                   }
 //                   let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -585,7 +582,7 @@ const createNewInvestment = async function (payloadAmount,
 //                         status: 'OK',
 //                         message:
 //                           'investment approval request was not successful, please try again.',
-//                         data: {},
+//                         data: null,
 //                       })
 //                     }
 //                     // update timeline

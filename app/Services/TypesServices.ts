@@ -35,8 +35,8 @@ export default class TypesServices {
             //     updatedAtTo = DateTime.now().toISO();//.toISODate();
             // }
             const queryGetter = await this.queryBuilder(queryParams)
-            console.log("queryGetter ",queryGetter )
-            debugger
+            // console.log("queryGetter ",queryGetter )
+            // debugger
             let responseData = await Type.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
                 .orderBy("updated_at", "desc")
                 .preload("investmentTenures", (query) => { query.orderBy("tenure", "asc"); })

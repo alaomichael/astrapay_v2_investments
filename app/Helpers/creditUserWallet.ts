@@ -58,7 +58,7 @@ export const creditUserWallet = async function creditUserWallet(
         let senderPhoneNumber = phone;
         let senderName = rfiName;
         // let approvalIsAutomated = false
-        console.log("investmentWalletId setting line 59:", investmentWalletId);
+        // console.log("investmentWalletId setting line 59:", investmentWalletId);
 
         // let reference = DateTime.now() + randomstring.generate(4);
         // customerReference = `${TRANSACTION_PREFIX}-${reference}-${customerReference}`;
@@ -184,7 +184,7 @@ export const creditUserWallet = async function creditUserWallet(
 
 
             if (response.status == 200) {
-                console.log("The ASTRAPAY API response data @ creditUserWallet line 183: ", response.data);
+                // console.log("The ASTRAPAY API response data @ creditUserWallet line 183: ", response.data);
                 debugger
                 // return response.data;
                 return response;

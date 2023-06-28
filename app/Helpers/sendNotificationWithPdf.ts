@@ -49,7 +49,7 @@ export const sendNotificationWithPdf = async function sendNotificationWithPdf(ur
         //     "message": "messages sent successfully",
         //     "data": null
         // }
-        console.log("The API response @ sendNotificationWithPdf, line 53: ", response.status);
+        // console.log("The API response @ sendNotificationWithPdf, line 53: ", response.status);
         // debugger
         if (response.status === 200) {
             // console.log("The API response, line 56: ", response.data);

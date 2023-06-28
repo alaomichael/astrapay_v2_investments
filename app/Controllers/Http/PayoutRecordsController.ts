@@ -56,7 +56,7 @@ export default class PayoutRecordsController {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment payout record matched your search',
-        data: {},
+        data: null,
       })
     }
     // return payoutRecord

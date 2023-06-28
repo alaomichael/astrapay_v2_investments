@@ -127,7 +127,7 @@ const getDecimalPlace = (n, r = 2) => {
     // console.log("The value of the next digit is", n.toString()[indexOfDecimalPoint + r + 2]);
     // console.log("The value of the next digit after the one above is", n.toString()[indexOfDecimalPoint + r + 3]);
     let valueToAdd = 1 * 10 ** (-(r)); // eg 0.0001;
-    console.log(valueToAdd);
+    // console.log(valueToAdd);
     valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r);
     // console.log("valueToReturn line 132 ================");
     // console.log(valueToReturn);
@@ -171,35 +171,35 @@ const interestDueOnInvestment = (amount, rate, duration) => {
     // TODO: Comment this out after testing and working fine
     // Testing code start
     let interestRateByDuration = (rate) * (duration / 365);
-    console.log("Interest rate on investment for 365 days, @ utils line 174:", rate)
-    console.log(`Interest rate by investment duration for ${duration} day(s), @ utils line 175:`, interestRateByDuration)
+    // console.log("Interest rate on investment for 365 days, @ utils line 174:", rate)
+    // console.log(`Interest rate by investment duration for ${duration} day(s), @ utils line 175:`, interestRateByDuration)
     // convert to decimal places
     interestRateByDuration = Number(getDecimalPlace(interestRateByDuration, decPl))
-    console.log(`Interest rate by investment duration for ${duration} day(s), in ${decPl} dp, @ InvestmentsController line 177:`, interestRateByDuration);
+    // console.log(`Interest rate by investment duration for ${duration} day(s), in ${decPl} dp, @ InvestmentsController line 177:`, interestRateByDuration);
     // Testing code end
     // Formal due investment interest calculation based on amount and interest rate
     // interestDue = amount * (rate / 100);
     // New due investment interest calculation based on amount and interest rate and duration
     interestDue = amount * (rate / 100) * (duration / 365);
-    console.log("interestDue @utils, line 184 is =========================");
-    console.log(interestDue);
+    // console.log("interestDue @utils, line 184 is =========================");
+    // console.log(interestDue);
     // interestDue = Number(interestDue.toFixed(2)); // reduce the interestDue to 2dp string and convert to number
     interestDue = Number(getDecimalPlace(interestDue, decPl)); // reduce the interestDue to 2dp string and convert to number
     // console.log("typeof interestDue @utils, line 188 is =========================");
     // console.log(typeof interestDue);
-    console.log("interestDue @utils, line 190 is =========================");
-    console.log(interestDue);
+    // console.log("interestDue @utils, line 190 is =========================");
+    // console.log(interestDue);
     interestDueDaily = interestDue / duration;
     let day = "day";
     if (duration > 1) {
       day = "days";
     }
-    console.log(
-      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    );
-    console.log(
-      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    );
+    // console.log(
+    //   `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
+    // );
+    // console.log(
+    //   `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
+    // );
     return resolve(interestDue);
   });
 };
@@ -255,7 +255,7 @@ const dueForRepayment = (created_at, duration) => {
     // console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2022-04-29'))
 
     let isDueForRepayment;
-    console.log("Current Date line 159 utils.ts: " + created_at);
+    // console.log("Current Date line 159 utils.ts: " + created_at);
     let investmentCreationDate = new Date(created_at).getTime();
     let durationToMs = parseInt(duration) * 24 * 60 * 60 * 1000;
     let investmentRepaymentDate = new Date(durationToMs + investmentCreationDate).getTime();
@@ -288,14 +288,14 @@ const dueForRepayment = (created_at, duration) => {
     if (investmentDuration > 1) {
       day = "days";
     }
-    console.log("Investment duration is : " + investmentDuration + ` ${day}`);
+    // console.log("Investment duration is : " + investmentDuration + ` ${day}`);
     if (currentDate >= investmentRepaymentDate || investmentDuration >= parseInt(duration)) {
       isDueForRepayment = true;
       // investmentRepaymentDate = new Date(investmentRepaymentDate).toLocaleString()
-      console.log(`Your investment is due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
+      // console.log(`Your investment is due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
     } else {
       isDueForRepayment = false;
-      console.log(`Your investment will be due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
+      // console.log(`Your investment will be due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
     }
     return resolve(isDueForRepayment);
   });
@@ -316,7 +316,7 @@ const investmentDuration = async function getNumberOfDays(start, end) {
 
   // Calculating the no. of days between two dates
   const diffInDays = await Math.round(diffInTime / oneDay);
-  console.log("Duration of the investment is: ", diffInDays);
+  // console.log("Duration of the investment is: ", diffInDays);
   // let currentDate = new Date().toISOString() //.toLocaleString()
   // console.log('currentDate : ', currentDate)
 
@@ -364,10 +364,10 @@ const approvalRequest = async function (walletId, userId, investmentId, requestT
       userId,
       requestType,
     }, { headers: headers });
-    console.log(
-      "The API response for approval request line 280: ",
-      response.data
-    );
+    // console.log(
+    //   "The API response for approval request line 280: ",
+    //   response.data
+    // );
     if (response && response.data.status === "OK") {
       console.log("Approval request status is OK");
       return response.data;
@@ -388,7 +388,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
     }
     const response = await axios.get(
       `${API_URL}/admin/investments/payouts?amount=${amount}&duration=${duration}&investmentType=${investmentType}`, { headers: headers });
-    console.log("The API response: ", response.data);
+    // console.log("The API response: ", response.data);
     if (response.data.status === "OK" && response.data.data.length > 0) {
       return response.data.data[0].interestRate;
     } else {
@@ -406,7 +406,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
 // )
 const investmentRate = async function (payloadAmount, payloadDuration, investmentProductId?, investmentProductName?) {
   try {
-    console.log("Investment ProductName data line 409: ", investmentProductName);
+    // console.log("Investment ProductName data line 409: ", investmentProductName);
     const headers = {
       "internalToken": ASTRAPAY_BEARER_TOKEN
     }
@@ -426,7 +426,7 @@ const investmentRate = async function (payloadAmount, payloadDuration, investmen
     }
     
     if (response.data.status === "OK" && response.data.data.length > 0) {
-      console.log("The API response line 428: ", response.data.data[0].interestRate);
+      // console.log("The API response line 428: ", response.data.data[0].interestRate);
       return response.data.data[0].interestRate;
     } else {
       return;
@@ -536,13 +536,13 @@ const createNewInvestment = async function (
     // let { customerId } = okraRecord;
     // payload.okraCustomerId = customerId;
 
-    console.log("PAYLOAD line 438 ===============================:", payload);
+    // console.log("PAYLOAD line 438 ===============================:", payload);
     const headers = {
       "internalToken": ASTRAPAY_BEARER_TOKEN
     }
     const response = await axios.post(`${API_URL}/investments`, payload, { headers: headers });
     // amount: payloadAmount,
-    console.log("The API response for new investment creation request line 445 @ utils.ts : ", response.data);
+    // console.log("The API response for new investment creation request line 445 @ utils.ts : ", response.data);
     if (response && response.data.status === "OK") {
       console.log("New investment created successfully, request status is OK");
       return response.data;
@@ -570,8 +570,8 @@ const calculateTotalCharge = (amountApproved, fixedCharge, ratedCharge, duration
     fixedCharge = Number(fixedCharge);
     ratedCharge = Number(ratedCharge);
     totalCharge = fixedCharge + (amountApproved * (ratedCharge / 100));
-    console.log("The duration is: ", duration);
-    console.log(`The Total Charge for this investment is ${totalCharge}.`);
+    // console.log("The duration is: ", duration);
+    // console.log(`The Total Charge for this investment is ${totalCharge}.`);
     return resolve(totalCharge);
   });
 };

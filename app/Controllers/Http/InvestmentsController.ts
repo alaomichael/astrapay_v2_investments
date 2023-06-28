@@ -64,7 +64,7 @@ export default class InvestmentsController {
       return response.status(200).json({
         status: "OK",
         message: "no investment request matched your search",
-        data: {},
+        data: null,
       });
     }
     // return recommendation(s)
@@ -138,7 +138,7 @@ export default class InvestmentsController {
       //       return response.status(200).json({
       //         status: 'OK',
       //         message: 'no investment matched your search',
-      //         data: {},
+      //         data: null,
       //       })
       //     }
 
@@ -147,7 +147,7 @@ export default class InvestmentsController {
       //     return response.status(200).json({
       //       status: 'OK',
       //       message: 'no investment matched your search',
-      //       data: {},
+      //       data: null,
       //     })
       //   }
       // console.log("investments params: ", params);
@@ -163,7 +163,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: "OK",
           message: "no investment request matched your search",
-          data: {},
+          data: null,
         });
       }
       // return recommendation(s)
@@ -261,7 +261,7 @@ export default class InvestmentsController {
       const investmentsService = new InvestmentsServices();
       // let investments = await investmentsService.getInvestmentsByUserId(userId);
       let investments = await investmentsService.getInvestmentsByUserIdWithQuery(userId, request.qs());
-      console.log("Investments result :", investments);
+      // console.log("Investments result :", investments);
       if (investments && investments.length > 0) {
         let investmentWithPreloadedData = investments.map((investment) => {
           return investment;
@@ -271,7 +271,7 @@ export default class InvestmentsController {
           .json({ status: "OK", data: investmentWithPreloadedData });
       } else {
         return response
-          .json({ status: "OK", data: {} });
+          .json({ status: "OK", data: null });
       }
     } catch (error) {
       console.log("Error line 218", error.messages);
@@ -301,10 +301,10 @@ export default class InvestmentsController {
       // .orWhere('id', params.id)
       // .limit()
       const { search, limit, userId, investmentId, requestType, walletId } = request.qs()
-      console.log('PAYOUT query: ', request.qs())
+      // console.log('PAYOUT query: ', request.qs())
       const payout = await Payout.all()
       let sortedPayouts = payout
-      console.log('PAYOUT Investment line 150: ', payout)
+      // console.log('PAYOUT Investment line 150: ', payout)
       if (search) {
         sortedPayouts = sortedPayouts.filter((payout) => {
           // @ts-ignore
@@ -344,7 +344,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: 'OK',
           message: 'no investment payout matched your search',
-          data: {},
+          data: null,
         })
       }
       // return payouts
@@ -381,7 +381,7 @@ export default class InvestmentsController {
     // const investmentsService = new InvestmentsServices();
     // const { walletId,userId, investmentId, requestType, approvalStatus, getInvestmentDetails } = request.qs()
     const { userId, investmentId, requestType, approvalStatus, getInvestmentDetails } = request.qs()
-    console.log('INVESTMENT query line 151: ', request.qs())
+    // console.log('INVESTMENT query line 151: ', request.qs())
     let investment = await Investment.all()
     let approvals
     // let timeline
@@ -393,22 +393,22 @@ export default class InvestmentsController {
       !approvalStatus &&
       !getInvestmentDetails
     ) {
-      console.log('INVESTMENT ID', investmentId)
-      console.log('USER ID', userId)
+      // console.log('INVESTMENT ID', investmentId)
+      // console.log('USER ID', userId)
       // check the approval for request
       approvals = await Approval.query()
         .where('request_type', requestType)
         .where('user_id', userId)
         .where('investment_id', investmentId)
       // check the approval status
-      console.log('approvals line 163: ', approvals)
+      // console.log('approvals line 163: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approvals line 170: ', approvals[0].approvalStatus)
+      // console.log('approvals line 170: ', approvals[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         //  investment
@@ -443,7 +443,7 @@ export default class InvestmentsController {
           });
 
         }
-        console.log('INVESTMENT DATA line 305: ', investment)
+        // console.log('INVESTMENT DATA line 305: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -474,9 +474,9 @@ export default class InvestmentsController {
         investment[0][0].startDate = DateTime.now().toISO()
         let duration = investment[0][0].duration;  //parseInt(investment.duration)
         investment[0][0].payoutDate = DateTime.now().plus({ days: duration })
-        console.log('The currentDate line 336: ', currentDateMs)
-        console.log('Time investment was started line 337: ', investment[0][0].startDate)
-        console.log('Time investment payout date line 338: ', investment[0][0].payoutDate)
+        // console.log('The currentDate line 336: ', currentDateMs)
+        // console.log('Time investment was started line 337: ', investment[0][0].startDate)
+        // console.log('Time investment payout date line 338: ', investment[0][0].payoutDate)
         // update timeline
         timelineObject = {
           id: uuid(),
@@ -500,7 +500,7 @@ export default class InvestmentsController {
         // Save
         await investment[0].save()
         // Send notification
-        console.log('Updated investment Status line 358: ', investment[0])
+        // console.log('Updated investment Status line 358: ', investment[0])
         // START
         //  const requestUrl = Env.get('CERTIFICATE_URL') + investment.id
         //  await new PuppeteerServices(requestUrl, {
@@ -561,7 +561,7 @@ export default class InvestmentsController {
           });
 
         }
-        console.log('The declined investment line 239: ', investment)
+        // console.log('The declined investment line 239: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -606,10 +606,10 @@ export default class InvestmentsController {
         await investment[0].save()
 
         // send notification
-        console.log(
-          'INVESTMENT DATA line 443: ',
-          investment.map((inv) => inv.$original)
-        )
+        // console.log(
+        //   'INVESTMENT DATA line 443: ',
+        //   investment.map((inv) => inv.$original)
+        // )
 
         return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
@@ -622,22 +622,22 @@ export default class InvestmentsController {
       !approvalStatus &&
       !getInvestmentDetails
     ) {
-      console.log('INVESTMENT ID', investmentId)
-      console.log('USER ID', userId)
+      // console.log('INVESTMENT ID', investmentId)
+      // console.log('USER ID', userId)
       // check the approval for request
       approvals = await Approval.query()
         .where('request_type', requestType)
         .where('user_id', userId)
         .where('investment_id', investmentId)
       // check the approval status
-      console.log('approvals line 270: ', approvals)
+      // console.log('approvals line 270: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approvals line 277: ', approvals[0].approvalStatus)
+      // console.log('approvals line 277: ', approvals[0].approvalStatus)
       //  if approved update investment status to terminated, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
@@ -645,7 +645,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('INVESTMENT DATA line 285: ', investment)
+        // console.log('INVESTMENT DATA line 285: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -708,7 +708,7 @@ export default class InvestmentsController {
         await investment[0].save()
 
         // send notification
-        console.log('Updated investment Status line 540: ', investment[0])
+        // console.log('Updated investment Status line 540: ', investment[0])
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -719,7 +719,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 323: ', investment)
+        // console.log('The declined investment line 323: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -766,10 +766,10 @@ export default class InvestmentsController {
         await investment[0].save()
 
         // send notification
-        console.log(
-          'INVESTMENT DATA line 337: ',
-          investment.map((inv) => inv.$original)
-        )
+        // console.log(
+        //   'INVESTMENT DATA line 337: ',
+        //   investment.map((inv) => inv.$original)
+        // )
         return response.json({ status: 'OK', data: investment.map((inv) => inv.$original) })
       } else {
         return response.json({ status: 'OK', data: approvals.map((inv) => inv.$original) })
@@ -781,22 +781,22 @@ export default class InvestmentsController {
       !approvalStatus &&
       !getInvestmentDetails
     ) {
-      console.log('INVESTMENT ID', investmentId)
-      console.log('USER ID', userId)
+      // console.log('INVESTMENT ID', investmentId)
+      // console.log('USER ID', userId)
       // check the approval for request
       approvals = await Approval.query()
         .where('requestType', requestType)
         .where('userId', userId)
         .where('investmentId', investmentId)
       // check the approval status
-      console.log('approvals line 353: ', approvals)
+      // console.log('approvals line 353: ', approvals)
       if (approvals.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment payout request data matched your query, please try again',
         })
       }
-      console.log('approvals line 345: ', approvals[0].approvalStatus)
+      // console.log('approvals line 345: ', approvals[0].approvalStatus)
       //  if approved update investment status to active, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
@@ -804,7 +804,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('INVESTMENT DATA line 368: ', investment)
+        // console.log('INVESTMENT DATA line 368: ', investment)
         if (investment.length < 1) {
           investment = await Investment.query()
             // .where('status', 'active')
@@ -838,7 +838,7 @@ export default class InvestmentsController {
 
         // console.log('The currentDate line 372: ', currentDateMs)
         // console.log('Time investment was started line 373: ', investment.startDate)
-        console.log('Time investment payout date line 390: ', investment[0].payoutDate)
+        // console.log('Time investment payout date line 390: ', investment[0].payoutDate)
         // update timeline
         timelineObject = {
           id: uuid(),
@@ -863,7 +863,7 @@ export default class InvestmentsController {
         await investment[0].save()
 
         // send notification
-        console.log('Updated investment Status line 687: ', investment)
+        // console.log('Updated investment Status line 687: ', investment)
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -874,7 +874,7 @@ export default class InvestmentsController {
           .where('requestType', requestType)
           .where('userId', userId)
           .where('id', investmentId)
-        console.log('The declined investment line 698: ', investment)
+        // console.log('The declined investment line 698: ', investment)
         if (investment.length < 1) {
           // return response.json({
           //   status: 'FAILED',
@@ -921,10 +921,10 @@ export default class InvestmentsController {
         // await Save
         await investment[0].save()
         // send notification
-        console.log(
-          'INVESTMENT DATA line 744: ',
-          investment.map((inv) => inv.$original)
-        )
+        // console.log(
+        //   'INVESTMENT DATA line 744: ',
+        //   investment.map((inv) => inv.$original)
+        // )
         return response.json({
           status: 'OK',
           data: investment.map((inv) => inv.$original),
@@ -944,7 +944,7 @@ export default class InvestmentsController {
         approvalStatus &&
         getInvestmentDetails === 'true'
       ) {
-        console.log('Request Type', requestType)
+        // console.log('Request Type', requestType)
         sortedInvestment = sortedInvestment.filter((investment) => {
           return (
             investment.requestType === requestType &&
@@ -953,52 +953,52 @@ export default class InvestmentsController {
             investment.approvalStatus === approvalStatus
           )
         })
-        console.log('investment line 514: ', sortedInvestment)
+        // console.log('investment line 514: ', sortedInvestment)
         if (sortedInvestment.length < 1) {
           return response.json({
             status: 'FAILED',
             message: 'No investment approval request data matched your query, please try again',
           })
         }
-        console.log('approval line 782: ', sortedInvestment)
+        // console.log('approval line 782: ', sortedInvestment)
 
         return response.json({ status: 'OK', data: sortedInvestment.map((inv) => inv.$original) })
       }
       if (requestType) {
-        console.log('Request Type', requestType)
+        // console.log('Request Type', requestType)
         sortedApproval = sortedApproval.filter((approval) => {
           return approval.requestType === requestType
         })
       }
       if (userId) {
-        console.log('USER ID', userId)
+        // console.log('USER ID', userId)
         sortedApproval = sortedApproval.filter((approval) => {
           return approval.userId === userId
         })
       }
       if (investmentId) {
-        console.log('INVESTMENT ID', investmentId)
+        // console.log('INVESTMENT ID', investmentId)
         sortedApproval = sortedApproval.filter((approval) => {
           return approval.investmentId === investmentId
         })
       }
       //  approvalStatuss
       if (approvalStatus) {
-        console.log('Request Type', approvalStatus)
+        // console.log('Request Type', approvalStatus)
         sortedApproval = sortedApproval.filter((approval) => {
           return approval.approvalStatus === approvalStatus
         })
       }
 
       // check the approval status
-      console.log('approval line 813: ', sortedApproval)
+      // console.log('approval line 813: ', sortedApproval)
       if (sortedApproval.length < 1) {
         return response.json({
           status: 'FAILED',
           message: 'No investment approval request data matched your query, please try again',
         })
       }
-      console.log('approval line 820: ', sortedApproval)
+      // console.log('approval line 820: ', sortedApproval)
 
       return response.json({ status: 'OK', data: sortedApproval.map((inv) => inv.$original) })
     } else {
@@ -1051,7 +1051,7 @@ export default class InvestmentsController {
     //     return response.status(400).json({
     //       status: 'OK',
     //       message: 'no investment rate matched your search, please try again.',
-    //       data: {},
+    //       data: null,
     //     })
     //   }
 
@@ -1115,7 +1115,7 @@ export default class InvestmentsController {
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
       // debugger
       if (investment) {
-        console.log('Investment Selected for Update line 889:', investment.startDate)
+        // console.log('Investment Selected for Update line 889:', investment.startDate)
         let isDueForPayout
         if (investment.startDate !== null) {
           let startDate = investment.startDate
@@ -1126,7 +1126,7 @@ export default class InvestmentsController {
           isDueForPayout = await dueForPayout(startDate, duration)
           // debugger
           // isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
-          console.log('Is due for payout status @ InvestmentsController line 1121 ========= :', isDueForPayout)
+          // console.log('Is due for payout status @ InvestmentsController line 1121 ========= :', isDueForPayout)
           // let newRolloverTarget = request.input('rolloverTarget')
           // let newRolloverType = request.input('rolloverType')
           // Restrict update to timed/fixed deposit only
@@ -1265,7 +1265,7 @@ export default class InvestmentsController {
       const { walletId, userId } = request.all()
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
       if (investment) {
-        console.log('Investment Selected for Update line 1260:', investment.startDate)
+        // console.log('Investment Selected for Update line 1260:', investment.startDate)
         let isDueForPayout
         if (investment.startDate !== null) {
           let createdAt = investment.createdAt
@@ -1275,7 +1275,7 @@ export default class InvestmentsController {
           try {
             isDueForPayout = await dueForPayout(createdAt, duration)
             // isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
-            console.log('Is due for payout status :', isDueForPayout)
+            // console.log('Is due for payout status :', isDueForPayout)
             let newRolloverTarget = request.input('rolloverTarget')
             let newRolloverType = request.input('rolloverType')
             // Restrict update to timed/fixed deposit only
@@ -1311,7 +1311,7 @@ export default class InvestmentsController {
                 // console.log(" Current log, line 1346 :", currentInvestment);
                 // send for update
                 let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                console.log(" Current log, line 1349 :", updatedInvestment);
+                // console.log(" Current log, line 1349 :", updatedInvestment);
 
                 // console.log('Update Investment:', investment)
                 // send to user
@@ -1520,7 +1520,7 @@ export default class InvestmentsController {
         return response.status(400).json({
           status: 'OK',
           message: 'no investment rate matched your search, please try again.',
-          data: {},
+          data: null,
         })
       }
 
@@ -1657,7 +1657,7 @@ export default class InvestmentsController {
         //   return response.status(400).json({
         //     status: 'OK',
         //     message: 'investment approval request was not successful, please try again.',
-        //     data: {},
+        //     data: null,
         //   })
         // }
         debugger
@@ -1965,7 +1965,7 @@ export default class InvestmentsController {
           // get the current investmentRef, split , add one to the current number, update and try again
           // TODO: Update to accomodate the addition of new column
           let getNumberOfAttempt = investmentRequestReference.split("_");
-          console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
+          // console.log("getNumberOfAttempt line 1915 =====", getNumberOfAttempt[1]);
           let updatedNumberOfAttempts = numberOfAttempts + 1;//  Number(getNumberOfAttempt[1]) + 1;
           let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
           debugger;
@@ -2236,7 +2236,7 @@ export default class InvestmentsController {
       })
       // console.log(' Investment QUERY RESULT: ', investment)
       if (investment.length > 0) {
-        console.log('Investment Selected for Update:', investment)
+        // console.log('Investment Selected for Update:', investment)
         let isDueForPayout = await dueForPayout(investment[0].startDate, investment[0].duration)
         console.log('Is due for payout status :', isDueForPayout)
         // Restrict update to timed/fixed deposit only
@@ -2260,7 +2260,7 @@ export default class InvestmentsController {
           if (investment) {
             // send to user
             await investment[0].save()
-            console.log('Update Investment:', investment)
+            // console.log('Update Investment:', investment)
             return response
               .status(200)
               .json({ status: 'OK', data: investment.map((inv) => inv.$original) })
@@ -2366,7 +2366,7 @@ export default class InvestmentsController {
         return response.status(200).json({
           status: 'OK',
           message: 'no investment approval request matched your search',
-          data: {},
+          data: null,
         })
       }
       // return rate(s)
@@ -2425,7 +2425,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2477,16 +2477,16 @@ export default class InvestmentsController {
       // @ts-ignore
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
-      console.log(
-        'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
-      )
+      // console.log(
+      //   'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+      // )
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       // let investment = await Investment.query().where('id', investmentId)
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
       // console.log('Investment Info, line 1322: ', investment)
       // debugger
       if (investment && investment.$original.status == "active") {
-        console.log('investment search data :', investment.$original)
+        // console.log('investment search data :', investment.$original)
         let { rfiCode } = investment.$original;
         // @ts-ignore
         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -2495,10 +2495,10 @@ export default class InvestmentsController {
         // TESTING
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
         let duration = 4
-        console.log('Time investment was started line 1332: ', startDate)
+        // console.log('Time investment was started line 1332: ', startDate)
         let timelineObject
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 1336:', isDueForPayout)
+        // console.log('Is due for payout status line 1336:', isDueForPayout)
         // let amt = investment.amount
         const settingsService = new SettingsServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -2506,7 +2506,7 @@ export default class InvestmentsController {
           throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
         }
 
-        console.log('Approval setting line 1339:', settings)
+        // console.log('Approval setting line 1339:', settings)
         if (isDueForPayout) {
           //  START
           let payload = investment.$original
@@ -2536,7 +2536,7 @@ export default class InvestmentsController {
             //     return response.status(400).json({
             //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
-            //       data: {},
+            //       data: null,
             //     })
             //   }
             // }
@@ -2601,8 +2601,9 @@ export default class InvestmentsController {
             let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // send for update
             // await investmentsService.updateInvestment(record, investment);
-            let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-            console.log(" Current log, line 1655 :", updatedInvestment);
+            await investmentsService.updateInvestment(record, investment);
+            // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+            // console.log(" Current log, line 1655 :", updatedInvestment);
             // debugger
           } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
             if (investment.status !== 'paid') {
@@ -2629,7 +2630,7 @@ export default class InvestmentsController {
             // console.log(" Current log, line 1680 :", updatedInvestment);
           }
 
-          console.log('Investment data after payout request line 1683:', investment)
+          // console.log('Investment data after payout request line 1683:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment//.map((inv) => inv.$original),
@@ -2640,7 +2641,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2692,7 +2693,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2745,7 +2746,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2799,7 +2800,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2851,7 +2852,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2904,7 +2905,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -2956,7 +2957,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3001,7 +3002,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3046,7 +3047,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3092,7 +3093,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3137,7 +3138,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3183,7 +3184,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3237,7 +3238,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3311,7 +3312,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3390,7 +3391,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3463,7 +3464,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3536,7 +3537,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3587,9 +3588,9 @@ export default class InvestmentsController {
       // @ts-ignore
       // let id = request.input('userId')
       let { userId, investmentId } = request.all()
-      console.log(
-        'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
-      )
+      // console.log(
+      //   'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+      // )
       // let investment = await Investment.query().where('user_id', id).where('id', params.id)
       // let investment = await Investment.query().where('id', investmentId)
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
@@ -3609,7 +3610,7 @@ export default class InvestmentsController {
         let timelineObject
         // let timeline
         let isDueForPayout = await dueForPayout(startDate, duration)
-        console.log('Is due for payout status line 1336:', isDueForPayout)
+        // console.log('Is due for payout status line 1336:', isDueForPayout)
         // let amt = investment.amount
         const settingsService = new SettingsServices();
         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -3617,7 +3618,7 @@ export default class InvestmentsController {
           throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
         }
 
-        console.log('Approval setting line 1339:', settings)
+        // console.log('Approval setting line 1339:', settings)
         if (isDueForPayout) {
           //  START
           let payload = investment.$original
@@ -3647,7 +3648,7 @@ export default class InvestmentsController {
             //     return response.status(400).json({
             //       status: 'OK',
             //       message: 'payout approval request was not successful, please try again.',
-            //       data: {},
+            //       data: null,
             //     })
             //   }
             // }
@@ -3671,8 +3672,9 @@ export default class InvestmentsController {
             // check if the approval request is not existing
             let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
             if (!approvalRequestIsExisting) {
-              let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-              console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+              await approvalsService.createApproval(approvalObject);
+              // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+              // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
             }
 
             // investment = await Investment.query().where('id', investmentId)
@@ -3704,9 +3706,9 @@ export default class InvestmentsController {
 
             }
 
-            console.log('Investment payload data line 1399:', payload)
-            console.log(' investment.approvalStatus  line 1400:', investment.approvalStatus)
-            console.log(' investment.status line 1401:', investment.status)
+            // console.log('Investment payload data line 1399:', payload)
+            // console.log(' investment.approvalStatus  line 1400:', investment.approvalStatus)
+            // console.log(' investment.status line 1401:', investment.status)
 
             // END
             investment.status = 'active'
@@ -3726,8 +3728,8 @@ export default class InvestmentsController {
             }
             // Send notification
 
-            console.log('Updated investment Status line 1315: ', investment)
-            console.log('Payout investment data 1:', payload)
+            // console.log('Updated investment Status line 1315: ', investment)
+            // console.log('Payout investment data 1:', payload)
             payload.investmentId = investmentId
             payload.requestType = requestType
             // check if payout request is existing
@@ -3769,8 +3771,8 @@ export default class InvestmentsController {
           let investmentId = payload.id
           let requestType = 'terminate investment'
           // let approvalStatus = 'approved'
-          let settings = await Setting.query().where({ tagName: 'default setting' })
-          console.log('Approval setting line 1241:', settings[0])
+          // let settings = await Setting.query().where({ tagName: 'default setting' })
+          // console.log('Approval setting line 1241:', settings[0])
           let approvalRequestIsExisting
           let approvalIsAutomated //= settings[0].isTerminationAutomated // isPayoutAutomated
           if (approvalIsAutomated == undefined || approvalIsAutomated === false) {
@@ -3780,15 +3782,15 @@ export default class InvestmentsController {
               request_type: requestType,
               //  approval_status: approvalStatus,
             })
-            console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+            // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
             if (approvalRequestIsExisting.length < 1) {
               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-              console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
+              // console.log(' Approval request return line 1245 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
                   status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
-                  data: {},
+                  data: null,
                 })
               }
             }
@@ -3803,31 +3805,31 @@ export default class InvestmentsController {
               investment_id: investmentId,
               user_id: userId,
             })
-            console.log(
-              'Investment payout Request Is Existing data line 1264:',
-              payoutRequestIsExisting
-            )
+            // console.log(
+            //   'Investment payout Request Is Existing data line 1264:',
+            //   payoutRequestIsExisting
+            // )
             if (
               payoutRequestIsExisting.length < 1 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
-              console.log('Payout investment data 1:', payload)
+              // console.log('Payout investment data 1:', payload)
               // payload.timeline = JSON.stringify(investment.timeline)
-              console.log('Payout investment data line 1576:', payload)
+              // console.log('Payout investment data line 1576:', payload)
               payout = await Payout.create(payload)
               payout.status = 'terminated'
               await payout.save()
-              console.log('Terminated Payout investment data line 1276:', payout)
+              // console.log('Terminated Payout investment data line 1276:', payout)
             } else if (
               payoutRequestIsExisting.length > 0 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
-              console.log('Payout investment data 1:', payload)
+              // console.log('Payout investment data 1:', payload)
               payout.status = 'terminated'
               await payout.save()
-              console.log('Terminated Payout investment data line 1285:', payout)
+              // console.log('Terminated Payout investment data line 1285:', payout)
             }
             investment.status = 'active'
             investment.approvalStatus = 'pending'
@@ -3845,32 +3847,32 @@ export default class InvestmentsController {
               investment_id: investmentId,
               user_id: userId,
             })
-            console.log(
-              'Investment payout Request Is Existing data line 1304:',
-              payoutRequestIsExisting
-            )
+            // console.log(
+            //   'Investment payout Request Is Existing data line 1304:',
+            //   payoutRequestIsExisting
+            // )
             if (
               payoutRequestIsExisting.length < 1 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
-              console.log('Payout investment data 1:', payload)
+              // console.log('Payout investment data 1:', payload)
               // payload.timeline = JSON.stringify(investment.timeline)
-              console.log('Investment data line 1618:', payload)
+              // console.log('Investment data line 1618:', payload)
 
               payout = await Payout.create(payload)
               payout.status = 'terminated'
               await payout.save()
-              console.log('Terminated Payout investment data line 1316:', payout)
+              // console.log('Terminated Payout investment data line 1316:', payout)
             } else if (
               payoutRequestIsExisting.length > 0 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
-              console.log('Payout investment data 1:', payload)
+              // console.log('Payout investment data 1:', payload)
               payout.status = 'terminated'
               await payout.save()
-              console.log('Terminated Payout investment data line 1325:', payout)
+              // console.log('Terminated Payout investment data line 1325:', payout)
             }
 
             investment.status = 'terminated'
@@ -3902,7 +3904,7 @@ export default class InvestmentsController {
           // investment.timeline = JSON.stringify(timeline)
           await investment.save()
 
-          console.log('Terminated Payout investment data line 1521:', investment)
+          // console.log('Terminated Payout investment data line 1521:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment.map((inv) => inv.$original),
@@ -3913,7 +3915,7 @@ export default class InvestmentsController {
         return response.status(404).json({
           status: 'OK',
           message: 'no investment matched your search',
-          data: {},
+          data: null,
         })
       }
     } catch (error) {
@@ -3944,9 +3946,9 @@ export default class InvestmentsController {
       const investmentsService = new InvestmentsServices();
       // @ts-ignore
       let { userId, walletId, investmentId } = request.all()
-      console.log(
-        'Params for update line 1359: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
-      )
+      // console.log(
+      //   'Params for update line 1359: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
+      // )
       //  investment = await Investment.query().where({ id: investmentId, user_id: userId })
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
       if (!investment) throw Error(`Investment record with ID: ${investmentId} does not exist. Please try again. Thank you.`)
@@ -3965,8 +3967,8 @@ export default class InvestmentsController {
         let timelineObject
         // let timeline
         let settings = await Setting.query().where({ tagName: 'default setting' })
-        console.log('Approval setting line 1568:', settings[0])
-        console.log('Investment Info, line 1569: ', investment)
+        // console.log('Approval setting line 1568:', settings[0])
+        // console.log('Investment Info, line 1569: ', investment)
         if (
           (investment &&
             investment.isPayoutAuthorized === true &&
@@ -4005,7 +4007,7 @@ export default class InvestmentsController {
             investment.approvalStatus === 'approved' &&
             investment.status === 'terminated')
         ) {
-          console.log('investment search data line 1596 :', investment.$original)
+          // console.log('investment search data line 1596 :', investment.$original)
           // debugger
           // @ts-ignore
           // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
@@ -4029,7 +4031,7 @@ export default class InvestmentsController {
             if (rolloverType === '100') {
               // Save the payment data in payout table
               payload = investmentData
-              console.log('Payout investment data line 1619:', payload)
+              // console.log('Payout investment data line 1619:', payload)
               // payout = await Payout.create(payload)
               // payout.status = 'matured'
               // await payout.save()
@@ -4134,13 +4136,13 @@ export default class InvestmentsController {
               } else {
                 let requestType = 'payout payment'
                 let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-                console.log(' Approval request return line 1717 : ', approvalRequestIsDone)
+                // console.log(' Approval request return line 1717 : ', approvalRequestIsDone)
                 if (approvalRequestIsDone === undefined) {
                   return response.status(400).json({
                     status: 'OK',
                     message:
                       'payment processing approval request was not successful, please try again.',
-                    data: {},
+                    data: null,
                   })
                 }
                 // investment = await Investment.query().where('id', investmentId)
@@ -4192,15 +4194,15 @@ export default class InvestmentsController {
                * '103' = 'rollover interest only'])
                */
 
-              console.log(
-                'Data for line 1542: ',
-                rolloverType,
-                amount,
-                duration,
-                investmentType,
-                rolloverTarget,
-                rolloverDone
-              )
+              // console.log(
+              //   'Data for line 1542: ',
+              //   rolloverType,
+              //   amount,
+              //   duration,
+              //   investmentType,
+              //   rolloverTarget,
+              //   rolloverDone
+              // )
               //  function for effecting the set rollover
               const effectRollover = async (
                 investmentData,
@@ -4210,14 +4212,14 @@ export default class InvestmentsController {
                 rolloverTarget
               ) => {
                 return new Promise(async (resolve, reject) => {
-                  console.log(
-                    'Datas line 1562 : ',
-                    investmentData,
-                    amount,
-                    rolloverType,
-                    rolloverDone,
-                    rolloverTarget
-                  )
+                  // console.log(
+                  //   'Datas line 1562 : ',
+                  //   investmentData,
+                  //   amount,
+                  //   rolloverType,
+                  //   rolloverDone,
+                  //   rolloverTarget
+                  // )
                   if (!investmentData || rolloverTarget < 0) {
                     reject(
                       new Error(
@@ -4231,7 +4233,7 @@ export default class InvestmentsController {
                   // let timeline
                   let rolloverIsSuccessful
                   let settings = await Setting.query().where({ tagName: 'default setting' })
-                  console.log('Approval setting line 2081:', settings[0])
+                  // console.log('Approval setting line 2081:', settings[0])
                   if (rolloverDone >= rolloverTarget) {
                     let payload = investmentData
                     let investmentId = payload.id
@@ -4239,9 +4241,7 @@ export default class InvestmentsController {
                     let requestType = 'payout_investment'
                     amountToPayoutNow = amount + investmentData.interestDueOnInvestment
                     // Send Investment Initiation Message to Queue
-                    payload = investmentData
-
-
+                    payload = investmentData;
                     let isPayoutAutomated = settings[0].isPayoutAutomated
                     if (isPayoutAutomated === false) {
                       try {
@@ -4250,13 +4250,13 @@ export default class InvestmentsController {
                           investmentId,
                           requestType
                         )
-                        console.log(' Approval request return line 1672 : ', approvalRequestIsDone)
+                        // console.log(' Approval request return line 1672 : ', approvalRequestIsDone)
                         if (approvalRequestIsDone === undefined) {
                           return response.status(400).json({
                             status: 'OK',
                             message:
                               'payment processing approval request was not successful, please try again.',
-                            data: {},
+                            data: null,
                           })
                         }
                       } catch (error) {
@@ -4357,7 +4357,7 @@ export default class InvestmentsController {
                   // if rolloverDone < rolloverTarget
                   investmentData = investment
                   let payload = investmentData
-                  console.log('Payload line 1969 :', payload)
+                  // console.log('Payload line 1969 :', payload)
                   let payloadDuration = investmentData.duration
                   let payloadInvestmentType = investmentData.investmentType
                   // A function for creating new investment
@@ -4389,7 +4389,7 @@ export default class InvestmentsController {
                   //     return response.status(400).json({
                   //       status: 'OK',
                   //       message: 'no investment rate matched your search, please try again.',
-                  //       data: {},
+                  //       data: null,
                   //     })
                   //   }
                   //   let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -4471,7 +4471,7 @@ export default class InvestmentsController {
                   //         status: 'OK',
                   //         message:
                   //           'investment approval request was not successful, please try again.',
-                  //         data: {},
+                  //         data: null,
                   //       })
                   //     }
                   //     // update timeline
@@ -4587,31 +4587,31 @@ export default class InvestmentsController {
                       investmentData = investment
                       // Save the payment data in payout table
                       payload = investmentData
-                      console.log('Matured Payout investment data line 2477:', payload)
+                      // console.log('Matured Payout investment data line 2477:', payload)
 
                       // send payment details to transction service
 
                       // Send Notification
 
-                      console.log(
-                        ' The Rate return for RATE line 2491: ',
-                        await investmentRate(
-                          amountToBeReinvested,
-                          payloadDuration,
-                          payloadInvestmentType
-                        )
-                      )
+                      // console.log(
+                      //   ' The Rate return for RATE line 2491: ',
+                      //   await investmentRate(
+                      //     amountToBeReinvested,
+                      //     payloadDuration,
+                      //     payloadInvestmentType
+                      //   )
+                      // )
                       rate = await investmentRate(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType
                       )
-                      console.log(' Rate return line 2503 : ', rate)
+                      // console.log(' Rate return line 2503 : ', rate)
                       if (rate === undefined) {
                         //  send the money to the investor wallet
-                        console.log(
-                          `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
-                        )
+                        // console.log(
+                        //   `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
+                        // )
                         // update timeline
                         timelineObject = {
                           id: uuid(),
@@ -4642,7 +4642,7 @@ export default class InvestmentsController {
                         // return response.status(400).json({
                         //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
-                        //   data: {},
+                        //   data: null,
                         // })
                       }
                       // initiate a new investment
@@ -4652,7 +4652,7 @@ export default class InvestmentsController {
                         payloadInvestmentType,
                         investmentData
                       )
-                      console.log('new investment is created: ', isNewInvestmentCreated)
+                      // console.log('new investment is created: ', isNewInvestmentCreated)
                       if (isNewInvestmentCreated === undefined) {
                         // send the money to the user
                         // send payment details to transction service
@@ -4671,9 +4671,9 @@ export default class InvestmentsController {
                         //  })
                         // break
                       }
-                      console.log(
-                        `Principal of ${currencyCode} ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
-                      )
+                      // console.log(
+                      //   `Principal of ${currencyCode} ${amountToBeReinvested} was Reinvested and the interest of ${currencyCode} ${amountToPayoutNow} was paid`
+                      // )
                       // update timeline
                       timelineObject = {
                         id: uuid(),
@@ -4711,25 +4711,25 @@ export default class InvestmentsController {
 
                       // Send Notification
 
-                      console.log(
-                        ' The Rate return for RATE line 2591: ',
-                        await investmentRate(
-                          amountToBeReinvested,
-                          payloadDuration,
-                          payloadInvestmentType
-                        )
-                      )
+                      // console.log(
+                      //   ' The Rate return for RATE line 2591: ',
+                      //   await investmentRate(
+                      //     amountToBeReinvested,
+                      //     payloadDuration,
+                      //     payloadInvestmentType
+                      //   )
+                      // )
                       rate = await investmentRate(
                         amountToBeReinvested,
                         payloadDuration,
                         payloadInvestmentType
                       )
-                      console.log(' Rate return line 2603 : ', rate)
+                      // console.log(' Rate return line 2603 : ', rate)
                       if (rate === undefined) {
                         //  send the money to the investor wallet
-                        console.log(
-                          `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
-                        )
+                        // console.log(
+                        //   `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
+                        // )
                         // update timeline
                         timelineObject = {
                           id: uuid(),
@@ -4757,7 +4757,7 @@ export default class InvestmentsController {
                         // return response.status(400).json({
                         //   status: 'OK',
                         //   message: 'no investment rate matched your search, please try again.',
-                        //   data: {},
+                        //   data: null,
                         // })
                       }
 
@@ -4768,7 +4768,7 @@ export default class InvestmentsController {
                         payloadInvestmentType,
                         investmentData
                       )
-                      console.log('new investment is created 2628: ', isNewInvestmentCreated)
+                      // console.log('new investment is created 2628: ', isNewInvestmentCreated)
                       if (isNewInvestmentCreated === undefined) {
                         // send the money to the user
                         // send payment details to transction service
@@ -4789,9 +4789,9 @@ export default class InvestmentsController {
                         // break
                       }
 
-                      console.log(
-                        `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
-                      )
+                      // console.log(
+                      //   `The Sum Total of the Principal and the interest of ${currencyCode} ${amountToBeReinvested} was Reinvested`
+                      // )
                       // update timeline
 
                       timelineObject = {
@@ -4891,10 +4891,10 @@ export default class InvestmentsController {
                 rolloverDone,
                 rolloverTarget
               )
-              console.log(
-                'testing Rollover Implementation line 2770',
-                rolloverImplementation
-              )
+              // console.log(
+              //   'testing Rollover Implementation line 2770',
+              //   rolloverImplementation
+              // )
               await investment.save()
               if (
                 // @ts-ignore
@@ -4902,16 +4902,16 @@ export default class InvestmentsController {
                 // @ts-ignore
                 rolloverImplementation?.rolloverIsSuccessful === undefined
               ) {
-                console.log(
-                  'Investment data after payout for unsuccessful reinvestment, line 2779:',
-                  investment
-                )
+                // console.log(
+                //   'Investment data after payout for unsuccessful reinvestment, line 2779:',
+                //   investment
+                // )
                 return response.status(400).json({
                   status: 'FAILED',
                   data: investment//.map((inv) => inv.$original),
                 })
               }
-              console.log('Investment data after payout line 2785:', investment)
+              // console.log('Investment data after payout line 2785:', investment)
               return response.status(200).json({
                 status: 'OK',
                 data: investment//.map((inv) => inv.$original),
@@ -4927,12 +4927,12 @@ export default class InvestmentsController {
             let approvalForTerminationIsAutomated = false
             if (approvalForTerminationIsAutomated === false) {
               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-              console.log(' Approval request return line 2772 : ', approvalRequestIsDone)
+              // console.log(' Approval request return line 2772 : ', approvalRequestIsDone)
               if (approvalRequestIsDone === undefined) {
                 return response.status(400).json({
                   status: 'OK',
                   message: 'termination approval request was not successful, please try again.',
-                  data: {},
+                  data: null,
                 })
               }
               // console.log('Payout investment data line 2780:', payload)
@@ -4942,7 +4942,7 @@ export default class InvestmentsController {
               const payout = await Payout.create(payload)
               payout.status = 'terminated'
               await payout.save()
-              console.log('Terminated Payout investment data line 2787:', payout)
+              // console.log('Terminated Payout investment data line 2787:', payout)
               //  END
               // investment = await Investment.query().where('id', investmentId)
               payload.requestType = requestType
@@ -4994,7 +4994,7 @@ export default class InvestmentsController {
               payload.status = 'terminated'
               payload.approvalStatus = 'approved'
               await payload.save()
-              console.log('Terminated Payout investment data line 2839:', payload)
+              // console.log('Terminated Payout investment data line 2839:', payload)
             }
             // update timeline
             timelineObject = {
@@ -5034,7 +5034,7 @@ export default class InvestmentsController {
           })
         }
       } else {
-        console.log('Investment data after search line 2911:', investment)
+        // console.log('Investment data after search line 2911:', investment)
         return response.status(200).json({
           status: 'FAILED',
           data: investment//.map((inv) => inv.$original),
@@ -5076,7 +5076,7 @@ export default class InvestmentsController {
       })
       .andWhereNot({ status: 'paid' })
       .first()
-    console.log(' QUERY RESULT: ', investment)
+    // console.log(' QUERY RESULT: ', investment)
     if (investment) {
       // investment = await Investment.query().where({id: investmentId,user_id: userId,})
       let timeline
@@ -5137,8 +5137,8 @@ export default class InvestmentsController {
         datePayoutWasDone,
       } = investment
 
-      console.log('Initial status line 2949: ', status)
-      console.log('Initial datePayoutWasDone line 2950: ', datePayoutWasDone)
+      // console.log('Initial status line 2949: ', status)
+      // console.log('Initial datePayoutWasDone line 2950: ', datePayoutWasDone)
       let payload = {
         investmentId: id,
         userId,
@@ -5179,7 +5179,7 @@ export default class InvestmentsController {
       payload.status = 'paid'
       payload.isPayoutSuccessful = isPayoutSuccessful
       // @ts-ignore
-      console.log('Payout Payload: ', payload)
+      // console.log('Payout Payload: ', payload)
 
       // @ts-ignore
       // let { userId, investmentId, walletId } = request.all()
@@ -5191,7 +5191,7 @@ export default class InvestmentsController {
         rollover_target: payload.rolloverTarget,
         rollover_done: payload.rolloverDone,
       })
-      console.log(' QUERY RESULT line 3003: ', payoutRecord)
+      // console.log(' QUERY RESULT line 3003: ', payoutRecord)
       if (payoutRecord.length > 0) {
         return response.json({
           status: 'OK',
@@ -5209,14 +5209,14 @@ export default class InvestmentsController {
       // Save the Update
       await investment.save()
       // payload.timeline = JSON.stringify(investment.timeline)
-      console.log('Matured Payout investment data line 3021:', payload)
+      // console.log('Matured Payout investment data line 3021:', payload)
 
       payoutRecord = await PayoutRecord.create(payload)
       // update investment status
       // payout.status = 'paid'
       await payoutRecord.save()
 
-      console.log('Payout Record investment data line 3028:', payoutRecord)
+      // console.log('Payout Record investment data line 3028:', payoutRecord)
       // @ts-ignore
       investment.datePayoutWasDone = payoutRecord.createdAt
 
@@ -5230,7 +5230,7 @@ export default class InvestmentsController {
           investment_type: payload.investmentType,
         })
         .first()
-      console.log('Payout investment data line 3040:', payout)
+      // console.log('Payout investment data line 3040:', payout)
       if (payout) {
         payout.totalAmountToPayout = payoutRecord.totalAmountPaid
         payout.isPayoutAuthorized = payoutRecord.isPayoutAuthorized
@@ -5287,7 +5287,7 @@ export default class InvestmentsController {
       id: request.input('investmentId'),
       user_id: params.userId,
     })
-    console.log(' QUERY RESULT: ', investment)
+    // console.log(' QUERY RESULT: ', investment)
     if (investment.length > 0) {
       investment = await Investment.query()
         .where({
@@ -5295,7 +5295,7 @@ export default class InvestmentsController {
           user_id: params.userId,
         })
         .delete()
-      console.log('Deleted data:', investment)
+      // console.log('Deleted data:', investment)
       return response.send('Investment Deleted.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

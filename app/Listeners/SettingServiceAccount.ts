@@ -13,8 +13,8 @@ export default class SettingServiceAccount {
     public async sendServiceAccount({ action, serviceAccount }: EventsList["service_account::send_service_account"]) {
         try {
             console.log("sending service account to queue");
-            console.log(" action ", action);
-            console.log(" serviceAccount ", serviceAccount);
+            // console.log(" action ", action);
+            // console.log(" serviceAccount ", serviceAccount);
             debugger
             if (action && serviceAccount) {
                 //  publish to queue

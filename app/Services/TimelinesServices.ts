@@ -77,7 +77,7 @@ export default class TimelinesServices {
                 .offset(offset)
                 .limit(limit)
 
-            console.log("Response data in timeline service:", responseData)
+            // console.log("Response data in timeline service:", responseData)
             return responseData
         } catch (error) {
             console.log(error)
@@ -90,8 +90,8 @@ export default class TimelinesServices {
         try {
             // const timeline = await Timeline.findBy('id', id);
             const timeline = await Timeline.query().where({ id: id }).first();
-            console.log("Timeline search result from service")
-            console.log(timeline);
+            // console.log("Timeline search result from service")
+            // console.log(timeline);
             return timeline;
         } catch (error) {
             console.log(error)
@@ -103,8 +103,8 @@ export default class TimelinesServices {
         try {
             // const timeline = await Timeline.findBy('id', id);
             const timeline = await Timeline.query().where({ investment_id: investmentId }).first();
-            console.log("Timeline search result from service")
-            console.log(timeline);
+            // console.log("Timeline search result from service")
+            // console.log(timeline);
             return timeline;
         } catch (error) {
             console.log(error)

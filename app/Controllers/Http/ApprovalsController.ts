@@ -51,7 +51,7 @@ export default class ApprovalsController {
         return response.status(200).json({
           status: "OK",
           message: "no approval request matched your search",
-          data: {},
+          data: null,
         });
       }
 
@@ -68,7 +68,7 @@ export default class ApprovalsController {
         }
         // console.log("investment line 75 ===================");
         // console.log(investment);
-        // if ((investment == null || investment == undefined) && (linkAccount == null || linkAccount == undefined)) return response.json({ status: "FAILED", data: {} });
+        // if ((investment == null || investment == undefined) && (linkAccount == null || linkAccount == undefined)) return response.json({ status: "FAILED", data: nullll });
         if (investment) {
           let approvalWithInvestmentDetails = {
             ...approval.$original,
@@ -260,7 +260,7 @@ export default class ApprovalsController {
           status: "FAILED",
           message:
             "No approval data matched your approval request search, please try again.",
-            data: {},
+          data: null,
         });
       }
     } catch (error) {
@@ -367,7 +367,7 @@ export default class ApprovalsController {
       if (!approval || record == undefined || !record) {
         return response
           .status(404)
-          .json({ status: "FAILED", message: "Not Found,try again.", data: {} });
+          .json({ status: "FAILED", message: "Not Found,try again.", data: null });
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
       // console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
@@ -1501,8 +1501,8 @@ export default class ApprovalsController {
           //   '102' = 'rollover principal with interest',
           //   '103' = 'rollover interest only',
           if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "payout_suspended") ||
-            (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) { 
-              // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
+            (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) {
+            // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
             // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
             //debugger
             // check type of rollover
@@ -2306,7 +2306,7 @@ export default class ApprovalsController {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
             // console.log(" Current log, line 1668 :", currentInvestment);
             // send for update
-             await investmentsService.updateInvestment(currentInvestment, record);
+            await investmentsService.updateInvestment(currentInvestment, record);
             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
             // console.log(" Current log, line 1671 :", updatedInvestment);
 
@@ -3111,7 +3111,7 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // TODO: Just commented out on frontend request on 23-06-2023
-          newStatus = "payout_activated"; 
+          newStatus = "payout_activated";
           record.status = newStatus;
           record.isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
@@ -3524,7 +3524,7 @@ export default class ApprovalsController {
               await investmentsService.updateInvestment(currentInvestment, record);
               // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
               // console.log(" Current log, line 3490 :", updatedInvestment);
-              
+
               // console.log("Updated record Status line 537: ", record);
 
               // update timeline
@@ -3855,7 +3855,7 @@ export default class ApprovalsController {
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 2449 :", updatedInvestment);
-          
+
           await investmentsService.liquidateInvestment(investmentId);
 
           // console.log("Updated record Status line 2451: ", record);
@@ -3924,7 +3924,7 @@ export default class ApprovalsController {
           await investmentsService.updateInvestment(currentInvestment, record);
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1793 :", updatedInvestment);
-          
+
           // console.log("Updated record Status line 1795: ", record);
           // update timeline
           timelineObject = {

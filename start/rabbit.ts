@@ -59,7 +59,7 @@ const amqplib = require('amqplib');
                     content = content.toString();
                     // console.log('Received message converted to string, line 51 =========:', content);
                     content = JSON.parse(content);
-                    console.log('Received message converted to json, line 53 =========:', content);
+                    // console.log('Received message converted to json, line 53 =========:', content);
                     let {
                         consumerTag,//: 'amq.ctag-ihMXzcY0EI6bWrseyN52Hg',
                         deliveryTag,//: 1,
@@ -115,7 +115,7 @@ const amqplib = require('amqplib');
                     let rfiRecord = await rfiRecordsService.getRfiRecordByExternalRfiRecordId(externalRfiRecordId);
                     debugger
                     if (!rfiRecord) {
-                        console.log("payload line 106 ===== ", payload)
+                        // console.log("payload line 106 ===== ", payload)
                         let rfiNameExist = await rfiRecordsService.getRfiRecordByRfiRecordRfiName(payload.rfiName);
                         if (rfiNameExist) {
                             console.log('Consumer cancelled by server, line 109 =====');

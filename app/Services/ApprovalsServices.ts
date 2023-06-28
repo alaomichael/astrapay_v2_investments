@@ -112,7 +112,7 @@ export default class ApprovalsServices {
             // const approval = await Approval.findBy('id', id);
             const approval = await Approval.query().where({ id: id }).first();
             console.log("Approval search result from service")
-            console.log(approval);
+            // console.log(approval);
             return approval;
         } catch (error) {
             console.log(error)
@@ -553,8 +553,8 @@ export default class ApprovalsServices {
 
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
-                    console.log("selectedInvestmentRequest ========================================================")
-                    console.log(selectedInvestmentRequest)
+                    // console.log("selectedInvestmentRequest ========================================================")
+                    // console.log(selectedInvestmentRequest)
                     let selectedInvestmentRequestUpdate = selectedInvestmentRequest;
                     selectedInvestmentRequestUpdate.approvalStatus = "declined" //saveApproval.approvalStatus;
                     selectedInvestmentRequestUpdate.status = "investment_declined";
