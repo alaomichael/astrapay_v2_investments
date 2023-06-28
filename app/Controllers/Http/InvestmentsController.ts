@@ -469,7 +469,7 @@ export default class InvestmentsController {
         // update status of investment
         // update start date
         investment[0][0].status = 'active'
-        let currentDateMs = DateTime.now().toISO()
+        // let currentDateMs = DateTime.now().toISO()
         // @ts-ignore
         investment[0][0].startDate = DateTime.now().toISO()
         let duration = investment[0][0].duration;  //parseInt(investment.duration)
@@ -1310,7 +1310,8 @@ export default class InvestmentsController {
                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                 // console.log(" Current log, line 1346 :", currentInvestment);
                 // send for update
-                let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                await investmentsService.updateInvestment(currentInvestment, investment);
+                // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 // console.log(" Current log, line 1349 :", updatedInvestment);
 
                 // console.log('Update Investment:', investment)
@@ -3960,7 +3961,7 @@ export default class InvestmentsController {
         let investmentType = investment.investmentType
         let rolloverTarget = investment.rolloverTarget
         let rolloverDone = investment.rolloverDone
-        let currencyCode = investment.currencyCode
+        // let currencyCode = investment.currencyCode
         let isTransactionSentForProcessing
         let payload
         // let payout
@@ -4031,7 +4032,7 @@ export default class InvestmentsController {
             if (rolloverType === '100') {
               // Save the payment data in payout table
               payload = investmentData
-              // console.log('Payout investment data line 1619:', payload)
+              console.log('Payout investment data line 1619:', payload)
               // payout = await Payout.create(payload)
               // payout.status = 'matured'
               // await payout.save()
@@ -5134,7 +5135,7 @@ export default class InvestmentsController {
         requestType,
         approvalStatus,
         status,
-        datePayoutWasDone,
+        // datePayoutWasDone,
       } = investment
 
       // console.log('Initial status line 2949: ', status)

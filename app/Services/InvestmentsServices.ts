@@ -1458,7 +1458,8 @@ export default class InvestmentsServices {
                 currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                 // console.log(" Current log, line 790 :", currentInvestment);
                 // send for update
-                updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                await investmentsService.updateInvestment(currentInvestment, investment);
+                // updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
                 // console.log(" Current log, line 793 :", updatedInvestment);
                 // if successful
                 // // if (debitUserWalletForInvestment.status == 200) {
@@ -7966,7 +7967,7 @@ export default class InvestmentsServices {
                                             // console.log(paymentReference);
                                             // let getNumberOfAttempt = paymentReference.split("/");
                                             // console.log("getNumberOfAttempt line 8110 =====", getNumberOfAttempt[1]);
-                                            debugger;
+                                            // debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             record.numberOfAttempts = numberOfAttempts;
@@ -7978,15 +7979,15 @@ export default class InvestmentsServices {
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // initiate a new  transaction
                                             // Payout Interest
-                                            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                                          creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                                 beneficiaryName,
                                                 beneficiaryAccountNumber,
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForInterest)
-                                            debugger
+                                                descriptionForInterest);
+                                            // debugger
 
                                         } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                             // update the value for number of attempts
@@ -8001,7 +8002,7 @@ export default class InvestmentsServices {
                                             interestPayoutRequestReference = newPaymentReference;
                                             record.interestPayoutRequestReference = interestPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
-                                            debugger
+                                            // debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                                             // console.log(" Current log, line 8145 :", currentInvestment);
@@ -8012,7 +8013,7 @@ export default class InvestmentsServices {
 
                                             // console.log("Updated record Status line 6423: ", record);
                                             // Payout Interest
-                                            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                                           creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                                 beneficiaryName,
                                                 beneficiaryAccountNumber,
                                                 beneficiaryAccountName,
@@ -8020,7 +8021,7 @@ export default class InvestmentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForInterest)
-                                            debugger
+                                            // debugger
                                         }
 
                                     } //else 
@@ -8028,7 +8029,7 @@ export default class InvestmentsServices {
                                         // ADD NEW CODE HERE 02
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
-                                        debugger
+                                        // debugger
                                         // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                         if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
@@ -8042,7 +8043,7 @@ export default class InvestmentsServices {
                                             // console.log(paymentReference);
                                             // let getNumberOfAttempt = paymentReference.split("/");
                                             // console.log("getNumberOfAttempt line 8308 =====", getNumberOfAttempt[1]);
-                                            debugger;
+                                            // debugger;
                                             // @ts-ignore
                                             record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             record.numberOfAttempts = numberOfAttempts;
@@ -8062,7 +8063,7 @@ export default class InvestmentsServices {
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
                                                 descriptionForPrincipal);
-                                            debugger
+                                            // debugger
                                             // if successful
                                             let decPl = 3;
                                             // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8110,8 +8111,6 @@ export default class InvestmentsServices {
                                                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                                                 // console.log("new Timeline object line 6152:", newTimeline);
                                                 // update record
-
-
                                                 // Send Notification to admin and others stakeholder
                                                 let messageKey = "payout";
                                                 let investment = record;
@@ -8367,7 +8366,7 @@ export default class InvestmentsServices {
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
                                     // console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
 
-                                    // console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
+                                    console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
                                     // debugger
                                     // throw Error();
                                     //}

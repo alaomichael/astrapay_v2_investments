@@ -387,7 +387,7 @@ export default class TypesController {
                         (tenure) => tenure.tenure
                         //.$original.tenure
                     );
-                    // console.log("Type tenure selected: ", formerTypeTenures);
+                    console.log("Type tenure selected: ", formerTypeTenures);
                     // delete all type tenure/duration
                     const typeTenureDelete = tenuresService.deleteRelatedTenure(typeId);
                     console.log("Type tenure deleted: ", typeTenureDelete);

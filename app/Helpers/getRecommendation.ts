@@ -20,7 +20,7 @@ export const getRecommendation = async function getRecommendation(
     // console.log("User details line 11,@ getRecommendation.ts:", userDetails);
     // console.log("settings line 12,@ getRecommendation.ts:", setting);
     //  console.log("wallet id line 13,@ getRecommendation.ts:", walletId);
-    // console.log("User id line 14,@ getRecommendation.ts:", userId);
+    console.log("User id line 14,@ getRecommendation.ts:", userId);
     let {
       bvnVerificationWeight,
       bvnVerificationScaleRange,
@@ -49,7 +49,7 @@ export const getRecommendation = async function getRecommendation(
     let performanceOnPastLoanScore;
     // let locationScore = 0;
     // let okraScore;
-    // console.log("Okra rating,@ getRecommendation.ts, line 51:", okraRating);
+    console.log("Okra rating,@ getRecommendation.ts, line 51:", okraRating);
     let walletBalance = availableWalletBalance;// userDetails.balance;
     let averageBalance = 0;
     let astraPayBalance = walletBalance;

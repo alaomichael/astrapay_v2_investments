@@ -1895,7 +1895,7 @@ export default class PaymentsServices {
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                         // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                        console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
                                         debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6074,7 +6074,7 @@ export default class PaymentsServices {
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
                                         // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        // console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
+                                        console.log("getNumberOfAttempt line 6251 =====", getNumberOfAttempt[1]);
                                         debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6142,7 +6142,7 @@ export default class PaymentsServices {
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                         // console.log(paymentReference);
                                         let getNumberOfAttempt = paymentReference.split("/");
-                                        // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                        console.log("getNumberOfAttempt line 6145 =====", getNumberOfAttempt[1]);
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -6711,7 +6711,7 @@ export default class PaymentsServices {
                                             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                             // console.log(paymentReference);
                                             let getNumberOfAttempt = paymentReference.split("/");
-                                            // console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
+                                            console.log("getNumberOfAttempt line 6315 =====", getNumberOfAttempt[1]);
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
@@ -7777,7 +7777,6 @@ export default class PaymentsServices {
                                     let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
-
                                     if (status == "completed_with_interest_payout_outstanding") {
                                         // ADD NEW CODE HERE 02
                                         // let creditUserWalletWithInterest;
@@ -7854,7 +7853,7 @@ export default class PaymentsServices {
                                         // ADD NEW CODE HERE 02
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
-                                        debugger
+                                        // debugger
                                         // if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS") throw Error(checkTransactionStatusByCustomerRef.message);
                                         if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
                                             //@ts-ignore
@@ -7867,7 +7866,7 @@ export default class PaymentsServices {
                                             // console.log(paymentReference);
                                             // let getNumberOfAttempt = paymentReference.split("/");
                                             // console.log("getNumberOfAttempt line 8308 =====", getNumberOfAttempt[1]);
-                                            debugger;
+                                            // debugger;
                                             // @ts-ignore
                                             record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             principalPayoutRequestReference = paymentReference;
@@ -8188,7 +8187,7 @@ export default class PaymentsServices {
                                     // console.log(" Current log, line 3172 :", updatedInvestment);
                                     // console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
 
-                                    // console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
+                                    console.log(" creditUserWalletWithInterest , line 8190 :", creditUserWalletWithInterest);
                                     // debugger
                                     // throw Error();
                                     //}

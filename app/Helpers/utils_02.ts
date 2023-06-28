@@ -194,12 +194,12 @@ const interestDueOnInvestment = (amount, rate, duration) => {
     if (duration > 1) {
       day = "days";
     }
-    // console.log(
-    //   `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    // );
-    // console.log(
-    //   `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    // );
+    console.log(
+      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
+    );
+    console.log(
+      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
+    );
     return resolve(interestDue);
   });
 };
@@ -288,14 +288,14 @@ const dueForRepayment = (created_at, duration) => {
     if (investmentDuration > 1) {
       day = "days";
     }
-    // console.log("Investment duration is : " + investmentDuration + ` ${day}`);
+    console.log("Investment duration is : " + investmentDuration + ` ${day}`);
     if (currentDate >= investmentRepaymentDate || investmentDuration >= parseInt(duration)) {
       isDueForRepayment = true;
       // investmentRepaymentDate = new Date(investmentRepaymentDate).toLocaleString()
       // console.log(`Your investment is due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
     } else {
       isDueForRepayment = false;
-      // console.log(`Your investment will be due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
+      console.log(`Your investment will be due for repayment on ${new Date(investmentRepaymentDate).toDateString()}`);
     }
     return resolve(isDueForRepayment);
   });
@@ -406,7 +406,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
 // )
 const investmentRate = async function (payloadAmount, payloadDuration, investmentProductId?, investmentProductName?) {
   try {
-    // console.log("Investment ProductName data line 409: ", investmentProductName);
+    console.log("Investment ProductName data line 409: ", investmentProductName);
     const headers = {
       "internalToken": ASTRAPAY_BEARER_TOKEN
     }
@@ -570,7 +570,7 @@ const calculateTotalCharge = (amountApproved, fixedCharge, ratedCharge, duration
     fixedCharge = Number(fixedCharge);
     ratedCharge = Number(ratedCharge);
     totalCharge = fixedCharge + (amountApproved * (ratedCharge / 100));
-    // console.log("The duration is: ", duration);
+    console.log("The duration is: ", duration);
     // console.log(`The Total Charge for this investment is ${totalCharge}.`);
     return resolve(totalCharge);
   });

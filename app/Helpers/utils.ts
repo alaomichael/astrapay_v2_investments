@@ -169,12 +169,12 @@ const interestDueOnPayout = (amount, rate, duration) => {
     if (duration > 1) {
       day = 'days'
     }
-    // console.log(
-    //   `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    // )
-    // console.log(
-    //   `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    // )
+    console.log(
+      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
+    )
+    console.log(
+      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
+    )
     return resolve(interestDue)
   })
 }
@@ -246,17 +246,17 @@ const dueForPayout = (created_at, duration) => {
     //     new Date(currentDate).toLocaleDateString()
     //   )
     // )
-    let day = 'day'
+    let day = 'day';
     if (investmentDuration > 1) {
       day = 'days'
     }
-    // console.log('Investment duration is : ' + investmentDuration + ` ${day}`)
+    console.log('Investment duration is : ' + investmentDuration + ` ${day}`)
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
-      // console.log(
-      //   `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      // )
+      console.log(
+        `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      )
     } else {
       isDueForPayout = false
       // console.log(
