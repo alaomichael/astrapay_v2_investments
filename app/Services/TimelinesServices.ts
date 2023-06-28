@@ -208,6 +208,11 @@ export default class TimelinesServices {
             predicate = predicate + "message=?";
             params.push(queryFields.message)
         }
+        if (queryFields.adminMessage) {
+            predicateExists()
+            predicate = predicate + "admin_message=?";
+            params.push(queryFields.adminMessage)
+        }
         if (queryFields.metadata) {
             predicateExists()
             predicate = predicate + "metadata=?";

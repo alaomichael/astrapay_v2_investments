@@ -486,6 +486,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName}, your investment of ${investment[0].currencyCode} ${investment[0].amount} has been activated.`,
+          adminMessage: `${investment[0].firstName}, investment of ${investment[0].currencyCode} ${investment[0].amount} has been activated.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -591,6 +592,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName}, your investment has just been declined.`,
+          adminMessage: `${investment[0].firstName}, investment has just been declined.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -693,6 +695,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been terminated.`,
+          adminMessage: `${investment[0].firstName} investment has just been terminated.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -751,6 +754,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment termination has just been declined.`,
+          adminMessage: `${investment[0].firstName} investment termination has just been declined.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -848,6 +852,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment has just been approved for payout.`,
+          adminMessage: `${investment[0].firstName} investment has just been approved for payout.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -906,6 +911,7 @@ export default class InvestmentsController {
           userId: investment[0].userId,// userId,
           // @ts-ignore
           message: `${investment[0].firstName} investment payout has just been declined.`,
+          adminMessage: `${investment[0].firstName} investment payout has just been declined.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -1150,6 +1156,7 @@ export default class InvestmentsController {
             //   userId: investment.userId,// userId,
             //   // @ts-ignore
             //   message: `${investment.firstName} investment has just been updated.`,
+            //   adminMessage: `${investment.firstName} investment has just been updated.`,
             //   createdAt: DateTime.now(),
             //   metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
             // }
@@ -1299,6 +1306,7 @@ export default class InvestmentsController {
                   userId: investment.userId,// userId,
                   // @ts-ignore
                   message: `${investment.firstName} investment rollover target has just been updated.`,
+                  adminMessage: `${investment.firstName} investment rollover target has just been updated.`,
                   createdAt: DateTime.now(),
                   metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                 }
@@ -1626,6 +1634,7 @@ export default class InvestmentsController {
         action: 'investment initiated',
         // @ts-ignore
         message: `${firstName}, you just initiated an investment.`,
+        adminMessage: `${firstName}, just initiated an investment.`,
         createdAt: investment.createdAt,
         metadata: `duration: ${investment.duration}`,
       }
@@ -1698,6 +1707,7 @@ export default class InvestmentsController {
           userId: userId,// userId,
           // @ts-ignore
           message: `${firstName}, your investment request has been sent for approval, please wait while the investment is approved. Thank you.`,
+          adminMessage: `${firstName}, investment request was sent for approval.`,
           createdAt: DateTime.now(),
           metadata: ``,
         };
@@ -1745,6 +1755,7 @@ export default class InvestmentsController {
           userId: userId,// userId,
           // @ts-ignore
           message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+          adminMessage: `${firstName}, investment request was approved.`,
           createdAt: DateTime.now(),
           metadata: ``,
         };
@@ -1831,6 +1842,7 @@ export default class InvestmentsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+              adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1910,6 +1922,7 @@ export default class InvestmentsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2016,6 +2029,7 @@ export default class InvestmentsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+              adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2095,6 +2109,7 @@ export default class InvestmentsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2581,6 +2596,7 @@ export default class InvestmentsController {
               userId: investment.userId,// userId,
               // @ts-ignore
               message: `${investment.firstName},your investment has just been sent for payout processing.`,
+              adminMessage: `${investment.firstName}, investment was sent for payout processing.`,
               createdAt: DateTime.now(),
               metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
             }
@@ -3744,6 +3760,7 @@ export default class InvestmentsController {
               userId: investment.userId,// userId,
               // @ts-ignore
               message: `${investment.firstName} investment has just been approved for payout.`,
+              adminMessage: `${investment.firstName} investment was approved for payout.`,
               createdAt: DateTime.now(),
               metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
             }
@@ -3891,6 +3908,7 @@ export default class InvestmentsController {
             userId: investment.userId,// userId,
             // @ts-ignore
             message: `${investment.firstName} investment has just been sent for termination processing.`,
+            adminMessage: `${investment.firstName} investment was sent for termination processing.`,
             createdAt: DateTime.now(),
             metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
           }
@@ -4113,6 +4131,7 @@ export default class InvestmentsController {
                   userId: investment.userId,// userId,
                   // @ts-ignore
                   message: `${investment.firstName} investment has just been sent for payment processing.`,
+                  adminMessage: `${investment.firstName} investment was sent for payment processing.`,
                   createdAt: DateTime.now(),
                   metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                 }
@@ -4160,6 +4179,7 @@ export default class InvestmentsController {
                   userId: investment.userId,// userId,
                   // @ts-ignore
                   message: `${investment.firstName} investment has just been sent for termination processing.`,
+                  adminMessage: `${investment.firstName} investment was sent for termination processing.`,
                   createdAt: DateTime.now(),
                   metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                 }
@@ -4282,6 +4302,7 @@ export default class InvestmentsController {
                         userId: investmentData.userId,// userId,
                         // @ts-ignore
                         message: `${investmentData.firstName} investment has just been sent for payment processing approval.`,
+                        adminMessage: `${investmentData.firstName} investment was sent for payment processing approval.`,
                         createdAt: DateTime.now(),
                         // @ts-ignore
                         metadata: `amount to payout: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
@@ -4335,6 +4356,7 @@ export default class InvestmentsController {
                         userId: investmentData.userId,// userId,
                         // @ts-ignore
                         message: `${investmentData.firstName} investment has just been sent for payment processing.`,
+                        adminMessage: `${investmentData.firstName} investment was sent for payment processing.`,
                         createdAt: DateTime.now(),
                         metadata: `amount to payout: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                       }
@@ -4484,6 +4506,7 @@ export default class InvestmentsController {
                   // userId: investment.userId,// userId,
                   //       // @ts-ignore
                   //       message: `${investment.firstName} investment has just been sent for activation approval.`,
+                  //       adminMessage: `${investment.firstName} investment was sent for activation approval.`,
                   //       createdAt: DateTime.now(),
                   //       metadata: `amount invested: ${investment.amount}, request type : ${requestType}`,
                   //     }
@@ -4530,6 +4553,7 @@ export default class InvestmentsController {
                   //     userId: investment.userId,// userId,
                   //         // @ts-ignore
                   //         message: `${investment.firstName} investment has just been activated.`,
+                  //         adminMessage: `${investment.firstName} investment was activated.`,
                   //         createdAt: DateTime.now(),
                   //         metadata: `amount invested: ${investment.amount}, request type : ${investment.requestType}`,
                   //       }
@@ -4622,6 +4646,7 @@ export default class InvestmentsController {
                           userId: investmentData.userId,// userId,
                           // @ts-ignore
                           message: `${investmentData.firstName} payment on investment has just been sent.`,
+                          adminMessage: `${investmentData.firstName} payment on investment was sent.`,
                           createdAt: DateTime.now(),
                           metadata: `amount invested: ${investmentData.amount},amount paid: ${investmentData.interestDueOnInvestment + investmentData.amount
                             }, request type : ${investmentData.requestType}`,
@@ -4684,6 +4709,7 @@ export default class InvestmentsController {
                         userId: investmentData.userId,// userId,
                         // @ts-ignore
                         message: `${investmentData.firstName} payment on investment has just been sent.`,
+                        adminMessage: `${investmentData.firstName} payment on investment was sent.`,
                         createdAt: DateTime.now(),
                         metadata: `amount reinvested: ${investmentData.amount},amount paid: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                       }
@@ -4740,6 +4766,7 @@ export default class InvestmentsController {
                           userId: investmentData.userId,// userId,
                           // @ts-ignore
                           message: `${investmentData.firstName} payment on investment has just been sent.`,
+                          adminMessage: `${investmentData.firstName} payment on investment was sent.`,
                           createdAt: DateTime.now(),
                           metadata: `amount paid back to wallet: ${amountToBeReinvested},interest: ${investmentData.totalAmountToPayout}, request type : ${investmentData.requestType}`,
                         }
@@ -4803,6 +4830,7 @@ export default class InvestmentsController {
                         userId: investmentData.userId,// userId,
                         // @ts-ignore
                         message: `${investmentData.firstName} payment for matured investment has just been sent.`,
+                        adminMessage: `${investmentData.firstName} payment for matured investment was sent.`,
                         createdAt: DateTime.now(),
                         metadata: `amount paid: ${investmentData.totalAmountToPayout},amount reinvested: ${amountToBeReinvested}, request type : ${investmentData.requestType}`,
                       }
@@ -5006,6 +5034,7 @@ export default class InvestmentsController {
               userId: payload.userId,// userId,
               // @ts-ignore
               message: `${payload.firstName} payment on investment has just been sent.`,
+              adminMessage: `${payload.firstName} payment on investment was sent.`,
               createdAt: DateTime.now(),
               metadata: `amount invested: ${payload.totalAmountToPayout}, request type : ${payload.requestType}`,
             }
@@ -5258,6 +5287,7 @@ export default class InvestmentsController {
         userId: investment.userId,// userId,
         // @ts-ignore
         message: `${investment.firstName} payment on investment has just been made.`,
+        adminMessage: `${investment.firstName} payment on investment was made.`,
         createdAt: DateTime.now(),
         metadata: `amount paid: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
       }

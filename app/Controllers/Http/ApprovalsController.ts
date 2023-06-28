@@ -481,6 +481,7 @@ export default class ApprovalsController {
             userId: userIdToSearch,// userId,
             // @ts-ignore
             message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+            adminMessage: `${firstName} investment request was approved.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -2321,6 +2322,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                  adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2378,6 +2380,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2559,6 +2562,7 @@ export default class ApprovalsController {
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
                       message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2652,6 +2656,7 @@ export default class ApprovalsController {
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
                       message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2725,6 +2730,7 @@ export default class ApprovalsController {
                   userId: userIdToSearch,// userId,
                   // @ts-ignore
                   message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
+                  adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
                   createdAt: DateTime.now(),
                   metadata: ``,
                 };
@@ -2863,6 +2869,7 @@ export default class ApprovalsController {
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
                       message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -2956,6 +2963,7 @@ export default class ApprovalsController {
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
                       message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3059,6 +3067,7 @@ export default class ApprovalsController {
             userId: userIdToSearch,// userId,
             // @ts-ignore
             message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+            adminMessage: `The rollover of ${firstName} matured investment was suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -3141,6 +3150,7 @@ export default class ApprovalsController {
           //     userId: userIdToSearch,// userId,
           //     // @ts-ignore
           //     message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+          //     adminMessage: `The rollover of ${firstName} matured investment is suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
           //     createdAt: DateTime.now(),
           //     metadata: ``,
           //   };
@@ -3210,6 +3220,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3244,6 +3255,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment has been activated for payment processing. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was activated for payment processing.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3480,6 +3492,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -3536,6 +3549,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -3593,6 +3607,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -3665,6 +3680,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+              adminMessage: `The rollover of ${firstName} matured investment is suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3720,6 +3736,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3752,6 +3769,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
+              adminMessage: `The rollover of ${firstName} matured investment was suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3806,6 +3824,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3868,6 +3887,7 @@ export default class ApprovalsController {
             userId: userIdToSearch,
             // @ts-ignore
             message: `${firstName}, your investment has been liquidated, thank you.`,
+            adminMessage: `${firstName} investment was liquidated.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -3935,6 +3955,7 @@ export default class ApprovalsController {
             userId: userIdToSearch,
             // @ts-ignore
             message: `${firstName}, your investment liquidation has been declined, please check your account,thank you.`,
+            adminMessage: `${firstName} investment liquidation was declined.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };

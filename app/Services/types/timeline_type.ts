@@ -6,6 +6,7 @@ export interface TimelineType {
     walletId: string,
     action: string,
     message: string,
+    adminMessage: string,
     metadata: string,
     createdAt: DateTime,
 }

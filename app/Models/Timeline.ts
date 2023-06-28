@@ -22,7 +22,10 @@ export default class Timeline extends AppBaseModel {
 
   @column()
   public message: string;
-
+  
+  @column()
+  public adminMessage: string;
+  
   @column()
   public metadata: string;
 

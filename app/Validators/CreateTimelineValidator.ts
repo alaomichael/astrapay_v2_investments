@@ -13,6 +13,7 @@ export default class CreateTimelineValidator extends BaseValidator {
         walletId: schema.string(),
         action: schema.string(),
         message: schema.string.optional(),
+        adminMessage: schema.string.optional(),
         metadata: schema.string.optional(),
         createdAt: schema.string.optional(),
     })
