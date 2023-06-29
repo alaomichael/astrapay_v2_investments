@@ -581,6 +581,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -659,6 +660,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -764,6 +766,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -842,6 +845,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -926,6 +930,7 @@ export default class ApprovalsController {
             userId: userIdToSearch,
             // @ts-ignore
             message: `${firstName}, your investment request has been declined. Please try again, thank you.`,
+            adminMessage: `${firstName} investment request was declined.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -1014,6 +1019,7 @@ export default class ApprovalsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, your investment rollover request has been approved, please wait while the investment is activated. Thank you.`,
+              adminMessage: `${firstName} investment rollover request was approved.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1070,6 +1076,7 @@ export default class ApprovalsController {
               action: 'investment rollover activated',
               // @ts-ignore
               message: `${firstName}, your investment rollover of ${currencyCode} ${amount} has been activated.`,
+              adminMessage: `${firstName} investment rollover of ${currencyCode} ${amount} was activated.`,
               createdAt: selectedInvestmentRequestUpdate.startDate,
               metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
             }
@@ -1183,6 +1190,7 @@ export default class ApprovalsController {
               userId: userId,// userId,
               // @ts-ignore
               message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has been declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
+              adminMessage: `The rollover of ${firstName} investment of ${currencyCode} ${amount} was declined at : ${DateTime.now()}`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1279,6 +1287,7 @@ export default class ApprovalsController {
                 userId: userId,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined approval for the investment rollover, please check your device. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the admin declined approval for the investment rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1360,6 +1369,7 @@ export default class ApprovalsController {
                 userId: userId,// userId,
                 // @ts-ignore
                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1585,6 +1595,7 @@ export default class ApprovalsController {
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1678,6 +1689,7 @@ export default class ApprovalsController {
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1751,6 +1763,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1891,6 +1904,7 @@ export default class ApprovalsController {
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1985,6 +1999,7 @@ export default class ApprovalsController {
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -2266,6 +2281,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2322,7 +2338,7 @@ export default class ApprovalsController {
               userId: userIdToSearch,// userId,
               // @ts-ignore
               message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                  adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3184,6 +3200,7 @@ export default class ApprovalsController {
           //     userId: userIdToSearch,// userId,
           //     // @ts-ignore
           //     message: `${firstName} the rollover of your matured investment is activated and will be process for rollover. Thank you.`,
+          //     adminMessage: `The rollover of ${firstName} matured investment is activated and will be process for rollover.`,
           //     createdAt: DateTime.now(),
           //     metadata: ``,
           //   };

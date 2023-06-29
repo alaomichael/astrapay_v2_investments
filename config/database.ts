@@ -59,6 +59,13 @@ import Env from '@ioc:Adonis/Core/Env'
 import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 import Application from '@ioc:Adonis/Core/Application'
 
+const INVESTMENT_DB_POOL_MIN = Number(Env.get('INVESTMENT_DB_POOL_MIN'));
+const INVESTMENT_DB_POOL_MAX = Number(Env.get('INVESTMENT_DB_POOL_MAX'));
+const INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS = Number(Env.get('INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS'));
+const INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS = Number(Env.get('INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS'));
+const INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS = Number(Env.get('INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS'));
+const INVESTMENT_DB_POOL_REAPINTERVALMILLIS = Number(Env.get('INVESTMENT_DB_POOL_REAPINTERVALMILLIS'));
+const INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS = Number(Env.get('INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS'));
 // const databaseConfig: DatabaseConfig & { orm: Partial<OrmConfig> } = {
 const databaseConfig: DatabaseConfig = {
   connection: Env.get('DB_CONNECTION'),
@@ -122,13 +129,13 @@ const databaseConfig: DatabaseConfig = {
       //   }
       // },
       pool: {
-        min: 1, // Adjust the minimum number of connections based on your application's requirements
-        max: 100, // Adjust the maximum number of connections based on your application's requirements
-        idleTimeoutMillis: 30000, // 30 seconds
-        createTimeoutMillis: 30000, // 30 seconds
-        acquireTimeoutMillis: 30000, // 30 seconds
-        reapIntervalMillis: 1000, // 1 second
-        createRetryIntervalMillis: 2000, // 2 seconds
+        min: INVESTMENT_DB_POOL_MIN,//Env.get('INVESTMENT_DB_POOL_MIN'),// 1, // Adjust the minimum number of connections based on your application's requirements
+        max: INVESTMENT_DB_POOL_MAX,//Env.get('INVESTMENT_DB_POOL_MAX'),// 25, // Adjust the maximum number of connections based on your application's requirements
+        idleTimeoutMillis: INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS'),// 20000, // 20 seconds
+        createTimeoutMillis: INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS'),// 30000, // 30 seconds
+        acquireTimeoutMillis: INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS'),// 30000, // 30 seconds
+        reapIntervalMillis: INVESTMENT_DB_POOL_REAPINTERVALMILLIS,//Env.get('INVESTMENT_DB_POOL_REAPINTERVALMILLIS'),//1000, // 1 second
+        createRetryIntervalMillis: INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS,//Env.get('INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS'),// 2000, // 2 seconds
         afterCreate: function (conn, done) {
           conn.query('SET timezone="UTC+1";', function (err) {
             if (err) {
@@ -202,13 +209,13 @@ const databaseConfig: DatabaseConfig = {
       //   }
       // },
       pool: {
-        min: 1, // Adjust the minimum number of connections based on your application's requirements
-        max: 100, // Adjust the maximum number of connections based on your application's requirements
-        idleTimeoutMillis: 30000, // 30 seconds
-        createTimeoutMillis: 30000, // 30 seconds
-        acquireTimeoutMillis: 30000, // 30 seconds
-        reapIntervalMillis: 1000, // 1 second
-        createRetryIntervalMillis: 2000, // 2 seconds
+        min: INVESTMENT_DB_POOL_MIN,//Env.get('INVESTMENT_DB_POOL_MIN'),// 1, // Adjust the minimum number of connections based on your application's requirements
+        max: INVESTMENT_DB_POOL_MAX,//Env.get('INVESTMENT_DB_POOL_MAX'),// 25, // Adjust the maximum number of connections based on your application's requirements
+        idleTimeoutMillis: INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_IDLETIMEOUTMILLIS'),// 20000, // 20 seconds
+        createTimeoutMillis: INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_CREATETIMEOUTMILLIS'),// 30000, // 30 seconds
+        acquireTimeoutMillis: INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS,//Env.get('INVESTMENT_DB_POOL_ACQUIRETIMEOUTMILLIS'),// 30000, // 30 seconds
+        reapIntervalMillis: INVESTMENT_DB_POOL_REAPINTERVALMILLIS,//Env.get('INVESTMENT_DB_POOL_REAPINTERVALMILLIS'),//1000, // 1 second
+        createRetryIntervalMillis: INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS,//Env.get('INVESTMENT_DB_POOL_CREATERETRYINTERVALMILLIS'),// 2000, // 2 seconds
         afterCreate: function (conn, done) {
           conn.query('SET timezone="UTC+1";', function (err) {
             if (err) {
