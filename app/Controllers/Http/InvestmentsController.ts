@@ -3399,7 +3399,7 @@ export default class InvestmentsController {
       const { isAutomated } = investmentTypeDetails;
       // debugger
       // send to Admin for approval
-      let requestType = 'payout_investment';
+      let requestType = 'liquidate_investment';
       let timelineObject;
       if ((isPayoutAutomated === false && isAutomated === false) || (isPayoutAutomated === true && isAutomated === false)) {
         let approvalObject;

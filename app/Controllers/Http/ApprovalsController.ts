@@ -3892,7 +3892,7 @@ export default class ApprovalsController {
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 2449 :", updatedInvestment);
 
-          await investmentsService.liquidateInvestment(investmentId);
+          await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData);
 
           // console.log("Updated record Status line 2451: ", record);
           // update timeline
@@ -3912,7 +3912,7 @@ export default class ApprovalsController {
           await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
           // console.log("new Timeline object line 2475:", newTimeline);
-
+debugger
           // Send Details to notification service
 
           // let subject = "AstraPay Investment Liquidation";

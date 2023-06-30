@@ -39,6 +39,7 @@ export default class ApprovalsServices {
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
                     message: `${investmentDetails.firstName} ,your investment request approval record has just been created.`,
+                    adminMessage: `${investmentDetails.firstName} investment request approval record was created.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
@@ -61,6 +62,7 @@ export default class ApprovalsServices {
                     walletId: investmentDetails.walletId,
                     // @ts-ignore
                     message: `${investmentDetails.firstName} , your investment request approval record has just been created.`,
+                    adminMessage: `${investmentDetails.firstName} investment request approval record was created.`,
                     createdAt: DateTime.now(),
                     metadata: `request type : ${investmentDetails.requestType}`,
                 };
@@ -183,10 +185,10 @@ export default class ApprovalsServices {
                     // Data to send for transfer of fund
                     let { amount, lng, lat, investmentRequestReference,
                         firstName, lastName,
-                        walletId, userId,investorFundingWalletId,
+                        walletId, userId, investorFundingWalletId,
                         phone,
                         email,
-                        rfiCode, currencyCode,numberOfAttempts } = selectedInvestmentRequestUpdate;
+                        rfiCode, currencyCode, numberOfAttempts } = selectedInvestmentRequestUpdate;
                     let senderName = `${firstName} ${lastName}`;
                     let senderAccountNumber = investorFundingWalletId;//walletId;
                     let senderAccountName = senderName;
@@ -218,6 +220,7 @@ export default class ApprovalsServices {
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+                            adminMessage: `${firstName} investment request was approved.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -279,6 +282,7 @@ export default class ApprovalsServices {
                                 action: 'investment activated',
                                 // @ts-ignore
                                 message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
+                                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                                 createdAt: selectedInvestmentRequestUpdate.startDate,
                                 metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
                             }
@@ -332,6 +336,7 @@ export default class ApprovalsServices {
                                 userId: userId,// userId,
                                 // @ts-ignore
                                 message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -402,6 +407,7 @@ export default class ApprovalsServices {
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, your investment request has been approved, please wait while the investment is activated. Thank you.`,
+                            adminMessage: `${firstName} investment request was approved.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -463,6 +469,7 @@ export default class ApprovalsServices {
                                 action: 'investment activated',
                                 // @ts-ignore
                                 message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
+                                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                                 createdAt: selectedInvestmentRequestUpdate.startDate,
                                 metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
                             }
@@ -516,6 +523,7 @@ export default class ApprovalsServices {
                                 userId: userId,// userId,
                                 // @ts-ignore
                                 message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -575,6 +583,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, your investment request has been declined. Please try again. Thank you.`,
+                        adminMessage: `${firstName} investment request was declined.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -599,8 +608,8 @@ export default class ApprovalsServices {
                     await investmentService.updateInvestment(selectedInvestmentRequest, selectedInvestmentRequestUpdate);
                     //  TODO: Debit user wallet to activate the investment
                     // Data to send for transfer of fund
-                    let { 
-                        amount, 
+                    let {
+                        amount,
                         //lng, lat, investmentRequestReference,
                         firstName, //lastName,
                         walletId, userId,
@@ -619,6 +628,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, your investment rollover request has been approved, please wait while the investment is activated. Thank you.`,
+                        adminMessage: `${firstName} investment rollover request was approved.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -674,6 +684,7 @@ export default class ApprovalsServices {
                         action: 'investment rollover activated',
                         // @ts-ignore
                         message: `${firstName}, your investment rollover of ${currencyCode} ${amount} has been activated.`,
+                        adminMessage: `${firstName} investment rollover of ${currencyCode} ${amount} was activated.`,
                         createdAt: selectedInvestmentRequestUpdate.startDate,
                         metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
                     }
@@ -749,6 +760,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to admin approval decline. Thank you.`,
+                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} approval was decline.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -797,11 +809,11 @@ export default class ApprovalsServices {
                         beneficiaryPhoneNumber,
                         rfiCode,
                         descriptionForPrincipal)
-                        debugger
+                    debugger
                     // if successful
                     let decPl = 3;
                     // if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
-                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
+                    if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
                         let amountPaidOut = amount;
                         // let decPl = 2;
                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -842,6 +854,7 @@ export default class ApprovalsServices {
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover, please check your device. Thank you.`,
+                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the approval of the investment rollover was declined.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -903,6 +916,7 @@ export default class ApprovalsServices {
                             userId: userId,// userId,
                             // @ts-ignore
                             message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                            adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                             createdAt: DateTime.now(),
                             metadata: ``,
                         };
@@ -973,6 +987,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, your investment payout request has been declined. Please try again. Thank you.`,
+                        adminMessage: `${firstName} investment payout request was declined.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -999,6 +1014,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, your investment payout has been suspended. Thank you.`,
+                        adminMessage: `${firstName} investment payout was suspended.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -1025,6 +1041,7 @@ export default class ApprovalsServices {
                         userId: userId,// userId,
                         // @ts-ignore
                         message: `${firstName}, your investment rollover request has been suspended. Thank you.`,
+                        adminMessage: `${firstName} investment rollover request was suspended.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
@@ -1032,7 +1049,7 @@ export default class ApprovalsServices {
                     await timelineService.createTimeline(timelineObject);
                 }
 
-            } else if (saveApproval.requestType === "terminate_investment") {
+            } else if (saveApproval.requestType === "liquidate_investment") {
                 const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
                 // update status based on admin action
@@ -1058,6 +1075,7 @@ export default class ApprovalsServices {
                         walletId: selectedApproval.walletId,
                         // @ts-ignore
                         message: `${selectedInvestmentTerminationRequest.firstName},your investment liquidation request has just been approved.`,
+                        adminMessage: `${selectedInvestmentTerminationRequest.firstName} investment liquidation request was approved.`,
                         createdAt: DateTime.now(),
                         metadata: `request type : ${selectedApproval.requestType}`,
                     };
@@ -1065,10 +1083,11 @@ export default class ApprovalsServices {
                     await timelineService.createTimeline(timelineObject);
                     // let newTimeline = await timelineService.createTimeline(timelineObject);
                     // console.log("new Timeline object line 967:", newTimeline);
-
+                    let loginUserData;
+                    let query = {};
                     // Send to investmentsService for processing of liquidation
-                    await investmentService.liquidateInvestment(saveApproval.investmentId);
-
+                    await investmentService.liquidateInvestment(saveApproval.investmentId, query, loginUserData);
+                    debugger
                 } else if (saveApproval.approvalStatus === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentTerminationRequest ========================================================")
@@ -1089,6 +1108,7 @@ export default class ApprovalsServices {
                         walletId: selectedApproval.walletId,
                         // @ts-ignore
                         message: `${selectedInvestmentTerminationRequest.firstName},your investment liquidation request has just been declined.`,
+                        adminMessage: `${selectedInvestmentTerminationRequest.firstName} investment liquidation request was declined.`,
                         createdAt: DateTime.now(),
                         metadata: `request type : ${selectedApproval.requestType}`,
                     };
