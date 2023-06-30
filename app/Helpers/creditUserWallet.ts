@@ -90,6 +90,13 @@ export const creditUserWallet = async function creditUserWallet(
                         "recipientName": beneficiaryName,
                         "eventType": "TRANSACTION_SUCCESS"
                     }
+                    // TODO: Use below code after orchestrator service has been updated
+                    // {
+                    //     "channel": "EMAIL",
+                    //     "handle": beneficiaryEmail,
+                    //     "recipientName": beneficiaryName,
+                    //     "eventType": "TRANSACTION_SUCCESS"
+                    // }
                 ]
             },
             "sender": {
