@@ -3224,9 +3224,8 @@ createdAt: DateTime.now(),
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
                                         message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
-                                        message: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
-                                        
-                                        createdAt: DateTime.now(),
+                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                                                                                createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
                                     // console.log("Timeline object line 1088:", timelineObject);
@@ -4183,6 +4182,7 @@ createdAt: DateTime.now(),
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                        adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -4298,6 +4298,7 @@ createdAt: DateTime.now(),
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                    adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -4364,6 +4365,7 @@ createdAt: DateTime.now(),
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                        adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -4640,6 +4642,7 @@ createdAt: DateTime.now(),
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                    adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -4706,6 +4709,7 @@ createdAt: DateTime.now(),
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                        adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -4820,6 +4824,7 @@ createdAt: DateTime.now(),
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                    adminMessage: `${investment.firstName} investment was sent for payout processing.`,   
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
@@ -4886,6 +4891,7 @@ createdAt: DateTime.now(),
                                         userId: investment.userId,// userId,
                                         // @ts-ignore
                                         message: `${investment.firstName} ,your investment has just been sent for payout processing.`,
+                                         adminMessage: `${investment.firstName} investment was sent for payout processing.`,
                                         createdAt: DateTime.now(),
                                         metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                     }
@@ -5185,6 +5191,7 @@ createdAt: DateTime.now(),
                                     userId: investment.userId,// userId,
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
+                                    adminMessage: `${investment.firstName} investment was sent for rollover processing.`,
                                     createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
