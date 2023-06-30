@@ -8158,6 +8158,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                                                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8218,6 +8219,9 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed.`,
+
+
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8316,6 +8320,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8378,6 +8383,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                      adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment has failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8795,6 +8801,8 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8855,6 +8863,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8952,6 +8961,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9012,6 +9022,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9120,6 +9131,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                     adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9180,6 +9192,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9278,6 +9291,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9338,6 +9352,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9786,6 +9801,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment has been paid out.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -9846,6 +9862,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment failed.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -9942,6 +9959,8 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment was paid out.`,
+
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10002,6 +10021,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment failed.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10095,6 +10115,7 @@ export default class InvestmentsServices {
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
                                                 message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -10233,6 +10254,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10291,6 +10313,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10384,6 +10407,7 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10442,6 +10466,8 @@ export default class InvestmentsServices {
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
                                                         message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
+
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
