@@ -36,6 +36,9 @@ export default class Type extends AppBaseModel {
   public interestRate: number
 
   @column({})
+  public liquidationPenaltyRate: number
+
+  @column({})
   public isRolloverAllowed: boolean
 
   @column({})

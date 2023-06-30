@@ -23,7 +23,7 @@ export default class TypesServices {
         try {
             console.log("Query params in type service:", queryParams)
             // let { limit, offset = 0, updatedAtFrom, updatedAtTo } = queryParams;
-            let { limit, offset = 0,   } = queryParams;
+            let { limit, offset = 0, } = queryParams;
             // if (!updatedAtFrom) {
             //     // default to last 3 months
             //     queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
@@ -228,6 +228,11 @@ export default class TypesServices {
             predicate = predicate + "interest_rate=?";
             params.push(queryFields.interestRate)
         }
+        if (queryFields.liquidationPenaltyRate) {
+            predicateExists()
+            predicate = predicate + "liquidation_penalty_rate=?";
+            params.push(queryFields.liquidationPenaltyRate)
+        }
         if (queryFields.isRolloverAllowed) {
             predicateExists()
             predicate = predicate + "is_rollover_allowed=?";
@@ -243,7 +248,7 @@ export default class TypesServices {
             predicate = predicate + "quantity_available_for_issue=?";
             params.push(queryFields.quantityAvailableForIssue)
         }
-        
+
         if (queryFields.availableTypes) {
             predicateExists()
             predicate = predicate + "available_types=?";
@@ -259,7 +264,7 @@ export default class TypesServices {
             predicate = predicate + "maximum_allowed_period_of_investment=?";
             params.push(queryFields.maximumAllowedPeriodOfInvestment)
         }
-        
+
         // if (queryFields.dailyMinimumLimit) {
         //     predicateExists()
         //     predicate = predicate + "daily_minimum_limit=?";
@@ -310,7 +315,7 @@ export default class TypesServices {
         //     predicate = predicate + "is_renewable=?";
         //     params.push(queryFields.isRenewable)
         // }
-        
+
         if (queryFields.features) {
             predicateExists()
             predicate = predicate + "features=?";
@@ -346,13 +351,13 @@ export default class TypesServices {
             predicate = predicate + "lat=?";
             params.push(queryFields.lat)
         }
-        
+
         if (queryFields.status) {
             predicateExists()
             predicate = predicate + "status=?";
             params.push(queryFields.status)
         }
-        
+
         if (queryFields.createdAt) {
             predicateExists()
             predicate = predicate + "created_at=?";

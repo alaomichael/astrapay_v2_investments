@@ -19,6 +19,7 @@ export default class UpdateTypeValidator extends BaseValidator {
             schema.number(),
         ),
         interestRate: schema.number.optional(),
+        liquidationPenaltyRate: schema.number.optional(),
         isRolloverAllowed: schema.boolean.optional(),
         quantityIssued: schema.number.optional(),
         quantityAvailableForIssue: schema.number.optional(),

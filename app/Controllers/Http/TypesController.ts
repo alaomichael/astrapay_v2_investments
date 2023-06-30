@@ -132,7 +132,7 @@ export default class TypesController {
 
             const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
                 features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration,
-                interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, description } = request.body();
+                interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, description, liquidationPenaltyRate } = request.body();
             const payload: TypeType = {
                 rfiRecordId: rfiRecordId,
                 typeName: typeName,
@@ -157,6 +157,7 @@ export default class TypesController {
                 isRolloverAllowed: isRolloverAllowed,
                 minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
                 maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
+                liquidationPenaltyRate: liquidationPenaltyRate
             }
             // debugger
             // TODO: Uncomment to use LoginUserData
@@ -336,7 +337,7 @@ export default class TypesController {
                 let formerTypeTenures;
                 const { rfiRecordId, typeName, quantityIssued, quantityAvailableForIssue, availableTypes, currencyCode, isAutomated,
                     features, requirements, lng, lat, tagName, rfiCode, status, createdBy, lowestAmount, highestAmount, duration, description,
-                    interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment, } = request.body();
+                    interestRate, isRolloverAllowed, minimumAllowedPeriodOfInvestment, maximumAllowedPeriodOfInvestment,liquidationPenaltyRate, } = request.body();
                 const payload: TypeType = {
                     rfiRecordId: rfiRecordId,
                     typeName: typeName,
@@ -360,6 +361,7 @@ export default class TypesController {
                     isRolloverAllowed: isRolloverAllowed,
                     minimumAllowedPeriodOfInvestment: minimumAllowedPeriodOfInvestment,
                     maximumAllowedPeriodOfInvestment: maximumAllowedPeriodOfInvestment,
+                    liquidationPenaltyRate: liquidationPenaltyRate,
                 }
 
                 // update the data

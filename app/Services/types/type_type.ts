@@ -6,6 +6,7 @@ export interface TypeType {
     highestAmount: number,
     // duration: string,
     interestRate: number,
+    liquidationPenaltyRate: number,
     isRolloverAllowed: boolean,
     quantityIssued: number,
     quantityAvailableForIssue: number,

@@ -8340,6 +8340,7 @@ export default class PaymentsServices {
                     console.log("Entering update 7684 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
+                    const typesService = new TypesServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
                     // const { id, } = request.params();
@@ -8412,6 +8413,12 @@ export default class PaymentsServices {
                     // isAllRolloverSuspended
 
                     let { isAllPayoutSuspended, liquidationPenalty } = settings; //.isAllPayoutSuspended
+                    // Get the investment product details and get the liquidation penalty rate value
+                    let { investmentTypeId } = record;
+                    const investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
+                    const { liquidationPenaltyRate } = investmentTypeDetails;
+                    liquidationPenalty = liquidationPenaltyRate ? liquidationPenaltyRate : liquidationPenalty;
+                    debugger
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 7514:");
