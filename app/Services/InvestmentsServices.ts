@@ -4069,7 +4069,7 @@ export default class InvestmentsServices {
                                 // check if the approval request is not existing
                                 let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
                                 if (!approvalRequestIsExisting) {
-                                                                        await approvalsService.createApproval(approvalObject);
+                                    await approvalsService.createApproval(approvalObject);
                                     // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
                                     // console.log("new ApprovalRequest object line 2316:", newApprovalRequest);
                                 }
@@ -7979,7 +7979,7 @@ export default class InvestmentsServices {
                                             await investmentsService.updateInvestment(currentInvestment, record);
                                             // initiate a new  transaction
                                             // Payout Interest
-                                          creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                                            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                                 beneficiaryName,
                                                 beneficiaryAccountNumber,
                                                 beneficiaryAccountName,
@@ -8013,7 +8013,7 @@ export default class InvestmentsServices {
 
                                             // console.log("Updated record Status line 6423: ", record);
                                             // Payout Interest
-                                           creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
+                                            creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                                 beneficiaryName,
                                                 beneficiaryAccountNumber,
                                                 beneficiaryAccountName,
@@ -10682,10 +10682,10 @@ export default class InvestmentsServices {
 
                     let { isAllPayoutSuspended, liquidationPenalty } = settings; //.isAllPayoutSuspended
                     // Get the investment product details and get the liquidation penalty rate value
-                    let { investmentTypeId} = record;
+                    let { investmentTypeId } = record;
                     const investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
-                    const {liquidationPenaltyRate} = investmentTypeDetails;
-                    liquidationPenalty = liquidationPenaltyRate?liquidationPenaltyRate:liquidationPenalty;
+                    const { liquidationPenaltyRate } = investmentTypeDetails;
+                    liquidationPenalty = liquidationPenaltyRate ? liquidationPenaltyRate : liquidationPenalty;
                     debugger
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
@@ -10716,7 +10716,7 @@ export default class InvestmentsServices {
                             // let timeline
                             let isDueForPayout = await dueForPayout(startDate, duration)
                             // console.log('Is due for payout status line 10139:', isDueForPayout)
-                            // debugger
+                            debugger
                             if (isDueForPayout === true) {
                                 //                          record.isPayoutAuthorized === true,
                                 //   record.isPayoutSuspended === false,
@@ -11159,7 +11159,7 @@ export default class InvestmentsServices {
                                     //     record.isPayoutSuspended === false)
                                 ) {
                                     console.log("Approval for investment liquidation processing: ===========================================>")
-
+                                    debugger
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
                                     // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
@@ -11242,7 +11242,7 @@ export default class InvestmentsServices {
                                         // console.log(paymentReference);
                                         // let getNumberOfAttempt = paymentReference.split("/");
                                         // console.log("getNumberOfAttempt line 9417 =====", getNumberOfAttempt[1]);
-                                        debugger;
+                                        // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         record.numberOfAttempts = numberOfAttempts;
@@ -11276,7 +11276,7 @@ export default class InvestmentsServices {
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = newPaymentReference;
                                         record.numberOfAttempts = updatedNumberOfAttempts;
-                                        debugger
+                                        // debugger
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                                         // console.log(" Current log, line 9450 :", currentInvestment);
@@ -11609,6 +11609,7 @@ export default class InvestmentsServices {
 
                                         // commit transaction and changes to database
                                         await trx.commit();
+                                        debugger
                                         if (creditUserWalletWithPrincipal.status && creditUserWalletWithPrincipal.message && creditUserWalletWithInterest.status && creditUserWalletWithInterest.message) {
                                             throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message} and creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
                                             // debugger
@@ -11624,6 +11625,7 @@ export default class InvestmentsServices {
                                         }
 
                                     }
+                                    debugger
                                 } else {
                                     // console.log("Entering no data 8820 ==================================")
 

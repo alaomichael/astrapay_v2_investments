@@ -142,9 +142,11 @@ export default class ApprovalsServices {
 
     public async getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId: string, userId: string, walletId: string, requestType: string, approvalStatus: string): Promise<Approval | null> {
         try {
+            debugger
             const approval = await Approval.query().where({
                 user_id: userId, wallet_id: walletId, investment_id: investmentId, request_type: requestType, approval_status: approvalStatus
             }).first();
+            debugger
             return approval;
         } catch (error) {
             console.log(error)

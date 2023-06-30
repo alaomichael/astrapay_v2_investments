@@ -3376,6 +3376,10 @@ export default class InvestmentsController {
 
   public async liquidateInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
+    const settingsService = new SettingsServices();
+    const typesService = new TypesServices();
+    const approvalsService = new ApprovalsServices()
+    const timelineService = new TimelinesServices();
     try {
       // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
       const { investmentId } = request.body();
@@ -3383,34 +3387,172 @@ export default class InvestmentsController {
       // errorCode :  400
       // hint : "Request must be below transaction limit"
       // message : Transaction limit exceeded"
-      const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
-      debugger
+      let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);//investment.$original
+      // debugger
+      const { userId, walletId, rfiCode, investmentTypeId } = investment;
+      const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
+      if (!settings) {
+        throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
+      }
+      const { isPayoutAutomated, } = settings;
+      const investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
+      const { isAutomated } = investmentTypeDetails;
+      // debugger
+      // send to Admin for approval
+      let requestType = 'payout_investment';
+      let timelineObject;
+      if ((isPayoutAutomated === false && isAutomated === false) || (isPayoutAutomated === true && isAutomated === false)) {
+        let approvalObject;
 
-      if (investments.length > 0) {
-        // console.log('Investment data after payout request line 2788:', investments)
+        // TODO: Send to the Admin for approval
+        // update approvalObject
+        approvalObject = {
+          rfiCode: rfiCode,
+          walletId: walletId,
+          investmentId: investmentId,
+          userId: userId,
+          requestType: requestType,//"start_investment",
+          approvalStatus: "pending",//approvalStatus,//"",
+          assignedTo: "",//investment.assignedTo,
+          processedBy: "",//investment.processedBy,
+          // remark: "",
+        };
+        // console.log("ApprovalRequest object line 1194:", approvalObject);
+        // check if the approval request is not existing
         // debugger
-        let investmentArray: any[] = [];
-        for (let index = 0; index < investments.length; index++) {
-          let currentInvestment = investments[index];
-          let { id, wallet_id, user_id } = currentInvestment;
-          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
-          investmentArray.push(currentInvestment);
+        let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalObject.approvalStatus);
+        if (!approvalRequestIsExisting) {
+          debugger
+          await approvalsService.createApproval(approvalObject);
+          // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+          // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+        } else {
+          approvalRequestIsExisting.requestType = approvalObject.requestType;
+          approvalRequestIsExisting.approvalStatus = approvalObject.approvalStatus;
+          approvalRequestIsExisting.save()
           debugger
         }
-        return response.status(200).json({
-          status: 'OK',
-          data: investmentArray,//.map((inv) => inv.$original),
-        })
-        // END
+        debugger
+        // investment = await Investment.query().where('id', investmentId)
+        // investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+        investment.requestType = requestType
+        // investment.status = "matured"
+        investment.approvalStatus = 'pending'
 
-      } else {
+        // update timeline
+        timelineObject = {
+          id: uuid(),
+          action: 'investment liquidation initiated',
+          investmentId: investment.id,//id,
+          walletId: investment.walletId,// walletId,
+          userId: investment.userId,// userId,
+          // @ts-ignore
+          message: `${investment.firstName},your investment has just been sent for liquidation processing.`,
+          adminMessage: `${investment.firstName}, investment was sent for liquidation processing.`,
+          createdAt: DateTime.now(),
+          metadata: ``,
+        }
+        // console.log('Timeline object line 1429:', timelineObject)
+        //  Push the new object to the array
+        // timeline = investment.timeline
+        // timeline.push(timelineObject)
+        // console.log('Timeline object line 1433:', timeline)
+        // stringify the timeline array
+        await timelineService.createTimeline(timelineObject);
+        // investment.timeline = JSON.stringify(timeline)
+        // START
         // debugger
-        return response.status(404).json({
-          status: 'OK',
-          message: 'no investment matched your search',
-          data: null,
-        })
+        // console.log('Updated investment Status line 1379: ', investment)
+        
+        investment.requestType = requestType;
+        // debugger
+        let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+        // send for update
+        // await investmentsService.updateInvestment(record, investment);
+        await investmentsService.updateInvestment(record, investment);
+        // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+        // console.log(" Current log, line 1655 :", updatedInvestment);
+        // debugger
+        if (investment) {
+          // console.log('Investment data after payout request line 2788:', investments)
+          // debugger
+          let investmentArray: any[] = [];
+          // debugger
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+          // debugger
+          investmentArray.push(currentInvestment);
+          // debugger
+
+          return response.status(200).json({
+            status: 'OK',
+            data: investmentArray,
+          })
+          // END
+
+        } else {
+          // debugger
+          return response.status(404).json({
+            status: 'OK',
+            message: 'no investment matched your search',
+            data: null,
+          })
+        }
+      } else if ((isPayoutAutomated === true && isAutomated === true)) {
+        const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
+        debugger
+        if (investments.length > 0) {
+          // console.log('Investment data after payout request line 2788:', investments)
+          // debugger
+          let investmentArray: any[] = [];
+          for (let index = 0; index < investments.length; index++) {
+            let currentInvestment = investments[index];
+            let { id, wallet_id, user_id } = currentInvestment;
+            currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+            investmentArray.push(currentInvestment);
+            debugger
+          }
+          return response.status(200).json({
+            status: 'OK',
+            data: investmentArray,//.map((inv) => inv.$original),
+          })
+          // END
+
+        } else {
+          // debugger
+          return response.status(404).json({
+            status: 'OK',
+            message: 'no investment matched your search',
+            data: null,
+          })
+        }
       }
+
+
+      // if (investments.length > 0) {
+      //   // console.log('Investment data after payout request line 2788:', investments)
+      //   // debugger
+      //   let investmentArray: any[] = [];
+      //   for (let index = 0; index < investments.length; index++) {
+      //     let currentInvestment = investments[index];
+      //     let { id, wallet_id, user_id } = currentInvestment;
+      //     currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+      //     investmentArray.push(currentInvestment);
+      //     debugger
+      //   }
+      //   return response.status(200).json({
+      //     status: 'OK',
+      //     data: investmentArray,//.map((inv) => inv.$original),
+      //   })
+      //   // END
+
+      // } else {
+      //   // debugger
+      //   return response.status(404).json({
+      //     status: 'OK',
+      //     message: 'no investment matched your search',
+      //     data: null,
+      //   })
+      // }
     } catch (error) {
       console.log(error)
       // debugger
