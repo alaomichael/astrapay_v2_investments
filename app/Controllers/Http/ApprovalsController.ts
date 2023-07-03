@@ -580,7 +580,7 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
                 adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
@@ -660,6 +660,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                // @ts-ignore
                 adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
@@ -765,8 +766,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
-                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
+                adminMessage: `${ firstName } investment of ${ currencyCode } ${ amount } was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -779,7 +780,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               let subject = "AstraPay Investment Activation";
               let message = `
-      ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+      ${ firstName } this is to inform you, that your Investment of ${ currencyCode } ${ amount } has been activated.
 
       Please check your device.
 
@@ -800,11 +801,11 @@ export default class ApprovalsController {
               let recepients = [
                 {
                   "email": email,
-                  "name": `${firstName} ${lastName} `
+                  "name": `${ firstName } ${ lastName } `
                 },
                 // {
                 //   "email": activationNotificationEmail,
-                //   "name": `${rfiName} `
+                //   "name": `${ rfiName } `
                 // },
               ];
               let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
@@ -844,8 +845,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
-                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                message: `${ firstName }, the activation of your investment of ${ currencyCode } ${ amount } has failed due to inability to debit your wallet with ID: ${ investorFundingWalletId } as at: ${ DateTime.now() } , please ensure your account is funded with at least ${ currencyCode } ${ amount } as we try again.Thank you.`,
+                adminMessage: `The activation of ${ firstName } investment of ${ currencyCode } ${ amount } has failed due to inability to debit the wallet with ID: ${ investorFundingWalletId } as at: ${ DateTime.now() }.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1286,7 +1287,7 @@ export default class ApprovalsController {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined approval for the investment rollover, please check your device. Thank you.`,
+                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined approval for the investment rollover. Thank you.`,
                 adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the admin declined approval for the investment rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
@@ -3912,7 +3913,7 @@ export default class ApprovalsController {
           await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
           // console.log("new Timeline object line 2475:", newTimeline);
-debugger
+          debugger
           // Send Details to notification service
 
           // let subject = "AstraPay Investment Liquidation";

@@ -853,7 +853,7 @@ export default class ApprovalsServices {
                             walletId: walletId,// walletId,
                             userId: userId,// userId,
                             // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover, please check your device. Thank you.`,
+                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover. Thank you.`,
                             adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the approval of the investment rollover was declined.`,
                             createdAt: DateTime.now(),
                             metadata: ``,

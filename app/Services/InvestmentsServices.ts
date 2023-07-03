@@ -204,7 +204,7 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active, please check your device. Thank you.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active. Thank you.`,
                                 adminMmessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
@@ -393,8 +393,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active, please check your device. Thank you.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active.`,
+                                adminMessage: `The sum of ${ currencyCode } ${ amountPaidOut } , the Principal for ${ firstName } matured investment was paid, because the investment type selected for rollover is presently not active.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -597,7 +597,7 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment, please check your device. Thank you.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
                                 adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
@@ -768,7 +768,7 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment, please check your device. Thank you.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
                                 adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
@@ -955,7 +955,7 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
                                 adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the tenure selected is not available on selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
@@ -1126,7 +1126,7 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment, please check your device. Thank you.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
                                 adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the tenure selected is not available on the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
@@ -3141,7 +3141,7 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
                                         adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
@@ -3222,6 +3222,7 @@ export default class InvestmentsServices {
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
                                         message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        // @ts-ignore
                                         adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
@@ -3323,7 +3324,7 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
                                         adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
@@ -3404,6 +3405,7 @@ export default class InvestmentsServices {
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
                                         message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        // @ts-ignore
                                         adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
@@ -3720,7 +3722,7 @@ export default class InvestmentsServices {
                                     walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
-                                    message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+                                    message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
                                     adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                                     createdAt: DateTime.now(),
                                     metadata: ``,
@@ -3800,6 +3802,7 @@ export default class InvestmentsServices {
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
                                     message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                    // @ts-ignore
                                     adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                     createdAt: DateTime.now(),
                                     metadata: ``,
@@ -5364,7 +5367,7 @@ export default class InvestmentsServices {
                                     // @ts-ignore
                                     message: `${investment.firstName} investment has just been sent for rollover processing.`,
                                     adminMessage: `${investment.firstName} investment was sent for rollover processing.`,
-                                                                      createdAt: DateTime.now(),
+                                    createdAt: DateTime.now(),
                                     metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
                                 }
                                 // console.log('Timeline object line 3173:', timelineObject)
@@ -6501,7 +6504,7 @@ export default class InvestmentsServices {
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
                                             adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
-                                           createdAt: DateTime.now(),
+                                            createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
                                         // console.log("Timeline object line 1388:", timelineObject);
@@ -6562,7 +6565,7 @@ export default class InvestmentsServices {
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
                                             message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                             adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -7496,7 +7499,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    
+
                                                     adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed.`,
 
                                                     createdAt: DateTime.now(),
@@ -7660,7 +7663,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                     adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment failed.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8156,7 +8159,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
-                                                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8381,7 +8384,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                      adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment has failed.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment has failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8799,7 +8802,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
 
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
@@ -9129,7 +9132,7 @@ export default class InvestmentsServices {
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
                                                     message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                     adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -10251,7 +10254,7 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
                                                         adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
@@ -10310,7 +10313,7 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
                                                         adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
@@ -10404,7 +10407,7 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
                                                         adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
@@ -10463,7 +10466,7 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover, please check your device. Thank you.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
                                                         adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
 
                                                         createdAt: DateTime.now(),

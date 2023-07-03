@@ -1841,7 +1841,7 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
               adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
@@ -2028,7 +2028,7 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated, please check your device. Thank you.`,
+              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
               adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
@@ -3463,7 +3463,7 @@ export default class InvestmentsController {
         // START
         // debugger
         // console.log('Updated investment Status line 1379: ', investment)
-        
+
         investment.requestType = requestType;
         // debugger
         let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
