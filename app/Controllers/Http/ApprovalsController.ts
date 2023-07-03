@@ -371,7 +371,7 @@ export default class ApprovalsController {
       }
       // console.log(" QUERY RESULT for record: ", record.$original);
       // console.log(" currentApprovalStatus line 354 === ", currentApprovalStatus);
-      //debugger
+      debugger
       if ((approval && currentApprovalStatus == "pending") || (approval && currentApprovalStatus == "suspend_payout") || (approval && currentApprovalStatus == "suspend_rollover") || (approval && currentApprovalStatus == "rollover") || (approval && currentApprovalStatus == "activate_rollover") || (approval && currentApprovalStatus == "activate_payout")) {
         // console.log("Investment approval Selected for Update line 357:");
 
@@ -767,7 +767,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
-                adminMessage: `${ firstName } investment of ${ currencyCode } ${ amount } was activated.`,
+                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -780,7 +780,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               let subject = "AstraPay Investment Activation";
               let message = `
-      ${ firstName } this is to inform you, that your Investment of ${ currencyCode } ${ amount } has been activated.
+      ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
       Please check your device.
 
@@ -801,7 +801,7 @@ export default class ApprovalsController {
               let recepients = [
                 {
                   "email": email,
-                  "name": `${ firstName } ${ lastName } `
+                  "name": `${firstName} ${lastName} `
                 },
                 // {
                 //   "email": activationNotificationEmail,
@@ -845,8 +845,9 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${ firstName }, the activation of your investment of ${ currencyCode } ${ amount } has failed due to inability to debit your wallet with ID: ${ investorFundingWalletId } as at: ${ DateTime.now() } , please ensure your account is funded with at least ${ currencyCode } ${ amount } as we try again.Thank you.`,
-                adminMessage: `The activation of ${ firstName } investment of ${ currencyCode } ${ amount } has failed due to inability to debit the wallet with ID: ${ investorFundingWalletId } as at: ${ DateTime.now() }.`,
+                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.Thank you.`,
+                // @ts-ignore
+                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -3894,7 +3895,7 @@ export default class ApprovalsController {
           // console.log(" Current log, line 2449 :", updatedInvestment);
 
           await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData);
-
+          // debugger
           // console.log("Updated record Status line 2451: ", record);
           // update timeline
           timelineObject = {

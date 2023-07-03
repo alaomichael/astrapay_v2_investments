@@ -394,7 +394,7 @@ export default class InvestmentsServices {
                                 userId: userId,// userId,
                                 // @ts-ignore
                                 message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active.`,
-                                adminMessage: `The sum of ${ currencyCode } ${ amountPaidOut } , the Principal for ${ firstName } matured investment was paid, because the investment type selected for rollover is presently not active.`,
+                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -10656,9 +10656,12 @@ export default class InvestmentsServices {
                 .from('investments')
                 // .useTransaction(trx) // 👈
                 .where('id', investmentId)
-                .where('status', 'active')
-                .andWhere('request_type', 'start_investment')
-                .andWhere('approval_status', 'approved')
+                .andWhere('status', 'active')
+                .where('request_type', 'start_investment')
+                .orWhere('request_type', 'liquidate_investment')
+                .where('approval_status', 'approved')
+                .orWhere('approval_status', 'pending')
+
                 // .andWhere('is_payout_successful', 'false')
                 // .andWhere('is_payout_suspended', 'false')
                 // .andWhere('is_rollover_activated', 'false')
@@ -10674,9 +10677,9 @@ export default class InvestmentsServices {
             // .orWhere('is_rollover_activated', 'true')
             // .forUpdate()
 
-            // console.log(" responseData line 19552 ==============")
+            // console.log(" responseData line 10677 ==============")
             // console.log(responseData)
-            // debugger
+            debugger
             if (responseData.length < 1) {
                 console.log(`There is no approved investment that is eligible for liquidation or wallet has been successfully credited. Please, check and try again.`)
                 throw new AppException({ message: `There is no approved investment that is eligible for liquidation or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
@@ -11239,10 +11242,11 @@ export default class InvestmentsServices {
                                 // payout the amount remaining after deduction of penalty
 
                                 // notify the neccessary stakeholders
+                                debugger
                                 if ((record.requestType === "start_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false)
-                                    // || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
-                                    //     record.isPayoutSuspended === false)
+                                    || (record.requestType === "liquidate_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                        record.isPayoutSuspended === false)
                                 ) {
                                     console.log("Approval for investment liquidation processing: ===========================================>")
                                     debugger
