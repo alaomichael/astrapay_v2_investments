@@ -1,7 +1,7 @@
 import type { EventsList } from "@ioc:Adonis/Core/Event";
 import Env from "@ioc:Adonis/Core/Env";
-const RABBITMQ_HOSTNAME = Env.get("RABBITMQ_HOSTNAME");
-const RABBITMQ_EXCHANGE_NAME = Env.get("RABBITMQ_EXCHANGE_NAME");
+const INVESTMENT_RABBITMQ_HOSTNAME = Env.get("INVESTMENT_RABBITMQ_HOSTNAME");
+const INVESTMENT_RABBITMQ_EXCHANGE_NAME = Env.get("INVESTMENT_RABBITMQ_EXCHANGE_NAME");
 // const INVESTMENT_RABBITMQ_QUEUE_NAME = Env.get("INVESTMENT_RABBITMQ_QUEUE_NAME");
 
 const amqplib = require('amqplib');
@@ -18,11 +18,11 @@ export default class SettingServiceAccount {
             debugger
             if (action && serviceAccount) {
                 //  publish to queue
-                const conn = await amqplib.connect(RABBITMQ_HOSTNAME);// amqplib.connect(`amqp://${RABBITMQ_HOSTNAME}`); 
+                const conn = await amqplib.connect(INVESTMENT_RABBITMQ_HOSTNAME);// amqplib.connect(`amqp://${INVESTMENT_RABBITMQ_HOSTNAME}`); 
                 // console.log("RabbitMQ Connected",conn)
                 // debugger
                 const ch1 = await conn.createChannel();
-                await ch1.assertExchange(RABBITMQ_EXCHANGE_NAME, 'direct', { durable: true });
+                await ch1.assertExchange(INVESTMENT_RABBITMQ_EXCHANGE_NAME, 'direct', { durable: true });
                 // console.log("channel details: ", ch1);
                 let message = {
                     action,
@@ -41,7 +41,7 @@ export default class SettingServiceAccount {
                 // console.log(buffer);
                 // debugger
                 // Publisher
-               await ch1.publish(RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY, buffer);
+                await ch1.publish(INVESTMENT_RABBITMQ_EXCHANGE_NAME, INVESTMENT_RABBITMQ_SERVICE_ACCOUNT_ROUTING_KEY, buffer);
                 console.log("service account has been sent to queue.")
                 debugger
                 await ch1.close();
