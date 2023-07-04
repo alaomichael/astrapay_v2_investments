@@ -43,10 +43,10 @@ export default class RetryFailedPayoutOfLiquidatedInvestment extends BaseTask {
         }
         // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        // await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
-        let listOfRetryFailedPayoutOfLiquidatedInvestment = await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
-        console.log("After AXIOS CALL for Retry Failed Payout Of Liquidated Investment ,  ==================================================");
-        console.log("The ASTRAPAY API Retry Failed Payout Of Liquidated Investment response,line 47: ", listOfRetryFailedPayoutOfLiquidatedInvestment);
-        debugger
+        await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
+        // let listOfRetryFailedPayoutOfLiquidatedInvestment = await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
+        // console.log("After AXIOS CALL for Retry Failed Payout Of Liquidated Investment ,  ==================================================");
+        // console.log("The ASTRAPAY API Retry Failed Payout Of Liquidated Investment response,line 47: ", listOfRetryFailedPayoutOfLiquidatedInvestment);
+        // debugger
     }
 }
