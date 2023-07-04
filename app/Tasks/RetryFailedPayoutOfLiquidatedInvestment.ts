@@ -16,8 +16,9 @@ export default class RetryFailedPayoutOfLiquidatedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
+        return '*/5 * * * *' // runs every 5 minutes
         // return '*/50 * * * *' // runs every 50 minutes
-        return '30 */3 * * *' // runs every 3 hours 30 minute
+        // return '30 */3 * * *' // runs every 3 hours 30 minute
     }
     /**
      * Set enable use .lock file for block run retry task
@@ -42,9 +43,10 @@ export default class RetryFailedPayoutOfLiquidatedInvestment extends BaseTask {
         }
         // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
-        // let listOfRetryFailedPayoutOfLiquidatedInvestment = await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
-        // console.log("After AXIOS CALL for Retry Failed Payout Of Liquidated Investment ,  ==================================================");
-        // console.log("The ASTRAPAY API Retry Failed Payout Of Liquidated Investment response,line 47: ", listOfRetryFailedPayoutOfLiquidatedInvestment);
+        // await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
+        let listOfRetryFailedPayoutOfLiquidatedInvestment = await investmentsServices.retryFailedPayoutOfLiquidatedInvestment(queryParams);
+        console.log("After AXIOS CALL for Retry Failed Payout Of Liquidated Investment ,  ==================================================");
+        console.log("The ASTRAPAY API Retry Failed Payout Of Liquidated Investment response,line 47: ", listOfRetryFailedPayoutOfLiquidatedInvestment);
+        debugger
     }
 }
