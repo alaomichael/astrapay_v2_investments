@@ -19,6 +19,7 @@ import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutP
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 // Testing
+const fs = require('fs');
 const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
@@ -2179,13 +2180,17 @@ export default class InvestmentsServices {
             }
 
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
-                    await processInvestment(investment);
+                                        await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 1367:", error);
-                    throw error;
+                    console.log("Error line 2189:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
+                                       // throw error;
                 }
             }
             // commit transaction and changes to database
@@ -2536,15 +2541,19 @@ export default class InvestmentsServices {
                     throw error;
                 }
             }
-
+                      
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 1723:", error);
-                    throw error;
+                    console.log("Error line 2567:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -3490,14 +3499,19 @@ export default class InvestmentsServices {
                 }
             }
 
+        
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 2503 =====================:", error);
-                    throw error;
+                    console.log("Error line 3535:", error);
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -3885,14 +3899,18 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+                       for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 2222 =====================:", error);
-                    throw error;
+                    console.log("Error line 3944:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -4434,14 +4452,19 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+           
+             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 2766:", error);
-                    throw error;
+                    console.log("Error line 4507:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -4959,14 +4982,18 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+                     for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 2766:", error);
-                    throw error;
+                    console.log("Error line 5046:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -5478,14 +5505,18 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 3308:", error);
-                    throw error;
+                    console.log("Error line 5579:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -5987,14 +6018,18 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+                       for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 3308:", error);
-                    throw error;
+                    console.log("Error line 6102:", error);
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -6643,15 +6678,19 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+           
+             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
-                    // debugger
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 6656 =====================:", error);
-                    throw error;
+                    console.log("Error line 6773:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -7749,14 +7788,17 @@ export default class InvestmentsServices {
             }
 
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
-                    // debugger
+
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 7712 =====================:", error);
-                    throw error;
+                    console.log("Error line 7892:", error);
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
             // commit transaction and changes to database
@@ -7977,7 +8019,7 @@ export default class InvestmentsServices {
                                     record.isPayoutSuspended === false) || (record.requestType === "liquidate_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
                                 console.log("Approval for investment payout processing: ===========================================>")
-                                debugger
+                                // debugger
                                 // TODO: Uncomment to use loginAdminFullName
                                 // record.processedBy = loginAdminFullName;
                                 // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
@@ -8886,17 +8928,20 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+                  for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
-                    // debugger
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
                     console.log("Error line 8812 =====================:", error);
-                    throw error;
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
+
             // commit transaction and changes to database
             // await trx.commit();
             // console.log("Response data in investment service, line 8818:", investmentArray);
@@ -9849,17 +9894,22 @@ export default class InvestmentsServices {
                 }
             }
 
-            for (let index = 0; index < responseData.length; index++) {
+        
+ for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
-                    // debugger
+                    
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 10009 =====================:", error);
-                    throw error;
+                    console.log("Error line 10027:", error);
+                     const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
                 }
             }
+
             // commit transaction and changes to database
             await trx.commit();
             // console.log("Response data in investment service, line 3218:", investmentArray);
@@ -10997,14 +11047,20 @@ export default class InvestmentsServices {
             }
 
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     // debugger
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
-                    console.log("Error line 7632 =====================:", error);
-                    throw error;
+                    console.log("Error line 11165 =====================:", error);
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
+                   
+                    // throw error;
                 }
             }
             // commit transaction and changes to database
@@ -12170,14 +12226,19 @@ export default class InvestmentsServices {
             }
 
             for (let index = 0; index < responseData.length; index++) {
+                const investment = responseData[index];
                 try {
-                    const investment = responseData[index];
+                    
                     // debugger
                     await processInvestment(investment);
                     investmentArray.push(investment);
                 } catch (error) {
                     console.log("Error line 12503 =====================:", error);
-                    throw error;
+                    const timestamp = new Date().toISOString();
+                    const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+                    fs.appendFileSync('error.log', errorLog);
+                    throw error; // Re-throw the error to prevent the server from breaking
+                    // throw error;
                 }
             }
             // commit transaction and changes to database

@@ -63,7 +63,7 @@ export default class InvestmentsController {
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
         status: "OK",
-        message: "no investment request matched your search",
+        message: "No investment request matched your search",
         data: null,
       });
     }
@@ -81,79 +81,7 @@ export default class InvestmentsController {
   public async show({ params, request, response }: HttpContextContract) {
     try {
       console.log('INVESTMENT params: ', params)
-      // const { search, limit, requestType, investmentId, status, approvalStatus, duration } =
-      //   request.qs()
-      // console.log('INVESTMENT query: ', request.qs())
-      // try {
-      //   let investment = await Investment.query().where('user_id', params.userId)
-      //   // .orWhere('id', params.id)
-      //   // .limit()
-      //   let sortedInvestments = investment.map((investment) => {
-      //     return investment.$original
-      //   })
-      //   if (sortedInvestments.length > 0) {
-      //     console.log('INVESTMENT before sorting: ', sortedInvestments)
-      //     if (search) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.lastName!.startsWith(search)
-      //       })
-      //     }
-      //     if (requestType) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.requestType.startsWith(requestType)
-      //       })
-      //     }
-      //     if (status) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.status.includes(status)
-      //       })
-      //     }
-
-      //     if (approvalStatus) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.approvalStatus.includes(approvalStatus)
-      //       })
-      //     }
-      //     if (investmentId) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.id === parseInt(investmentId)
-      //       })
-      //     }
-
-      //     if (duration) {
-      //       sortedInvestments = sortedInvestments.filter((investment) => {
-      //         // @ts-ignore
-      //         return investment.duration === duration
-      //       })
-      //     }
-      //     if (limit) {
-      //       sortedInvestments = sortedInvestments.slice(0, Number(limit))
-      //     }
-      //     if (sortedInvestments.length < 1) {
-      //       return response.status(200).json({
-      //         status: 'OK',
-      //         message: 'no investment matched your search',
-      //         data: null,
-      //       })
-      //     }
-
-      //     return response.status(200).json({ status: 'OK', data: sortedInvestments })
-      //   } else {
-      //     return response.status(200).json({
-      //       status: 'OK',
-      //       message: 'no investment matched your search',
-      //       data: null,
-      //     })
-      //   }
-      // console.log("investments params: ", params);
-      // console.log("investments query: ", request.qs());
       const investmentsService = new InvestmentsServices();
-
       // console.log("investments query line 108: ", request.qs());
       const investments = await investmentsService.getInvestments(request.qs());
       // console.log("investments query line 110: ", investments);
@@ -162,7 +90,7 @@ export default class InvestmentsController {
       if (sortedInvestments.length < 1) {
         return response.status(200).json({
           status: "OK",
-          message: "no investment request matched your search",
+          message: "No investment request matched your search",
           data: null,
         });
       }
@@ -197,39 +125,15 @@ export default class InvestmentsController {
     const { investmentId } = request.params()
     try {
       const investmentsService = new InvestmentsServices();
-      let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-      // console.log("Investment result :", investment);
-      // let investment = await Investment.query()
-      //   .where({ id: investmentId })
-      //   .first()
-      // .with('timeline')
-      // .orderBy('timeline', 'desc')
-      // .fetch()
-      if (!investment) return response.status(404).json({ status: 'FAILED' })
-      // const certUrl = Env.get('CERTIFICATE_URL')
-      // const requestUrl = `${certUrl}/certificates/${investment.id}`
-      // await new PuppeteerServices(requestUrl, {
-      //   paperFormat: 'a3',
-      //   fileName: `${investment.requestType}_${investment.id}_${DateTime.now().toISOTime()}`,
-      // })
-      //   .printAsPDF(investment)
-      //   .catch((error) => console.error(error))
-      // await new PuppeteerServices(requestUrl, {
-      //   paperFormat: 'a4',
-      //   fileName: `${Math.random() * 7}_${investment.id}`,
-      // })
-      //   .printAsPDF(investment)
-      //   .catch((error) => console.error(error))
-      // console.log('Investment Certificate generated, URL, line 191: ', requestUrl)
-      // investment.certificateUrl = requestUrl;
-
-      // Save
+      const investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+          if (!investment) return response.status(404).json({ status: 'FAILED' })
       // update record
-      let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, investment.walletId, investment.userId);
+      // let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, investment.walletId, investment.userId);
       // console.log(" Current log, line 197 :", currentInvestment);
       // send for update
-      let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-      console.log(" Current log, line 200 :", updatedInvestment);
+      //  await investmentsService.updateInvestment(currentInvestment, investment);
+      // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+      // console.log(" Current log, line 200 :", updatedInvestment);
       // debugger
       return response.status(200).json({ status: 'OK', data: investment })
     } catch (error) {
@@ -343,7 +247,7 @@ export default class InvestmentsController {
       if (sortedPayouts.length < 1) {
         return response.status(200).json({
           status: 'OK',
-          message: 'no investment payout matched your search',
+          message: 'No investment payout matched your search',
           data: null,
         })
       }
@@ -1056,7 +960,7 @@ export default class InvestmentsController {
     //   if (rate === undefined  || rate.length < 1) {
     //     return response.status(400).json({
     //       status: 'OK',
-    //       message: 'no investment rate matched your search, please try again.',
+    //       message: 'No investment rate matched your search, please try again.',
     //       data: null,
     //     })
     //   }
@@ -1076,7 +980,7 @@ export default class InvestmentsController {
     //   } else {
     //     return response
     //       .status(200)
-    //       .json({ status: 'FAILED', message: 'no investment matched your query.' })
+    //       .json({ status: 'FAILED', message: 'No investment matched your query.' })
     //   }
     // } catch (error) {
     //   console.error(error)
@@ -1142,11 +1046,7 @@ export default class InvestmentsController {
             isDueForPayout === false
             //  && rolloverTarget <= 5
           ) {
-            // investment.amount = request.input('amount')
-            // investment.rolloverTarget = newRolloverTarget
-            // investment.rolloverType = newRolloverType
-            // investment.investmentType = request.input('investmentType')
-
+        
             // update timeline
             // timelineObject = {
             //   id: uuid(),
@@ -1201,30 +1101,10 @@ export default class InvestmentsController {
               status: 'FAILED',
               data: investment,//.map((inv) => inv.$original),
               message:
-                'please check your investment type, and note the rollover target cannot be more than 5 times',
+                'please check your investment type and try again later.',// and note the rollover target cannot be more than 5 times',
             })
           }
-          // } catch (error) {
-          //   console.error('Is due for payout status Error :', error)
-          //   // return response.json({ status: 'FAILED', data: error.message })
-          //   console.log("Error line 1187", error.messages);
-          //   console.log("Error line 1188", error.message);
-          //   if (error.code === 'E_APP_EXCEPTION') {
-          //     console.log(error.codeSt)
-          //     let statusCode = error.codeSt ? error.codeSt : 500
-          //     return response.status(parseInt(statusCode)).json({
-          //       status: "FAILED",
-          //       message: error.messages,
-          //       hint: error.message
-          //     });
-          //   }
-          //   return response.status(500).json({
-          //     status: "FAILED",
-          //     message: error.messages,
-          //     hint: error.message
-          //   });
-
-          // }
+       
         } else {
           return response.status(422).json({
             status: 'FAILED', message: 'This investment is yet to be activated.', data: investment//.map((inv) => inv.$original)
@@ -1439,16 +1319,6 @@ export default class InvestmentsController {
         numberOfAttempts: 0,
       }
 
-
-      // console.log('Payload line 1010  :', payload)
-      // let payloadAmount = payload.amount
-      // let payloadDuration = payload.duration
-      // let payloadInvestmentType = payload.investmentType
-      // console.log(
-      //   ' The Rate return for RATE line 541: ',
-      //   await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
-      // )
-      // let rate = await investmentRate(payloadAmount, payloadDuration, payloadInvestmentType)
       let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
 
       let rate;
@@ -1528,7 +1398,7 @@ export default class InvestmentsController {
       if (rate === undefined) {
         return response.status(400).json({
           status: 'OK',
-          message: 'no investment rate matched your search, please try again.',
+          message: 'No investment rate matched your search, please try again.',
           data: null,
         })
       }
@@ -1591,33 +1461,7 @@ export default class InvestmentsController {
       investment.interestDueOnInvestment = amountDueOnPayout
       // @ts-ignore
       investment.totalAmountToPayout = investment.amount + amountDueOnPayout
-      // debugger
-      // investment.payoutDate = await payoutDueDate(investment.startDate, investment.duration)
-      // @ts-ignore
-      // investment.walletId = investorFundingWalletId
-      // await investment.save()
-      // console.log('The new investment:', investment)
-
-      // TODO
-      // Send Investment Payload To Transaction Service
-      // let sendToTransactionService //= new SendToTransactionService(investment)
-      // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-      // UPDATE Investment Status based on the response from Transaction Service
-      // let duration = Number(investment.duration)
-      // let updatedCreatedAt = DateTime.now().plus({ hours: 2 }).toISODate()
-      // let updatedPayoutDate = DateTime.now().plus({ days: duration }).toISODate()
-      // console.log('updated CreatedAt Time : ' + updatedCreatedAt)
-      // console.log('Updated Payout Date: ' + updatedPayoutDate)
-      // Save Investment new status to Database
-      // await investment.save()
-      // Send Investment Initiation Message to Queue
-
-      // check if Approval is set to Auto, from Setting Controller
-      // let userId = investment.userId
-      // let investmentId = investment.id
-      // let requestType = 'start_investment'
-      // let settings = await Setting.query().where({ rfiCode: rfiCode })
-      // console.log('Approval setting line 1433:', settings[0])
+    
       const settingsService = new SettingsServices();
       const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
       debugger
@@ -1670,7 +1514,7 @@ export default class InvestmentsController {
         //     data: null,
         //   })
         // }
-        debugger
+        // debugger
         const approvalsService = new ApprovalsServices()
         let approvalObject;
 
@@ -2327,161 +2171,301 @@ export default class InvestmentsController {
     } = request.qs()
     console.log('INVESTMENT query: ', request.qs())
 
+    // try {
+    //   const investment = await Investment.all()
+    //   // .limit()
+    //   let sortedApprovalRequest = investment
+    //   if (userId) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.userId === parseInt(userId)
+    //     })
+    //   }
+    //   if (investmentId) {
+    //     // @ts-ignore
+    //     sortedApprovalRequest = await Investment.query().where('id', investmentId)
+    //   }
+
+    //   if (isPayoutAuthorized) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.isPayoutAuthorized.toString() === `${isPayoutAuthorized}`
+    //     })
+    //   }
+
+    //   if (isTerminationAuthorized) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.isTerminationAuthorized.toString() === `${isTerminationAuthorized}`
+    //     })
+    //   }
+
+    //   if (payoutDate) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.payoutDate.includes(payoutDate)
+    //     })
+    //   }
+    //   if (status) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.status === `${status}`
+    //     })
+    //   }
+
+    //   if (walletId) {
+    //     sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
+    //       // @ts-ignore
+    //       return investment.walletId.toString() === `${walletId}`
+    //     })
+    //   }
+    //   if (limit) {
+    //     sortedApprovalRequest = sortedApprovalRequest.slice(0, Number(limit))
+    //   }
+    //   if (sortedApprovalRequest.length < 1) {
+    //     return response.status(200).json({
+    //       status: 'OK',
+    //       message: 'No investment approval request matched your search',
+    //       data: null,
+    //     })
+    //   }
+    //   // return rate(s)
+    //   return response.status(200).json({
+    //     status: 'OK',
+    //     data: sortedApprovalRequest.map((inv) => inv.$original),
+    //   })
+    // } catch (error) {
+    //   console.log(error)
+    //   console.log("Error line 1750", error.messages);
+    //   console.log("Error line 1751", error.message);
+    //   if (error.code === 'E_APP_EXCEPTION') {
+    //     console.log(error.codeSt)
+    //     let statusCode = error.codeSt ? error.codeSt : 500
+    //     return response.status(parseInt(statusCode)).json({
+    //       status: "FAILED",
+    //       message: error.messages,
+    //       hint: error.message
+    //     });
+    //   }
+    //   return response.status(500).json({
+    //     status: "FAILED",
+    //     message: error.messages,
+    //     hint: error.message
+    //   });
+
+    // }
     try {
-      const investment = await Investment.all()
-      // .limit()
-      let sortedApprovalRequest = investment
+      const investment = await Investment.all();
+      let sortedApprovalRequest = investment;
+
       if (userId) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.userId === parseInt(userId)
-        })
+          return investment.userId === parseInt(userId);
+        });
       }
+
       if (investmentId) {
-        // @ts-ignore
-        sortedApprovalRequest = await Investment.query().where('id', investmentId)
+        sortedApprovalRequest = await Investment.query().where('id', investmentId);
       }
 
-      if (isPayoutAuthorized) {
+      if (isPayoutAuthorized !== undefined) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
-          // @ts-ignore
-          return investment.isPayoutAuthorized.toString() === `${isPayoutAuthorized}`
-        })
+          return investment.isPayoutAuthorized.toString() === `${isPayoutAuthorized}`;
+        });
       }
 
-      if (isTerminationAuthorized) {
+      if (isTerminationAuthorized !== undefined) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
-          // @ts-ignore
-          return investment.isTerminationAuthorized.toString() === `${isTerminationAuthorized}`
-        })
+          return investment.isTerminationAuthorized.toString() === `${isTerminationAuthorized}`;
+        });
       }
 
       if (payoutDate) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
           // @ts-ignore
-          return investment.payoutDate.includes(payoutDate)
-        })
+          return investment.payoutDate.includes(payoutDate);
+        });
       }
+
       if (status) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
-          // @ts-ignore
-          return investment.status === `${status}`
-        })
+          return investment.status === `${status}`;
+        });
       }
 
       if (walletId) {
         sortedApprovalRequest = sortedApprovalRequest.filter((investment) => {
-          // @ts-ignore
-          return investment.walletId.toString() === `${walletId}`
-        })
+          return investment.walletId.toString() === `${walletId}`;
+        });
       }
+
       if (limit) {
-        sortedApprovalRequest = sortedApprovalRequest.slice(0, Number(limit))
+        sortedApprovalRequest = sortedApprovalRequest.slice(0, Number(limit));
       }
+
       if (sortedApprovalRequest.length < 1) {
         return response.status(200).json({
           status: 'OK',
-          message: 'no investment approval request matched your search',
+          message: 'No investment approval request matched your search',
           data: null,
-        })
+        });
       }
-      // return rate(s)
+
       return response.status(200).json({
         status: 'OK',
         data: sortedApprovalRequest.map((inv) => inv.$original),
-      })
+      });
     } catch (error) {
-      console.log(error)
-      console.log("Error line 1750", error.messages);
-      console.log("Error line 1751", error.message);
+      console.log(error);
+
       if (error.code === 'E_APP_EXCEPTION') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
+        console.log(error.codeSt);
+        const statusCode = error.codeSt ? error.codeSt : 500;
         return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
+          status: 'FAILED',
           message: error.messages,
-          hint: error.message
+          hint: error.message,
         });
       }
-      return response.status(500).json({
-        status: "FAILED",
-        message: error.messages,
-        hint: error.message
-      });
 
+      return response.status(500).json({
+        status: 'FAILED',
+        message: error.messages,
+        hint: error.message,
+      });
     }
   }
 
   public async activateApprovedInvestment({ request, response, loginUserData }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
+    // try {
+    //   // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
+    //   const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
+    //   // debugger
+
+    //   if (investments.length > 0) {
+    //     // console.log('Investment data after payout request line 2000:', investments)
+    //     // debugger
+    //     let investmentArray: any[] = [];
+    //     for (let index = 0; index < investments.length; index++) {
+    //       let currentInvestment = investments[index];
+    //       let { id, wallet_id, user_id } = currentInvestment;
+    //       currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+    //       investmentArray.push(currentInvestment);
+    //       // debugger
+    //     }
+    //     return response.status(200).json({
+    //       status: 'OK',
+    //       data: investmentArray,//.map((inv) => inv.$original),
+    //     })
+    //     // END
+
+    //   } else {
+    //     // debugger
+    //     return response.status(404).json({
+    //       status: 'OK',
+    //       message: 'No investment matched your search',
+    //       data: null,
+    //     })
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    //   // debugger
+    //   console.log("Error line 2052", error.messages);
+    //   console.log("Error line 2053", error.message);
+    //   // debugger
+    //   if (error.code === 'E_APP_EXCEPTION') {
+    //     console.log(error.codeSt)
+    //     let statusCode = error.codeSt ? error.codeSt : 500
+    //     return response.status(parseInt(statusCode)).json({
+    //       status: "FAILED",
+    //       message: error.messages,
+    //       hint: error.message
+    //     });
+    //   } else if (error.code === 'ETIMEDOUT') {
+    //     console.log(error.codeSt)
+    //     let statusCode = error.codeSt ? error.codeSt : 504
+    //     return response.status(parseInt(statusCode)).json({
+    //       status: "FAILED",
+    //       message: error.messages,
+    //       hint: error.message
+    //     });
+    //   } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
+    //     console.log(error.codeSt)
+    //     let statusCode = error.codeSt ? error.codeSt : 504
+    //     return response.status(parseInt(statusCode)).json({
+    //       status: "FAILED",
+    //       message: error.messages,
+    //       hint: error.message
+    //     });
+    //   }
+
+    //   return response.status(500).json({
+    //     status: "FAILED",
+    //     message: error.messages,
+    //     hint: error.message
+    //   });
+
+    // }
+
+    // REFACTORED
     try {
-      // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData)
-      // debugger
+      const investments = await investmentsService.activateApprovedInvestment(request.qs(), loginUserData);
 
       if (investments.length > 0) {
-        // console.log('Investment data after payout request line 2000:', investments)
-        // debugger
-        let investmentArray: any[] = [];
-        for (let index = 0; index < investments.length; index++) {
-          let currentInvestment = investments[index];
-          let { id, wallet_id, user_id } = currentInvestment;
-          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
-          investmentArray.push(currentInvestment);
-          // debugger
-        }
+        const investmentArray = await Promise.all(
+          investments.map(async (investment) => {
+            const { id, wallet_id, user_id } = investment;
+            const updatedInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+            return updatedInvestment;
+          })
+        );
         return response.status(200).json({
           status: 'OK',
-          data: investmentArray,//.map((inv) => inv.$original),
-        })
-        // END
-
+          data: investmentArray,
+        });
       } else {
-        // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
-        })
+        });
       }
     } catch (error) {
-      console.log(error)
-      // debugger
-      console.log("Error line 2052", error.messages);
-      console.log("Error line 2053", error.message);
-      // debugger
+      console.log(error);
+
       if (error.code === 'E_APP_EXCEPTION') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
+        console.log(error.codeSt);
+        const statusCode = error.codeSt ? error.codeSt : 500;
         return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
+          status: 'FAILED',
           message: error.messages,
-          hint: error.message
+          hint: error.message,
         });
       } else if (error.code === 'ETIMEDOUT') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 504
+        console.log(error.codeSt);
+        const statusCode = error.codeSt ? error.codeSt : 504;
         return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
+          status: 'FAILED',
           message: error.messages,
-          hint: error.message
+          hint: error.message,
         });
       } else if (error.message === 'FAILED TO DEBIT WALLET, ETIMEDOUT') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 504
+        console.log(error.codeSt);
+        const statusCode = error.codeSt ? error.codeSt : 504;
         return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
+          status: 'FAILED',
           message: error.messages,
-          hint: error.message
+          hint: error.message,
         });
       }
 
       return response.status(500).json({
-        status: "FAILED",
+        status: 'FAILED',
         message: error.messages,
-        hint: error.message
+        hint: error.message,
       });
-
     }
   }
 
@@ -2489,21 +2473,12 @@ export default class InvestmentsController {
     try {
       const timelineService = new TimelinesServices();
       const investmentsService = new InvestmentsServices();
-      // let currentDate = DateTime.now().toISO()
-      // @ts-ignore
-      // let id = request.input('userId')
-      let { userId, investmentId } = request.all()
-      // console.log(
-      //   'Params for update line 1318: ' + ' userId: ' + userId + ', investmentId: ' + investmentId
-      // )
-      // let investment = await Investment.query().where('user_id', id).where('id', params.id)
-      // let investment = await Investment.query().where('id', investmentId)
+          let { userId, investmentId } = request.all()
+  
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-      // console.log('Investment Info, line 1322: ', investment)
-      // debugger
+    
       if (investment && investment.$original.status == "active") {
-        // console.log('investment search data :', investment.$original)
-        let { rfiCode } = investment.$original;
+                let { rfiCode } = investment.$original;
         // @ts-ignore
         // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
         // console.log('Is due for payout status :', isDueForPayout)
@@ -2512,7 +2487,7 @@ export default class InvestmentsController {
         let startDate = DateTime.now().minus({ days: 5 }).toISO()
         let duration = 4
         // console.log('Time investment was started line 1332: ', startDate)
-        let timelineObject
+        // let timelineObject
         let isDueForPayout = await dueForPayout(startDate, duration)
         // console.log('Is due for payout status line 1336:', isDueForPayout)
         // let amt = investment.amount
@@ -2521,166 +2496,242 @@ export default class InvestmentsController {
         if (!settings) {
           throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
         }
+      
+        // if (isDueForPayout) {
+        //   //  START
+        //   let payload = investment.$original
+        //   // send to Admin for approval
+        //   let userId = payload.userId
+        //   let investmentId = payload.id
+        //   let walletId = payload.walletId
+        //   let approvalStatus = payload.approvalStatus
+        //   let requestType = 'payout_investment'
+        //   // let  approvalStatus = 'approved'
 
-        // console.log('Approval setting line 1339:', settings)
+        //   let approvalIsAutomated;// = settings.isTerminationAutomated
+        //   // let approvalRequestIsExisting
+        //   if (settings.isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
+        //     // approvalRequestIsExisting = await Approval.query().where({
+        //     //   investment_id: investmentId,
+        //     //   user_id: userId,
+        //     //   request_type: requestType,
+        //     //   //  approval_status: approvalStatus,
+        //     // })
+
+        //     // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
+        //     // if (approvalRequestIsExisting.length < 1) {
+        //     //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
+        //     //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
+        //     //   if (approvalRequestIsDone === undefined) {
+        //     //     return response.status(400).json({
+        //     //       status: 'OK',
+        //     //       message: 'payout approval request was not successful, please try again.',
+        //     //       data: null,
+        //     //     })
+        //     //   }
+        //     // }
+        //     const approvalsService = new ApprovalsServices()
+        //     let approvalObject;
+
+        //     // TODO: Send to the Admin for approval
+        //     // update approvalObject
+        //     approvalObject = {
+        //       rfiCode: rfiCode,
+        //       walletId: walletId,
+        //       investmentId: investmentId,
+        //       userId: userId,
+        //       requestType: requestType,//"start_investment",
+        //       approvalStatus: "pending",//approvalStatus,//"",
+        //       assignedTo: "",//investment.assignedTo,
+        //       processedBy: "",//investment.processedBy,
+        //       // remark: "",
+        //     };
+        //     // console.log("ApprovalRequest object line 1194:", approvalObject);
+        //     // check if the approval request is not existing
+        //     let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
+        //     if (!approvalRequestIsExisting) {
+        //       await approvalsService.createApproval(approvalObject);
+        //       // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+        //       // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
+        //     }
+
+        //     // investment = await Investment.query().where('id', investmentId)
+        //     investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+        //     investment.requestType = requestType
+        //     investment.status = "matured"
+        //     investment.approvalStatus = 'pending'
+
+        //     // update timeline
+        //     timelineObject = {
+        //       id: uuid(),
+        //       action: 'investment payout initiated',
+        //       investmentId: investment.id,//id,
+        //       walletId: investment.walletId,// walletId,
+        //       userId: investment.userId,// userId,
+        //       // @ts-ignore
+        //       message: `${investment.firstName},your investment has just been sent for payout processing.`,
+        //       adminMessage: `${investment.firstName}, investment was sent for payout processing.`,
+        //       createdAt: DateTime.now(),
+        //       metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+        //     }
+        //     // console.log('Timeline object line 1429:', timelineObject)
+        //     //  Push the new object to the array
+        //     // timeline = investment.timeline
+        //     // timeline.push(timelineObject)
+        //     // console.log('Timeline object line 1433:', timeline)
+        //     // stringify the timeline array
+        //     await timelineService.createTimeline(timelineObject);
+        //     // investment.timeline = JSON.stringify(timeline)
+        //     // START
+
+        //     // console.log('Updated investment Status line 1379: ', investment)
+        //     // console.log('Payout investment data line 1380:', payload)
+        //     payload.investmentId = investmentId
+        //     payload.requestType = requestType
+
+        //     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+        //     // send for update
+        //     // await investmentsService.updateInvestment(record, investment);
+        //     await investmentsService.updateInvestment(record, investment);
+        //     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+        //     // console.log(" Current log, line 1655 :", updatedInvestment);
+        //     // debugger
+        //   } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
+        //     if (investment.status !== 'paid') {
+        //       // update status of investment
+        //       investment.requestType = requestType
+        //       investment.approvalStatus = 'approved'
+        //       investment.status = 'payout'
+        //       investment.isPayoutAuthorized = true
+        //       investment.isTerminationAuthorized = true
+        //       // Save
+        //       // await investment.save()
+        //       let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+        //       // send for update
+        //       await investmentsService.updateInvestment(record, investment);
+        //       // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+        //       // console.log(" Current log, line 1672 :", updatedInvestment);
+        //     }
+        //     // Send notification
+        //     // await investment.save()
+        //     let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+        //     // send for update
+        //     await investmentsService.updateInvestment(record, investment);
+        //     // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
+        //     // console.log(" Current log, line 1680 :", updatedInvestment);
+        //   }
+
+        //   // console.log('Investment data after payout request line 1683:', investment)
+        //   return response.status(200).json({
+        //     status: 'OK',
+        //     data: investment//.map((inv) => inv.$original),
+        //   })
+        //   // END
+        // }
         if (isDueForPayout) {
-          //  START
-          let payload = investment.$original
-          // send to Admin for approval
-          let userId = payload.userId
-          let investmentId = payload.id
-          let walletId = payload.walletId
-          let approvalStatus = payload.approvalStatus
-          let requestType = 'payout_investment'
-          // let  approvalStatus = 'approved'
+          const payload = investment.$original;
+          const userId = payload.userId;
+          const investmentId = payload.id;
+          const walletId = payload.walletId;
+          const approvalStatus = payload.approvalStatus;
+          const requestType = 'payout_investment';
 
-          let approvalIsAutomated;// = settings.isTerminationAutomated
-          // let approvalRequestIsExisting
-          if (settings.isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
-            // approvalRequestIsExisting = await Approval.query().where({
-            //   investment_id: investmentId,
-            //   user_id: userId,
-            //   request_type: requestType,
-            //   //  approval_status: approvalStatus,
-            // })
+          const settingsService = new SettingsServices();
+          const settings = await settingsService.getSettingBySettingRfiCode(rfiCode);
 
-            // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
-            // if (approvalRequestIsExisting.length < 1) {
-            //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-            //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
-            //   if (approvalRequestIsDone === undefined) {
-            //     return response.status(400).json({
-            //       status: 'OK',
-            //       message: 'payout approval request was not successful, please try again.',
-            //       data: null,
-            //     })
-            //   }
-            // }
-            const approvalsService = new ApprovalsServices()
-            let approvalObject;
-
-            // TODO: Send to the Admin for approval
-            // update approvalObject
-            approvalObject = {
-              rfiCode: rfiCode,
-              walletId: walletId,
-              investmentId: investmentId,
-              userId: userId,
-              requestType: requestType,//"start_investment",
-              approvalStatus: "pending",//approvalStatus,//"",
-              assignedTo: "",//investment.assignedTo,
-              processedBy: "",//investment.processedBy,
-              // remark: "",
-            };
-            // console.log("ApprovalRequest object line 1194:", approvalObject);
-            // check if the approval request is not existing
-            let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
-            if (!approvalRequestIsExisting) {
-              await approvalsService.createApproval(approvalObject);
-              // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
-              // console.log("new ApprovalRequest object line 1585:", newApprovalRequest);
-            }
-
-            // investment = await Investment.query().where('id', investmentId)
-            investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
-            investment.requestType = requestType
-            investment.status = "matured"
-            investment.approvalStatus = 'pending'
-
-            // update timeline
-            timelineObject = {
-              id: uuid(),
-              action: 'investment payout initiated',
-              investmentId: investment.id,//id,
-              walletId: investment.walletId,// walletId,
-              userId: investment.userId,// userId,
-              // @ts-ignore
-              message: `${investment.firstName},your investment has just been sent for payout processing.`,
-              adminMessage: `${investment.firstName}, investment was sent for payout processing.`,
-              createdAt: DateTime.now(),
-              metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
-            }
-            // console.log('Timeline object line 1429:', timelineObject)
-            //  Push the new object to the array
-            // timeline = investment.timeline
-            // timeline.push(timelineObject)
-            // console.log('Timeline object line 1433:', timeline)
-            // stringify the timeline array
-            await timelineService.createTimeline(timelineObject);
-            // investment.timeline = JSON.stringify(timeline)
-            // START
-
-            // console.log('Updated investment Status line 1379: ', investment)
-            // console.log('Payout investment data line 1380:', payload)
-            payload.investmentId = investmentId
-            payload.requestType = requestType
-
-            let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-            // send for update
-            // await investmentsService.updateInvestment(record, investment);
-            await investmentsService.updateInvestment(record, investment);
-            // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-            // console.log(" Current log, line 1655 :", updatedInvestment);
-            // debugger
-          } else if (settings.isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-            if (investment.status !== 'paid') {
-              // update status of investment
-              investment.requestType = requestType
-              investment.approvalStatus = 'approved'
-              investment.status = 'payout'
-              investment.isPayoutAuthorized = true
-              investment.isTerminationAuthorized = true
-              // Save
-              // await investment.save()
-              let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-              // send for update
-              await investmentsService.updateInvestment(record, investment);
-              // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-              // console.log(" Current log, line 1672 :", updatedInvestment);
-            }
-            // Send notification
-            // await investment.save()
-            let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-            // send for update
-            await investmentsService.updateInvestment(record, investment);
-            // let updatedInvestment = await investmentsService.updateInvestment(record, investment);
-            // console.log(" Current log, line 1680 :", updatedInvestment);
+          if (!settings) {
+            throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`);
           }
 
-          // console.log('Investment data after payout request line 1683:', investment)
+          const approvalsService = new ApprovalsServices();
+          let approvalObject;
+
+          if (settings.isPayoutAutomated) {
+            if (investment.status !== 'paid') {
+              investment.requestType = requestType;
+              investment.approvalStatus = 'approved';
+              investment.status = 'payout';
+              investment.isPayoutAuthorized = true;
+              investment.isTerminationAuthorized = true;
+              const record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+              await investmentsService.updateInvestment(record, investment);
+            }
+          } else {
+            const approvalIsAutomated = settings.isInvestmentAutomated;
+            if (approvalIsAutomated === undefined || approvalIsAutomated === false) {
+              const approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentIdAndUserIdAndWalletIdAndRequestTypeAndApprovalStatus(investmentId, userId, walletId, requestType, approvalStatus);
+
+              if (!approvalRequestIsExisting) {
+                approvalObject = {
+                  rfiCode: rfiCode,
+                  walletId: walletId,
+                  investmentId: investmentId,
+                  userId: userId,
+                  requestType: requestType,
+                  approvalStatus: 'pending',
+                  assignedTo: investment.assignedTo,
+                  processedBy: investment.processedBy,
+                };
+                await approvalsService.createApproval(approvalObject);
+              }
+
+              investment.requestType = requestType;
+              investment.status = 'matured';
+              investment.approvalStatus = 'pending';
+              const record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+              await investmentsService.updateInvestment(record, investment);
+
+              const timelineObject = {
+                id: uuid(),
+                action: 'investment payout initiated',
+                investmentId: investment.id,
+                walletId: investment.walletId,
+                userId: investment.userId,
+                message: `${investment.firstName}, your investment has just been sent for payout processing.`,
+                adminMessage: `${investment.firstName}, investment was sent for payout processing.`,
+                createdAt: DateTime.now(),
+                metadata: `amount to payout: ${investment.totalAmountToPayout}, request type : ${investment.requestType}`,
+              };
+              await timelineService.createTimeline(timelineObject);
+            } else if (approvalIsAutomated === true) {
+              if (investment.status !== 'paid') {
+                investment.requestType = requestType;
+                investment.approvalStatus = 'approved';
+                investment.status = 'payout';
+                investment.isPayoutAuthorized = true;
+                investment.isTerminationAuthorized = true;
+                const record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                await investmentsService.updateInvestment(record, investment);
+              }
+            }
+          }
+
+          const updatedInvestment = await investmentsService.getInvestmentByInvestmentId(investmentId);
+
           return response.status(200).json({
             status: 'OK',
-            data: investment//.map((inv) => inv.$original),
-          })
-          // END
+            data: updatedInvestment.$original,
+          });
         }
       } else {
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
     } catch (error) {
-      console.error(error)
-      console.log("Error line 1978", error.messages);
-      console.log("Error line 1979", error.message);
-      if (error.code === 'E_APP_EXCEPTION') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
-        return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
-          message: error.messages,
-          hint: error.message
-        });
-      }
-      return response.status(500).json({
-        status: "FAILED",
-        message: error.messages,
-        hint: error.message
+      console.error(error);
+      const statusCode = error.code === 'E_APP_EXCEPTION' ? error.codeSt || 500 : 500;
+      const message = error.messages || error.message;
+      const hint = error.message;
+      return response.status(statusCode).json({
+        status: 'FAILED',
+        message,
+        hint,
       });
-
     }
+ 
   }
 
   public async collateAboutToBeMatureInvestment({ request, response }: HttpContextContract) {
@@ -2694,10 +2745,14 @@ export default class InvestmentsController {
         let investmentArray: any[] = [];
         for (let index = 0; index < investments.length; index++) {
           let currentInvestment = investments[index];
-          let { id, wallet_id, user_id } = currentInvestment;
-          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
-          investmentArray.push(currentInvestment);
-          // debugger
+                    try {
+            let { id, wallet_id, user_id } = currentInvestment;
+            currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+            investmentArray.push(currentInvestment);
+          } catch (error) {
+            console.error(error);
+            // Handle the error here
+          }
         }
         return response.status(200).json({
           status: 'OK',
@@ -2709,29 +2764,20 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
-    } catch (error) {
-      console.error(error)
-      console.log("Error line 2374", error.messages);
-      console.log("Error line 2375", error.message);
-      if (error.code === 'E_APP_EXCEPTION') {
-        console.log(error.codeSt)
-        let statusCode = error.codeSt ? error.codeSt : 500
-        return response.status(parseInt(statusCode)).json({
-          status: "FAILED",
-          message: error.messages,
-          hint: error.message
-        });
-      }
-      return response.status(500).json({
-        status: "FAILED",
-        message: error.messages,
-        hint: error.message
+     } catch (error) {
+      console.error(error);
+      const statusCode = error.code === 'E_APP_EXCEPTION' ? error.codeSt || 500 : 500;
+      const message = error.messages || error.message;
+      const hint = error.message;
+      return response.status(statusCode).json({
+        status: 'FAILED',
+        message,
+        hint,
       });
-
     }
   }
 
@@ -2762,7 +2808,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -2816,7 +2862,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -2868,7 +2914,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -2921,7 +2967,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -2973,7 +3019,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3018,7 +3064,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3063,7 +3109,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3109,7 +3155,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3154,7 +3200,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3200,7 +3246,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3254,7 +3300,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3328,7 +3374,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3430,7 +3476,7 @@ export default class InvestmentsController {
           approvalRequestIsExisting.requestType = approvalObject.requestType;
           approvalRequestIsExisting.approvalStatus = approvalObject.approvalStatus;
           approvalRequestIsExisting.save()
-          debugger
+          // debugger
         }
         debugger
         // investment = await Investment.query().where('id', investmentId)
@@ -3493,7 +3539,7 @@ export default class InvestmentsController {
           // debugger
           return response.status(404).json({
             status: 'OK',
-            message: 'no investment matched your search',
+            message: 'No investment matched your search',
             data: null,
           })
         }
@@ -3521,7 +3567,7 @@ export default class InvestmentsController {
           // debugger
           return response.status(404).json({
             status: 'OK',
-            message: 'no investment matched your search',
+            message: 'No investment matched your search',
             data: null,
           })
         }
@@ -3549,7 +3595,7 @@ export default class InvestmentsController {
       //   // debugger
       //   return response.status(404).json({
       //     status: 'OK',
-      //     message: 'no investment matched your search',
+      //     message: 'No investment matched your search',
       //     data: null,
       //   })
       // }
@@ -3622,7 +3668,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -3695,7 +3741,7 @@ export default class InvestmentsController {
         // debugger
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -4075,7 +4121,7 @@ export default class InvestmentsController {
       } else {
         return response.status(404).json({
           status: 'OK',
-          message: 'no investment matched your search',
+          message: 'No investment matched your search',
           data: null,
         })
       }
@@ -4553,7 +4599,7 @@ export default class InvestmentsController {
                   //   if (rate === undefined) {
                   //     return response.status(400).json({
                   //       status: 'OK',
-                  //       message: 'no investment rate matched your search, please try again.',
+                  //       message: 'No investment rate matched your search, please try again.',
                   //       data: null,
                   //     })
                   //   }
@@ -4777,7 +4823,7 @@ export default class InvestmentsController {
                       if (rate === undefined) {
                         //  send the money to the investor wallet
                         // console.log(
-                        //   `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was no investment product that matched your request.`
+                        //   `Principal of ${currencyCode} ${amountToBeReinvested} and the interest of ${currencyCode} ${amountToPayoutNow} was paid, because there was No investment product that matched your request.`
                         // )
                         // update timeline
                         timelineObject = {
@@ -4809,7 +4855,7 @@ export default class InvestmentsController {
 
                         // return response.status(400).json({
                         //   status: 'OK',
-                        //   message: 'no investment rate matched your search, please try again.',
+                        //   message: 'No investment rate matched your search, please try again.',
                         //   data: null,
                         // })
                       }
@@ -4926,7 +4972,7 @@ export default class InvestmentsController {
                         break
                         // return response.status(400).json({
                         //   status: 'OK',
-                        //   message: 'no investment rate matched your search, please try again.',
+                        //   message: 'No investment rate matched your search, please try again.',
                         //   data: null,
                         // })
                       }
@@ -5198,7 +5244,7 @@ export default class InvestmentsController {
         } else {
           return response.status(404).json({
             status: 'FAILED',
-            message: 'no investment matched your search, or payment has been processed.',
+            message: 'No investment matched your search, or payment has been processed.',
             data: {
               paymentStatus: investment.status,//.map((inv) => inv.$original.status),
               amountPaid: investment.totalAmountToPayout//.map((inv) => inv.$original.totalAmountToPayout),
