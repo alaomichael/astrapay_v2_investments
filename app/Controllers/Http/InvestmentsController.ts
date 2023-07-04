@@ -2473,7 +2473,7 @@ export default class InvestmentsController {
     try {
       const timelineService = new TimelinesServices();
       const investmentsService = new InvestmentsServices();
-          let { userId, investmentId } = request.all()
+          let { investmentId } = request.all()
   
       let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
     
