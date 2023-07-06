@@ -11136,7 +11136,7 @@ export default class InvestmentsServices {
                 .where('request_type', 'start_investment')
                 .orWhere('request_type', 'liquidate_investment')
                 .where('approval_status', 'approved')
-                .orWhere('approval_status', 'pending')
+                // .orWhere('approval_status', 'pending')
             
                 // .andWhere('is_payout_successful', 'false')
                 // .andWhere('is_payout_suspended', 'false')
@@ -12161,6 +12161,10 @@ export default class InvestmentsServices {
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                         // console.log(" Current log, line 8809 :", currentInvestment);
+                                        record.principalPayoutStatus = 'failed';
+                                        record.interestPayoutStatus = 'failed';
+                                        record.status = 'liquidation_approved';
+                                        debugger
                                         // send for update
                                         const trx = await Database.transaction();
                                         await investmentsService.updateInvestment(currentInvestment, record);
