@@ -43,6 +43,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         let principalDueForPayout = amount;
         let interestDueForPayout = interestDueOnInvestment;
         let completionDate = investmentCompletionDate;
+        debugger
         if (investment.firstName == undefined) {
             let { first_name, last_name, rollover_type, investment_type,
                 investment_type_name, start_date, payout_date, interest_due_on_investment,
@@ -349,11 +350,12 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-                    "amountPaid": amountPaid,
+                    "amountPaid": `${currencyCode} ${amountPaid}`,// amountPaid,
                     "paymentDate": datePayoutWasDone,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                 }
+                debugger
         } else if (messageKey == "rollover") {
             let subject = "Investment Rollover";
             // recepients = [
@@ -461,6 +463,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "liquidationDate": completionDate,
                     "penaltyDeducted": ` ${currencyCode} ${penalty}`,
                 }
+            debugger
         } else if (messageKey == "payout_initiation_former") {
             let subject = "Investment Payout Initiation";
 
@@ -570,7 +573,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             "recepients": recepients,
         }
         // console.log("payload,line 459", payload);
-        // debugger
+        debugger
         // console.log("NOTIFICATION_WITHOUT_PDF_MESSAGE_URL,line 461", NOTIFICATION_WITHOUT_PDF_MESSAGE_URL);
         const response = await axios.post(`${NOTIFICATION_WITHOUT_PDF_MESSAGE_URL}/notification`,
             payload,// { headers: headers }
