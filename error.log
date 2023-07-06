@@ -3,3 +3,4 @@ Error occurred at 2023-07-04T13:00:07.629Z: investorFundingWalletId is not defin
 Error occurred at 2023-07-04T14:30:07.010Z: investorFundingWalletId is not defined
 Error occurred at 2023-07-06T09:30:06.372Z: investorFundingWalletId is not defined
 Error occurred at 2023-07-06T10:00:07.572Z: FAILED TO DEBIT WALLET, ENOTFOUND
+Error occurred at 2023-07-06T10:30:06.841Z: FAILED TO DEBIT WALLET, ENOTFOUND

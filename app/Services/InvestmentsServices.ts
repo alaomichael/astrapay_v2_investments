@@ -1376,7 +1376,7 @@ export default class InvestmentsServices {
                 // Data to send for transfer of fund
                 let { amount,// lng, lat, investmentRequestReference,
                     firstName,// lastName,
-                    walletId, userId,investorFundingWalletId,
+                    walletId, userId,
                     // phone,
                     email,
                     // rfiCode,
@@ -1394,7 +1394,7 @@ export default class InvestmentsServices {
                 //     senderPhoneNumber,
                 //     senderEmail,
                 //     rfiCode)
-                // debugger
+                debugger
 
                 // update the investment details
                 investment.status = 'investment_approved'
@@ -3094,7 +3094,7 @@ export default class InvestmentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId,walletId ,investorFundingWalletId,
+                                firstName, lastName, userId,investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, numberOfAttempts } = record;
@@ -3689,7 +3689,7 @@ export default class InvestmentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId, walletId,investorFundingWalletId,
+                                firstName, lastName, userId, investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, } = record;

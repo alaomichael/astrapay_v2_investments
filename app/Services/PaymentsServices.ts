@@ -3337,7 +3337,7 @@ export default class PaymentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId, walletId,investorFundingWalletId,
+                                firstName, lastName, userId, investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, numberOfAttempts } = record;
