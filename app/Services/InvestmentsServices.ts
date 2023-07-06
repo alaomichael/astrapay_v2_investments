@@ -1376,7 +1376,7 @@ export default class InvestmentsServices {
                 // Data to send for transfer of fund
                 let { amount,// lng, lat, investmentRequestReference,
                     firstName,// lastName,
-                    walletId, userId,
+                    walletId, userId,investorFundingWalletId,
                     // phone,
                     email,
                     // rfiCode,
@@ -2317,7 +2317,7 @@ export default class InvestmentsServices {
                             // send to Admin for approval
                             let userId = payload.userId;
                             let investmentId = payload.id;
-                            let walletId = payload.walletId;
+                            let walletId = payload.walletId;//payload.investorFundingWalletId
                             // let approvalStatus = payload.approvalStatus;
                             let requestType = 'payout_investment';
                             // let  approvalStatus = 'approved';
@@ -3094,12 +3094,12 @@ export default class InvestmentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId, walletId,
+                                firstName, lastName, userId,walletId ,investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, numberOfAttempts } = record;
                             let senderName = `${firstName} ${lastName}`;
-                            let senderAccountNumber = walletId;
+                            let senderAccountNumber = investorFundingWalletId;
                             let senderAccountName = senderName;
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
@@ -3214,7 +3214,7 @@ export default class InvestmentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
-                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 2039 :", currentInvestment);
@@ -3397,7 +3397,7 @@ export default class InvestmentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
-                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 2233 :", currentInvestment);
@@ -3689,12 +3689,12 @@ export default class InvestmentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId, walletId,
+                                firstName, lastName, userId, walletId,investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, } = record;
                             let senderName = `${firstName} ${lastName}`;
-                            let senderAccountNumber = walletId;
+                            let senderAccountNumber = investorFundingWalletId;
                             let senderAccountName = senderName;
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
@@ -3800,7 +3800,7 @@ export default class InvestmentsServices {
 
                                 // debugger
                             } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
-                                console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                 // debugger
                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                 // console.log(" Current log, line 2039 :", currentInvestment);

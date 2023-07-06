@@ -478,6 +478,7 @@ const amqplib = require('amqplib');
                         exchange,//: 'config',
                         routingKey,//: 'investment.configuration'
                     } = fields;
+                    debugger
                     // {
                     //     "id": "defddb06-c27d-4255-aa6a-2d483ed8de40",
                     //     "correlationId": "68678989IO09",

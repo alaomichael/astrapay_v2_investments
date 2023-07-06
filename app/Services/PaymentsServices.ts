@@ -3337,12 +3337,12 @@ export default class PaymentsServices {
                             // console.log("Updated record Status line 1923: ", record);
                             // Data to send for transfer of fund
                             let { amount, lng, lat, investmentRequestReference,
-                                firstName, lastName, userId, walletId,
+                                firstName, lastName, userId, walletId,investorFundingWalletId,
                                 phone,
                                 email,
                                 rfiCode, numberOfAttempts } = record;
                             let senderName = `${firstName} ${lastName}`;
-                            let senderAccountNumber = walletId;
+                            let senderAccountNumber = investorFundingWalletId;
                             let senderAccountName = senderName;
                             let senderPhoneNumber = phone;
                             let senderEmail = email;
@@ -3456,7 +3456,7 @@ export default class PaymentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 2039 :", currentInvestment);
@@ -3640,7 +3640,7 @@ export default class PaymentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${walletId} for investment activation line 2036 ============`);
+                                    console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                                     // console.log(" Current log, line 2233 :", currentInvestment);
@@ -7548,7 +7548,7 @@ export default class PaymentsServices {
                                     // await trx.rollback()
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }
@@ -7556,7 +7556,7 @@ export default class PaymentsServices {
                                 // await trx.rollback()
                                 return {
                                     status: 'OK',
-                                    message: 'this investment is not mature for payout.',
+                                    message: 'This investment is not mature for payout.',
                                     data: null,
                                 }
                             }
@@ -8262,7 +8262,7 @@ export default class PaymentsServices {
                                     // await trx.rollback()
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }
@@ -8270,7 +8270,7 @@ export default class PaymentsServices {
                                 // await trx.rollback()
                                 return {
                                     status: 'OK',
-                                    message: 'this investment is not mature for payout.',
+                                    message: 'This investment is not mature for payout.',
                                     data: null,
                                 }
                             }
@@ -8484,7 +8484,7 @@ export default class PaymentsServices {
                     const investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
                     const { liquidationPenaltyRate } = investmentTypeDetails;
                     liquidationPenalty = liquidationPenaltyRate ? liquidationPenaltyRate : liquidationPenalty;
-                    debugger
+                    // debugger
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 7514:");
@@ -8952,7 +8952,7 @@ export default class PaymentsServices {
                                     // await trx.rollback();
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }
