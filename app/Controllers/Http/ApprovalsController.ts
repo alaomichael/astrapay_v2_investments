@@ -4015,6 +4015,74 @@ export default class ApprovalsController {
           }
 
 
+        } else if (approval.requestType == "start_investment" && approval.approvalStatus == "approved" && record.status == "active" && record.investmentType === "fixed") {
+          // newStatus = 'liquidated'
+          // record.status = newStatus
+          record.approvalStatus = approval.approvalStatus;
+          // TODO: Uncomment to use loginAdminFullName
+          // record.processedBy = loginAdminFullName;
+          // record.remark = approval.remark;
+          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // update record
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+          // console.log(" Current log, line 2446 :", currentInvestment);
+          // send for update
+          await investmentsService.updateInvestment(currentInvestment, record);
+          // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+          // console.log(" Current log, line 2449 :", updatedInvestment);
+
+          await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData);
+          debugger
+          // console.log("Updated record Status line 2451: ", record);
+          // update timeline
+          timelineObject = {
+            id: uuid(),
+            action: "investment liquidation",
+            investmentId: investmentId,
+            walletId: walletIdToSearch,
+            userId: userIdToSearch,
+            // @ts-ignore
+            message: `${firstName}, your investment has been liquidated, thank you.`,
+            adminMessage: `${firstName} investment was liquidated.`,
+            createdAt: DateTime.now(),
+            metadata: ``,
+          };
+          // console.log("Timeline object line 2472:", timelineObject);
+          await timelineService.createTimeline(timelineObject);
+          // let newTimeline = await timelineService.createTimeline(timelineObject);
+          // console.log("new Timeline object line 2475:", newTimeline);
+          debugger
+          // Send Details to notification service
+
+          // let subject = "AstraPay Investment Liquidation";
+          // let message = `
+          //       ${firstName} this is to inform you, that your investment request, has been Liquidated.
+          //       Thank you.
+
+          //       AstraPay Investment.`;
+          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 2485:", newNotificationMessage);
+          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessage.message !== "Success") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessage);
+          // }
+          // Send Notification to admin and others stakeholder
+          let investment = record;
+          let messageKey = "liquidation";
+          // //debugger
+          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
+          // //debugger
+          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessageWithoutPdf);
+          }
+
         } else {
           console.log("Entering no record for update 3590 ==================================")
           return response

@@ -3507,7 +3507,7 @@ export default class InvestmentsController {
         await timelineService.createTimeline(timelineObject);
         // investment.timeline = JSON.stringify(timeline)
         // START
-        // debugger
+        debugger
         // console.log('Updated investment Status line 1379: ', investment)
 
         investment.requestType = requestType;

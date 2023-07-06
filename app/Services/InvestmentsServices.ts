@@ -7874,6 +7874,8 @@ export default class InvestmentsServices {
                 .where('request_type', 'payout_investment')
                 .orWhere('request_type', 'liquidate_investment')
                 .andWhere('approval_status', 'approved')
+                // .andWhere('approval_status', 'pending')
+
                 // .andWhere('is_payout_successful', 'false')
                 // .andWhere('is_rollover_activated', 'false')
                 // .andWhere('is_rollover_suspended', 'false')
@@ -8017,7 +8019,10 @@ export default class InvestmentsServices {
                             if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                 record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "liquidate_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
-                                        record.isPayoutSuspended === false)) {
+                                        record.isPayoutSuspended === false) 
+                                        // || (record.requestType === "liquidate_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
+                                        // record.isPayoutSuspended === false)
+                                        ) {
                                 console.log("Approval for investment payout processing: ===========================================>")
                                 // debugger
                                 // TODO: Uncomment to use loginAdminFullName
@@ -11126,12 +11131,13 @@ export default class InvestmentsServices {
                 .from('investments')
                 // .useTransaction(trx) // 👈
                 .where('id', investmentId)
-                .andWhere('status', 'active')
+                .where('status', 'active')
+                .orWhere('status', 'liquidation_approved')
                 .where('request_type', 'start_investment')
                 .orWhere('request_type', 'liquidate_investment')
                 .where('approval_status', 'approved')
                 .orWhere('approval_status', 'pending')
-
+            
                 // .andWhere('is_payout_successful', 'false')
                 // .andWhere('is_payout_suspended', 'false')
                 // .andWhere('is_rollover_activated', 'false')
@@ -11241,7 +11247,7 @@ export default class InvestmentsServices {
                     const investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
                     const { liquidationPenaltyRate } = investmentTypeDetails;
                     liquidationPenalty = liquidationPenaltyRate ? liquidationPenaltyRate : liquidationPenalty;
-                    // debugger
+                    debugger
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 7514:");
@@ -12247,6 +12253,9 @@ export default class InvestmentsServices {
             return investmentArray;
         } catch (error) {
             console.log(error)
+            const timestamp = new Date().toISOString();
+            const errorLog = `Error occurred at ${timestamp}: ${error.message}\n`;
+            fs.appendFileSync('error.log', errorLog);
             // await trx.rollback();
             throw error;
         }

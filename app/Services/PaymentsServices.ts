@@ -9430,7 +9430,7 @@ export default class PaymentsServices {
                                     // await trx.rollback();
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }
