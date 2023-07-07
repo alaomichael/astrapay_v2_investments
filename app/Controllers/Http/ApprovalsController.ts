@@ -299,7 +299,7 @@ export default class ApprovalsController {
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy, } = request.body();
+      const { approvalStatus, assignedTo, processedBy,approvedBy } = request.body();
       const { isRolloverSuspended, isPayoutSuspended, } = request.body();
       //debugger
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
@@ -440,8 +440,12 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus; // "investment_approved"//approval.approvalStatus;
 
           // Save the updated record
@@ -910,8 +914,11 @@ export default class ApprovalsController {
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           // record.remark = approval.remark;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           // Save the updated record
           // await record.save();
           // update record
@@ -1451,8 +1458,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           // let { amount, lng, lat, id, userId,
@@ -2078,8 +2088,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           let { amount, lng, lat, id, userId,
@@ -2437,8 +2450,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
           record.isRolloverSuspended = isRolloverSuspended;
           // Data to send for transfer of fund
@@ -3067,8 +3083,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation";
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation";
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
           record.isRolloverSuspended = isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
@@ -3148,8 +3167,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = "approved"; //approval.approvalStatus;
           // Data to send for transfer of fund
           let { firstName,// email,
@@ -3678,8 +3700,11 @@ export default class ApprovalsController {
           // record.isInvestmentApproved = true;
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus;
           // Data to send for transfer of fund
           let { firstName, // email,
@@ -3884,8 +3909,11 @@ export default class ApprovalsController {
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           // record.remark = approval.remark;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 2446 :", currentInvestment);
@@ -3952,8 +3980,11 @@ export default class ApprovalsController {
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           // record.remark = approval.remark;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           // Save the updated record
           // await record.save();
           // update record
@@ -4022,8 +4053,11 @@ export default class ApprovalsController {
           // TODO: Uncomment to use loginAdminFullName
           // record.processedBy = loginAdminFullName;
           // record.remark = approval.remark;
-          record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
-          record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          // record.approvedBy = approval.approvedBy !== undefined ? approval.approvedBy : "automation"
+          // record.assignedTo = approval.assignedTo !== undefined ? approval.assignedTo : "automation"
+          record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
+          record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
+          record.processedBy = processedBy !== undefined ? processedBy : "automation";
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 2446 :", currentInvestment);

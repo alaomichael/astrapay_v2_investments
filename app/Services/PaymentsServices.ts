@@ -1329,8 +1329,10 @@ export default class PaymentsServices {
             // Send Investment Payload To Transaction Service
             // let sendToTransactionService = 'OK' //= new SendToTransactionService(investment)
             // console.log(' Feedback from Transaction service: ', sendToTransactionService)
-            investment.approvedBy = investment.approvedBy !== undefined ? investment.approvedBy : "automation"
-            investment.assignedTo = investment.assignedTo !== undefined ? investment.assignedTo : "automation"
+            investment.approvedBy = investment.approvedBy !== undefined ? investment.approvedBy : "automation";
+            investment.assignedTo = investment.assignedTo !== undefined ? investment.assignedTo : "automation";
+            // investment.processedBy = investment.processedBy !== undefined? investment.processedBy : "automation";
+            
             // investment.approvalStatus = "approved"//approval.approvalStatus;
             // Data to send for transfer of fund
             // let { amount,// lng, lat, investmentRequestReference,
