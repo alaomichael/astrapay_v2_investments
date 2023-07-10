@@ -89,6 +89,8 @@ Route.group(() => {
     Route.post('admin/investments/approvals', 'ApprovalsController.store')
     Route.post('admin/investments/transactions', 'InvestmentsController.processPayment')
     Route.post('admin/investments/settings', 'SettingsController.store')
+    Route.post("admin/investments/settings/rfi_onboarding", "SettingsController.createRfiRecord");
+    Route.post("admin/investments/settings/rfi_onboarding_setting", "SettingsController.createRfiRecordSetting");
     Route.post('admin/investments/rfi_records', 'RfiRecordsController.store')
     Route.post("admin/investments/types", "TypesController.store");
     // GET ROUTES

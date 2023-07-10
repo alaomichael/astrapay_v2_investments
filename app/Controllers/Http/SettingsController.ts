@@ -5,6 +5,7 @@ import Event from "@ioc:Adonis/Core/Event";
 import CreateSettingValidator from "App/Validators/CreateSettingValidator";
 import { SettingType } from "App/Services/types/setting_type";
 import UpdateSettingValidator from "App/Validators/UpdateSettingValidator";
+import MessageQueuesServices from "App/Services/MessageQueuesServices";
 
 export default class SettingsController {
 
@@ -215,6 +216,85 @@ export default class SettingsController {
     } catch (error) {
       console.log("Error line 111", error.messages);
       console.log("Error line 112", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
+  public async createRfiRecord({ request, response }: HttpContextContract) {
+    try {
+      
+      const MessageQueuesService = new MessageQueuesServices()
+           const content = request.body();
+      const newRfiRecord = await MessageQueuesService.createRfiRecord(content);
+      console.log("newRfiRecord line 68 ===== ", newRfiRecord)
+      if (!newRfiRecord) {
+        throw Error();
+      }
+  
+      return response.json({
+        status: "OK",
+        data: newRfiRecord
+      });
+    } catch (error) {
+      // console.log("Error line 103", error.messages);
+      // console.log("Error line 104", error.message);
+      // return response.status(400).json({
+      //     status: "FAILED",
+      //     message: error.messages,
+      //     hint: error.message,
+      //     // extraInfo: error.sqlMessage
+      // });
+      console.log("Error line 211", error.messages);
+      console.log("Error line 212", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+  public async createRfiRecordSetting({ request, response }: HttpContextContract) {
+    try {
+          const MessageQueuesService = new MessageQueuesServices()
+      const content = request.body();
+      const { investment } = content;
+      const newRfiRecordSetting = await MessageQueuesService.createRfiRecordSetting(investment);
+      console.log("newRfiRecordSetting line 259 ===== ", newRfiRecordSetting)
+      if (!newRfiRecordSetting) {
+        throw Error();
+      }
+          // send to user
+      return response.json({
+        status: "OK",
+        data: newRfiRecordSetting
+      });
+    } catch (error) {
+          console.log("Error line 291", error.messages);
+      console.log("Error line 292", error.message);
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500

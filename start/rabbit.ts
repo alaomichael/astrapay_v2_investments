@@ -1,7 +1,7 @@
-import RfiRecordsServices from "App/Services/RfiRecordsServices";
-import { RfiRecordType } from "App/Services/types/rfirecord_type";
-import SettingServices from "App/Services/SettingsServices";
-import { SettingType } from "App/Services/types/setting_type";
+// import RfiRecordsServices from "App/Services/RfiRecordsServices";
+// import { RfiRecordType } from "App/Services/types/rfirecord_type";
+// import SettingServices from "App/Services/SettingsServices";
+// import { SettingType } from "App/Services/types/setting_type";
 import PaymentServices from "App/Services/PaymentsServices";
 import InvestmentsService from "App/Services/InvestmentsServices";
 import MessageQueuesServices from "App/Services/MessageQueuesServices";
