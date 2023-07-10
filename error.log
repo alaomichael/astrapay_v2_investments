@@ -14,3 +14,5 @@ Error occurred at 2023-07-06T17:01:10.591Z: FAILED TO DEBIT WALLET, ENOTFOUND
 Error occurred at 2023-07-06T17:06:10.983Z: creditUserWalletWithPrincipal: FAILED TO CREDIT WALLET, getaddrinfo ENOTFOUND orchestrator and creditUserWalletWithInterest: FAILED TO CREDIT WALLET, getaddrinfo ENOTFOUND orchestrator.
 Error occurred at 2023-07-06T17:06:10.997Z: creditUserWalletWithPrincipal: FAILED TO CREDIT WALLET, getaddrinfo ENOTFOUND orchestrator and creditUserWalletWithInterest: FAILED TO CREDIT WALLET, getaddrinfo ENOTFOUND orchestrator.
 Error occurred at 2023-07-06T17:30:50.582Z: FAILED TO DEBIT WALLET, ENOTFOUND
+Error occurred at 2023-07-10T12:30:07.248Z: FAILED TO DEBIT WALLET, ENOTFOUND
+Error occurred at 2023-07-10T13:00:52.955Z: FAILED TO DEBIT WALLET, undefined

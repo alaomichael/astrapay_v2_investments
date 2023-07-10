@@ -78,22 +78,22 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             // amount
             // interestDueForPayout
             // totalAmountDueForPayout
-            amountPaid = ` ${currencyCode} ${interestDueForPayout}`;
-            amountRollover = ` ${currencyCode} ${amount}`;
+            amountPaid = `${currencyCode} ${interestDueForPayout}`;
+            amountRollover = `${currencyCode} ${amount}`;
             rolloverType = "Rollover Principal only";
         } else if (rolloverType == "102") {
             // Rollover Principal and Interest 
-            amountPaid = ` ${currencyCode} ${0}`;
-            amountRollover = ` ${currencyCode} ${totalAmountToPayout}`;
-            rolloverType = "Rollover Principal and Interest"
+            amountPaid = `${currencyCode} ${0}`;
+            amountRollover = `${currencyCode} ${totalAmountToPayout}`;
+            rolloverType = "Rollover Principal and Interest";
         } else if (rolloverType == "103") {
             // Rollover Interest only
-            amountPaid = ` ${currencyCode} ${amount}`;
-            amountRollover = ` ${currencyCode} ${interestDueForPayout}`;
-            rolloverType = "Rollover Interest only"
+            amountPaid = `${currencyCode} ${amount}`;
+            amountRollover = `${currencyCode} ${interestDueForPayout}`;
+            rolloverType = "Rollover Interest only";
         }
         let metadata;
-        let customerName = ` ${firstName} ${lastName}`;
+        let customerName = `${firstName} ${lastName}`;
         let recepients: any[] = [];
         // debugger
         if (messageKey == "initiation") {
@@ -141,7 +141,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": ` ${currencyCode} ${amount}`,
+                    "amount": `${currencyCode} ${amount}`,
                     "duration": duration,
                     "rolloverType": rolloverType,
                     "customerPhone": phone,
@@ -196,7 +196,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": ` ${currencyCode} ${amount}`,
+                    "amount": `${currencyCode} ${amount}`,
                     "duration": duration,
                     "rolloverType": rolloverType,
                     "customerPhone": phone,
@@ -240,7 +240,7 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": ` ${currencyCode} ${amount}`,
+                    "amount": `${currencyCode} ${amount}`,
                     "duration": duration,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
@@ -292,14 +292,14 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                 metadata = {
                     "subject": subject,
                     "customerName": customerName,
-                    "amount": ` ${currencyCode} ${amount}`,
+                    "amount": `${currencyCode} ${amount}`,
                     "duration": duration,
                     "investmentId": id,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
-                    "interestDueForPayout": ` ${currencyCode} ${interestDueForPayout}`,
-                    "principalDueForPayout": ` ${currencyCode} ${principalDueForPayout}`,
-                    "totalAmountDueForPayout": ` ${currencyCode} ${totalAmountToPayout}`,
+                    "interestDueForPayout": `${currencyCode} ${interestDueForPayout}`,
+                    "principalDueForPayout": `${currencyCode} ${principalDueForPayout}`,
+                    "totalAmountDueForPayout": `${currencyCode} ${totalAmountToPayout}`,
                     "rollOverStatus": rolloverStatus,
                 }
         } else if (messageKey == "payout") {
@@ -350,12 +350,12 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentType": investmentType,
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
-                    "amountPaid": `${currencyCode} ${amountPaid}`,// amountPaid,
+                    "amountPaid": `${amountPaid}`,// amountPaid,
                     "paymentDate": datePayoutWasDone,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                 }
-                debugger
+            debugger
         } else if (messageKey == "rollover") {
             let subject = "Investment Rollover";
             // recepients = [
@@ -457,11 +457,11 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "customerName": customerName,
                     "duration": duration,
                     "investmentId": id,
-                    "amountPaid": ` ${currencyCode} ${totalAmountToPayout}`, //totalAmountToPayout,
+                    "amountPaid": `${currencyCode} ${totalAmountToPayout}`, //totalAmountToPayout,
                     "startDate": startDate,
                     "payoutDate": payoutDate,
                     "liquidationDate": completionDate,
-                    "penaltyDeducted": ` ${currencyCode} ${penalty}`,
+                    "penaltyDeducted": `${currencyCode} ${penalty}`,
                 }
             debugger
         } else if (messageKey == "payout_initiation_former") {
@@ -564,6 +564,60 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
                     "investmentTypeName": investmentTypeName,
                     "investmentId": id,
                 }
+        } else if (messageKey == "payout_failed") {
+            let subject = "Investment Payout Failed";
+            // recepients = [
+            //     {
+            //         "channel": "email",
+            //         "handle": email,
+            //         "name": customerName,
+            //     },
+            //     {
+            //         "channel": "email",
+            //         "handle": payoutNotificationEmail,
+            //         "name": `${rfiName}`, // Admin or Company Name
+            //     },
+            // ];
+            for (let index = 0; index < payoutNotificationEmail.length; index++) {
+                try {
+                    const receiverDetails = payoutNotificationEmail[index];
+                    // debugger
+                    // console.log(" receiverDetails , line 315", receiverDetails);
+                    // debugger;
+                    let receiverName = receiverDetails.name ? receiverDetails.name : rfiName;
+                    // debugger;
+                    let payload = {
+                        "channel": "email",
+                        "handle": receiverDetails.email,
+                        "name": receiverName//receiverDetails.name,
+                    };
+                    // debugger
+                    await recepients.push(payload);
+                } catch (error) {
+                    console.log("Error line 597 =====================:", error);
+                    throw error;
+                }
+            }
+
+            let customerDetails = {
+                "channel": "email",
+                "handle": email,
+                "name": customerName,
+            };
+            await recepients.push(customerDetails);
+            messageKey = "investment_payout_failed",
+                metadata = {
+                    "subject": subject,
+                    "customerName": customerName,
+                    "investmentType": investmentType,
+                    "investmentTypeName": investmentTypeName,
+                    "investmentId": id,
+                    "amountPaid": amountPaid,// `${amountPaid}`,
+                    "paymentDate": datePayoutWasDone,
+                    "startDate": startDate,
+                    "payoutDate": payoutDate,
+                }
+            debugger
         }
         // debugger
         const payload = {
