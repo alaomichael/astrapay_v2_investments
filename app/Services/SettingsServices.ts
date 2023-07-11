@@ -6,7 +6,15 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import Event from '@ioc:Adonis/Core/Event'
 // import { parse } from 'url'
 import { ServiceAccountType } from './types/service_account';
-import RfiRecordsServices from './RfiRecordsServices'
+import RfiRecordsServices from './RfiRecordsServices';
+
+// const Env = require("@ioc:Adonis/Core/Env");
+// const ELASTICSEARCH_CONNECTION = Env.get("ELASTICSEARCH_CONNECTION");
+// const ELASTICSEARCH_HOST = Env.get("ELASTICSEARCH_HOST");
+// const ELASTICSEARCH_PORT = Env.get("ELASTICSEARCH_PORT");
+
+// const { Client } = require('@elastic/elasticsearch');
+// const esClient = new Client({ node: `${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}` });
 Database.query()
 
 export default class SettingsServices {
@@ -23,6 +31,9 @@ export default class SettingsServices {
                     investmentWalletId,
                     payoutWalletId, } = setting;
                 const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
+
+                //TODO: Elastic Search
+                // console.log("esClient on investment setting ", esClient)
                 if (setting.investmentWalletId) {
                     // console.log("setting.investmentWalletId ", setting.investmentWalletId)
                     const serviceAccount: ServiceAccountType = {

@@ -13,6 +13,8 @@ export default class CreateApprovalValidator extends BaseValidator {
         requestType: schema.string(),
         approvalStatus: schema.string(),
         assignedTo: schema.string.optional(),
+        processedBy: schema.string.optional(),
+        approvedBy: schema.string.optional(),
         rfiCode: schema.string(),
         // remark: schema.string.optional(),
         remark: schema.array.optional().members(
@@ -20,7 +22,7 @@ export default class CreateApprovalValidator extends BaseValidator {
                 field: schema.string(),
                 reason: schema.string(),
             })),
-        processedBy: schema.string.optional(),
+        
         isRolloverSuspended: schema.boolean.optional(),
         rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
         isPayoutSuspended: schema.boolean.optional(),

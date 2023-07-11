@@ -1224,6 +1224,11 @@ export default class ApprovalsServices {
             predicate = predicate + "processed_by=?";
             params.push(queryFields.processedBy)
         }
+        if (queryFields.approvedBy) {
+            predicateExists()
+            predicate = predicate + "approved_by=?";
+            params.push(queryFields.approvedBy)
+        }
         if (queryFields.rfiCode) {
             predicateExists()
             predicate = predicate + "rfi_code=?";

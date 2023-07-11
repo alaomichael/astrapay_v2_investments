@@ -32,6 +32,9 @@ export default class Approval extends AppBaseModel {
   @column()
   public processedBy: string;
 
+  @column()
+  public approvedBy: string;
+
   // @column()
   // public remark: string | any;
 

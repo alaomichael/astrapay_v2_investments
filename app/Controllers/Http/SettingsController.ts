@@ -6,19 +6,54 @@ import CreateSettingValidator from "App/Validators/CreateSettingValidator";
 import { SettingType } from "App/Services/types/setting_type";
 import UpdateSettingValidator from "App/Validators/UpdateSettingValidator";
 import MessageQueuesServices from "App/Services/MessageQueuesServices";
+import {esClient} from 'App/Services/elasticsearch';
+// const { Client } = require('@elastic/elasticsearch');
+// const Env = require("@ioc:Adonis/Core/Env");
+// const ELASTICSEARCH_HOST = Env.get("ELASTICSEARCH_HOST");
+// const ELASTICSEARCH_PORT = Env.get("ELASTICSEARCH_PORT");
 
 export default class SettingsController {
 
-  public async index({ request, response }: HttpContextContract) {
+//   public async index({ request, response }: HttpContextContract) {
 
+//     console.log("setting query: ", request.qs());
+//     const settingsService = new SettingServices();
+//     const settings = await settingsService.getSettings(request.qs());
+// // 
+//     const query = request.qs();
+//     debugger
+//     const esClientInstance = new Client({ node: `${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}` });
+//     debugger
+//     // const esClientInstance = await esClient();
+//     // debugger
+//     const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+//        console.log("elastic search results",results)
+//     debugger
+//     return response.status(200).json({
+//       status: "OK",
+//       data: settings
+//     });
+//   }
+
+  // import { esClient } from 'App/Services/elasticsearch';
+
+
+  public async index({ request, response }: HttpContextContract) {
     console.log("setting query: ", request.qs());
     const settingsService = new SettingServices();
     const settings = await settingsService.getSettings(request.qs());
+    const query = request.qs();
+    const esClientInstance = await esClient();
+    debugger
+    const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+    debugger
+    console.log("elastic search results", results);
     return response.status(200).json({
       status: "OK",
       data: settings
     });
   }
+
 
   public async store({ request, response }: HttpContextContract) {
 

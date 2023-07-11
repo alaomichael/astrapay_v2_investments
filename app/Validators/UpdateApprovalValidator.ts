@@ -9,6 +9,8 @@ export default class UpdateApprovalValidator extends BaseValidator {
     public schema = schema.create({
         approvalStatus: schema.string(),
         assignedTo: schema.string(),
+        processedBy: schema.string(),
+        approvedBy: schema.string(),
         // requestType: schema.string(),
         remark: schema.array.optional().members(
             schema.object.optional().members({
@@ -87,7 +89,7 @@ export default class UpdateApprovalValidator extends BaseValidator {
                 field: schema.string(),
                 reason: schema.string(),
             })),
-        processedBy: schema.string(),
+        
         isRolloverSuspended: schema.boolean.optional(),
         rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
         isPayoutSuspended: schema.boolean.optional(),
