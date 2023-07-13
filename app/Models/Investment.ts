@@ -181,6 +181,8 @@ export default class Investment extends AppBaseModel {
   @column({})
   public assignedTo: string
 
+  @column({})
+  public processedBy: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
