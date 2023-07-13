@@ -321,57 +321,83 @@ export default class ApprovalsServices {
 
                         } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
                             console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 315 ============`);
-                            // debugger
                             let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                            // console.log(" Current log, line 313 :", currentInvestment);
-                            // send for update
                             await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
-
-                            // update timeline
-                            timelineObject = {
+                            let timelineObject = {
                                 id: uuid(),
                                 action: "investment activation failed",
-                                investmentId: investmentId,//id,
-                                walletId: walletId,// walletId,
-                                userId: userId,// userId,
-                                // @ts-ignore
-                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                                investmentId: investmentId,
+                                walletId: walletId,
+                                userId: userId,
+                                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}, please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
                                 adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
-                            // console.log("Timeline object line 329:", timelineObject);
                             await timelineService.createTimeline(timelineObject);
-                            // let newTimeline = await timelineService.createTimeline(timelineObject);
-                            // console.log("new Timeline object line 332:", newTimeline);
-                            // update record
-                            // debugger
-
-                            // Send Notification to admin and others stakeholder
-                            let investment = selectedInvestmentRequest;
-                            let messageKey = "activation_failed";
-                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                            // console.log("newNotificationMessage line 340:", newNotificationMessageWithoutPdf);
-                            // debugger
+                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf("activation_failed", rfiCode, selectedInvestmentRequest);
                             if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
                                 console.log("Notification sent successfully");
                             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                                 console.log("Notification NOT sent successfully");
                                 console.log(newNotificationMessageWithoutPdf);
                             }
-
-
-                            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                            // console.log(" Current log, line 351 =========:", updatedInvestment);
-                            // console.log("debitUserWalletForInvestment reponse data 352 ==================================", debitUserWalletForInvestment)
-                            // debugger
-                            // throw Error(debitUserWalletForInvestment);
-                            throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
-                            // return {
-                            //         status: "FAILED",//debitUserWalletForInvestment.status,
-                            //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
-                            //     };
+                            // throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                            console.log("investment activation failed", `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`)
                         }
+                        //  if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+                        //     console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 315 ============`);
+                        //     // debugger
+                        //     let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                        //     // console.log(" Current log, line 313 :", currentInvestment);
+                        //     // send for update
+                        //     await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
+
+                        //     // update timeline
+                        //     timelineObject = {
+                        //         id: uuid(),
+                        //         action: "investment activation failed",
+                        //         investmentId: investmentId,//id,
+                        //         walletId: walletId,// walletId,
+                        //         userId: userId,// userId,
+                        //         // @ts-ignore
+                        //         message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                        //         adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                        //         createdAt: DateTime.now(),
+                        //         metadata: ``,
+                        //     };
+                        //     // console.log("Timeline object line 329:", timelineObject);
+                        //     await timelineService.createTimeline(timelineObject);
+                        //     // let newTimeline = await timelineService.createTimeline(timelineObject);
+                        //     // console.log("new Timeline object line 332:", newTimeline);
+                        //     // update record
+                        //     // debugger
+
+                        //     // Send Notification to admin and others stakeholder
+                        //     let investment = selectedInvestmentRequest;
+                        //     let messageKey = "activation_failed";
+                        //     let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                        //     // console.log("newNotificationMessage line 340:", newNotificationMessageWithoutPdf);
+                        //     // debugger
+                        //     if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                        //         console.log("Notification sent successfully");
+                        //     } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                        //         console.log("Notification NOT sent successfully");
+                        //         console.log(newNotificationMessageWithoutPdf);
+                        //     }
+
+
+                        //     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                        //     // console.log(" Current log, line 351 =========:", updatedInvestment);
+                        //     // console.log("debitUserWalletForInvestment reponse data 352 ==================================", debitUserWalletForInvestment)
+                        //     // debugger
+                        //     // throw Error(debitUserWalletForInvestment);
+                        //     throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                        //     // return {
+                        //     //         status: "FAILED",//debitUserWalletForInvestment.status,
+                        //     //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+                        //     //     };
+                        // }
 
 
                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
@@ -553,7 +579,8 @@ export default class ApprovalsServices {
                             // console.log("debitUserWalletForInvestment reponse data 321 ==================================", debitUserWalletForInvestment)
                             // debugger
                             // throw Error(debitUserWalletForInvestment);
-                            throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                            // throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                            console.log("investment activation failed", `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`)
                             // return {
                             //         status: "FAILED",//debitUserWalletForInvestment.status,
                             //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,

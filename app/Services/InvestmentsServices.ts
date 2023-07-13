@@ -3261,7 +3261,8 @@ export default class InvestmentsServices {
                                     // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
                                     // debugger
                                     // throw Error(debitUserWalletForInvestment);
-                                    throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                    console.log("investment activation failed", `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`)
+                                    // throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
                                     // return {
                                     //         status: "FAILED",//debitUserWalletForInvestment.status,
                                     //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
@@ -3444,7 +3445,8 @@ export default class InvestmentsServices {
                                     // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
                                     // debugger
                                     // throw Error(debitUserWalletForInvestment);
-                                    throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                    console.log("investment activation failed", `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`)
+                                    // throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
                                     // return {
                                     //         status: "FAILED",//debitUserWalletForInvestment.status,
                                     //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
@@ -3846,7 +3848,8 @@ export default class InvestmentsServices {
                                 // console.log("debitUserWalletForInvestment reponse data 1052 ==================================", debitUserWalletForInvestment)
                                 // debugger
                                 // throw Error(debitUserWalletForInvestment);
-                                throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
+                                console.log("investment activation failed", `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`)
+                                // throw Error(`${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`);
                                 // return {
                                 //         status: "FAILED",//debitUserWalletForInvestment.status,
                                 //         message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
@@ -6637,7 +6640,7 @@ export default class InvestmentsServices {
                                         // console.log(" Current log, line 4605 :", updatedInvestment);
                                         // debugger
                                         await trx.commit();
-                                        throw Error();
+                                        // throw Error();
                                     }
                                 } else {
                                     // console.log("Entering no data 4611 ==================================")
@@ -11695,7 +11698,7 @@ export default class InvestmentsServices {
 
                                         // commit transaction and changes to database
                                         await trx.commit();
-                                        throw Error();
+                                        // throw Error();
                                     }
 
                                     // console.log("creditUserWalletWithPrincipal line 12004 ====", creditUserWalletWithPrincipal);
@@ -12185,16 +12188,20 @@ export default class InvestmentsServices {
                                         await trx.commit();
                                         debugger
                                         if (creditUserWalletWithPrincipal.status && creditUserWalletWithPrincipal.message && creditUserWalletWithInterest.status && creditUserWalletWithInterest.message) {
-                                            throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message} and creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
+                                            console.log("investment payout failed", `creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message} and creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`)
+                                            // throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message} and creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
                                             // debugger
                                         } else if (creditUserWalletWithPrincipal.status && creditUserWalletWithPrincipal.message && !creditUserWalletWithInterest.status && !creditUserWalletWithInterest.message) {
-                                            throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
+                                            console.log("investment payout failed", `creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`)
+                                            // throw Error(`creditUserWalletWithPrincipal: ${creditUserWalletWithPrincipal.status}, ${creditUserWalletWithPrincipal.message}.`);
                                             // debugger
                                         } else if (creditUserWalletWithInterest.status && creditUserWalletWithInterest.message && !creditUserWalletWithPrincipal.status && !creditUserWalletWithPrincipal.message) {
-                                            throw Error(`creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
+                                            console.log("investment payout failed", `creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`)
+                                            // throw Error(`creditUserWalletWithInterest: ${creditUserWalletWithInterest.status}, ${creditUserWalletWithInterest.message}.`);
                                             // debugger
                                         } else {
-                                            throw Error(`Failed payout of principal and interest, please try again later.`);
+                                            console.log(`Failed payout of principal and interest, please try again later.`);
+                                            // throw Error(`Failed payout of principal and interest, please try again later.`);
                                             // debugger
                                         }
 
