@@ -24,8 +24,8 @@ export default class PayoutsController {
     console.log('PAYOUT query: ', request.qs())
     const countPayouts = await Payout.query().where('status', 'payout').getCount()
     console.log('PAYOUT Investment count: ', countPayouts)
-    const countTerminated = await Payout.query().where('status', 'terminated').getCount()
-    console.log('Terminated Investment count: ', countTerminated)
+    const countTerminated = await Payout.query().where('status', 'liquidated').getCount()
+    console.log('Liquidated Investment count: ', countTerminated)
     // const payout = await Investment.query().offset(0).limit(1)
     const payout = await Payout.all()
     let sortedPayouts = payout
@@ -142,17 +142,17 @@ export default class PayoutsController {
   //         // payload.datePayoutWasDone = new Date().toISOString()
   //         console.log('Payout investment data 1:', payload)
   //         const payout = await Payout.create(payload)
-  //         payout.status = 'terminated'
+  //         payout.status = 'liquidated'
   //         payout.investmentId = investment[0].id
   //         await payout.save()
-  //         console.log('Terminated Payout investment data 1:', payout)
+  //         console.log('Liquidated Payout investment data 1:', payout)
   //         // investment = await Investment.query().where('id', params.id).where('user_id', id).delete()
   //         investment = await Investment.query().where('id', investmentId)
-  //         investment[0].status = 'terminated'
+  //         investment[0].status = 'liquidated'
   //         // @ts-ignore
   //         // investment[0].datePayoutWasDone = new Date().toISOString()
   //         investment[0].save()
-  //         console.log('Terminated Payout investment data 2:', investment)
+  //         console.log('Liquidated Payout investment data 2:', investment)
   //         return response.status(200).json({
   //           status: 'OK',
   //           data: investment.map((inv) => {

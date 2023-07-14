@@ -20,7 +20,7 @@ export default class RatesController {
     const countActiveRates = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countActiveRates)
     // const countSuspended = await Rate.query().where('status', 'suspended').getCount()
-    // console.log('Terminated Investment count: ', countSuspended)
+    // console.log('Liquidated Investment count: ', countSuspended)
     // const rate = await Rate.query().offset(0).limit(1)
     const rate = await Rate.all()
     let sortedRates = rate

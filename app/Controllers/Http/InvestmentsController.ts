@@ -522,7 +522,7 @@ export default class InvestmentsController {
         return response.json({ status: 'OK', data: approvals })
       }
     } else if (
-      requestType === 'terminate investment' &&
+      requestType === 'liquidate_ investment' &&
       userId &&
       investmentId &&
       !approvalStatus &&
@@ -544,7 +544,7 @@ export default class InvestmentsController {
         })
       }
       // console.log('approvals line 277: ', approvals[0].approvalStatus)
-      //  if approved update investment status to terminated, update startDate,  and start_investment
+      //  if approved update investment status to liquidated, update startDate,  and start_investment
       if (approvals[0].approvalStatus === 'approved') {
         investment = await Investment.query()
           .where('status', 'active')
@@ -579,7 +579,7 @@ export default class InvestmentsController {
         // update status investment
         investment[0][0].isPayoutAuthorized = true
         investment[0][0].isTerminationAuthorized = true
-        investment[0][0].status = 'terminated'
+        investment[0][0].status = 'liquidated'
 
         // @ts-ignore
         // investment.datePayoutWasDone = DateTime.now().toISO()
@@ -593,13 +593,13 @@ export default class InvestmentsController {
         // update timeline
         timelineObject = {
           id: uuid(),
-          action: 'investment terminated',
+          action: 'investment liquidated',
           investmentId: investment[0].id,//id,
           walletId: investment[0].walletId,// walletId,
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName} investment has just been terminated.`,
-          adminMessage: `${investment[0].firstName} investment has just been terminated.`,
+          message: `${investment[0].firstName} investment has just been liquidated.`,
+          adminMessage: `${investment[0].firstName} investment has just been liquidated.`,
           createdAt: DateTime.now(),
           metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
         }
@@ -2105,12 +2105,12 @@ export default class InvestmentsController {
           investment[0].status = request.input('status')
             ? request.input('status')
             : investment[0].status
-          let terminate = request.input('isTerminationAuthorized')
+          let liquidate = request.input('isTerminationAuthorized')
           investment[0].isTerminationAuthorized =
             request.input('isTerminationAuthorized') !== undefined
               ? request.input('isTerminationAuthorized')
               : investment[0].isTerminationAuthorized
-          console.log('terminate :', terminate)
+          console.log('liquidate :', liquidate)
           let payout = request.input('isPayoutAuthorized')
           investment[0].isPayoutAuthorized =
             request.input('isPayoutAuthorized') !== undefined
@@ -4242,12 +4242,12 @@ export default class InvestmentsController {
           // END
         } else {
           //  START
-          // if the investment has not matured, i.e terminated
+          // if the investment has not matured, i.e liquidated
           let payload = investment.$original
           // send to Admin for approval
           let userId = payload.userId
           let investmentId = payload.id
-          let requestType = 'terminate investment'
+          let requestType = 'liquidate_investment'
           // let approvalStatus = 'approved'
           // let settings = await Setting.query().where({ tagName: 'default setting' })
           // console.log('Approval setting line 1241:', settings[0])
@@ -4296,18 +4296,18 @@ export default class InvestmentsController {
               // payload.timeline = JSON.stringify(investment.timeline)
               // console.log('Payout investment data line 1576:', payload)
               payout = await Payout.create(payload)
-              payout.status = 'terminated'
+              payout.status = 'liquidated'
               await payout.save()
-              // console.log('Terminated Payout investment data line 1276:', payout)
+              // console.log('Liquidated Payout investment data line 1276:', payout)
             } else if (
               payoutRequestIsExisting.length > 0 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
               // console.log('Payout investment data 1:', payload)
-              payout.status = 'terminated'
+              payout.status = 'liquidated'
               await payout.save()
-              // console.log('Terminated Payout investment data line 1285:', payout)
+              // console.log('Liquidated Payout investment data line 1285:', payout)
             }
             investment.status = 'active'
             investment.approvalStatus = 'pending'
@@ -4339,21 +4339,21 @@ export default class InvestmentsController {
               // console.log('Investment data line 1618:', payload)
 
               payout = await Payout.create(payload)
-              payout.status = 'terminated'
+              payout.status = 'liquidated'
               await payout.save()
-              // console.log('Terminated Payout investment data line 1316:', payout)
+              // console.log('Liquidated Payout investment data line 1316:', payout)
             } else if (
               payoutRequestIsExisting.length > 0 &&
               investment.approvalStatus === 'approved' &&
               investment.status === 'active'
             ) {
               // console.log('Payout investment data 1:', payload)
-              payout.status = 'terminated'
+              payout.status = 'liquidated'
               await payout.save()
-              // console.log('Terminated Payout investment data line 1325:', payout)
+              // console.log('Liquidated Payout investment data line 1325:', payout)
             }
 
-            investment.status = 'terminated'
+            investment.status = 'liquidated'
             investment.approvalStatus = 'approved'
             investment.isPayoutAuthorized = true
             investment.isTerminationAuthorized = true
@@ -4383,7 +4383,7 @@ export default class InvestmentsController {
           // investment.timeline = JSON.stringify(timeline)
           await investment.save()
 
-          // console.log('Terminated Payout investment data line 1521:', investment)
+          // console.log('Liquidated Payout investment data line 1521:', investment)
           return response.status(200).json({
             status: 'OK',
             data: investment.map((inv) => inv.$original),
@@ -4476,15 +4476,15 @@ export default class InvestmentsController {
           (investment &&
             investment.isPayoutAuthorized === false &&
             investment.isTerminationAuthorized === true &&
-            investment.requestType === 'terminate investment' &&
+            investment.requestType === 'liquidate_investment' &&
             investment.approvalStatus === 'approved' &&
-            investment.status === 'terminated') ||
+            investment.status === 'liquidated') ||
           (investment &&
             investment.isPayoutAuthorized === true &&
             investment.isTerminationAuthorized === true &&
-            investment.requestType === 'terminate investment' &&
+            investment.requestType === 'liquidate_investment' &&
             investment.approvalStatus === 'approved' &&
-            investment.status === 'terminated')
+            investment.status === 'liquidated')
         ) {
           // console.log('investment search data line 1596 :', investment.$original)
           // debugger
@@ -5407,12 +5407,12 @@ export default class InvestmentsController {
               })
             }
           } else {
-            // if the investment is terminated
+            // if the investment is liquidated
             let payload = investment.$original
             // send to Admin for approval
             // let userId = payload.userId
             let investmentId = payload.id
-            let requestType = 'terminate investment'
+            let requestType = 'liquidate_investment'
             let approvalForTerminationIsAutomated = false
             if (approvalForTerminationIsAutomated === false) {
               let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
@@ -5426,12 +5426,12 @@ export default class InvestmentsController {
               }
               // console.log('Payout investment data line 2780:', payload)
               // payload.timeline = JSON.stringify(investment.timeline)
-              // console.log('Terminated Payout investment data line 2782:', payload)
+              // console.log('Liquidated Payout investment data line 2782:', payload)
 
               const payout = await Payout.create(payload)
-              payout.status = 'terminated'
+              payout.status = 'liquidated'
               await payout.save()
-              // console.log('Terminated Payout investment data line 2787:', payout)
+              // console.log('Liquidated Payout investment data line 2787:', payout)
               //  END
               // investment = await Investment.query().where('id', investmentId)
               payload.requestType = requestType
@@ -5471,19 +5471,19 @@ export default class InvestmentsController {
               // payload.datePayoutWasDone = new Date().toISOString()
               // console.log('Payout investment data line 2825:', payload)
               // payload.timeline = JSON.stringify(investment.timeline)
-              // console.log('Terminated Payout investment data line 2827:', payload)
+              // console.log('Liquidated Payout investment data line 2827:', payload)
 
               // let payout = await Payout.create(payload)
-              // payout.status = 'terminated'
+              // payout.status = 'liquidated'
               // await payout.save()
-              // console.log('Terminated Payout investment data line 2832:', payout)
+              // console.log('Liquidated Payout investment data line 2832:', payout)
               //  END
               // investment = await Investment.query().where('id', investmentId)
               payload.requestType = requestType
-              payload.status = 'terminated'
+              payload.status = 'liquidated'
               payload.approvalStatus = 'approved'
               await payload.save()
-              // console.log('Terminated Payout investment data line 2839:', payload)
+              // console.log('Liquidated Payout investment data line 2839:', payload)
             }
             // update timeline
             timelineObject = {

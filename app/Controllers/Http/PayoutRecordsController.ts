@@ -17,8 +17,8 @@ export default class PayoutRecordsController {
     console.log('PayoutRecord query: ', request.qs())
     const countPayouts = await PayoutRecord.query().where('status', 'paid').getCount()
     console.log('PayoutRecord Investment count: ', countPayouts)
-    const countTerminated = await PayoutRecord.query().where('request_type', 'terminate investment').getCount()
-    console.log('Terminated Investment count: ', countTerminated)
+    const countTerminated = await PayoutRecord.query().where('request_type', 'liquidate_investment').getCount()
+    console.log('Liquidated Investment count: ', countTerminated)
     // const PayoutRecord = await Investment.query().offset(0).limit(1)
     const payoutRecord = await PayoutRecord.all()
     let sortedPayouts = payoutRecord
