@@ -11,6 +11,20 @@ Database.query()
 export default class MessageQueuesServices {
     public async createRfiRecord(content: any): Promise<any> {
         try {
+            //                    {"rfi":{
+            //     "id": "069ee6a3-13e7-4b56-91fb-5fb109fefddf",
+            //     "name": "company namekujjkkkk",
+            //     "email": "business@gmail.com",
+            //     "code": "code",
+            //     "createdBy": "08102872652",
+            //     "status": "Onboarding",
+            //     "address": {
+            //         "street": "joceyB, Mokola",
+            //         "city": "ibadan",
+            //         "state": "Oyo",
+            //         "country": "Nigeria"
+            //     }}
+            // }
             const { rfi } = content;
 
             let { id, name, email, code, status, address, directors } = rfi;

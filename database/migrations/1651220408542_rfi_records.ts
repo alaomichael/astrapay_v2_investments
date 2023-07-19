@@ -6,13 +6,6 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid("id").primary().index().unique().notNullable();
-      // table.uuid("general_verification_requirement_id")
-      //   .references("id")
-      //   .inTable("general_verification_requirements")
-      //   .notNullable()
-      //   .index()
-      //   .onUpdate("CASCADE")
-      //   .onDelete("CASCADE");
       table.string("external_rfi_record_id", 255).notNullable().unique().index();
       table.string("rfi_name", 255).notNullable().unique().index();
       table.string("rfi_code", 255).notNullable().unique().index();
