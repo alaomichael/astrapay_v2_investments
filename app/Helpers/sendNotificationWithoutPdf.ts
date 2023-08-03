@@ -73,7 +73,12 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
         }
         let amountPaid;
         let amountRollover;
-        if (rolloverType == "101") {
+        if (rolloverType == "100") {
+            // No Rollover
+            // amountPaid = `${currencyCode} ${totalAmountToPayout}`;
+            amountPaid = `${currencyCode} ${amount}`;
+            rolloverType = "No Rollover";
+        } else if (rolloverType == "101") {
             // Rollover Principal only
             // amount
             // interestDueForPayout
