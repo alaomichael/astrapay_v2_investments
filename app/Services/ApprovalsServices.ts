@@ -824,158 +824,162 @@ export default class ApprovalsServices {
                     } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
                         console.log("Notification NOT sent successfully");
                         console.log(newNotificationMessageWithoutPdf);
-                    }
-
-                    // Credit the user wallet with the amount to be rollover
-                    // Payout the amount that is to be rollover
-                    let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
-                        beneficiaryName,
-                        beneficiaryAccountNumber,
-                        beneficiaryAccountName,
-                        beneficiaryEmail,
-                        beneficiaryPhoneNumber,
-                        rfiCode,
-                        descriptionForPrincipal)
-                    debugger
-                    // if successful
-                    let decPl = 3;
-                    // if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
-                    if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
-                        let amountPaidOut = amount;
-                        // let decPl = 2;
-                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
-                        // update the investment details
-                        //@ts-ignore
-                        record.isInvestmentCompleted = true;
-                        //@ts-ignore
-                        record!.investmentCompletionDate = DateTime.now();
-                        //@ts-ignore
-                        record!.status = 'completed';
-                        // record.approvalStatus = approval.approvalStatus;//'payout'
-                        //@ts-ignore
-                        record!.isPayoutAuthorized = true;
-                        //@ts-ignore
-                        record!.isPayoutSuccessful = true;
-                        //@ts-ignore
-                        record!.datePayoutWasDone = DateTime.now();
-                        // debugger
-
-                        // Save the updated record
-                        // await record.save();
-                        // update record
-                        let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-                        // console.log(" Current log, line 608 :", currentInvestment);
-                        // send for update
-                        await investmentService.updateInvestment(currentInvestment, record);
-                        // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                        // console.log(" Current log, line 455 :", updatedInvestment);
-
-                        // console.log("Updated record Status line 457: ", record);
-
-                        // update timeline
-                        timelineObject = {
-                            id: uuid(),
-                            action: "investment payout",
-                            investmentId: id,//id,
-                            walletId: walletId,// walletId,
-                            userId: userId,// userId,
-                            // @ts-ignore
-                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover. Thank you.`,
-                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the approval of the investment rollover was declined.`,
-                            createdAt: DateTime.now(),
-                            metadata: ``,
-                        };
-                        // console.log("Timeline object line 471:", timelineObject);
-                        await timelineService.createTimeline(timelineObject);
-                        // let newTimeline = await timelineService.createTimeline(timelineObject);
-                        // console.log("new Timeline object line 474:", newTimeline);
-                        // update record
-
-                        // Send Notification to admin and others stakeholder
-                        let investment = record;
-                        let messageKey = "payout";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                        // console.log("newNotificationMessage line 754:", newNotificationMessageWithoutPdf);
-                        // debugger
-                        if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                            console.log("Notification sent successfully");
-                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                            console.log("Notification NOT sent successfully");
-                            console.log(newNotificationMessageWithoutPdf);
+                    };
+                    let creditUserWalletWithPrincipal;
+                    // Check if the amount is not Zero or less
+                    if (amount <= 0) {
+                        creditUserWalletWithPrincipal = {
+                            status: 200,
+                            data: { screenStatus: "APPROVED" }
                         }
-
-                    } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
-                        let amountPaidOut = amount;
-                        // let decPl = 3;
-                        amountPaidOut = Number(amountPaidOut.toFixed(decPl));
-                        // update the investment details
-                        //@ts-ignore
-                        record.isInvestmentCompleted = true;
-                        //@ts-ignore
-                        record.investmentCompletionDate = DateTime.now();
-                        //@ts-ignore
-                        record.status = 'completed_with_principal_payout_outstanding';
-                        // record.approvalStatus = approval.approvalStatus;//'payout'
-                        //@ts-ignore
-                        record.isPayoutAuthorized = true;
-                        //@ts-ignore
-                        record.isPayoutSuccessful = false;
-                        // record.datePayoutWasDone = DateTime.now();
-                        // debugger
-                        // Save the updated record
-                        // await record.save();
-                        // update record
-                        let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
-                        // console.log(" Current log, line 517 :", currentInvestment);
-                        // send for update
-                        await investmentService.updateInvestment(currentInvestment, record);
-                        // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-                        // console.log(" Current log, line 701 :", updatedInvestment);
-
-                        // console.log("Updated record Status line 703: ", record);
-
-                        // update timeline
-                        timelineObject = {
-                            id: uuid(),
-                            action: "investment payout failed",
-                            investmentId: id,//id,
-                            walletId: walletId,// walletId,
-                            userId: userId,// userId,
-                            // @ts-ignore
-                            message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                            adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
-                            createdAt: DateTime.now(),
-                            metadata: ``,
-                        };
-                        // console.log("Timeline object line 717:", timelineObject);
-                        await timelineService.createTimeline(timelineObject);
-                        // let newTimeline = await timelineService.createTimeline(timelineObject);
-                        // console.log("new Timeline object line 720:", newTimeline);
-                        // update record
-
-
-                        // Send Notification to admin and others stakeholder
-                        let investment = record;
-                        let messageKey = "payout_and_rollover_failed";
-                        let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-                        // console.log("newNotificationMessage line 834:", newNotificationMessageWithoutPdf);
-                        // debugger
-                        if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                            console.log("Notification sent successfully");
-                        } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                            console.log("Notification NOT sent successfully");
-                            console.log(newNotificationMessageWithoutPdf);
-                        }
-
+                        debugger
+                    } else {
+                        // Credit the user wallet with the amount to be rollover
+                        // Payout the amount that is to be rollover
+                        creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, id,
+                            beneficiaryName,
+                            beneficiaryAccountNumber,
+                            beneficiaryAccountName,
+                            beneficiaryEmail,
+                            beneficiaryPhoneNumber,
+                            rfiCode,
+                            descriptionForPrincipal)
+                        debugger
                     }
-                    // console.log("creditUserWalletForInvestment reponse data 743 ==================================", debitUserWalletForInvestment)
-                    // debugger
-                    // throw Error(creditUserWalletForInvestment);
-                    // throw Error(`${creditUserWalletForInvestment.status}, ${creditUserWalletForInvestment.errorCode}`);
-                    // return {
-                    //         status: "FAILED",//creditUserWalletForInvestment.status,
-                    //         message: `${creditUserWalletForInvestment.status}, ${creditUserWalletForInvestment.errorCode}`,
-                    //     };
+                        // if successful
+                        let decPl = 3;
+                        // if ( creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200  && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
+                        if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED") {
+                            let amountPaidOut = amount;
+                            // let decPl = 2;
+                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
+                            // update the investment details
+                            //@ts-ignore
+                            record.isInvestmentCompleted = true;
+                            //@ts-ignore
+                            record!.investmentCompletionDate = DateTime.now();
+                            //@ts-ignore
+                            record!.status = 'completed';
+                            // record.approvalStatus = approval.approvalStatus;//'payout'
+                            //@ts-ignore
+                            record!.isPayoutAuthorized = true;
+                            //@ts-ignore
+                            record!.isPayoutSuccessful = true;
+                            //@ts-ignore
+                            record!.datePayoutWasDone = DateTime.now();
+                            // debugger
+
+                            // Save the updated record
+                            // await record.save();
+                            // update record
+                            let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+                            // console.log(" Current log, line 608 :", currentInvestment);
+                            // send for update
+                            await investmentService.updateInvestment(currentInvestment, record);
+                            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                            // console.log(" Current log, line 455 :", updatedInvestment);
+
+                            // console.log("Updated record Status line 457: ", record);
+
+                            // update timeline
+                            timelineObject = {
+                                id: uuid(),
+                                action: "investment payout",
+                                investmentId: id,//id,
+                                walletId: walletId,// walletId,
+                                userId: userId,// userId,
+                                // @ts-ignore
+                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined the approval of the investment rollover. Thank you.`,
+                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the approval of the investment rollover was declined.`,
+                                createdAt: DateTime.now(),
+                                metadata: ``,
+                            };
+                            // console.log("Timeline object line 471:", timelineObject);
+                            await timelineService.createTimeline(timelineObject);
+                            // let newTimeline = await timelineService.createTimeline(timelineObject);
+                            // console.log("new Timeline object line 474:", newTimeline);
+                            // update record
+
+                            // Send Notification to admin and others stakeholder
+                            let investment = record;
+                            let messageKey = "payout";
+                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                            // console.log("newNotificationMessage line 754:", newNotificationMessageWithoutPdf);
+                            // debugger
+                            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                console.log("Notification sent successfully");
+                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                console.log("Notification NOT sent successfully");
+                                console.log(newNotificationMessageWithoutPdf);
+                            }
+
+                        } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200) {
+                            let amountPaidOut = amount;
+                            // let decPl = 3;
+                            amountPaidOut = Number(amountPaidOut.toFixed(decPl));
+                            // update the investment details
+                            //@ts-ignore
+                            record.isInvestmentCompleted = true;
+                            //@ts-ignore
+                            record.investmentCompletionDate = DateTime.now();
+                            //@ts-ignore
+                            record.status = 'completed_with_principal_payout_outstanding';
+                            // record.approvalStatus = approval.approvalStatus;//'payout'
+                            //@ts-ignore
+                            record.isPayoutAuthorized = true;
+                            //@ts-ignore
+                            record.isPayoutSuccessful = false;
+                            // record.datePayoutWasDone = DateTime.now();
+                            // debugger
+                            // Save the updated record
+                            // await record.save();
+                            // update record
+                            let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
+                            // console.log(" Current log, line 517 :", currentInvestment);
+                            // send for update
+                            await investmentService.updateInvestment(currentInvestment, record);
+                            // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+                            // console.log(" Current log, line 701 :", updatedInvestment);
+
+                            // console.log("Updated record Status line 703: ", record);
+
+                            // update timeline
+                            timelineObject = {
+                                id: uuid(),
+                                action: "investment payout failed",
+                                investmentId: id,//id,
+                                walletId: walletId,// walletId,
+                                userId: userId,// userId,
+                                // @ts-ignore
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                createdAt: DateTime.now(),
+                                metadata: ``,
+                            };
+                            // console.log("Timeline object line 717:", timelineObject);
+                            await timelineService.createTimeline(timelineObject);
+                            // let newTimeline = await timelineService.createTimeline(timelineObject);
+                            // console.log("new Timeline object line 720:", newTimeline);
+                            // update record
+
+
+                            // Send Notification to admin and others stakeholder
+                            let investment = record;
+                            let messageKey = "payout_and_rollover_failed";
+                            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                            // console.log("newNotificationMessage line 834:", newNotificationMessageWithoutPdf);
+                            // debugger
+                            if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                console.log("Notification sent successfully");
+                            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+                                console.log("Notification NOT sent successfully");
+                                console.log(newNotificationMessageWithoutPdf);
+                            }
+
+                        }
+                        // console.log("creditUserWalletForInvestment reponse data 743 ==================================", debitUserWalletForInvestment)
+                        // debugger
+                    
                 }
 
             } else if (saveApproval.requestType === "payout_investment") {
