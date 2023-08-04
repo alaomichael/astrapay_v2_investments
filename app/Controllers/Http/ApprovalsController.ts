@@ -2087,7 +2087,7 @@ export default class ApprovalsController {
                 // console.log(" Current log, line 1443 :", currentInvestment);
                 // send for update
                 await investmentsService.updateInvestment(currentInvestment, record);
-                let creditUserWalletWithPrincipal;
+                // let creditUserWalletWithPrincipal;
                 // Check if the amount is not Zero or less
                 if (amount <= 0) {
                   creditUserWalletWithPrincipal = {
