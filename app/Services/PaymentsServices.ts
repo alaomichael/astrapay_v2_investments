@@ -141,8 +141,17 @@ export default class PaymentsServices {
                         // console.log("Current log, line 136 :", currentInvestment);
                         // send for update
                         await investmentsService.updateInvestment(currentInvestment, record);
+                         let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                         // initiate a new  transaction
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -151,6 +160,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal)
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -327,8 +337,17 @@ export default class PaymentsServices {
                         // console.log(" Current log, line 314 :", updatedInvestment);
 
                         // console.log("Updated record Status line 316: ", record);
+  let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                         // Send to the endpoint for debit of wallet
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -337,6 +356,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal);
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -524,9 +544,18 @@ export default class PaymentsServices {
                         // console.log(" Current log, line 511 :", currentInvestment);
                         // send for update
                         await investmentsService.updateInvestment(currentInvestment, record);
+                        let creditUserWalletWithPrincipal;
+                        // Check if the amount is not Zero or less
+                        if (amount <= 0) {
+                            creditUserWalletWithPrincipal = {
+                                status: 200,
+                                data: { screenStatus: "APPROVED" }
+                            }
+                            debugger
+                        } else {
                         // initiate a new  transaction
                         // Payout the amount that is to be rollover
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -535,6 +564,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal);
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -692,8 +722,17 @@ export default class PaymentsServices {
                         // console.log(" Current log, line 830 :", updatedInvestment);
 
                         // console.log("Updated record Status line 832: ", record);
+                        let creditUserWalletWithPrincipal;
+                        // Check if the amount is not Zero or less
+                        if (amount <= 0) {
+                            creditUserWalletWithPrincipal = {
+                                status: 200,
+                                data: { screenStatus: "APPROVED" }
+                            }
+                            debugger
+                        } else {
                         // Payout the amount that is to be rollover
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -702,6 +741,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal);
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -869,9 +909,18 @@ export default class PaymentsServices {
                         // console.log(" Current log, line 848 :", currentInvestment);
                         // send for update
                         await investmentsService.updateInvestment(currentInvestment, record);
+                          let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                         // initiate a new  transaction
                         // Payout the amount that is to be rollover
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -880,6 +929,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal);
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -1037,8 +1087,17 @@ export default class PaymentsServices {
                         // console.log(" Current log, line 1316 :", updatedInvestment);
 
                         // console.log("Updated record Status line 1318: ", record);
+                          let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                         // Payout the amount that is to be rollover
-                        let creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
+                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                             beneficiaryName,
                             beneficiaryAccountNumber,
                             beneficiaryAccountName,
@@ -1047,6 +1106,7 @@ export default class PaymentsServices {
                             rfiCode,
                             descriptionForPrincipal);
                         debugger
+                    }
                         // if successful
                         let decPl = 3;
                         if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -1858,6 +1918,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6258 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -1869,6 +1938,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForPrincipal);
                                         debugger
+                                    }
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -1891,6 +1961,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6290 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 6292: ", record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                             beneficiaryName,
@@ -1901,6 +1980,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForPrincipal);
                                         debugger
+                                    }
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -1926,6 +2006,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6322 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -1936,6 +2025,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForInterest)
+                                        }
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -1958,6 +2048,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6421 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 6423: ", record);
+                                        //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                             beneficiaryName,
@@ -1968,6 +2067,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         debugger
+                                    }
                                     }
 
                                     // NEW CODE END
@@ -6137,6 +6237,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6258 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -6148,6 +6257,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForPrincipal);
                                         debugger
+                                    }
 
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -6170,6 +6280,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6290 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 6292: ", record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                             beneficiaryName,
@@ -6180,6 +6299,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForPrincipal);
                                         // debugger;
+                                    }
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -6205,6 +6325,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6322 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -6216,7 +6345,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
-
+                                        }
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
@@ -6238,6 +6367,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 6421 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 6423: ", record);
+                                        //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                             beneficiaryName,
@@ -6248,6 +6386,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
+                                    }
                                     }
 
                                     // NEW CODE END
@@ -6777,6 +6916,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 6322 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
+                                            //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // initiate a new  transaction
                                             // Payout Interest
                                             // Payout Interest
@@ -6787,7 +6935,8 @@ export default class PaymentsServices {
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
                                                 rfiCode,
-                                                descriptionForInterest)
+                                                descriptionForInterest);
+                                            }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
@@ -6934,6 +7083,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 7062 :", updatedInvestment);
 
                                             // console.log("Updated record Status line 6423: ", record);
+                                            //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // Payout Interest
                                             // Payout Interest
                                             creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -6945,6 +7103,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForInterest);
                                             // debugger
+                                        }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
@@ -7230,6 +7389,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 6322 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
+                                            //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // initiate a new  transaction
                                             // Payout Principal
                                             creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -7241,6 +7409,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForPrincipal);
                                             // debugger
+                                        }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7389,6 +7558,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 6421 :", updatedInvestment);
 
                                             // console.log("Updated record Status line 6423: ", record);
+                                            //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // Payout Principal
                                             creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                                 beneficiaryName,
@@ -7399,6 +7577,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForPrincipal);
                                             // debugger
+                                        }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -7867,6 +8046,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 8117 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
+                                            //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // initiate a new  transaction
                                             // Payout Interest
                                             creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -7878,6 +8066,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForInterest);
                                             // debugger
+                                        }
 
                                         } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                             // update the value for number of attempts
@@ -7900,6 +8089,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 6421 :", updatedInvestment);
 
                                             // console.log("Updated record Status line 6423: ", record);
+                                            //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // Payout Interest
                                             creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                                 beneficiaryName,
@@ -7910,6 +8108,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForInterest);
                                             // debugger
+                                        }
                                         }
 
                                     } //else 
@@ -7939,6 +8138,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 8315 :", currentInvestment);
                                             // send for update
                                             await investmentsService.updateInvestment(currentInvestment, record);
+                                            //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // initiate a new  transaction
                                             // Payout Principal
                                             creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -7950,6 +8158,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForPrincipal);
                                             // debugger
+                                        }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8100,6 +8309,15 @@ export default class PaymentsServices {
                                             // console.log(" Current log, line 6421 :", updatedInvestment);
 
                                             // console.log("Updated record Status line 6423: ", record);
+                                            //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                             // Payout Principal
                                             creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                                 beneficiaryName,
@@ -8110,6 +8328,7 @@ export default class PaymentsServices {
                                                 rfiCode,
                                                 descriptionForPrincipal);
                                             // debugger
+                                        }
                                             // if successful
                                             let decPl = 3;
                                             if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL") {
@@ -8608,6 +8827,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9424 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -8618,6 +8846,7 @@ export default class PaymentsServices {
                                             beneficiaryPhoneNumber,
                                             rfiCode,
                                             descriptionForPrincipal);
+                                        }
                                         // debugger
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -8640,6 +8869,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9454 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 9456: ", record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                             beneficiaryName,
@@ -8650,6 +8888,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForPrincipal);
                                         // debugger
+                                    }
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -8675,6 +8914,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9487 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //  let creditUserWalletWithInterest;
+                                        // Check if the amount is not Zero or less
+                                        if (interestDueOnInvestment <= 0) {
+                                            creditUserWalletWithInterest = {
+                                                status: 200,
+                                                data: { screenStatus: "APPROVED" }
+                                            }
+                                            debugger
+                                        } else {
                                         // initiate a new  transaction
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -8686,7 +8934,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
-
+                                        }
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
@@ -8708,6 +8956,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9518 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 9520: ", record);
+                                        //  let creditUserWalletWithInterest;
+                                        // Check if the amount is not Zero or less
+                                        if (interestDueOnInvestment <= 0) {
+                                            creditUserWalletWithInterest = {
+                                                status: 200,
+                                                data: { screenStatus: "APPROVED" }
+                                            }
+                                            debugger
+                                        } else {
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                             beneficiaryName,
@@ -8718,6 +8975,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
+                                    }
                                     }
 
 
@@ -9063,6 +9321,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9424 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
@@ -9072,7 +9339,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                        }
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
@@ -9094,6 +9362,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 9454 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 9456: ", record);
+                                        //   let creditUserWalletWithPrincipal;
+            // Check if the amount is not Zero or less
+            if (amount <= 0) {
+              creditUserWalletWithPrincipal = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // Payout Principal
                                         creditUserWalletWithPrincipal = await creditUserWallet(amount, lng, lat, principalPayoutRequestReference,
                                             beneficiaryName,
@@ -9102,7 +9379,8 @@ export default class PaymentsServices {
                                             beneficiaryEmail,
                                             beneficiaryPhoneNumber,
                                             rfiCode,
-                                            descriptionForPrincipal)
+                                            descriptionForPrincipal);
+                                        }
                                     }
 
                                     // check if transaction with same customer ref exist
@@ -9128,6 +9406,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 12181 :", currentInvestment);
                                         // send for update
                                         await investmentsService.updateInvestment(currentInvestment, record);
+                                        //  let creditUserWalletWithInterest;
+            // Check if the amount is not Zero or less
+            if (interestDueOnInvestment <= 0) {
+              creditUserWalletWithInterest = {
+                status: 200,
+                data: { screenStatus: "APPROVED" }
+              }
+              debugger
+            } else {
                                         // initiate a new  transaction
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
@@ -9139,6 +9426,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
+                                    }
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
                                         // update the value for number of attempts
@@ -9161,6 +9449,15 @@ export default class PaymentsServices {
                                         // console.log(" Current log, line 12213 :", updatedInvestment);
 
                                         // console.log("Updated record Status line 12215: ", record);
+                                        //  let creditUserWalletWithInterest;
+                                        // Check if the amount is not Zero or less
+                                        if (interestDueOnInvestment <= 0) {
+                                            creditUserWalletWithInterest = {
+                                                status: 200,
+                                                data: { screenStatus: "APPROVED" }
+                                            }
+                                            debugger
+                                        } else {
                                         // Payout Interest
                                         creditUserWalletWithInterest = await creditUserWallet(interestDueOnInvestment, lng, lat, interestPayoutRequestReference,
                                             beneficiaryName,
@@ -9171,6 +9468,7 @@ export default class PaymentsServices {
                                             rfiCode,
                                             descriptionForInterest);
                                         // debugger
+                                    }
                                     }
 
 
