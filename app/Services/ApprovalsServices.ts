@@ -122,6 +122,20 @@ export default class ApprovalsServices {
         }
     }
 
+    public async getApprovalsByEmail(email: string): Promise<Approval[] | any | null> {
+        try {
+            // const approval = await Approval.findBy('id', id);
+            const approval = await Approval.query().where({ email: email })
+            // .first();
+            console.log("Approval search result from service")
+            // console.log(approval);
+            return approval;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
     public async getApprovalByInvestmentId(InvestmentId: string): Promise<Approval | null> {
         try {
             const approval = await Approval.query().where({ investment_id: InvestmentId }).first();
@@ -1244,6 +1258,12 @@ export default class ApprovalsServices {
             predicateExists()
             predicate = predicate + "approval_status=?";
             params.push(queryFields.approvalStatus)
+        }
+        if (queryFields.email) {
+            predicateExists()
+            predicate = predicate + "email=?";
+            params.push(queryFields.email)
+
         }
         if (queryFields.assignedTo) {
             predicateExists()

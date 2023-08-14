@@ -122,7 +122,7 @@ export default class ApprovalsController {
       //     requestType: schema.string({ escape: true }, [rules.maxLength(50)]),
       // });
       // const payload: any = await request.validate({ schema: approvalSchema });
-      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy, rfiCode, approvedBy// remark,
+      const { walletId, investmentId, userId, requestType, approvalStatus, assignedTo, processedBy, rfiCode, approvedBy,email// remark,
       } = request.body();
       const payload: ApprovalType = {
         walletId: walletId,
@@ -134,6 +134,7 @@ export default class ApprovalsController {
         processedBy: processedBy,
         rfiCode: rfiCode,
         approvedBy: approvedBy,
+        email: email
       }
 
       // console.log("Admin remark =================", remark);
@@ -299,7 +300,7 @@ export default class ApprovalsController {
       const approvalsService = new ApprovalsServices()
       const { id, } = request.params();
       // console.log("Approval query: ", request.qs());
-      const { approvalStatus, assignedTo, processedBy, approvedBy } = request.body();
+      const { approvalStatus,email, assignedTo, processedBy, approvedBy } = request.body();
       const { isRolloverSuspended, isPayoutSuspended, } = request.body();
       //debugger
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
@@ -385,6 +386,7 @@ export default class ApprovalsController {
           processedBy: processedBy,
           rfiCode: approval.rfiCode,
           approvedBy: approvedBy,
+          email: email
           // remark: approval.remark,
 
         }

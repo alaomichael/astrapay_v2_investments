@@ -27,6 +27,9 @@ export default class Approval extends AppBaseModel {
   public approvalStatus: string;
 
   @column()
+  public email: string;
+
+  @column()
   public assignedTo: string;
 
   @column()

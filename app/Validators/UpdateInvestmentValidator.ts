@@ -14,7 +14,7 @@ export default class UpdateInvestmentValidator extends BaseValidator {
         firstName: schema.string.optional(),
         lastName: schema.string.optional(),
         phone: schema.string.optional(),
-        email: schema.string.optional(),
+        email: schema.string.optional([rules.email()]),
         investorFundingWalletId: schema.string.optional(),
         amount: schema.number.optional(),
         duration: schema.number.optional(),

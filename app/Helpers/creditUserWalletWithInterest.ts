@@ -60,7 +60,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         // console.log("payoutNotificationEmail [0].email  line 60:", payoutNotificationEmail[0].email);
         // console.log("investmentWalletId setting line 61:", investmentWalletId);
         // console.log("loanServiceChargeAccount setting line 60:", loanServiceChargeAccount);
-debugger
+        debugger
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",

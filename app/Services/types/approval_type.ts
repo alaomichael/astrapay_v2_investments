@@ -2,6 +2,7 @@ export interface ApprovalType {
     walletId: string,
     userId: string,
     investmentId: string,
+    email: string,
     requestType: string,
     approvalStatus: string,
     assignedTo: string,

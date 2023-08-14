@@ -1,4 +1,4 @@
-import { schema, } from '@ioc:Adonis/Core/Validator'
+import { schema,rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import BaseValidator from './BaseValidator'
 export default class UpdateApprovalValidator extends BaseValidator {
@@ -94,5 +94,6 @@ export default class UpdateApprovalValidator extends BaseValidator {
         rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
         isPayoutSuspended: schema.boolean.optional(),
         payoutReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
+        email: schema.string([rules.email()]),
     });
 }
