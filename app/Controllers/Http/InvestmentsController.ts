@@ -1765,7 +1765,52 @@ export default class InvestmentsController {
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithoutPdf);
+            };
+
+            // debugger
+            const approvalsService = new ApprovalsServices()
+            let approvalObject;
+
+            // TODO: Send to the Admin for approval
+            // update approvalObject
+            approvalObject = {
+              rfiCode: rfiCode,
+              walletId: investment.walletId,
+              investmentId: investment.id,
+              userId: investment.userId,
+              requestType: "start_investment",
+              approvalStatus: "approved",
+              assignedTo:"automation",
+              processedBy: "automation",
+              // remark: "",
+            };
+            // console.log("ApprovalRequest objects line 1194:", approvalObject);
+            // check if the approval request is not existing
+            let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
+            debugger
+            if (!approvalRequestIsExisting) {
+              await approvalsService.createApproval(approvalObject);
+              // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+              // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+              let payoutApprovalObject;
+
+              // TODO: Send to the Admin for approval
+              // update payoutApprovalObject
+              payoutApprovalObject = {
+                rfiCode: rfiCode,
+                walletId: investment.walletId,
+                investmentId: investment.id,
+                userId: investment.userId,
+                requestType: "payout_investment",
+                approvalStatus: "pending",
+                assignedTo: "",//investment.assignedTo,
+                processedBy: "",//investment.processedBy,
+                // remark: "",
+              };
+              await approvalsService.createApproval(payoutApprovalObject);
+              debugger
             }
+
 
           } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1952,7 +1997,52 @@ export default class InvestmentsController {
             } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
               console.log("Notification NOT sent successfully");
               console.log(newNotificationMessageWithoutPdf);
+            };
+
+            // debugger
+            const approvalsService = new ApprovalsServices()
+            let approvalObject;
+
+            // TODO: Send to the Admin for approval
+            // update approvalObject
+            approvalObject = {
+              rfiCode: rfiCode,
+              walletId: investment.walletId,
+              investmentId: investment.id,
+              userId: investment.userId,
+              requestType: "start_investment",
+              approvalStatus: "approved",
+              assignedTo: "automation",//investment.assignedTo,
+              processedBy: "automation",//investment.processedBy,
+              // remark: "",
+            };
+            // console.log("ApprovalRequest objects line 1194:", approvalObject);
+            // check if the approval request is not existing
+            let approvalRequestIsExisting = await approvalsService.getApprovalByInvestmentId(investment.id);
+            debugger
+            if (!approvalRequestIsExisting) {
+              await approvalsService.createApproval(approvalObject);
+              // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
+              // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
+              let payoutApprovalObject;
+
+              // TODO: Send to the Admin for approval
+              // update payoutApprovalObject
+              payoutApprovalObject = {
+                rfiCode: rfiCode,
+                walletId: investment.walletId,
+                investmentId: investment.id,
+                userId: investment.userId,
+                requestType: "payout_investment",
+                approvalStatus: "pending",
+                assignedTo: "",//investment.assignedTo,
+                processedBy: "",//investment.processedBy,
+                // remark: "",
+              };
+              await approvalsService.createApproval(payoutApprovalObject);
+              debugger
             }
+
 
           } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -2020,8 +2110,6 @@ export default class InvestmentsController {
                 message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
               });
           }
-
-
         }
 
       }

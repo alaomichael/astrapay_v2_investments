@@ -17,9 +17,9 @@ import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
 Database.query()
 
 export default class ApprovalsServices {
-    public async createApproval(terminateApproval: ApprovalType): Promise<Approval> {
+    public async createApproval(createApproval: ApprovalType): Promise<Approval> {
         try {
-            const approval = await Approval.create(terminateApproval)
+            const approval = await Approval.create(createApproval)
             const timelineService = new TimelinesServices();
             const investmentService = new InvestmentsServices();
             let timelineObject;
@@ -47,6 +47,26 @@ export default class ApprovalsServices {
                 await timelineService.createTimeline(timelineObject);
                 // let newTimeline = await timelineService.createTimeline(timelineObject);
                 // console.log("new Timeline object line 287:", newTimeline);
+                // debugger
+                    let payoutApprovalObject;
+
+                    // TODO: Send to the Admin for approval
+                    // update payoutApprovalObject
+                    payoutApprovalObject = {
+                        rfiCode: investmentDetails.rfiCode,
+                        walletId: investmentDetails.walletId,
+                        investmentId: investmentId,
+                        userId: investmentDetails.userId,
+                        requestType: "payout_investment",
+                        approvalStatus: "pending",
+                        assignedTo: "",//investment.assignedTo,
+                        processedBy: "",//investment.processedBy,
+                        // remark: "",
+                    };
+                await Approval.create(payoutApprovalObject);
+                    debugger
+            
+
             } else if (approval.requestType === "start_investment_rollover") {
                 let investmentId = approval.investmentId;
                 let investmentDetails;
