@@ -304,8 +304,8 @@ export default class ApprovalsController {
       const { isRolloverSuspended, isPayoutSuspended, } = request.body();
       //debugger
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
-      rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ days: 3 });
-      payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ days: 3 });
+      rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ months: 6 });
+      payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ months: 6 });
 
       // console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
       // console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
@@ -599,7 +599,7 @@ export default class ApprovalsController {
               // update record
               // //debugger
               // Send Details to notification service
-              let subject = "AstraPay Investment Activation";
+              let subject = `${rfiCode.toUpperCase()} Investment Activation`;
               let message = `
               ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -607,7 +607,7 @@ export default class ApprovalsController {
 
               Thank you.
 
-              AstraPay Investment.`;
+              ${rfiCode.toUpperCase()} Investment.`;
               // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
               // console.log("newNotificationMessage line 575:", newNotificationMessage);
               // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -785,7 +785,7 @@ export default class ApprovalsController {
               // update record
               // //debugger
               // Send Details to notification service
-              let subject = "AstraPay Investment Activation";
+              let subject = `${rfiCode.toUpperCase()} Investment Activation`;
               let message = `
       ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -793,7 +793,7 @@ export default class ApprovalsController {
 
       Thank you.
 
-      AstraPay Investment.`;
+      ${rfiCode.toUpperCase()} Investment.`;
               // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
               // console.log("newNotificationMessage line 754:", newNotificationMessage);
               // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -1095,7 +1095,7 @@ export default class ApprovalsController {
             // console.log('Timeline object line 755:', timelineObject)
             await timelineService.createTimeline(timelineObject);
             // Send Details to notification service
-            let subject = "AstraPay Investment Rollover Activation";
+            let subject = `${rfiCode.toUpperCase()} Investment Rollover Activation`;
             let message = `
                 ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${selectedInvestmentRequestUpdate.startDate} and it will be mature for payout on ${selectedInvestmentRequestUpdate.payoutDate}.
 
@@ -1103,7 +1103,7 @@ export default class ApprovalsController {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
             // newNotificationMessage = await sendNotification(email, subject, firstName, message);
             // // console.log("newNotificationMessage line 768:", newNotificationMessage);
             // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {

@@ -39,7 +39,7 @@ export default class PuppeteerServices {
 
   public async printAsPDF(data: Investment) {
     const ctx = HttpContext.get() 
-    let { email,firstName } = data
+    let { email,firstName,rfiCode } = data;
 
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--headless', '--disable-gpu', '--window-size=1920x1080'],
@@ -92,7 +92,7 @@ export default class PuppeteerServices {
           });
 
           // Send Details to notification service
-          let subject = "AstraPay Investment Certificate";
+          let subject = `${rfiCode.toUpperCase()} Investment Certificate`;
           let message = `
                 ${firstName} this is to inform you, that your Investment certificate has been generated.
 
@@ -102,7 +102,7 @@ export default class PuppeteerServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                 ${rfiCode.toUpperCase()} Investment.`;
           let newNotificationMessage = await sendNotification(email, subject, firstName, message);
           // console.log("newNotificationMessage line 107:", newNotificationMessage);
           if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {

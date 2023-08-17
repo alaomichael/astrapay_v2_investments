@@ -1713,7 +1713,7 @@ export default class InvestmentsController {
             // update record
             // debugger
             // Send Details to notification service
-            let subject = "AstraPay Investment Activation";
+            let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
@@ -1723,7 +1723,7 @@ export default class InvestmentsController {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
             // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
             // // console.log("newNotificationMessage line 1753:", newNotificationMessage);
             // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -1900,7 +1900,7 @@ export default class InvestmentsController {
             // update record
             // debugger
             // Send Details to notification service
-            let subject = "AstraPay Investment Activation";
+            let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
@@ -1910,7 +1910,7 @@ export default class InvestmentsController {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
             // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
             // // console.log("newNotificationMessage line 1753:", newNotificationMessage);
             // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {

@@ -1,5 +1,5 @@
 import { BaseTask } from 'adonis5-scheduler/build'
-import InvestmentsServices from 'App/Services/InvestmentsServices'
+// import InvestmentsServices from 'App/Services/InvestmentsServices'
 // import { DateTime } from 'luxon'
 // import axios from 'axios'
 
@@ -29,23 +29,23 @@ export default class ReactivateSuspendedInvestmentPayout extends BaseTask {
     }
 
     public async handle() {
-        // @ts-ignore
-        this.logger.info('Handled')
-        console.log("Scheduler is Running Reactivate Suspended Investment Payout ==============================================")
-        // TODO : Update this when going live
-        // let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
-        // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
+        // // @ts-ignore
+        // this.logger.info('Handled')
+        // console.log("Scheduler is Running Reactivate Suspended Investment Payout ==============================================")
+        // // TODO : Update this when going live
+        // // let checkedForPaymentAt = DateTime.now().minus({ minutes: 4 });
+        // // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
-        let queryParams = {
-            limit: "20",
-            offset: "0",
-            // add checkedForPaymentAt
-        }
-        // console.log("Query params in type service line 42:", queryParams)
-        let investmentsServices = new InvestmentsServices();
-        await investmentsServices.reactivateSuspendedPayoutInvestment(queryParams);
-        // let listOfReactivatedSuspendedInvestmentPayout = await investmentsServices.reactivateSuspendedPayoutInvestment(queryParams);
-        // console.log("After AXIOS CALL for Reactivate Suspended Investment Payout ,  ==================================================");
-        // console.log("The ASTRAPAY API Reactivate Suspended Investment Payout response,line 47: ", listOfReactivatedSuspendedInvestmentPayout);
+        // let queryParams = {
+        //     limit: "20",
+        //     offset: "0",
+        //     // add checkedForPaymentAt
+        // }
+        // // console.log("Query params in type service line 42:", queryParams)
+        // let investmentsServices = new InvestmentsServices();
+        // await investmentsServices.reactivateSuspendedPayoutInvestment(queryParams);
+        // // let listOfReactivatedSuspendedInvestmentPayout = await investmentsServices.reactivateSuspendedPayoutInvestment(queryParams);
+        console.log("After AXIOS CALL for Reactivate Suspended Investment Payout ,  ==================================================");
+        // // console.log("The ASTRAPAY API Reactivate Suspended Investment Payout response,line 47: ", listOfReactivatedSuspendedInvestmentPayout);
     }
 }

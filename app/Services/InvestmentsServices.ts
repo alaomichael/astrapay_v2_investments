@@ -1571,7 +1571,7 @@ export default class InvestmentsServices {
                 // console.log('Timeline object line 928:', timelineObject)
                 await timelineService.createTimeline(timelineObject);
                 // Send Details to notification service
-                let subject = "AstraPay Investment Activation";
+                let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                 let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
@@ -1581,7 +1581,7 @@ export default class InvestmentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                 // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
                 let recepients = [
                     {
@@ -2176,7 +2176,7 @@ export default class InvestmentsServices {
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated === true) {
                                 if (investment.status != 'completed' && investment.status == 'active') {
-                                    investment.status != 'completed';
+                                    // investment.status != 'completed';
                                     // const approvalsService = new ApprovalsServices()
                                     let approvalObject;
 
@@ -3231,7 +3231,7 @@ export default class InvestmentsServices {
                                     // update record
                                     // debugger
                                     // Send Details to notification service
-                                    let subject = "AstraPay Investment Activation";
+                                    let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -3239,7 +3239,7 @@ export default class InvestmentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                                     // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -3415,7 +3415,7 @@ export default class InvestmentsServices {
                                     // update record
                                     // debugger
                                     // Send Details to notification service
-                                    let subject = "AstraPay Investment Activation";
+                                    let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -3423,7 +3423,7 @@ export default class InvestmentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                                     // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -3819,7 +3819,7 @@ export default class InvestmentsServices {
                                 // update record
                                 // debugger
                                 // Send Details to notification service
-                                let subject = "AstraPay Investment Activation";
+                                let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                 let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -3827,7 +3827,7 @@ export default class InvestmentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                                 // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                                 // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                 // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -4024,10 +4024,10 @@ export default class InvestmentsServices {
                 payoutDateTo = DateTime.now().toISO();//.toISODate();
             }
 
-            if (!payoutReactivationDate) {
-                queryParams.payoutReactivationDate = DateTime.now().toISO();//.toISODate();
-                payoutReactivationDate = DateTime.now().toISO();//.toISODate();
-            }
+            // if (!payoutReactivationDate) {
+            //     queryParams.payoutReactivationDate = DateTime.now().toISO();//.toISODate();
+            //     payoutReactivationDate = DateTime.now().toISO();//.toISODate();
+            // }
 
             // console.log("queryParams line 2190 =========================")
             // console.log(queryParams)
@@ -5106,10 +5106,10 @@ export default class InvestmentsServices {
                 payoutDateTo = DateTime.now().toISO();//.toISODate();
             }
 
-            if (!rolloverReactivationDate) {
-                queryParams.rolloverReactivationDate = DateTime.now().toISO();//.toISODate();
-                rolloverReactivationDate = DateTime.now().toISO();//.toISODate();
-            }
+            // if (!rolloverReactivationDate) {
+            //     queryParams.rolloverReactivationDate = DateTime.now().toISO();//.toISODate();
+            //     rolloverReactivationDate = DateTime.now().toISO();//.toISODate();
+            // }
 
             // console.log("queryParams line 2820 =========================")
             // console.log(queryParams)
@@ -5720,7 +5720,7 @@ export default class InvestmentsServices {
                             let investmentId = payload.id
                             let walletId = payload.walletId
                             // let approvalStatus = payload.approvalStatus
-                            let requestType = 'payout_investment'
+                            let requestType = 'payout_investment';
                             // let  approvalStatus = 'approved'
                             // let { firstName, email } = payload;
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
@@ -6280,7 +6280,7 @@ export default class InvestmentsServices {
                     // isAllPayoutSuspended
                     // isAllRolloverSuspended
 
-                    let isAllPayoutSuspended = settings.isAllPayoutSuspended
+                    let isAllPayoutSuspended = settings.isAllPayoutSuspended;
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 6163:");
@@ -6765,7 +6765,7 @@ export default class InvestmentsServices {
                                 // await trx.rollback();
                                 return {
                                     status: 'OK',
-                                    message: 'this investment is not mature for payout.',
+                                    message: 'This investment is not mature for payout.',
                                     data: null,
                                 }
                             }
@@ -11330,7 +11330,7 @@ export default class InvestmentsServices {
                                     // await trx.rollback()
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }

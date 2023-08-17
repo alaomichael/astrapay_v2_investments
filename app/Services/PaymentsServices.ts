@@ -1534,7 +1534,7 @@ export default class PaymentsServices {
             // console.log('Timeline object line 928:', timelineObject)
             await timelineService.createTimeline(timelineObject);
             // Send Details to notification service
-            let subject = "AstraPay Investment Activation";
+            let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
 
@@ -1544,7 +1544,7 @@ export default class PaymentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
             // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
             let recepients = [
                 {
@@ -3506,7 +3506,7 @@ export default class PaymentsServices {
                                     // update record
                                     // debugger
                                     // Send Details to notification service
-                                    let subject = "AstraPay Investment Activation";
+                                    let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -3514,7 +3514,7 @@ export default class PaymentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                                     // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
@@ -3690,7 +3690,7 @@ export default class PaymentsServices {
                                     // update record
                                     // debugger
                                     // Send Details to notification service
-                                    let subject = "AstraPay Investment Activation";
+                                    let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
                 ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
 
@@ -3698,7 +3698,7 @@ export default class PaymentsServices {
 
                 Thank you.
 
-                AstraPay Investment.`;
+                ${rfiCode.toUpperCase()} Investment.`;
                                     // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
                                     // // console.log("newNotificationMessage line 2070:", newNotificationMessage);
                                     // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
