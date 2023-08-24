@@ -15,5 +15,6 @@ export const esClient = async () => {
     } catch (error) {
         console.log("The ASTRAPAY API response error: @ esClient line 16 ");
         console.error(error.message);
+        debugger
     }
 };

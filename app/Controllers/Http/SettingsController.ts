@@ -42,6 +42,24 @@ export default class SettingsController {
     console.log("setting query: ", request.qs());
     const settingsService = new SettingServices();
     const settings = await settingsService.getSettings(request.qs());
+    // const query = request.qs();
+    // const esClientInstance = await esClient();
+    // debugger
+    // const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+    // debugger
+    // console.log("elastic search results", results);
+    const totalCount = settings!.length;
+    return response.status(200).json({
+      status: "OK",
+      data: settings,
+      totalCount:totalCount,
+    });
+  }
+
+  public async indexWithElasticSearch({ request, response }: HttpContextContract) {
+    console.log("setting query: ", request.qs());
+    const settingsService = new SettingServices();
+    const settings = await settingsService.getSettings(request.qs());
     const query = request.qs();
     const esClientInstance = await esClient();
     debugger
@@ -53,6 +71,7 @@ export default class SettingsController {
       data: settings
     });
   }
+  // 168605200474015
 
 
   public async store({ request, response }: HttpContextContract) {
@@ -275,7 +294,7 @@ export default class SettingsController {
       const MessageQueuesService = new MessageQueuesServices()
            const content = request.body();
       const newRfiRecord = await MessageQueuesService.createRfiRecord(content);
-      console.log("newRfiRecord line 68 ===== ", newRfiRecord)
+      // console.log("newRfiRecord line 68 ===== ", newRfiRecord)
       if (!newRfiRecord) {
         throw Error();
       }
@@ -318,7 +337,7 @@ export default class SettingsController {
       const content = request.body();
       const { investment } = content;
       const newRfiRecordSetting = await MessageQueuesService.createRfiRecordSetting(investment);
-      console.log("newRfiRecordSetting line 259 ===== ", newRfiRecordSetting)
+      // console.log("newRfiRecordSetting line 259 ===== ", newRfiRecordSetting)
       if (!newRfiRecordSetting) {
         throw Error();
       }
