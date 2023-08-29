@@ -59,22 +59,24 @@ export default class InvestmentsController {
     const investments = await investmentsService.getInvestments(request.qs());
     // console.log("investments query line 50: ", investments);
     let sortedInvestments = investments;
-
+    const totalCount = await investmentsService.getInvestmentsCount(request.qs());
+    
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
         status: "OK",
         message: "No investment request matched your search",
         data: null,
+        totalCount,
       });
     }
     // return recommendation(s)
-    let totalCount = sortedInvestments.length;
+    // let totalCount = sortedInvestments.length;
     let newCert = await generateString();
     console.log("New certificate Number:", newCert)
     return response.status(200).json({
       status: "OK",
       data: sortedInvestments,
-      totalCount: totalCount
+      totalCount,
     });
   }
 

@@ -1661,6 +1661,23 @@ export default class InvestmentsServices {
         }
     }
 
+    public async getInvestmentsCount(queryParams: any): Promise<any> {
+        try {
+            const queryGetter = await this.queryBuilder(queryParams);
+            const counter = await Investment.query()
+                .whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                .count("*");
+            // return {
+            //   totalCount: parseInt(counter[0].$extras.count),
+            // };
+            // debugger
+            return parseInt(counter[0].$extras.count);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     public async getInvestmentsFromElasticSearch(queryParams: any): Promise<Investment[] | any> {
         try {
             console.log("Query params in investment service:", queryParams)

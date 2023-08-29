@@ -42,6 +42,8 @@ export default class ApprovalsController {
       // if (!limit) throw new Error("Limit query parameter is required for this request.");
       const approval = await approvalsService.getApprovals(request.qs()); // Approval.all();
       let sortedApprovals = approval;
+      const totalCount = await approvalsService.getApprovalsCount(request.qs());
+      
       // console.log("approval line 40 ===================");
       // console.log(approval);
       if (limit) {
@@ -52,6 +54,7 @@ export default class ApprovalsController {
           status: "OK",
           message: "no approval request matched your search",
           data: null,
+          totalCount,
         });
       }
 
@@ -87,6 +90,7 @@ export default class ApprovalsController {
         status: "OK",
         data: approvalArray,
         // data: sortedApprovals.map((approval) => approval.$original),
+        totalCount,
       });
     } catch (error) {
       console.log("Error line 79", error.messages);

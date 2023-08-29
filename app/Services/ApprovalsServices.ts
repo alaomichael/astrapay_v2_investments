@@ -129,6 +129,23 @@ export default class ApprovalsServices {
         }
     }
 
+    public async getApprovalsCount(queryParams: any): Promise<any> {
+        try {
+            const queryGetter = await this.queryBuilder(queryParams);
+            const counter = await Approval.query()
+                .whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                .count("*");
+            // return {
+            //   totalCount: parseInt(counter[0].$extras.count),
+            // };
+            // debugger
+            return parseInt(counter[0].$extras.count);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     public async getApprovalByApprovalId(id: string): Promise<Approval | any | null> {
         try {
             // const approval = await Approval.findBy('id', id);
