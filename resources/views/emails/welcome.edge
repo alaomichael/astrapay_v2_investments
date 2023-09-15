@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css" rel="stylesheet" media="all">  
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+      body {
+        width: 100% !important;
+        height: 100%;
+        margin: 0;
+        -webkit-text-size-adjust: none;
+        color: #404040;
+      }
+      a {
+        color: #3869D4;
+      }
+      td {
+        word-break: break-word;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden;
+        mso-hide: all;
+        font-size: 1px;
+        line-height: 1px;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      h1.header{
+        text-align: center;
+        margin: 0em 0 1.6em;
+        color: #4a4a4a !important;
+      }    
+      *{
+        color: inherit!important;
+      }
+      .item-underline{
+        border-bottom: solid 1px #dedede; 
+        font-size: 1.15em;
+        padding: .9em 1.8em;
+        margin: 0;
+      }
+      .item-no-underline{
+        font-size: 1.15em;
+        padding: .9em 1.8em;
+        margin: 0;
+      }
+      body,
+      td,
+      th {
+        font-family: "Montserrat","Nunito Sans", Helvetica, Arial, sans-serif;
+      }
+      p {
+        margin: .4em 0 1.1875em;
+        line-height: 1.625;
+      }
+      p.sub {
+        font-size: .9em;
+      }
+      .align-right {
+        text-align: right;
+      }
+      .align-left {
+        text-align: left;
+      }
+      .align-center {
+        text-align: center;
+      }
+      .button {
+        background-color: #3AA658;
+        border-top: 10px solid #3AA658;
+        border-right: 18px solid #3AA658;
+        border-bottom: 10px solid #3AA658;
+        border-left: 18px solid #3AA658;
+        display: inline-block;
+        color: black !important;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
+        -webkit-text-size-adjust: none;
+        box-sizing: border-box;
+      }
+     
+      .email-wrapper {
+        width: 100%;
+        margin: 0;
+        padding: 30px 45px;
+      }
+      .email-content {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .email-masthead {
+        text-align: center;
+      }
+      .email-masthead_logo {
+        width: 94px;
+      }
+      .email-masthead_name {
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        text-shadow: 0 1px 0 white;
+      }
+      .email-masthead_name img {
+        margin-bottom: 1em;
+      }
+      .email-body {
+        margin: 0;
+        padding: 0;
+        width: 570px;
+      }
+      .email-body_inner {
+        width: inherit !important;
+        /* margin: 0 auto; */
+        padding: 0;
+        background-color: #FFFFFF;
+      }
+      .black-and-white {
+        filter: gray !important;
+        -webkit-filter: grayscale(1) !important; 
+        filter: grayscale(1) !important;
+      }
+      .email-footer {
+        width: 100%;
+        margin: 10px auto 0;
+        padding: 30px 0 0;
+        text-align: center;
+        color: #b7b7b7 !important;
+        border-top:solid 1px #b7b7b7;
+      }
+      
+      .email-footer p {
+        margin-bottom: .5em;
+      }
+
+      .body-action {
+        width: 100%;
+        margin: 30px auto;
+        padding: 0;
+        text-align: center;
+      }
+      .body-sub {
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #EAEAEC;
+      }
+      .content-cell {
+        
+      }
+
+      .footer-msg{
+        marign: 3em 0;
+      }
+      
+      @media only screen and (max-width: 767px) {
+        .button {
+          width: 100% !important;
+          text-align: center !important;
+        }
+        .email-body,
+        .email-footer {
+          width: 100% !important;
+        }
+        
+        .email-masthead_name img {
+          margin-bottom: 2.2em;
+        }
+        
+        
+        .email-wrapper{
+          padding: 20px 0px;
+        }
+        
+        .content-cell{
+          padding: 0;
+        }
+        .email-footer {
+          font-size: 90%
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td align="">
+          <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+              <td class="email-masthead">
+                <span class="f-fallback email-masthead_name">
+                 {{--  <img src="https://hellomyvillage-bucket.s3.us-east-2.amazonaws.com/email_logo_text.png" alt="Logo" width="180">  --}}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="email-body" cellpadding="0" cellspacing="0">
+                <table class="email-body_inner"  cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="content-cell">
+                      <div class="f-fallback">
+                        <table style="width:100%">
+                          <td class="content-cell" align='left'>
+                            <p>Hi {{firstName}}, </p>
+                            <div >
+                                <p>Welcome to Sigma Octantis where you receive value for your money. I know you are ready for the packages we have for you. Verify your email by clicking the button below and enjoy the ride...yea an insured one ♥.</p>
+                            </div>
+                            <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                <td align="center">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+                                    <tr>
+                                        <td align="center">
+                                        <a href={{url}} class="f-fallback button" target="_blank"><font>Verify Email</font></a>
+                                        </td>
+                                    </tr>
+                                    </table>
+                                </td>
+                                </tr>
+                            </table>
+                            <p style="text-align:center"><a href="mailto:support@sigmaoctantis.ng">Contact support</a> if you have questions.</p>
+                          </td>
+                        </table>
+                        <br>
+                    </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

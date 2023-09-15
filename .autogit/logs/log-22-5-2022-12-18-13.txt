@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+Wed Jun 22 2022 12:18:13 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Models/Saving.ts
+* database/migrations/1651850467909_rates.ts
+* database/migrations/1655887750473_savings.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

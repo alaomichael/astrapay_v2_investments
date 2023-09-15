@@ -1,0 +1,18 @@
+-------------------- Auto-Git Log --------------------
+		Mon May 09 2022 09:37:27 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/RatesController.ts
+* app/Models/Rate.ts
+* database/migrations/1651850467909_rates.ts
+
+
+Created files:
+* .autogit/logs/log-9-4-2022-9-6-35.txt
+
+
+Deleted files:
+
+
+Renamed files:

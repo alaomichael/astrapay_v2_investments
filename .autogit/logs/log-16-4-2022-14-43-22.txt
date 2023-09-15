@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Mon May 16 2022 14:43:22 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/ApprovalsController.ts
+* app/Controllers/Http/InvestmentsController.ts
+
+
+Created files:
+* .autogit/logs/log-16-4-2022-14-12-39.txt
+
+
+Deleted files:
+
+
+Renamed files:

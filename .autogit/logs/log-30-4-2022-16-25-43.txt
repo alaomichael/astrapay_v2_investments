@@ -1,0 +1,19 @@
+-------------------- Auto-Git Log --------------------
+Mon May 30 2022 16:25:43 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* app/Models/Payout.ts
+* app/Models/PayoutRecord.ts
+* database/migrations/1651658735814_payouts.ts
+* database/migrations/1652775736415_payout_records.ts
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

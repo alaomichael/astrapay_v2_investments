@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+Mon May 30 2022 18:28:35 GMT+0100 (West Africa Standard Time)
+------------------------------------------------------
+
+Modified files:
+* app/Controllers/Http/InvestmentsController.ts
+* app/Services/PuppeteerServices.ts
+
+
+Created files:
+* .autogit/logs/log-30-4-2022-17-26-46.txt
+
+
+Deleted files:
+
+
+Renamed files:
