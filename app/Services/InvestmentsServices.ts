@@ -1635,10 +1635,12 @@ export default class InvestmentsServices {
             if (!createdAtFrom) {
                 // default to last 3 months
                 queryParams.createdAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                // console.log("queryParams.createdAtFrom   ", queryParams.createdAtFrom);
             }
             // debugger;
             if (!createdAtTo) {
                 queryParams.createdAtTo = DateTime.now().toISO();//.toISODate();
+                // console.log("queryParams.createdAtTo   ", queryParams.createdAtTo);
             }
             // let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
             // if (!updatedAtFrom) {
@@ -1659,7 +1661,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 .offset(offset)
                 .limit(limit)
 
@@ -1727,7 +1729,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 .offset(offset)
                 .limit(limit);
 
@@ -13602,6 +13604,26 @@ export default class InvestmentsServices {
             predicate = predicate + "number_of_attempts=?";
             params.push(queryFields.numberOfAttempts)
         }
+
+  if (queryFields.searchPhrase) {
+      predicateExists();
+      predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(customer_reference) like ? or lower(amount_approved) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(bvn) like ? or lower(amount) like ? )";
+           
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      params.push(`%${queryFields.searchPhrase}%`);
+      
+    }
+
         if (queryFields.updatedAt) {
             predicateExists()
             predicate = predicate + "updated_at=?"
