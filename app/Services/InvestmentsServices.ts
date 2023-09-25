@@ -12848,7 +12848,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                // .orderBy("updated_at", "desc")
+                // .orderBy("created_at", "desc")
                 .first();
             // console.log("Investment search result from service")
             // console.log(investment);
@@ -12913,7 +12913,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("updatedAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
             // timelines
             // payoutSchedules
             // repaidInvestments
@@ -12954,7 +12954,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 .offset(offset)
                 .limit(limit)
 
@@ -12973,7 +12973,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -12991,7 +12991,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -13008,7 +13008,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -13027,7 +13027,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -13045,7 +13045,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -13063,7 +13063,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
@@ -13081,7 +13081,7 @@ export default class InvestmentsServices {
                 .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                 // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
                 .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("updated_at", "desc")
+                .orderBy("created_at", "desc")
                 // .offset(offset)
                 // .limit(limit)
                 .first();
