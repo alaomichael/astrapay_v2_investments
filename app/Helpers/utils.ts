@@ -173,12 +173,8 @@ const interestDueOnPayout = (amount, rate, duration) => {
     if (duration > 1) {
       day = 'days'
     }
-    console.log(
-      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    )
-    console.log(
-      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    )
+    console.log(`Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`);
+    console.log(`Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`);
     return resolve(interestDue)
   })
 }

@@ -221,7 +221,7 @@ export default class ApprovalsServices {
             if (saveApproval.requestType === "start_investment") {
                 // get the request by request id
                 // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
+                if (saveApproval.approvalStatus.toLowerCase() === "approved") {
                     // update the neccesary field
                     // console.log("selectedInvestmentRequest ========================================================")
                     // console.log(selectedInvestmentRequest)
@@ -290,12 +290,6 @@ export default class ApprovalsServices {
                             console.log("Notification NOT sent successfully");
                             console.log(newNotificationMessageWithoutPdf);
                         }
-
-                        // Testing
-                        // let verificationCodeExpiresAt = DateTime.now().plus({ hours: 2 }).toHTTP() // .toISODate()
-                        // let testingPayoutDate = DateTime.now().plus({ days: duration }).toHTTP()
-                        // console.log('verificationCodeExpiresAt : ' + verificationCodeExpiresAt + ' from now')
-                        // console.log('Testing Payout Date: ' + testingPayoutDate)
 
                         // update record
                         let currentInvestment = await investmentService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -639,7 +633,7 @@ export default class ApprovalsServices {
                         }
                     }
 
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentRequest ========================================================")
                     // console.log(selectedInvestmentRequest)
@@ -673,7 +667,7 @@ export default class ApprovalsServices {
                 // get the request by request id
                 // update status based on admin action
 
-                if (saveApproval.approvalStatus === "approved") {
+                if (saveApproval.approvalStatus.toLowerCase() === "approved") {
                     // update the neccesary field
                     // console.log("selectedInvestmentRequest ========================================================")
                     // console.log(selectedInvestmentRequest)
@@ -787,7 +781,7 @@ export default class ApprovalsServices {
                     // send for update
                     await investmentService.updateInvestment(currentInvestment, selectedInvestmentRequestUpdate);
 
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentRequest ========================================================")
                     // console.log(selectedInvestmentRequest)
@@ -1037,7 +1031,7 @@ export default class ApprovalsServices {
                 const selectedInvestmentPayoutRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
                 // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
+                if (saveApproval.approvalStatus.toLowerCase() === "approved") {
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1048,7 +1042,7 @@ export default class ApprovalsServices {
                     // update the record
                     // debugger
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1075,7 +1069,7 @@ export default class ApprovalsServices {
                     };
                     // console.log("Timeline object line 823:", timelineObject);
                     await timelineService.createTimeline(timelineObject);
-                } else if (saveApproval.approvalStatus === "suspend_payout" && saveApproval.isPayoutSuspended === true) {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "suspend_payout" && saveApproval.isPayoutSuspended === true) {
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1102,7 +1096,7 @@ export default class ApprovalsServices {
                     };
                     // console.log("Timeline object line 849:", timelineObject);
                     await timelineService.createTimeline(timelineObject);
-                } else if (saveApproval.approvalStatus === "suspend_rollover" && saveApproval.isRolloverSuspended === true) {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "suspend_rollover" && saveApproval.isRolloverSuspended === true) {
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1135,7 +1129,7 @@ export default class ApprovalsServices {
                 const selectedInvestmentTerminationRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
                 // update status based on admin action
-                if (saveApproval.approvalStatus === "approved") {
+                if (saveApproval.approvalStatus.toLowerCase() === "approved") {
                     // update the neccesary field
                     // console.log("selectedInvestmentTerminationRequest ========================================================")
                     // console.log(selectedInvestmentTerminationRequest)
@@ -1170,7 +1164,7 @@ export default class ApprovalsServices {
                     // Send to investmentsService for processing of liquidation
                     await investmentService.liquidateInvestment(saveApproval.investmentId, query, loginUserData);
                     debugger
-                } else if (saveApproval.approvalStatus === "declined") {
+                } else if (saveApproval.approvalStatus.toLowerCase() === "declined") {
                     // update the neccesary field
                     // console.log("selectedInvestmentTerminationRequest ========================================================")
                     // console.log(selectedInvestmentTerminationRequest)
@@ -1215,6 +1209,8 @@ export default class ApprovalsServices {
                 }
 
             }
+
+            debugger
             return saveApproval
         } catch (error) {
             console.log(error)
