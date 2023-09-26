@@ -6504,24 +6504,7 @@ export default class InvestmentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
-
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus;
-
-                                    // newStatus = "submitted";
-                                    // newStatus = "approved";
-                                    // record.status = newStatus;
-                                    // record.requestType = "payout_investment";
-                                    // record.remark = approval.remark;
-                                    // record.isInvestmentApproved = true;
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
+                                    // console.log("Approval for investment payout processing: ===========================================>")
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -7198,24 +7181,7 @@ export default class InvestmentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
-
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus;
-
-                                    // newStatus = "submitted";
-                                    // newStatus = "approved";
-                                    // record.status = newStatus;
-                                    // record.requestType = "payout_investment";
-                                    // record.remark = approval.remark;
-                                    // record.isInvestmentApproved = true;
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
+                                    // console.log("Approval for investment payout processing: ===========================================>")
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -8301,7 +8267,7 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 8005 ==================================")
+                    // console.log("check approval record 8005 ==================================")
                     // debugger
                     if (record == undefined || !record) {
                         // await trx.rollback()
@@ -8316,7 +8282,7 @@ export default class InvestmentsServices {
                     let isAllPayoutSuspended = settings.isAllPayoutSuspended
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
-                            console.log("Investment approval Selected for Update line 8020:");
+                            // console.log("Investment approval Selected for Update line 8020:");
                             // update the data
                             // TODO: Uncomment to use loginAdminFullName
                             // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
@@ -8341,8 +8307,9 @@ export default class InvestmentsServices {
                             // console.log('Time investment was started line 8042: ', startDate)
                             // let timelineObject
                             // let timeline
-                            let isDueForPayout = await dueForPayout(startDate, duration)
-                            console.log('Is due for payout status line 8046:', isDueForPayout)
+
+                            // let isDueForPayout = await dueForPayout(startDate, duration)
+                            // console.log('Is due for payout status line 8046:', isDueForPayout)
                             // debugger
                             // if (isDueForPayout === true) {
                             //                          record.isPayoutAuthorized === true,
@@ -8359,24 +8326,8 @@ export default class InvestmentsServices {
                                 // || (record.requestType === "liquidate_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                 // record.isPayoutSuspended === false)
                             ) {
-                                console.log("Approval for investment payout processing: ===========================================>")
+                                // console.log("Approval for investment payout processing: ===========================================>")
                                 // debugger
-                                // TODO: Uncomment to use loginAdminFullName
-                                // record.processedBy = loginAdminFullName;
-                                // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                // record.approvalStatus = approval.approvalStatus;
-
-                                // newStatus = "submitted";
-                                // newStatus = "approved";
-                                // record.status = newStatus;
-                                // record.requestType = "payout_investment";
-                                // record.remark = approval.remark;
-                                // record.isInvestmentApproved = true;
-                                // TODO: Uncomment to use loginAdminFullName
-                                // record.processedBy = loginAdminFullName;
-                                // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
                                 record.approvalStatus = "approved"; //approval.approvalStatus;
                                 // Data to send for transfer of fund
                                 let { amount, lng, lat, id, userId,
@@ -9570,24 +9521,7 @@ export default class InvestmentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
-
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus;
-
-                                    // newStatus = "submitted";
-                                    // newStatus = "approved";
-                                    // record.status = newStatus;
-                                    // record.requestType = "payout_investment";
-                                    // record.remark = approval.remark;
-                                    // record.isInvestmentApproved = true;
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
+                                    // console.log("Approval for investment payout processing: ===========================================>")
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
                                     let { amount, lng, lat, id, userId,
@@ -9681,9 +9615,7 @@ export default class InvestmentsServices {
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 1313 :", updatedInvestment);
-
-                                                // console.log("Updated record Status line 1315: ", record);
-
+                                                
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -11785,40 +11717,8 @@ export default class InvestmentsServices {
                                     // || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                     //     record.isPayoutSuspended === false)
                                 ) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
-
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus;
-
-                                    // newStatus = "submitted";
-                                    // newStatus = "approved";
-                                    // record.status = newStatus;
-                                    // record.requestType = "payout_investment";
-                                    // record.remark = approval.remark;
-                                    // record.isInvestmentApproved = true;
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
+                                    // console.log("Approval for investment payout processing: ===========================================>")
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
-                                    // // Data to send for transfer of fund
-                                    // let { amount, lng, lat, id,
-                                    //     firstName, lastName,
-                                    //     walletId,
-                                    //     phone,
-                                    //     email,
-                                    //     rfiCode, interestDueOnInvestment } = record;
-                                    // let beneficiaryName = `${firstName} ${lastName}`;
-                                    // let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
-                                    // let beneficiaryAccountName = beneficiaryName;
-                                    // let beneficiaryPhoneNumber = phone;
-                                    // let beneficiaryEmail = email;
-                                    // // Send to the endpoint for debit of wallet
-                                    // let descriptionForPrincipal = `Payout of the principal of ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    // let descriptionForInterest = `Payout of the interest of ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
 
                                     // Data to send for transfer of fund
@@ -12258,33 +12158,11 @@ export default class InvestmentsServices {
                                     || (record.requestType === "liquidate_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)
                                 ) {
-                                    console.log("Approval for investment liquidation processing: ===========================================>")
-                                    debugger
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = approval.approvedBy != undefined ? approval.approvedBy : "automation"
-                                    // record.assignedTo = approval.assignedTo != undefined ? approval.assignedTo : "automation"
-                                    // record.approvalStatus = approval.approvalStatus;
-
-                                    // newStatus = "submitted";
-                                    // newStatus = "approved";
-                                    // record.status = newStatus;
-                                    // record.requestType = "payout_investment";
-                                    // record.remark = approval.remark;
-                                    // record.isInvestmentApproved = true;
-                                    // TODO: Uncomment to use loginAdminFullName
-                                    // record.processedBy = loginAdminFullName;
-                                    // record.approvedBy = loginUserData.approvedBy != undefined ? loginUserData.approvedBy : "automation";
-                                    // record.assignedTo = loginUserData.assignedTo != undefined ? loginUserData.assignedTo : "automation";
+                                    // console.log("Approval for investment liquidation processing: ===========================================>")
+                                    // debugger
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
-                                    // let { amount, lng, lat, id,
-                                    //     firstName, lastName,
-                                    //     walletId,
-                                    //     phone,
-                                    //     email,
-                                    //     rfiCode, interestDueOnInvestment } = record;
-                                    let { amount, lng, lat, id, userId,
+                                                                      let { amount, lng, lat, id, userId,
                                         firstName, lastName,
                                         walletId, investorFundingWalletId,
                                         phone,
@@ -12317,13 +12195,7 @@ export default class InvestmentsServices {
                                     interestDueOnInvestment = interestDueOnInvestment - penalty;
                                     // console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
                                     // debugger
-                                    // NEW CODE START
-                                    // let beneficiaryName = `${firstName} ${lastName}`;
-                                    // let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
-                                    // let beneficiaryAccountName = beneficiaryName;
-                                    // let beneficiaryPhoneNumber = phone;
-                                    // let beneficiaryEmail = email;
-                                    // NEW CODE START
+                                                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist

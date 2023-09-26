@@ -2440,7 +2440,7 @@ export default class ApprovalsController {
           }
 
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
-          console.log("Approval for investment payout processing: ===========================================>")
+          // console.log("Approval for investment payout processing: ===========================================>")
 
           newStatus = "approved";
           record.status = newStatus;

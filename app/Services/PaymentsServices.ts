@@ -1858,7 +1858,7 @@ export default class PaymentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
+                                    // console.log("Approval for investment payout processing: ===========================================>")
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
@@ -6232,7 +6232,7 @@ export default class PaymentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
+                                    // console.log("Approval for investment payout processing: ===========================================>")
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
@@ -6918,7 +6918,7 @@ export default class PaymentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
+                                    // console.log("Approval for investment payout processing: ===========================================>")
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
@@ -8054,7 +8054,7 @@ export default class PaymentsServices {
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
+                                    // console.log("Approval for investment payout processing: ===========================================>")
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;
@@ -8826,7 +8826,7 @@ export default class PaymentsServices {
                                     // || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                     //     record.isPayoutSuspended === false)
                                 ) {
-                                    console.log("Approval for investment payout processing: ===========================================>")
+                                    // console.log("Approval for investment payout processing: ===========================================>")
 
                                     // TODO: Uncomment to use loginAdminFullName
                                     // record.processedBy = loginAdminFullName;

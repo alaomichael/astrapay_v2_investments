@@ -162,7 +162,7 @@ const interestDueOnPayout = (amount, rate, duration) => {
     interestDue = amount * interestDue;
     // debugger
     interestDue = Number(interestDue.toFixed(decPl));
-    if(interestDue < 1){
+    if (interestDue < 1) {
       interestDue = 1
     }
     debugger
@@ -257,9 +257,7 @@ const dueForPayout = (created_at, duration) => {
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
-      console.log(
-        `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      )
+      // console.log(`Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`);
     } else {
       isDueForPayout = false
       // console.log(
@@ -409,7 +407,7 @@ const createNewInvestment = async function (payloadAmount,
   // console.log('Investment data line 362: ', investmentData)
   // console.log('Investment payloadAmount data line 363: ', payloadAmount)
   console.log('Investment payloadDuration data line 364: ', payloadDuration)
-  console.log('Investment payloadInvestmentType data line 366: ', payloadInvestmentType )
+  console.log('Investment payloadInvestmentType data line 366: ', payloadInvestmentType)
   try {
     // let requestType = 'start_investment'
     let payload
