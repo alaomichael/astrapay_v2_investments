@@ -52,6 +52,23 @@ export default class TypesServices {
         }
     }
 
+     public async getTypesCount(queryParams: any): Promise<any> {
+        try {
+            const queryGetter = await this.queryBuilder(queryParams);
+            const counter = await Type.query()
+                .whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                .count("*");
+            // return {
+            //   totalCount: parseInt(counter[0].$extras.count),
+            // };
+            // debugger
+            return parseInt(counter[0].$extras.count);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     public async getTypeByTypeId(id: string): Promise<Type | any | null> {
         try {
             // const type = await Type.findBy('id', id);

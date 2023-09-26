@@ -1544,23 +1544,23 @@ export default class InvestmentsController {
           await approvalsService.createApproval(approvalObject);
           // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
           // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
-          let payoutApprovalObject;
+          // let payoutApprovalObject;
 
-          // TODO: Send to the Admin for approval
-          // update payoutApprovalObject
-          payoutApprovalObject = {
-            rfiCode: rfiCode,
-            walletId: investment.walletId,
-            investmentId: investment.id,
-            userId: investment.userId,
-            requestType: "payout_investment_1",
-            approvalStatus: investment.approvalStatus,
-            assignedTo: "",//investment.assignedTo,
-            processedBy: "",//investment.processedBy,
-            // remark: "",
-          };
-          await approvalsService.createApproval(payoutApprovalObject);
-          debugger
+          // // TODO: Send to the Admin for approval
+          // // update payoutApprovalObject
+          // payoutApprovalObject = {
+          //   rfiCode: rfiCode,
+          //   walletId: investment.walletId,
+          //   investmentId: investment.id,
+          //   userId: investment.userId,
+          //   requestType: "payout_investment",
+          //   approvalStatus: investment.approvalStatus,
+          //   assignedTo: "",//investment.assignedTo,
+          //   processedBy: "",//investment.processedBy,
+          //   // remark: "",
+          // };
+          // await approvalsService.createApproval(payoutApprovalObject);
+          // debugger
         }
 
         // update timeline
@@ -1797,23 +1797,23 @@ export default class InvestmentsController {
               await approvalsService.createApproval(approvalObject);
               // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
               // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
-              let payoutApprovalObject;
+              // let payoutApprovalObject;
 
-              // TODO: Send to the Admin for approval
-              // update payoutApprovalObject
-              payoutApprovalObject = {
-                rfiCode: rfiCode,
-                walletId: investment.walletId,
-                investmentId: investment.id,
-                userId: investment.userId,
-                requestType: "payout_investment_2",
-                approvalStatus: "pending",
-                assignedTo: "",//investment.assignedTo,
-                processedBy: "",//investment.processedBy,
-                // remark: "",
-              };
-              await approvalsService.createApproval(payoutApprovalObject);
-              debugger
+              // // TODO: Send to the Admin for approval
+              // // update payoutApprovalObject
+              // payoutApprovalObject = {
+              //   rfiCode: rfiCode,
+              //   walletId: investment.walletId,
+              //   investmentId: investment.id,
+              //   userId: investment.userId,
+              //   requestType: "payout_investment",
+              //   approvalStatus: "pending",
+              //   assignedTo: "",//investment.assignedTo,
+              //   processedBy: "",//investment.processedBy,
+              //   // remark: "",
+              // };
+              // await approvalsService.createApproval(payoutApprovalObject);
+              // debugger
             }
 
 
@@ -2029,23 +2029,23 @@ export default class InvestmentsController {
               await approvalsService.createApproval(approvalObject);
               // let newApprovalRequest = await approvalsService.createApproval(approvalObject);
               // console.log("new ApprovalRequest object line 1199:", newApprovalRequest);
-              let payoutApprovalObject;
+              // let payoutApprovalObject;
 
-              // TODO: Send to the Admin for approval
-              // update payoutApprovalObject
-              payoutApprovalObject = {
-                rfiCode: rfiCode,
-                walletId: investment.walletId,
-                investmentId: investment.id,
-                userId: investment.userId,
-                requestType: "payout_investment_3",
-                approvalStatus: "pending",
-                assignedTo: "",//investment.assignedTo,
-                processedBy: "",//investment.processedBy,
-                // remark: "",
-              };
-              await approvalsService.createApproval(payoutApprovalObject);
-              debugger
+              // // TODO: Send to the Admin for approval
+              // // update payoutApprovalObject
+              // payoutApprovalObject = {
+              //   rfiCode: rfiCode,
+              //   walletId: investment.walletId,
+              //   investmentId: investment.id,
+              //   userId: investment.userId,
+              //   requestType: "payout_investment",
+              //   approvalStatus: "pending",
+              //   assignedTo: "",//investment.assignedTo,
+              //   processedBy: "",//investment.processedBy,
+              //   // remark: "",
+              // };
+              // await approvalsService.createApproval(payoutApprovalObject);
+              // debugger
             }
 
 

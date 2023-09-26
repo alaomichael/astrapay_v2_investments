@@ -27,6 +27,7 @@ export default class TypesController {
             // if (!limit) throw new Error("Limit query parameter is required for this request.");
             const type = await typesService.getTypes(request.qs()); // Type.all();
             let sortedTypes = type;
+            const totalCount = await typesService.getTypesCount(request.qs());
             debugger
             // debugger
             // console.log("type line 29 ===================");
@@ -37,8 +38,9 @@ export default class TypesController {
             if (sortedTypes.length < 1) {
                 return response.status(200).json({
                     status: "OK",
-                    message: "no type request matched your search",
+                    message: "No type request matched your search",
                     data: null,
+                    totalCount
                 });
             }
             for (let index = 0; index < sortedTypes.length; index++) {
@@ -60,6 +62,7 @@ export default class TypesController {
             return response.status(200).json({
                 status: "OK",
                 data: typeArray,
+                totalCount,
                 // data: sortedTypes.map((type) => type.$original),
             });
         } catch (error) {
