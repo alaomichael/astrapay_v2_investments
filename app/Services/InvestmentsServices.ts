@@ -170,7 +170,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -369,7 +369,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -580,7 +580,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -761,7 +761,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -958,7 +958,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -1139,7 +1139,7 @@ export default class InvestmentsServices {
                                 beneficiaryAccountName,
                                 beneficiaryEmail,
                                 beneficiaryPhoneNumber,
-                                rfiCode,userId,
+                                rfiCode, userId,
                                 descriptionForPrincipal);
                             debugger
                         }
@@ -1988,15 +1988,7 @@ export default class InvestmentsServices {
                     if (investment && investment.$original.status == "active") {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
-                        // @ts-ignore
-                        // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
-                        // console.log('Is due for payout status :', isDueForPayout)
-                        // TODO: Change below to real data
-                        // TESTING
-                        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                        // let duration = 4
-                        // console.log('Time investment was started line 973: ', startDate)
-                        // let timelineObject
+
                         let isDueForPayout = await dueForPayout(startDate, duration)
                         // console.log('Is due for payout status line 976:', isDueForPayout)
                         // let amt = investment.amount
@@ -2023,26 +2015,7 @@ export default class InvestmentsServices {
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
-                                // approvalRequestIsExisting = await Approval.query().where({
-                                //   investment_id: investmentId,
-                                //   user_id: userId,
-                                //   request_type: requestType,
-                                //   //  approval_status: approvalStatus,
-                                // })
 
-                                // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
-                                // if (approvalRequestIsExisting.length < 1) {
-                                //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-                                //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
-                                //   if (approvalRequestIsDone === undefined) {
-                                //     return response.status(400).json({
-                                //       status: 'OK',
-                                //       message: 'payout approval request was not successful, please try again.',
-                                //       data: null,
-                                //     })
-                                //   }
-                                // }
-                                // const approvalsService = new ApprovalsServices()
                                 let approvalObject;
 
                                 // TODO: Send to the Admin for approval
@@ -2159,26 +2132,6 @@ export default class InvestmentsServices {
                             let approvalIsAutomated = isPayoutAutomated; // settings.isTerminationAutomated
                             // let approvalRequestIsExisting
                             if (isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) {
-                                // approvalRequestIsExisting = await Approval.query().where({
-                                //   investment_id: investmentId,
-                                //   user_id: userId,
-                                //   request_type: requestType,
-                                //   //  approval_status: approvalStatus,
-                                // })
-
-                                // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
-                                // if (approvalRequestIsExisting.length < 1) {
-                                //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-                                //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
-                                //   if (approvalRequestIsDone === undefined) {
-                                //     return response.status(400).json({
-                                //       status: 'OK',
-                                //       message: 'payout approval request was not successful, please try again.',
-                                //       data: null,
-                                //     })
-                                //   }
-                                // }
-
                                 let approvalObject;
 
                                 // TODO: Send to the Admin for approval
@@ -2385,14 +2338,6 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     const approvalsService = new ApprovalsServices();
                     const typesService = new TypesServices();
-                    // let currentDate = DateTime.now().toISO()
-                    // @ts-ignore
-                    // let id = request.input('userId')
-                    // let { userId, investmentId } = request.all()
-                    // let { userId, investmentId } = investment;//request.all()
-                    // console.log('Params for update line 494: ' + ' userId: ' + userId + ', investmentId: ' + id)
-                    // let investment = await Investment.query().where('user_id', id).where('id', params.id)
-                    // let investment = await Investment.query().where('id', investmentId)
                     let investmentId = id;
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 499: ', investment)
@@ -2400,17 +2345,10 @@ export default class InvestmentsServices {
                     if (investment && investment.$original.status == "active" && investment.$original.status != "payout_suspended" && investment.$original.status != "rollover_suspended") {
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration, investmentTypeId } = investment.$original;
-                        // @ts-ignore
-                        // let isDueForPayout = await dueForPayout(investment.startDate, investment.duration)
-                        // console.log('Is due for payout status :', isDueForPayout)
-                        // TODO: Change below to real data
-                        // TESTING
-                        // let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                        // let duration = 4
-                        // console.log('Time investment was started line 1469: ', startDate)
+
                         let timelineObject
                         let isDueForPayout = await dueForPayout(startDate, duration)
-                        console.log('Is due for payout status line 2071:', isDueForPayout)
+                        // console.log('Is due for payout status line 2071:', isDueForPayout)
                         // let amt = investment.amount
                         const settingsService = new SettingsServices();
                         const settings = await settingsService.getSettingBySettingRfiCode(rfiCode)
@@ -2441,26 +2379,7 @@ export default class InvestmentsServices {
                             // let approvalRequestIsExisting
                             if (((isPayoutAutomated == false || approvalIsAutomated == undefined || approvalIsAutomated == false) && isAutomated == false) ||
                                 ((isPayoutAutomated == true || approvalIsAutomated != undefined || approvalIsAutomated == true) && isAutomated == false)) {
-                                // approvalRequestIsExisting = await Approval.query().where({
-                                //   investment_id: investmentId,
-                                //   user_id: userId,
-                                //   request_type: requestType,
-                                //   //  approval_status: approvalStatus,
-                                // })
 
-                                // console.log('approvalRequestIsExisting line 1366: ', approvalRequestIsExisting)
-                                // if (approvalRequestIsExisting.length < 1) {
-                                //   let approvalRequestIsDone = await approvalRequest(userId, investmentId, requestType)
-                                //   console.log(' Approval request return line 1369 : ', approvalRequestIsDone)
-                                //   if (approvalRequestIsDone === undefined) {
-                                //     return response.status(400).json({
-                                //       status: 'OK',
-                                //       message: 'payout approval request was not successful, please try again.',
-                                //       data: null,
-                                //     })
-                                //   }
-                                // }
-                                // const approvalsService = new ApprovalsServices()
                                 let approvalObject;
 
                                 // TODO: Send to the Admin for approval
@@ -2540,19 +2459,6 @@ export default class InvestmentsServices {
                                 // '100' = 'no rollover',
                                 //   '101' = 'rollover principal only',
                                 //   '102' = 'rollover principal with interest',
-                                // if (investment.rolloverTarget > 0 && investment.rolloverTarget > investment.rolloverDone && investment.rolloverType != "100") {
-                                //   // check type of rollover
-
-                                //   if (investment.rollOverType == "101") {
-
-                                //   } else if (investment.rollOverType == "101") {
-
-                                //   }
-                                // } else {
-
-                                // }
-
-                                // await investment.save()
                                 let record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                 // send for update
                                 const trx = await Database.transaction();
@@ -3047,6 +2953,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
+             console.log(" Login User Data line 2956 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -3111,40 +3019,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 1843 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 1851 =========================");
+                    
+                    // console.log(" Login User Data line 1843 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 1853 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 1857 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 1859 ==================")
-                    // console.log(loginAdminFullName)
-
+                    
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
                     // approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
@@ -3646,6 +3524,8 @@ export default class InvestmentsServices {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
+             console.log(" Login User Data line 3555 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -3708,45 +3588,13 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 1843 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 1851 =========================");
+                    
+                    // console.log(" Login User Data line 1843 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 1853 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 1857 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 1859 ==================")
-                    // console.log(loginAdminFullName)
+                   
 
                     const timelineService = new TimelinesServices();
-                    // const { investmentId, walletId, userId } = request.qs();
-                    // approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
-
-                    // console.log(" QUERY RESULT: ", approval);
+                   
                     let walletIdToSearch = investment.wallet_id
                     let userIdToSearch = investment.user_id
                     let investmentId;
@@ -3766,7 +3614,7 @@ export default class InvestmentsServices {
                     // console.log(" idToSearch RESULT ===============================: ", idToSearch);
                     // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
                     // console.log(" record RESULT ===============================: ", record);
-                    console.log("check approval record 1837 ==================================")
+                    // console.log("check approval record 1837 ==================================")
                     // debugger
                     if (record == undefined || !record) {
                         await trx.rollback()
@@ -3776,7 +3624,7 @@ export default class InvestmentsServices {
                     // console.log(" QUERY RESULT for record: ", record.$original);
 
                     if (investment) {
-                        console.log("Investment approval Selected for Update line 1845:");
+                        // console.log("Investment approval Selected for Update line 1845:");
                         // update the data
                         // TODO: Uncomment to use loginAdminFullName
                         // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
@@ -6166,6 +6014,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
+             console.log(" Login User Data line 6075 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate, endDate, rfiCode } = queryParams;
 
             if (!updatedAtFrom) {
@@ -6301,7 +6151,7 @@ export default class InvestmentsServices {
                 .sum('total_amount_to_payout as totalAmountDueForPayout')
                 .offset(offset)
                 .limit(limit);
-                
+
             console.log("Total Sum of about to be payout investment", totalSum[0].totalAmountDueForPayout);
             debugger
             // // Get RfiCode list
@@ -6315,9 +6165,6 @@ export default class InvestmentsServices {
             // if (!settings) {
             //     throw Error(`Unable to get the list of Registered Financial institution.`);
             // }
-
-
-
 
 
             if (responseData.length > 0 && totalSum[0]!.totalAmountDueForPayout > 0) {
@@ -6355,7 +6202,7 @@ export default class InvestmentsServices {
                     let amountDueForPayoutNow = totalSum[0]!.totalAmountDueForPayout;
                     // Send Notification to admin and others stakeholder
                     let messageKey = "insufficient_balance";
-                    let newNotificationMessageWithoutPdf = await sendNotificationForLowBalanceToAdmin(messageKey, rfiCode, userBalance,amountDueForPayoutNow);
+                    let newNotificationMessageWithoutPdf = await sendNotificationForLowBalanceToAdmin(messageKey, rfiCode, userBalance, amountDueForPayoutNow);
                     // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
                     //debugger
                     if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
@@ -6380,44 +6227,15 @@ export default class InvestmentsServices {
                 let { id, } = investment;//request.all()
                 // const trx = await Database.transaction();
                 try {
-                    console.log("Entering update 2232 ==================================")
+                    // console.log("Entering update 2232 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 2252 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 1175 =========================");
+                    
+                    // console.log(" Login User Data line 2252 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 1177 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 1181 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 1186 ==================")
-                    // console.log(loginAdminFullName)
+                   
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -6467,15 +6285,7 @@ export default class InvestmentsServices {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 6163:");
                             // update the data
-                            // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark != undefined ? remark : approval.remark;
-                            // console.log("Admin remark line 6169 ==================== ", approval.remark);
-                            // console.log("Admin remark line 6170 ========*******************=========== ", remark);
-                            // let newStatus;
-                            // await approval.save();
-                            // console.log("Update Approval Request line 3498:", approval);
+                         
                             let { currencyCode, lastName, startDate, duration, } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
                             console.log("Surname: ", lastName)
@@ -6483,25 +6293,12 @@ export default class InvestmentsServices {
                             // debugger
                             // let email = email;
                             let timelineObject;
-                            // console.log("Approval.requestType: ===========================================>", approval.requestType)
-                            // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                            // let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                            // let duration = 4
-                            // console.log('Time investment was started line 6185: ', startDate)
-                            // let timelineObject
-                            // let timeline
+                            
                             let isDueForPayout = await dueForPayout(startDate, duration)
                             // console.log('Is due for payout status line 6189:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                //                          record.isPayoutAuthorized === true,
-                                //   record.isPayoutSuspended === false,
-                                // payoutReactivationDate: null,
-
-                                // record.status === "matured" &&
-                                //     record.status === "matured" &&
-
-                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                                              if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
                                     // console.log("Approval for investment payout processing: ===========================================>")
@@ -6567,7 +6364,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal)
                                             debugger
                                         }
@@ -6658,7 +6455,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -6700,7 +6497,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -6987,6 +6784,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 3859:", queryParams)
+            console.log(" Login User Data line 3956 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -7069,39 +6868,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 3956 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 3961 =========================");
+                 
+                    // console.log(" Login User Data line 3956 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 3963 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
 
-                    // console.log("Admin roles , line 3967 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 3972 ==================")
-                    // console.log(loginAdminFullName)
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -7245,7 +7015,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForInterest)
                                                 debugger
                                             }
@@ -7415,7 +7185,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForInterest)
                                                 debugger
                                             }
@@ -7726,7 +7496,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForPrincipal);
                                                 debugger
                                             }
@@ -7899,7 +7669,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForPrincipal);
                                                 debugger
                                             }
@@ -8118,6 +7888,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 7864:", queryParams)
+                                console.log(" Login User Data line 7865 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -8204,71 +7976,25 @@ export default class InvestmentsServices {
                 let { id, } = investment;//request.all()
                 // const trx = await Database.transaction();
                 try {
-                    console.log("Entering update 7942 ==================================")
+                    // console.log("Entering update 7942 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
-                    // await request.validate(UpdateApprovalValidator);
-                    // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 7962 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 3961 =========================");
+                   
+                    // console.log(" Login User Data line 7962 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 3963 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 3967 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 3972 ==================")
-                    // console.log(loginAdminFullName)
-
+                   
                     const timelineService = new TimelinesServices();
-                    // const { investmentId, walletId, userId } = request.qs();
-                    // approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
-
-                    // console.log(" QUERY RESULT: ", approval);
                     let walletIdToSearch = investment.wallet_id
                     let userIdToSearch = investment.user_id
                     let investmentId;
                     let record;
-                    // debugger
-                    // console.log("investmentId line 1199 ===================================", approval.investmentId)
-                    // console.log("linkAccountId line 1200 ===================================", approval.linkAccountId)
-                    // console.log("tokenId line 1201 ===================================", approval.tokenId)
-                    // console.log("cardId line 1202 ===================================", approval.cardId)
-                    // console.log("accountId line 1203 ===================================", approval.accountId)
-                    if (id != null) {
+                  if (id != null) {
                         investmentId = id;
                         // debugger
                         record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                         // debugger
                     }
-                    // console.log(" idToSearch RESULT ===============================: ", idToSearch);
-                    // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
-                    // console.log(" record RESULT ===============================: ", record);
-                    // console.log("check approval record 8005 ==================================")
-                    // debugger
+                 
                     if (record == undefined || !record) {
                         // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
@@ -8282,42 +8008,16 @@ export default class InvestmentsServices {
                     let isAllPayoutSuspended = settings.isAllPayoutSuspended
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
-                            // console.log("Investment approval Selected for Update line 8020:");
-                            // update the data
-                            // TODO: Uncomment to use loginAdminFullName
-                            // payload.processedBy = processedBy != undefined ? processedBy : loginAdminFullName;
-                            // payload.assignedTo = assignedTo != undefined ? assignedTo : loginAdminFullName;
-                            // payload.remark = remark != undefined ? remark : approval.remark;
-                            // console.log("Admin remark line 1220 ==================== ", approval.remark);
-                            // console.log("Admin remark line 1221 ========*******************=========== ", remark);
-                            // let newStatus;
-                            // await approval.save();
-                            // console.log("Update Approval Request line 504:", approval);
-                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts } = record;
+                           
+                            let { currencyCode,// lastName, startDate, duration, 
+                                status,                                 numberOfAttempts } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
-                            console.log("Surname: ", lastName)
-                            // console.log("CurrencyCode: ", currencyCode)
-                            // debugger
-                            // let email = email;
+
+                            // console.log("Surname: ", lastName)
+                            // console.log("startDate: ", startDate)
+                            // console.log("duration: ", duration)
+                           
                             let timelineObject;
-                            // console.log("Approval.requestType: ===========================================>", approval.requestType)
-                            // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
-                            // let startDate = DateTime.now().minus({ days: 5 }).toISO()
-                            // let duration = 4
-                            // console.log('Time investment was started line 8042: ', startDate)
-                            // let timelineObject
-                            // let timeline
-
-                            // let isDueForPayout = await dueForPayout(startDate, duration)
-                            // console.log('Is due for payout status line 8046:', isDueForPayout)
-                            // debugger
-                            // if (isDueForPayout === true) {
-                            //                          record.isPayoutAuthorized === true,
-                            //   record.isPayoutSuspended === false,
-                            // payoutReactivationDate: null,
-
-                            // record.status === "matured" &&
-                            //     record.status === "matured" &&
 
                             if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                 record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -8392,7 +8092,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest);
                                             debugger
                                         }
@@ -8436,7 +8136,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -8488,7 +8188,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -8593,8 +8293,6 @@ export default class InvestmentsServices {
                                                 // @ts-ignore
                                                 message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
                                                 adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment failed.`,
-
-
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8660,7 +8358,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -8841,7 +8539,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -9013,7 +8711,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -9190,7 +8888,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest);
                                             debugger
                                         }
@@ -9234,7 +8932,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -9254,7 +8952,7 @@ export default class InvestmentsServices {
                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                 await trx.commit();
                                 // console.log(" Current log, line 3172 :", updatedInvestment);
-                                // console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
+                                console.log(" creditUserWalletWithPrincipal, line 8762 ======:", creditUserWalletWithPrincipal);
 
                                 console.log(" creditUserWalletWithInterest , line 8764 :", creditUserWalletWithInterest);
                                 // debugger
@@ -9330,6 +9028,8 @@ export default class InvestmentsServices {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
+             console.log(" Login User Data line 9033 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -9409,39 +9109,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 2252 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 1175 =========================");
+                    
+                    // console.log(" Login User Data line 2252 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 1177 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 1181 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 1186 ==================")
-                    // console.log(loginAdminFullName)
+                  
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -9540,7 +9211,7 @@ export default class InvestmentsServices {
                                     let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
-                                    if (status == "completed_with_interest_payout_outstanding") {
+                                    if (status.toLowerCase() == "completed_with_interest_payout_outstanding") {
                                         // ADD NEW CODE HERE 03
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef02 = await checkTransactionStatus(interestPayoutRequestReference, rfiCode);
@@ -9584,7 +9255,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForInterest);
                                                 debugger
                                             }
@@ -9615,7 +9286,7 @@ export default class InvestmentsServices {
                                                 await investmentsService.updateInvestment(currentInvestment, record);
                                                 // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                                 // console.log(" Current log, line 1313 :", updatedInvestment);
-                                                
+
                                                 // update timeline
                                                 timelineObject = {
                                                     id: uuid(),
@@ -9753,7 +9424,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForInterest);
                                                 debugger
                                             }
@@ -9886,7 +9557,7 @@ export default class InvestmentsServices {
 
                                     }
 
-                                    if (status == "completed_with_principal_payout_outstanding") {
+                                    if (status.toLowerCase() == "completed_with_principal_payout_outstanding") {
                                         // ADD NEW CODE HERE
                                         // check if transaction with same customer ref exist
                                         let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
@@ -9932,7 +9603,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForPrincipal);
                                                 debugger
                                             }
@@ -10102,7 +9773,7 @@ export default class InvestmentsServices {
                                                     beneficiaryAccountName,
                                                     beneficiaryEmail,
                                                     beneficiaryPhoneNumber,
-                                                    rfiCode,userId,
+                                                    rfiCode, userId,
                                                     descriptionForPrincipal);
                                                 debugger
                                             }
@@ -10319,6 +9990,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
+             console.log(" Login User Data line 10022 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -10396,39 +10069,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 6940 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 3773 =========================");
+                    
+                    // console.log(" Login User Data line 6940 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 3775 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 3779 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 3784 ==================")
-                    // console.log(loginAdminFullName)
+                    
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -10626,7 +10270,7 @@ export default class InvestmentsServices {
                                                         beneficiaryAccountName,
                                                         beneficiaryEmail,
                                                         beneficiaryPhoneNumber,
-                                                        rfiCode,userId,
+                                                        rfiCode, userId,
                                                         descriptionForInterest);
                                                     debugger
                                                 }
@@ -10794,7 +10438,7 @@ export default class InvestmentsServices {
                                                         beneficiaryAccountName,
                                                         beneficiaryEmail,
                                                         beneficiaryPhoneNumber,
-                                                        rfiCode,userId,
+                                                        rfiCode, userId,
                                                         descriptionForInterest);
                                                     debugger
                                                 }
@@ -11101,7 +10745,7 @@ export default class InvestmentsServices {
                                                         beneficiaryAccountName,
                                                         beneficiaryEmail,
                                                         beneficiaryPhoneNumber,
-                                                        rfiCode,userId,
+                                                        rfiCode, userId,
                                                         descriptionForPrincipal);
                                                     debugger
                                                 }
@@ -11264,7 +10908,7 @@ export default class InvestmentsServices {
                                                         beneficiaryAccountName,
                                                         beneficiaryEmail,
                                                         beneficiaryPhoneNumber,
-                                                        rfiCode,userId,
+                                                        rfiCode, userId,
                                                         descriptionForPrincipal)
                                                     debugger
                                                 }
@@ -11509,6 +11153,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 10326:", queryParams)
+             console.log(" Login User Data line 11212 =========================");
+                    console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
             debugger
             if (!updatedAtFrom) {
@@ -11542,17 +11188,7 @@ export default class InvestmentsServices {
 
             // const timelineService = new TimelinesServices();
             const settingsService = new SettingsServices();
-            // TESTING
-            // let selectedDate;
-            // let currentDate = DateTime.now().toISO()
-
-            // if (payoutDateTo) {
-            //     selectedDate = payoutDateTo;
-            // } else {
-            //     selectedDate = currentDate;
-            // }
-            // console.log("investmentId   ======", investmentId)
-            // debugger
+           
             let responseData = await Database
                 .from('investments')
                 // .useTransaction(trx) // 👈
@@ -11598,39 +11234,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    // const { id, } = request.params();
-                    // console.log("Approval query: ", request.qs());
-                    // const { approvalStatus, assignedTo, processedBy, isRolloverSuspended,
-                    //     rolloverReactivationDate, isPayoutSuspended, payoutReactivationDate, } = investment;
-                    // const { approvalStatus, assignedTo, processedBy,} = investment;
-                    // remark
-                    // check if the request is not existing
-                    // let approval;
-                    // let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
-                    // // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
-                    // if (!approvalRequestIsExisting) {
-                    //     //    return error message to user
-                    //     // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
-                    //     throw new AppException({ message: `Approval Request with Id: ${id} does not exist, please check and try again.`, codeSt: "404" })
-                    // }
-                    console.log(" Login User Data line 10586 =========================");
-                    console.log(loginUserData);
-                    // TODO: Uncomment to use LoginUserData
-                    // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-                    // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-                    // console.log(" Login User Data line 5945 =========================");
+                   
+                    // console.log(" Login User Data line 10586 =========================");
                     // console.log(loginUserData);
-                    // console.log(" Login User Roles line 5947 =========================");
-                    // console.log(loginUserData.roles);
-                    // let { roles, biodata } = loginUserData;
-
-                    // console.log("Admin roles , line 5951 ==================")
-                    // console.log(roles)
-                    // // @ts-ignore
-                    // let { fullName } = biodata;
-                    // let loginAdminFullName = fullName;
-                    // console.log("Login Admin FullName, line 5956 ==================")
-                    // console.log(loginAdminFullName)
+                   
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -11782,7 +11389,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -11824,7 +11431,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal);
                                             debugger
                                         }
@@ -11872,7 +11479,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest);
                                             debugger
                                         }
@@ -11915,7 +11522,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest);
                                             debugger
                                         }
@@ -12140,7 +11747,7 @@ export default class InvestmentsServices {
                                     // await trx.rollback();
                                     return {
                                         status: 'OK',
-                                        message: 'no investment matched your search',
+                                        message: 'No investment matched your search',
                                         data: null,
                                     }
                                 }
@@ -12162,7 +11769,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     record.approvalStatus = "approved"; //approval.approvalStatus;
                                     // Data to send for transfer of fund
-                                                                      let { amount, lng, lat, id, userId,
+                                    let { amount, lng, lat, id, userId,
                                         firstName, lastName,
                                         walletId, investorFundingWalletId,
                                         phone,
@@ -12195,7 +11802,7 @@ export default class InvestmentsServices {
                                     interestDueOnInvestment = interestDueOnInvestment - penalty;
                                     // console.log(" interestDueOnInvestment after penalty deduction =======", interestDueOnInvestment)
                                     // debugger
-                                                                     // NEW CODE START
+                                    // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     // check if transaction with same customer ref exist
@@ -12241,7 +11848,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal)
                                             debugger
                                         }
@@ -12284,7 +11891,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForPrincipal)
                                             debugger
                                         }
@@ -12332,7 +11939,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -12375,7 +11982,7 @@ export default class InvestmentsServices {
                                                 beneficiaryAccountName,
                                                 beneficiaryEmail,
                                                 beneficiaryPhoneNumber,
-                                                rfiCode,userId,
+                                                rfiCode, userId,
                                                 descriptionForInterest)
                                             debugger
                                         }
@@ -13477,24 +13084,24 @@ export default class InvestmentsServices {
             params.push(queryFields.numberOfAttempts)
         }
 
-  if (queryFields.searchPhrase) {
-      predicateExists();
-      predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(customer_reference) like ? or lower(amount_approved) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(bvn) like ? or lower(amount) like ? )";
-           
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      params.push(`%${queryFields.searchPhrase}%`);
-      
-    }
+        if (queryFields.searchPhrase) {
+            predicateExists();
+            predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(customer_reference) like ? or lower(amount_approved) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(bvn) like ? or lower(amount) like ? )";
+
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+
+        }
 
         if (queryFields.updatedAt) {
             predicateExists()

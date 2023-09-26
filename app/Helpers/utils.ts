@@ -160,10 +160,11 @@ const interestDueOnPayout = (amount, rate, duration) => {
     interestDue = (duration / 360) * (rate / 100);
     // debugger
     interestDue = amount * interestDue;
-    // debugger
+    debugger
     interestDue = Number(interestDue.toFixed(decPl));
-    if (interestDue < 1) {
-      interestDue = 1
+    debugger
+    if (interestDue < 0.1) {
+      interestDue = 0.1
     }
     debugger
     // interestDue = getDecimalPlace(interestDue,decPl);

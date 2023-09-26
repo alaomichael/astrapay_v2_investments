@@ -328,26 +328,10 @@ export default class ApprovalsController {
       let currentApprovalStatus = approvalRequestIsExisting.approvalStatus;
       console.log(" Login User Data line 426 =========================");
       console.log(loginUserData);
-      // TODO: Uncomment to use LoginUserData
-      // // if (!loginUserData) throw new Error(`Unauthorized to access this resource.`);
-      // if (!loginUserData) throw new AppException({ message: `Unauthorized to access this resource.`, codeSt: "401" })
-      // console.log(" Login User Data line 435 =========================");
-      // console.log(loginUserData);
-      // console.log(" Login User Roles line 437 =========================");
-      // console.log(loginUserData.roles);
-      // let { roles, biodata } = loginUserData;
-
-      // console.log("Admin roles , line 441 ==================")
-      // console.log(roles)
-      // // @ts-ignore
-      // let { fullName } = biodata;
-      // let loginAdminFullName = fullName;
-      // console.log("Login Admin FullName, line 446 ==================")
-      // console.log(loginAdminFullName)
-
+     
       const timelineService = new TimelinesServices();
-      // const { investmentId, walletId, userId } = request.qs();
-      approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
+      
+      approval = approvalRequestIsExisting; //await approvalsService.getApprovalByApprovalId(id);
 
       // console.log(" QUERY RESULT: ", approval);
       let walletIdToSearch = approval.walletId
@@ -367,7 +351,7 @@ export default class ApprovalsController {
       // console.log(" idToSearch RESULT ===============================: ", idToSearch);
       // let record = await investmentsService.getInvestmentByInvestmentId(approval.investmentId);
       // console.log(" record RESULT ===============================: ", record);
-      console.log("check approval record 339 ==================================")
+      // console.log("check approval record 339 ==================================")
       // //debugger
       if (!approval || record == undefined || !record) {
         return response
@@ -395,17 +379,11 @@ export default class ApprovalsController {
 
         }
         // update the data
-        // TODO: Uncomment to use loginAdminFullName
-        // payload.processedBy = processedBy !== undefined ? processedBy : loginAdminFullName;
-        // payload.assignedTo = assignedTo !== undefined ? assignedTo : loginAdminFullName;
-        // payload.remark = remark !== undefined ? remark : approval.remark;
-        // console.log("Admin remark line 367 ==================== ", approval.remark);
-        // console.log("Admin remark line 368 ========*******************=========== ", remark);
+       
         approval = await approvalsService.updateApproval(approval, payload);
         // console.log("Approval updated: ", approval);
         let newStatus;
-        // await approval.save();
-        // console.log("Update Approval Request line 373:", approval);
+      
         let { id, firstName, currencyCode, lastName, //email,
           rfiCode,userId } = record;
         console.log("Surname: ", lastName)
@@ -415,21 +393,7 @@ export default class ApprovalsController {
         if (!settings) {
           throw Error(`The Registered Financial institution with RFICODE: ${rfiCode} does not have Setting. Check and try again.`)
         }
-        // let {
-        //   // isInvestmentAutomated,
-        //   rfiName,
-        //   // initiationNotificationEmail,
-        //   activationNotificationEmail,
-        //   // maturityNotificationEmail,
-        //   // payoutNotificationEmail,
-        //   // rolloverNotificationEmail,
-        //   // liquidationNotificationEmail,
-        // } = settings
-
-        // console.log("CurrencyCode: ", currencyCode)
-        // //debugger
-        // let { email } = contactDetails;
-        // let email = email;
+       
         let timelineObject;
         // console.log("Approval.requestType: ===========================================>", approval.requestType)
         // console.log("Approval.approvalStatus: ===========================================>", approval.approvalStatus)
