@@ -141,7 +141,7 @@ export const debitUserWallet = async function debitUserWallet(
             payload, { headers: headers }
         )
         // console.log("The ASTRAPAY API response @ debitUserWallet line 131: ", response1);
-        // debugger
+        debugger
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 133: ", response1.data);
         // console.log("The ASTRAPAY API response data @ debitUserWallet line 134: ", response1.status);
         //  && response.data.amountTransfered === CHARGE

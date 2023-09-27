@@ -142,7 +142,7 @@ const databaseConfig: DatabaseConfig = {
               console.error("Error setting timezone:", err);
               done(err, conn);
             } else {
-              console.log("Connection acquired from the pool.");
+              // console.log("Connection acquired from the pool.");
               done(null, conn);
             }
           });
@@ -222,7 +222,7 @@ const databaseConfig: DatabaseConfig = {
               console.error("Error setting timezone:", err);
               done(err, conn);
             } else {
-              console.log("Connection acquired from the pool.");
+              // console.log("Connection acquired from the pool.");
               done(null, conn);
             }
           });
