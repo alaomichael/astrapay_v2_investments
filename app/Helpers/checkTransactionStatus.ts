@@ -57,14 +57,14 @@ export const checkTransactionStatus = async function checkTransactionStatus(
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
-            "client-app": "OCTANTIS_MOBILE",
+            "client-app": "investment_service",
             "lng": "3.7877",
             "lat": "7.5677",
             "ffi-code": rfiCode,//"s8",
             "user-principal": "58699700JJK"
         };
 
-        console.log("rfiCode", rfiCode);
+        // console.log("rfiCode", rfiCode);
         // const response = await axios.get(`${ORCHESTRATOR_URL}/orchestrator-${rfiCode}/api/v1/transactions?customerReference=${investmentRequestReference}`,
         const response = await axios.get(`${ORCHESTRATOR_URL}/transactions?customerReference=${investmentRequestReference}`,
             { headers: headers }//payload,
@@ -149,7 +149,7 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             //         }
             //     ],
             //     "commissions": [],
-            //     "clientApp": "OCTANTIS_MOBILE",
+            //     "clientApp": "investment",
             //     "userAgent": "PostmanRuntime/7.30.1",
             //     "ffiCode": "s8",
             //     "ffiName": "s8",

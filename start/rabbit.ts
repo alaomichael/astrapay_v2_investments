@@ -352,7 +352,7 @@ const amqplib = require('amqplib');
                     //     isAllRolloverSuspended, tagName, currencyCode, status, rfi, } = investment;
                     // let { code, name, email, street, city, state, country } = rfi;
                     // debugger
-                    
+
                     // console.log("content line 324 ===== ", name, email, code, status,)
                     // // Check if the record is existing
                     // const rfiRecordsService = new RfiRecordsServices();
@@ -631,7 +631,7 @@ const amqplib = require('amqplib');
                     //         }
                     //     ],
                     //     "commissions": [],
-                    //     "clientApp": "OCTANTIS_MOBILE",
+                    //     "clientApp": "investment",
                     //     "userAgent": "PostmanRuntime/7.30.1",
                     //     "ffiCode": "s8",
                     //     "ffiName": "s8",

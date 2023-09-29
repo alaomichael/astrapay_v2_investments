@@ -22,7 +22,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
     rfiCode, userId
 
 ): Promise<any> {
-    
+
     try {
         // let userWalletId = walletId;
         // console.log("userWalletId,@ creditUserWalletWithInterest line 19", userWalletId);
@@ -64,7 +64,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
-            "client-app": "OCTANTIS_MOBILE",
+            "client-app": "investment_service",
             "lng": lng,
             "lat": lat,
             "ffi-code": rfiCode,//'s8',//rfiCode,// "s8",
@@ -153,7 +153,7 @@ export const creditUserWalletWithInterest = async function creditUserWalletWithI
             let headers = {
                 'correlation-id': '68678989IO09',
                 'signature': '5DJJI56UTUTJGGHI97979789GJFIR8589549',
-                'client-app': 'OCTANTIS_MOBILE',
+                'client-app': 'investment',
                 'lng': lng,
                 'lat': lat,
                 'ofi-code': rfiCode,//'s8',//rfiCode,//'s8',

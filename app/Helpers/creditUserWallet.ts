@@ -20,7 +20,7 @@ export const creditUserWallet = async function creditUserWallet(
     beneficiaryAccountName,
     beneficiaryEmail,
     beneficiaryPhoneNumber,
-    rfiCode,userId, description
+    rfiCode, userId, description
 ): Promise<any> {
 
     try {
@@ -68,13 +68,13 @@ export const creditUserWallet = async function creditUserWallet(
         const headers = {
             "correlation-id": "68678989IO09",
             "signature": "5DJJI56UTUTJGGHI97979789GJFIR8589549",
-            "client-app": "OCTANTIS_MOBILE",
+            "client-app": "investment_service",
             "lng": lng,
             "lat": lat,
             "ffi-code": rfiCode,//'s8',//rfiCode,// "s8",
-            "rfi-code":rfiCode,
+            "rfi-code": rfiCode,
             "user-principal": "58699700JJK",
-            "user-id":userId, //senderAccountNumber,//senderName,// "investment-service"
+            "user-id": userId, //senderAccountNumber,//senderName,// "investment-service"
         };
 
         const payload = {
@@ -159,10 +159,10 @@ export const creditUserWallet = async function creditUserWallet(
             let headers = {
                 'correlation-id': '68678989IO09',
                 'signature': '5DJJI56UTUTJGGHI97979789GJFIR8589549',
-                'client-app': 'OCTANTIS_MOBILE',
+                'client-app': 'investment',
                 'lng': lng,
                 'lat': lat,
-                'ofi-code':rfiCode,// 's8',// rfiCode,//'s8',
+                'ofi-code': rfiCode,// 's8',// rfiCode,//'s8',
                 'user-principal': '58699700JJK',
                 'user-id': userId,//senderName,// "investment-service"
             };
