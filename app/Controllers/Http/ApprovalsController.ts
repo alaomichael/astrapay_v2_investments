@@ -1572,8 +1572,8 @@ export default class ApprovalsController {
           //   '101' = 'rollover principal only',
           //   '102' = 'rollover principal with interest',
           //   '103' = 'rollover interest only',
-          if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "payout_suspended") ||
-            (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) {
+          if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "active") ||
+            (isRolloverActivated == true && rolloverType !== "100" && status === "active")) { //"payout_suspended" "rollover_suspended"
             // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
             // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
             //debugger
@@ -3114,8 +3114,9 @@ export default class ApprovalsController {
             //   '101' = 'rollover principal only',
             //   '102' = 'rollover principal with interest',
             //   '103' = 'rollover interest only',
-            if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "payout_suspended") ||
-              (isRolloverActivated == true && rolloverType !== "100" && status === "rollover_suspended")) { // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
+            if ((isRolloverActivated == true && rolloverType !== "100" && status === "matured") || (isRolloverActivated == true && rolloverType !== "100" && status === "active") ||
+              (isRolloverActivated == true && rolloverType !== "100" && status === "active")) { //"payout_suspended" "rollover_suspended"
+                // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
               // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
               // //debugger
               // check type of rollover
@@ -3968,8 +3969,8 @@ export default class ApprovalsController {
           record.isRolloverSuspended = isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
           // TODO: Just commented out on frontend request on 23-06-2023
-          newStatus = "rollover_suspended";
-          record.status = newStatus;
+          // newStatus = "rollover_suspended";
+          // record.status = newStatus;
           //debugger
           // update timeline
           timelineObject = {
@@ -4126,8 +4127,8 @@ export default class ApprovalsController {
 
           if (isPayoutSuspended === true) {
             // TODO: Just commented out on frontend request on 23-06-2023
-            newStatus = "payout_suspended";
-            record.status = newStatus;
+            // newStatus = "payout_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -4838,8 +4839,8 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "suspend_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
           // TODO: Just commented out on frontend request on 23-06-2023
-          newStatus = "payout_suspended";
-          record.status = newStatus;
+          // newStatus = "payout_suspended";
+          // record.status = newStatus;
           // record.requestType = "payout_investment";
           record.isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
@@ -4862,8 +4863,8 @@ export default class ApprovalsController {
           // console.log("Updated record Status line 2227: ", record);
           if (isRolloverSuspended === true) {
             // TODO: Just commented out on frontend request on 23-06-2023
-            newStatus = "rollover_suspended";
-            record.status = newStatus;
+            // newStatus = "rollover_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -5006,8 +5007,8 @@ export default class ApprovalsController {
 
           if (isPayoutSuspended === true) {
             // TODO: Just commented out on frontend request on 23-06-2023
-            newStatus = "payout_suspended";
-            record.status = newStatus;
+            // newStatus = "payout_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),

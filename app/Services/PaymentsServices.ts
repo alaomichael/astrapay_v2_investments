@@ -3945,7 +3945,7 @@ export default class PaymentsServices {
                 responseData = await Database
                     .from('investments')
                     // .useTransaction(trx) // 👈
-                    .where('status', "payout_suspended")
+                    .where('status', "active") //"payout_suspended"
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
@@ -3957,7 +3957,7 @@ export default class PaymentsServices {
                 responseData = await Database
                     .from('investments')
                     // .useTransaction(trx) // 👈
-                    .where('status', "payout_suspended")
+                    .where('status', "active") //"payout_suspended"
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     // .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
@@ -4006,7 +4006,7 @@ export default class PaymentsServices {
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 2331: ', investment)
                     // debugger
-                    if (investment && investment.$original.status == "payout_suspended") {
+                    if (investment && investment.$original.status == "active") { //"payout_suspended"
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
@@ -4147,7 +4147,7 @@ export default class PaymentsServices {
                                 await trx.commit();
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') { //"payout_suspended"
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -4331,7 +4331,7 @@ export default class PaymentsServices {
                                 await trx.commit();
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') { //"payout_suspended"
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved'
@@ -4502,7 +4502,7 @@ export default class PaymentsServices {
                     .from('investments')
                     // .useTransaction(trx) // 👈
                     .where('id', investmentId)
-                    .where('status', "payout_suspended")
+                    .where('status', "active")// "payout_suspended"
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
@@ -4515,7 +4515,7 @@ export default class PaymentsServices {
                     .from('investments')
                     // .useTransaction(trx) // 👈
                     .where('id', investmentId)
-                    .where('status', "payout_suspended")
+                    .where('status', "active")// "payout_suspended"
                     .where('is_payout_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     // .orWhere('payout_reactivation_date', '<=', payoutReactivationDate)
@@ -4546,7 +4546,7 @@ export default class PaymentsServices {
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 2331: ', investment)
                     // debugger
-                    if (investment && investment.$original.status == "payout_suspended") {
+                    if (investment && investment.$original.status == "active") { //"payout_suspended"
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
@@ -4681,7 +4681,7 @@ export default class PaymentsServices {
                                 await trx.commit()
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') { //"payout_suspended"
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -4864,7 +4864,7 @@ export default class PaymentsServices {
                                 await trx.commit()
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'payout_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') { //"payout_suspended"
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved'
@@ -5033,7 +5033,7 @@ export default class PaymentsServices {
                 responseData = await Database
                     .from('investments')
                     // .useTransaction(trx) // 👈
-                    .where('status', "rollover_suspended")
+                    .where('status', "active") //"rollover_suspended"
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     .orWhere('rollover_reactivation_date', '<=', rolloverReactivationDate)
@@ -5045,7 +5045,7 @@ export default class PaymentsServices {
                 responseData = await Database
                     .from('investments')
                     // .useTransaction(trx) // 👈
-                    .where('status', "rollover_suspended")
+                    .where('status', "active") //"rollover_suspended"
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     // .orWhere('rollover_reactivation_date', '<=', rolloverReactivationDate)
@@ -5082,7 +5082,7 @@ export default class PaymentsServices {
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 2892: ', investment)
                     // debugger
-                    if (investment && investment.$original.status == "rollover_suspended") {
+                    if (investment && investment.$original.status == "active") { //"rollover_suspended"
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // @ts-ignore
@@ -5218,7 +5218,7 @@ export default class PaymentsServices {
 
                                 // debugger
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') { //"rollover_suspended"
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -5394,7 +5394,7 @@ export default class PaymentsServices {
 
 
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') {//"rollover_suspended"
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved';
@@ -5562,7 +5562,7 @@ export default class PaymentsServices {
                     .from('investments')
                     // .useTransaction(trx) // 👈
                     .where('id', investmentId)
-                    .where('status', "rollover_suspended")
+                    .where('status', "active") //"rollover_suspended"
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     .orWhere('rollover_reactivation_date', '<=', rolloverReactivationDate)
@@ -5575,7 +5575,7 @@ export default class PaymentsServices {
                     .from('investments')
                     // .useTransaction(trx) // 👈
                     .where('id', investmentId)
-                    .where('status', "rollover_suspended")
+                    .where('status', "active") //"rollover_suspended"
                     .where('is_rollover_suspended', true)
                     // .where('payout_date', '>=', payoutDateFrom)
                     // .orWhere('rollover_reactivation_date', '<=', rolloverReactivationDate)
@@ -5604,7 +5604,7 @@ export default class PaymentsServices {
                     let investment = await investmentsService.getInvestmentByInvestmentId(investmentId);
                     // console.log('Investment Info, line 2892: ', investment)
                     // debugger
-                    if (investment && investment.$original.status == "rollover_suspended") {
+                    if (investment && investment.$original.status == "active") { //"rollover_suspended"
                         // console.log('investment search data :', investment.$original)
                         let { rfiCode, startDate, duration } = investment.$original;
                         // console.log('Time investment was started line 2904: ', startDate)
@@ -5734,7 +5734,7 @@ export default class PaymentsServices {
 
 
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') {//"rollover_suspended"
                                     // update status of investment
                                     investment.requestType = requestType
                                     investment.approvalStatus = 'approved'
@@ -5911,7 +5911,7 @@ export default class PaymentsServices {
 
 
                             } else if (isPayoutAutomated == true || approvalIsAutomated !== undefined || approvalIsAutomated === true) {
-                                if (investment.status !== 'completed' && investment.status == 'rollover_suspended') {
+                                if (investment.status !== 'completed' && investment.status == 'active') {//"rollover_suspended"
                                     // update status of investment
                                     investment.requestType = "start_investment";//requestType
                                     investment.approvalStatus = 'approved';
