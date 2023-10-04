@@ -13060,10 +13060,24 @@ export default class InvestmentsServices {
             params.push(queryFields.numberOfAttempts)
         }
 
+        if (queryFields.investorFundingWalletId) {
+           predicateExists()
+            predicate = predicate + "investor_funding_wallet_id=?";
+            params.push(queryFields.investorFundingWalletId)
+        }
+
+        // if (queryFields.approvalStatus) {
+        //    predicateExists()
+        //     predicate = predicate + "approval_status=?";
+        //     params.push(queryFields.approvalStatus)
+        // }
+
         if (queryFields.searchPhrase) {
             predicateExists();
-            predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(customer_reference) like ? or lower(amount_approved) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(bvn) like ? or lower(amount) like ? )";
+            predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(status) like ? or lower(investor_funding_wallet_id) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or lower(amount) like ?  or lower(start_date) like ?  or lower(payout_date) like ? )";
 
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
