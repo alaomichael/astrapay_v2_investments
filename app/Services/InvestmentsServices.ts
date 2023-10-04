@@ -2953,8 +2953,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
-             console.log(" Login User Data line 2956 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 2956 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -3019,10 +3019,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    
+
                     // console.log(" Login User Data line 1843 =========================");
                     // console.log(loginUserData);
-                    
+
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
                     // approval = approvalRequestIsExisting //await approvalsService.getApprovalByApprovalId(id);
@@ -3524,8 +3524,8 @@ export default class InvestmentsServices {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
-             console.log(" Login User Data line 3555 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 3555 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -3588,13 +3588,13 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    
+
                     // console.log(" Login User Data line 1843 =========================");
                     // console.log(loginUserData);
-                   
+
 
                     const timelineService = new TimelinesServices();
-                   
+
                     let walletIdToSearch = investment.wallet_id
                     let userIdToSearch = investment.user_id
                     let investmentId;
@@ -5158,7 +5158,6 @@ export default class InvestmentsServices {
                                 investment.requestType = requestType
                                 investment.status = "matured"
                                 investment.approvalStatus = 'pending'
-                                // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
                                 // START
@@ -5332,7 +5331,6 @@ export default class InvestmentsServices {
                                 investment.requestType = "start_investment"; //requestType
                                 investment.status = "active"
                                 investment.approvalStatus = 'pending'
-                                // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
                                 // START
@@ -5669,7 +5667,6 @@ export default class InvestmentsServices {
                                 investment.requestType = requestType
                                 investment.status = "matured"
                                 investment.approvalStatus = 'pending'
-                                // investment.isPayoutSuspended = false;
                                 investment.isRolloverSuspended = false;
 
                                 // START
@@ -5846,7 +5843,7 @@ export default class InvestmentsServices {
                                 investment.requestType = "start_investment"; //requestType
                                 investment.status = "active"
                                 investment.approvalStatus = 'pending'
-                                // investment.isPayoutSuspended = false;
+
                                 investment.isRolloverSuspended = false;
 
                                 // START
@@ -6014,8 +6011,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
-             console.log(" Login User Data line 6075 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 6075 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo, startDate, endDate, rfiCode } = queryParams;
 
             if (!updatedAtFrom) {
@@ -6232,10 +6229,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    
+
                     // console.log(" Login User Data line 2252 =========================");
                     // console.log(loginUserData);
-                   
+
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -6285,7 +6282,7 @@ export default class InvestmentsServices {
                         if (investment) {
                             console.log("Investment approval Selected for Update line 6163:");
                             // update the data
-                         
+
                             let { currencyCode, lastName, startDate, duration, } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
                             console.log("Surname: ", lastName)
@@ -6293,12 +6290,12 @@ export default class InvestmentsServices {
                             // debugger
                             // let email = email;
                             let timelineObject;
-                            
+
                             let isDueForPayout = await dueForPayout(startDate, duration)
                             // console.log('Is due for payout status line 6189:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                                              if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
                                     // console.log("Approval for investment payout processing: ===========================================>")
@@ -6785,7 +6782,7 @@ export default class InvestmentsServices {
         try {
             // console.log("Query params in investment service line 3859:", queryParams)
             console.log(" Login User Data line 3956 =========================");
-                    console.log(loginUserData);
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -6868,7 +6865,7 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                 
+
                     // console.log(" Login User Data line 3956 =========================");
                     // console.log(loginUserData);
 
@@ -6941,14 +6938,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                //                          record.isPayoutAuthorized === true,
-                                //   record.isPayoutSuspended === false,
-                                // payoutReactivationDate: null,
-
-                                // record.status === "matured" &&
-                                //     record.status === "matured" &&
-
-                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
                                     // console.log("Approval for investment payout processing: ===========================================>")
@@ -7888,8 +7878,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 7864:", queryParams)
-                                console.log(" Login User Data line 7865 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 7865 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -7979,22 +7969,22 @@ export default class InvestmentsServices {
                     // console.log("Entering update 7942 ==================================")
                     // const investmentlogsService = new InvestmentLogsServices();
                     const investmentsService = new InvestmentsServices();
-                   
+
                     // console.log(" Login User Data line 7962 =========================");
                     // console.log(loginUserData);
-                   
+
                     const timelineService = new TimelinesServices();
                     let walletIdToSearch = investment.wallet_id
                     let userIdToSearch = investment.user_id
                     let investmentId;
                     let record;
-                  if (id != null) {
+                    if (id != null) {
                         investmentId = id;
                         // debugger
                         record = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
                         // debugger
                     }
-                 
+
                     if (record == undefined || !record) {
                         // await trx.rollback()
                         return { status: "FAILED", message: "Not Found,try again." };
@@ -8008,15 +7998,15 @@ export default class InvestmentsServices {
                     let isAllPayoutSuspended = settings.isAllPayoutSuspended
                     if (isAllPayoutSuspended === false) {
                         if (investment) {
-                           
+
                             let { currencyCode,// lastName, startDate, duration, 
-                                status,                                 numberOfAttempts } = record;
+                                status, numberOfAttempts } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
 
                             // console.log("Surname: ", lastName)
                             // console.log("startDate: ", startDate)
                             // console.log("duration: ", duration)
-                           
+
                             let timelineObject;
 
                             if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
@@ -9028,8 +9018,8 @@ export default class InvestmentsServices {
         const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
-             console.log(" Login User Data line 9033 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 9033 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -9109,10 +9099,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    
+
                     // console.log(" Login User Data line 2252 =========================");
                     // console.log(loginUserData);
-                  
+
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -9182,13 +9172,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                //                          record.isPayoutAuthorized === true,
-                                //   record.isPayoutSuspended === false,
-                                // payoutReactivationDate: null,
-
-                                // record.status === "matured" &&
-                                //     record.status === "matured" &&
-
+                                
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
@@ -9990,8 +9974,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 40:", queryParams)
-             console.log(" Login User Data line 10022 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 10022 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
 
             if (!updatedAtFrom) {
@@ -10069,10 +10053,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                    
+
                     // console.log(" Login User Data line 6940 =========================");
                     // console.log(loginUserData);
-                    
+
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -10147,9 +10131,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 3845:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                //   record.isPayoutAuthorized === true,
-                                //   record.isPayoutSuspended === false,
-                                // payoutReactivationDate: null,
+                                
                                 if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&
                                     record.isRolloverSuspended === false) || (record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isRolloverActivated === true &&
                                         record.isRolloverSuspended === false)) {
@@ -11153,8 +11135,8 @@ export default class InvestmentsServices {
         // const trx = await Database.transaction();
         try {
             // console.log("Query params in investment service line 10326:", queryParams)
-             console.log(" Login User Data line 11212 =========================");
-                    console.log(loginUserData);
+            console.log(" Login User Data line 11212 =========================");
+            console.log(loginUserData);
             let { limit, offset = 0, updatedAtFrom, updatedAtTo, payoutDateFrom, payoutDateTo } = queryParams;
             debugger
             if (!updatedAtFrom) {
@@ -11188,7 +11170,7 @@ export default class InvestmentsServices {
 
             // const timelineService = new TimelinesServices();
             const settingsService = new SettingsServices();
-           
+
             let responseData = await Database
                 .from('investments')
                 // .useTransaction(trx) // 👈
@@ -11234,10 +11216,10 @@ export default class InvestmentsServices {
                     const investmentsService = new InvestmentsServices();
                     // await request.validate(UpdateApprovalValidator);
                     // const approvalsService = new ApprovalsServices()
-                   
+
                     // console.log(" Login User Data line 10586 =========================");
                     // console.log(loginUserData);
-                   
+
 
                     const timelineService = new TimelinesServices();
                     // const { investmentId, walletId, userId } = request.qs();
@@ -11312,13 +11294,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 10139:', isDueForPayout)
                             debugger
                             if (isDueForPayout === true) {
-                                //                          record.isPayoutAuthorized === true,
-                                //   record.isPayoutSuspended === false,
-                                // payoutReactivationDate: null,
-
-                                // record.status === "matured" &&
-                                //     record.status === "matured" &&
-
+                                
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false)
                                     // || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -12812,14 +12788,14 @@ export default class InvestmentsServices {
             predicate = predicate + "payout_date<=?"
             params.push(queryFields.payoutDateTo)
         }
-        // isRolloverSuspended: schema.boolean.optional(),
+        
         if (queryFields.isRolloverSuspended) {
             predicateExists()
             predicate = predicate + "is_rollover_suspended=?";
             // queryFields.isRolloverSuspended = queryFields.isRolloverSuspended == "true" ? 1 : 0;
             params.push(queryFields.isRolloverSuspended)
         }
-        // rolloverReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
+        
         if (queryFields.rolloverReactivationDate) {
             predicateExists()
             predicate = predicate + "rollover_reactivation_date=?"
@@ -12835,14 +12811,14 @@ export default class InvestmentsServices {
             predicate = predicate + "rollover_reactivation_date<=?"
             params.push(queryFields.rolloverReactivationDateTo)
         }
-        // isPayoutSuspended: schema.boolean.optional(),
+        
         if (queryFields.isPayoutSuspended) {
             predicateExists()
             predicate = predicate + "is_payout_suspended=?";
             // queryFields.isPayoutSuspended = queryFields.isPayoutSuspended == "true" ? 1 : 0;
             params.push(queryFields.isPayoutSuspended)
         }
-        // payoutReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
+        
         if (queryFields.payoutReactivationDate) {
             predicateExists()
             predicate = predicate + "payout_reactivation_date=?"

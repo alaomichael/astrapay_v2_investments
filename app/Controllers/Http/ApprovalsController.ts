@@ -4033,9 +4033,9 @@ export default class ApprovalsController {
           // } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && isPayoutSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
           console.log("Approval for investment payout processing suspension: ===========================================>")
-          // TODO: Just commented out on frontend request on 23-06-2023
-          newStatus = "payout_activated";
-          record.status = newStatus;
+          // TODO: Just commented out on frontend request on 04-10-2023
+          // newStatus = "payout_activated";
+          // record.status = newStatus;
           record.isRolloverSuspended = isRolloverSuspended ? isRolloverSuspended : record.isRolloverSuspended;
           record.rolloverReactivationDate = rolloverReactivationDate;
           record.isPayoutSuspended = isPayoutSuspended ? isPayoutSuspended : record.isPayoutSuspended;
@@ -4126,7 +4126,7 @@ export default class ApprovalsController {
           // }
 
           if (isPayoutSuspended === true) {
-            // TODO: Just commented out on frontend request on 23-06-2023
+            // TODO: Just commented out on frontend request on 04-10-2023
             // newStatus = "payout_suspended";
             // record.status = newStatus;
             // update timeline
@@ -4163,7 +4163,7 @@ export default class ApprovalsController {
 
           } else if (isPayoutSuspended === false) {
             // newStatus = "completed";//"matured"; //"payout_activated";//
-            record.status = newStatus;
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
