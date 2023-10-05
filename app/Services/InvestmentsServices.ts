@@ -13074,7 +13074,7 @@ export default class InvestmentsServices {
 
         if (queryFields.searchPhrase) {
             predicateExists();
-            predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(status) like ? or lower(investor_funding_wallet_id) like ? or lower(duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or (amount) like ?  or (start_date) like ?  or (payout_date) like ? )";
+            predicate = predicate + "(lower(first_name) like ? or lower(wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or lower(phone) like ? or lower(user_id) like ? or lower(status) like ? or lower(investor_funding_wallet_id) like ? or (duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or (amount) like ?  or (start_date) like ?  or (payout_date) like ? )";
 
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
