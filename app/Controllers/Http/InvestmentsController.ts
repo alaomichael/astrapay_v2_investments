@@ -43,7 +43,7 @@ import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
-import { generateString } from 'App/Helpers/generateCertificateNumber'
+// import { generateString } from 'App/Helpers/generateCertificateNumber'
 // import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
 // import Mail from '@ioc:Adonis/Addons/Mail'
@@ -61,7 +61,7 @@ export default class InvestmentsController {
     let sortedInvestments = investments;
     const totalCount = await investmentsService.getInvestmentsCount(request.qs());
     const totalSum = await investmentsService.getInvestmentsSum(request.qs());
-    debugger
+    // debugger
     if (sortedInvestments.length < 1) {
       return response.status(200).json({
         status: "OK",
@@ -73,8 +73,8 @@ export default class InvestmentsController {
     }
     // return recommendation(s)
     // let totalCount = sortedInvestments.length;
-    let newCert = await generateString();
-    console.log("New certificate Number:", newCert)
+    // let newCert = await generateString();
+    // console.log("New certificate Number:", newCert)
     return response.status(200).json({
       status: "OK",
       data: sortedInvestments,

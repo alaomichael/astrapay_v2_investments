@@ -1655,11 +1655,11 @@ export default class InvestmentsServices {
                 // }
 
                 // console.log(" updatedAtFrom line 406 ==============================================================");
-                console.log(queryParams);
+                // console.log(queryParams);
                 // debugger;
                 const queryGetter = await this.queryBuilder(queryParams)
-                console.log(queryGetter);
-                debugger;
+                // console.log(queryGetter);
+                // debugger;
                 responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
                     .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                     // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
@@ -1674,7 +1674,7 @@ export default class InvestmentsServices {
                 // debugger;
                 const queryGetter = await this.queryBuilder(queryParams)
                 console.log(queryGetter);
-                debugger;
+                // debugger;
                 responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
                     .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
                     // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
@@ -13091,7 +13091,7 @@ export default class InvestmentsServices {
 
         if (queryFields.searchPhrase) {
             predicateExists();
-            predicate = predicate + "(lower(first_name) like ? or lower(last_name) like ? or lower(email) like ? or lower(user_id) like ? or lower(status) like ? or lower(tag_name) like ? or lower(approval_status) like ? )"; //  or (created_at) like ?  or (updated_at) like ? 
+            predicate = predicate + "(lower(first_name) like ? or (wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or (phone) like ? or lower(user_id) like ? or lower(status) like ?  or (investor_funding_wallet_id) like ? or lower(tag_name) like ? or lower(approval_status) like ?)"; //  or (created_at) like ?  or (updated_at) like ? 
             // predicate = predicate + "(lower(first_name) like ? or (wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or (phone) like ? or lower(user_id) like ? or (status) like ? or (investor_funding_wallet_id) like ? or (duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or (amount) like ?)"; //  or (created_at) like ?  or (updated_at) like ? 
 
             params.push(`%${queryFields.searchPhrase}%`);
@@ -13101,9 +13101,9 @@ export default class InvestmentsServices {
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
-            // params.push(`%${queryFields.searchPhrase}%`);
-            // params.push(`%${queryFields.searchPhrase}%`);
-            // params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
+            params.push(`%${queryFields.searchPhrase}%`);
             // params.push(`%${queryFields.searchPhrase}%`);
             // params.push(`%${queryFields.searchPhrase}%`);
             // params.push(`%${queryFields.searchPhrase}%`);
