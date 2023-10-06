@@ -1631,41 +1631,58 @@ export default class InvestmentsServices {
     public async getInvestments(queryParams: any): Promise<Investment[] | any> {
         try {
             console.log("Query params in investment service:", queryParams)
-            let { limit, offset = 0, createdAtFrom, createdAtTo, } = queryParams;
-            if (!createdAtFrom) {
-                // default to last 3 months
-                queryParams.createdAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
-                // console.log("queryParams.createdAtFrom   ", queryParams.createdAtFrom);
-            }
-            // debugger;
-            if (!createdAtTo) {
-                queryParams.createdAtTo = DateTime.now().toISO();//.toISODate();
-                // console.log("queryParams.createdAtTo   ", queryParams.createdAtTo);
-            }
-            // let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
-            // if (!updatedAtFrom) {
-            //     // default to last 3 months
-            //     queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
-            // }
-            // // debugger;
-            // if (!updatedAtTo) {
-            //     queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
-            // }
+            let { limit, offset = 0, createdAtFrom, createdAtTo, searchPhrase } = queryParams;
+            let responseData;
+            if (!searchPhrase) {
+                if (!createdAtFrom) {
+                    // default to last 3 months
+                    queryParams.createdAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                    // console.log("queryParams.createdAtFrom   ", queryParams.createdAtFrom);
+                }
+                // debugger;
+                if (!createdAtTo) {
+                    queryParams.createdAtTo = DateTime.now().toISO();//.toISODate();
+                    // console.log("queryParams.createdAtTo   ", queryParams.createdAtTo);
+                }
+                // let { limit, offset = 0, updatedAtFrom, updatedAtTo, } = queryParams;
+                // if (!updatedAtFrom) {
+                //     // default to last 3 months
+                //     queryParams.updatedAtFrom = DateTime.now().minus({ days: 90 }).toISO();//.toISODate();
+                // }
+                // // debugger;
+                // if (!updatedAtTo) {
+                //     queryParams.updatedAtTo = DateTime.now().toISO();//.toISODate();
+                // }
 
-            // console.log(" updatedAtFrom line 406 ==============================================================");
-            // console.log(queryParams);
-            // debugger;
-            const queryGetter = await this.queryBuilder(queryParams)
-            // debugger;
-            let responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
-                .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
-                // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
-                .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
-                .orderBy("created_at", "desc")
-                .offset(offset)
-                .limit(limit)
+                // console.log(" updatedAtFrom line 406 ==============================================================");
+                console.log(queryParams);
+                // debugger;
+                const queryGetter = await this.queryBuilder(queryParams)
+                console.log(queryGetter);
+                debugger;
+                responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                    .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
+                    // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
+                    .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
+                    .orderBy("createdAt", "desc")
+                    .offset(offset)
+                    .limit(limit)
 
-            // console.log("Response data in investment service:", responseData)
+                // console.log("Response data in investment service:", responseData)
+            } else {
+                console.log(queryParams);
+                // debugger;
+                const queryGetter = await this.queryBuilder(queryParams)
+                console.log(queryGetter);
+                debugger;
+                responseData = await Investment.query().whereRaw(queryGetter.sqlQuery, queryGetter.params)
+                    .preload("timelines", (query) => { query.orderBy("createdAt", "desc"); })
+                    // .preload("payoutSchedules", (query) => { query.orderBy("createdAt", "desc"); })
+                    .preload("approvals", (query) => { query.orderBy("updatedAt", "desc"); })
+                    .orderBy("created_at", "desc")
+                    .offset(offset)
+                    .limit(limit)
+            }
             // debugger;
             return responseData
         } catch (error) {
@@ -6938,7 +6955,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
+                                if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
                                     // console.log("Approval for investment payout processing: ===========================================>")
@@ -9172,7 +9189,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 2329:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                
+
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false) || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
                                         record.isPayoutSuspended === false)) {
@@ -10131,7 +10148,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 3845:', isDueForPayout)
                             // debugger
                             if (isDueForPayout === true) {
-                                
+
                                 if ((record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isRolloverActivated === true &&
                                     record.isRolloverSuspended === false) || (record.status === "matured" && record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isRolloverActivated === true &&
                                         record.isRolloverSuspended === false)) {
@@ -11294,7 +11311,7 @@ export default class InvestmentsServices {
                             // console.log('Is due for payout status line 10139:', isDueForPayout)
                             debugger
                             if (isDueForPayout === true) {
-                                
+
                                 if ((record.requestType === "payout_investment" && record.approvalStatus === "approved" && record.isPayoutAuthorized === true &&
                                     record.isPayoutSuspended === false)
                                     // || (record.requestType === "payout_investment" && record.approvalStatus === "pending" && record.isPayoutAuthorized === true &&
@@ -12788,14 +12805,14 @@ export default class InvestmentsServices {
             predicate = predicate + "payout_date<=?"
             params.push(queryFields.payoutDateTo)
         }
-        
+
         if (queryFields.isRolloverSuspended) {
             predicateExists()
             predicate = predicate + "is_rollover_suspended=?";
             // queryFields.isRolloverSuspended = queryFields.isRolloverSuspended == "true" ? 1 : 0;
             params.push(queryFields.isRolloverSuspended)
         }
-        
+
         if (queryFields.rolloverReactivationDate) {
             predicateExists()
             predicate = predicate + "rollover_reactivation_date=?"
@@ -12811,14 +12828,14 @@ export default class InvestmentsServices {
             predicate = predicate + "rollover_reactivation_date<=?"
             params.push(queryFields.rolloverReactivationDateTo)
         }
-        
+
         if (queryFields.isPayoutSuspended) {
             predicateExists()
             predicate = predicate + "is_payout_suspended=?";
             // queryFields.isPayoutSuspended = queryFields.isPayoutSuspended == "true" ? 1 : 0;
             params.push(queryFields.isPayoutSuspended)
         }
-        
+
         if (queryFields.payoutReactivationDate) {
             predicateExists()
             predicate = predicate + "payout_reactivation_date=?"
@@ -13061,7 +13078,7 @@ export default class InvestmentsServices {
         }
 
         if (queryFields.investorFundingWalletId) {
-           predicateExists()
+            predicateExists()
             predicate = predicate + "investor_funding_wallet_id=?";
             params.push(queryFields.investorFundingWalletId)
         }
@@ -13074,7 +13091,8 @@ export default class InvestmentsServices {
 
         if (queryFields.searchPhrase) {
             predicateExists();
-            predicate = predicate + "(lower(first_name) like ? or (wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or (phone) like ? or lower(user_id) like ? or lower(status) like ? or (investor_funding_wallet_id) like ? or (duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or (amount) like ? )";
+            predicate = predicate + "(lower(first_name) like ? or lower(last_name) like ? or lower(email) like ? or lower(user_id) like ? or lower(status) like ? or lower(tag_name) like ? or lower(approval_status) like ? )"; //  or (created_at) like ?  or (updated_at) like ? 
+            // predicate = predicate + "(lower(first_name) like ? or (wallet_id) like ? or lower(last_name) like ? or lower(email) like ? or (phone) like ? or lower(user_id) like ? or (status) like ? or (investor_funding_wallet_id) like ? or (duration) like ? or lower(tag_name) like ? or lower(approval_status) like ? or (amount) like ?)"; //  or (created_at) like ?  or (updated_at) like ? 
 
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
@@ -13083,13 +13101,17 @@ export default class InvestmentsServices {
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
             params.push(`%${queryFields.searchPhrase}%`);
-            params.push(`%${queryFields.searchPhrase}%`);
-            params.push(`%${queryFields.searchPhrase}%`);
-            params.push(`%${queryFields.searchPhrase}%`);
-            params.push(`%${queryFields.searchPhrase}%`);
-            params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
+            // params.push(`%${queryFields.searchPhrase}%`);
 
         }
+
+
 
         if (queryFields.updatedAt) {
             predicateExists()
