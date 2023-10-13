@@ -21,6 +21,7 @@ import SettingsServices from 'App/Services/SettingsServices';
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 import { dueForPayout } from 'App/Helpers/utils';
+import { convertDateToFormat } from 'App/Helpers/convertDateToFormat';
 
 const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
@@ -310,6 +311,9 @@ export default class ApprovalsController {
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
       rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ months: 6 });
       payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ months: 6 });
+
+      rolloverReactivationDate = await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY");
+      payoutReactivationDate = await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY");
 
       // console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
       // console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
@@ -1169,8 +1173,8 @@ export default class ApprovalsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has been declined by the Admin as at : ${DateTime.now()} , please try again. Thank you.`,
-              adminMessage: `The rollover of ${firstName} investment of ${currencyCode} ${amount} was declined at : ${DateTime.now()}`,
+              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has been declined by the Admin on : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY") } , please try again. Thank you.`,
+              adminMessage: `The rollover of investment of ${currencyCode} ${amount} was declined on : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1500,8 +1504,8 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "rollover" && record.status === "matured") {
           console.log("Approval for investment payout rollover processing: ===========================================>")
 
-          newStatus = "rollover";
-          record.status = newStatus;
+          // newStatus = "rollover";
+          // record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
@@ -1518,6 +1522,7 @@ export default class ApprovalsController {
           //   firstName, lastName, walletId, phone, email,
           //   rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, isRolloverActivated,
           //   rolloverType, status } = record;
+          debugger
           // Data to send for transfer of fund
           let { id,
             rolloverDone,
@@ -1576,7 +1581,7 @@ export default class ApprovalsController {
             (isRolloverActivated == true && rolloverType !== "100" && status === "active")) { //"payout_suspended" "rollover_suspended"
             // || (isRolloverActivated == true && rolloverType !== "100" && status === "matured")
             // if (isRolloverActivated == true && rolloverTarget > 0 && rolloverTarget > rolloverDone && rolloverType !== "100") {
-            //debugger
+            debugger
             // check type of rollover
             if (rolloverType == "101") {
               //   '101' = 'rollover principal only',
@@ -2406,8 +2411,8 @@ export default class ApprovalsController {
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "approved" && record.status === "matured") { //&& record.status == "submitted"
           // console.log("Approval for investment payout processing: ===========================================>")
 
-          newStatus = "approved";
-          record.status = newStatus;
+          // newStatus = "approved";
+          // record.status = newStatus;
           record.requestType = "payout_investment";
           // record.remark = approval.remark;
           // record.isInvestmentApproved = true;
@@ -2419,6 +2424,7 @@ export default class ApprovalsController {
           record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus;
+          debugger
           // Data to send for transfer of fund
           let { amount, lng, lat, id, userId,
             firstName, lastName,
@@ -3058,6 +3064,7 @@ export default class ApprovalsController {
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus; //"rollover"//approval.approvalStatus;
           record.isRolloverSuspended = isRolloverSuspended;
+          debugger
           // Data to send for transfer of fund
           let { id,
             rolloverDone,
@@ -3971,7 +3978,7 @@ export default class ApprovalsController {
           // TODO: Just commented out on frontend request on 23-06-2023
           // newStatus = "rollover_suspended";
           // record.status = newStatus;
-          //debugger
+          debugger
           // update timeline
           timelineObject = {
             id: uuid(),
@@ -3980,8 +3987,8 @@ export default class ApprovalsController {
             walletId: walletIdToSearch,// walletId,
             userId: userIdToSearch,// userId,
             // @ts-ignore
-            message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
-            adminMessage: `The rollover of ${firstName} matured investment was suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
+            message: `${firstName} the rollover of your investment is pending and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }. Thank you.`,
+            adminMessage: `The rollover of investment was suspended and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }.`,
             createdAt: DateTime.now(),
             metadata: ``,
           };
@@ -4050,6 +4057,7 @@ export default class ApprovalsController {
           record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = "approved"; //approval.approvalStatus;
+          debugger
           // Data to send for transfer of fund
           let { firstName,// email,
             totalAmountToPayout, startDate, duration } = record; // interestDueOnInvestment,
@@ -4137,8 +4145,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4856,6 +4864,7 @@ export default class ApprovalsController {
           record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
           record.approvalStatus = approval.approvalStatus;
+          debugger
           // Data to send for transfer of fund
           let { firstName, // email,
             totalAmountToPayout, } = record; // interestDueOnInvestment,
@@ -4873,8 +4882,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
-              adminMessage: `The rollover of ${firstName} matured investment is suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
+              message: `${firstName} the rollover of your investment is pending and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }. Thank you.`,
+              adminMessage: `The rollover of investment is suspended and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4919,8 +4928,8 @@ export default class ApprovalsController {
 
           if (isPayoutSuspended === true && isRolloverSuspended === true) {
             // TODO: Just commented out on frontend request on 23-06-2023
-            newStatus = "payout_and_rollover_suspended";
-            record.status = newStatus;
+            // newStatus = "payout_and_rollover_suspended";
+            // record.status = newStatus;
             // update timeline
             timelineObject = {
               id: uuid(),
@@ -4929,8 +4938,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended, it will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4962,8 +4971,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName} the rollover of your matured investment is pending and will be process for rollover on or before ${rolloverReactivationDate}. Thank you.`,
-              adminMessage: `The rollover of ${firstName} matured investment was suspended and will be process for rollover on or before ${rolloverReactivationDate}.`,
+              message: `${firstName} the rollover of your investment is pending and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }. Thank you.`,
+              adminMessage: `The rollover of investment was suspended and will be process for rollover on or before ${await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY") }.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -5017,8 +5026,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -5064,6 +5073,7 @@ export default class ApprovalsController {
           record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
           record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
+          debugger
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 2446 :", currentInvestment);
@@ -5137,6 +5147,7 @@ export default class ApprovalsController {
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
           // Save the updated record
           // await record.save();
+          debugger
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 1790 :", currentInvestment);
@@ -5208,6 +5219,7 @@ export default class ApprovalsController {
           record.approvedBy = approvedBy !== undefined ? approvedBy : "automation";
           record.assignedTo = assignedTo !== undefined ? assignedTo : "automation";
           record.processedBy = processedBy !== undefined ? processedBy : "automation";
+          debugger
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 2446 :", currentInvestment);
@@ -5269,6 +5281,7 @@ export default class ApprovalsController {
 
         } else {
           console.log("Entering no record for update 3590 ==================================")
+          debugger
           return response
             .status(404)
             .json({
@@ -5278,6 +5291,7 @@ export default class ApprovalsController {
         }
         // Update Investment data
         // console.log(" Updated record line 3962: ", record.$original);
+        debugger
         // send to user
         return response
           .status(200)
@@ -5287,7 +5301,7 @@ export default class ApprovalsController {
           });
       } else {
         console.log("Entering update 3948 ==================================")
-        //debugger
+        debugger
         return response
           .status(404)
           .json({

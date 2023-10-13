@@ -1,4 +1,6 @@
 import SettingsServices from "App/Services/SettingsServices";
+import { convertDateToFormat } from "./convertDateToFormat";
+import { convertToFormatedAmount } from "./convertToFormatedAmount";
 
 const Env = require("@ioc:Adonis/Core/Env");
 // const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
@@ -64,6 +66,20 @@ export const sendNotificationWithoutPdf = async function sendNotificationWithout
             datePayoutWasDone = date_payout_was_done;
             completionDate = investment_completion_date;
         }
+
+        amount = await convertToFormatedAmount(amount);
+        totalAmountToPayout = await convertToFormatedAmount(totalAmountToPayout);
+        penalty = await convertToFormatedAmount(penalty);
+        interestDueForPayout = await convertToFormatedAmount(interestDueForPayout);
+
+        // amount = await convertToFormatedAmount(amount);
+        // amount = await convertToFormatedAmount(amount);
+
+        startDate = await convertDateToFormat(startDate,"DD-MM-YYYY");
+        payoutDate = await convertDateToFormat(payoutDate,"DD-MM-YYYY");
+        datePayoutWasDone = await convertDateToFormat(datePayoutWasDone,"DD-MM-YYYY");
+        completionDate = await convertDateToFormat(completionDate,"DD-MM-YYYY");
+      
         // debugger
         let rolloverStatus;
         if (isRolloverActivated == true) {
