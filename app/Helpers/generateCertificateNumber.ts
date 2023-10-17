@@ -12,7 +12,7 @@ export const generateString = async function generateString() {
         const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         return randomNumber;
     }
-    const result = prefix + day + month + year + generateRandomNumber();
+    const result = prefix + day + month + year + "/" + generateRandomNumber();
     // console.log(result)
     return result;
 }
