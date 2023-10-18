@@ -154,7 +154,7 @@ export const debitUserWallet = async function debitUserWallet(
             let headers = {
                 'correlation-id': '68678989IO09',
                 'signature': '5DJJI56UTUTJGGHI97979789GJFIR8589549',
-                'client-app': 'investment',
+                'client-app': 'investment_service',
                 'lng': lng,
                 'lat': lat,
                 'ofi-code': rfiCode,// "s8",//rfiCode,// 's8',
@@ -189,7 +189,7 @@ export const debitUserWallet = async function debitUserWallet(
 
             if (response.status == 200) {
                 // console.log("The ASTRAPAY API response data @ debitUserWallet line 180: ", response.data);
-                debugger
+                // debugger
                 // return response.data;
                 return response;
             } else {
