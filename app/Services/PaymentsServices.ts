@@ -15,7 +15,6 @@ import { dueForPayout, investmentDuration, } from 'App/Helpers/utils';
 import TimelinesServices from './TimelinesServices';
 import TypesServices from './TypesServices';
 import { debitUserWallet } from 'App/Helpers/debitUserWallet';
-// import { sendNotification } from 'App/Helpers/sendNotification';
 import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';

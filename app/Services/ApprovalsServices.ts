@@ -9,7 +9,6 @@ import { v4 as uuid } from "uuid";
 import TimelinesServices from './TimelinesServices'
 import InvestmentsServices from './InvestmentsServices'
 import { debitUserWallet } from 'App/Helpers/debitUserWallet'
-// import { sendNotification } from 'App/Helpers/sendNotification'
 import { creditUserWallet } from 'App/Helpers/creditUserWallet'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
@@ -1075,12 +1074,14 @@ export default class ApprovalsServices {
                     // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "payout_suspended" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.isPayoutSuspended = true;
                     // selectedInvestmentPayoutRequestUpdate.status = "payout_suspended";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
                     let { firstName, walletId, userId, } = selectedInvestmentPayoutRequestUpdate;
+                    debugger
                     // update timeline
                     timelineObject = {
                         id: uuid(),
@@ -1102,12 +1103,14 @@ export default class ApprovalsServices {
                     // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "rollover_suspended" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.isRolloverSuspended = true;
                     // selectedInvestmentPayoutRequestUpdate.status = "rollover_suspended";
                     // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
 
                     // update the record
                     await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
                     let { firstName, walletId, userId, } = selectedInvestmentPayoutRequestUpdate;
+                    debugger
                     // update timeline
                     timelineObject = {
                         id: uuid(),
@@ -1118,6 +1121,62 @@ export default class ApprovalsServices {
                         // @ts-ignore
                         message: `${firstName}, your investment rollover request has been suspended. Thank you.`,
                         adminMessage: `${firstName} investment rollover request was suspended.`,
+                        createdAt: DateTime.now(),
+                        metadata: ``,
+                    };
+                    // console.log("Timeline object line 383:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+                }else if (saveApproval.approvalStatus.toLowerCase() === "activate_payout" && saveApproval.isPayoutSuspended === false) {
+                    // update the neccesary field
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "payout_activated" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.isPayoutSuspended = false;
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
+
+                    // update the record
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                    let { firstName, walletId, userId, } = selectedInvestmentPayoutRequestUpdate;
+                    debugger
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment payout activated",
+                        investmentId: investmentId,//id,
+                        walletId: walletId,// walletId,
+                        userId: userId,// userId,
+                        // @ts-ignore
+                        message: `${firstName}, your investment payout has been activated. Thank you.`,
+                        adminMessage: `${firstName} investment payout was activated.`,
+                        createdAt: DateTime.now(),
+                        metadata: ``,
+                    };
+                    // console.log("Timeline object line 849:", timelineObject);
+                    await timelineService.createTimeline(timelineObject);
+                } else if (saveApproval.approvalStatus.toLowerCase() === "activate_rollover" && saveApproval.isRolloverSuspended === false) {
+                    // update the neccesary field
+                    // console.log("selectedInvestmentPayoutRequest ========================================================")
+                    // console.log(selectedInvestmentPayoutRequest)
+                    let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
+                    selectedInvestmentPayoutRequestUpdate.approvalStatus = "rollover_activated" //saveApproval.approvalStatus;
+                    selectedInvestmentPayoutRequestUpdate.isRolloverSuspended = false;
+                    // selectedInvestmentTerminationRequestUpdate.remark = saveApproval.remark;
+
+                    // update the record
+                    await investmentService.updateInvestment(selectedInvestmentPayoutRequest, selectedInvestmentPayoutRequestUpdate);
+                    let { firstName, walletId, userId, } = selectedInvestmentPayoutRequestUpdate;
+                    debugger
+                    // update timeline
+                    timelineObject = {
+                        id: uuid(),
+                        action: "investment rollover activated",
+                        investmentId: investmentId,//id,
+                        walletId: walletId,// walletId,
+                        userId: userId,// userId,
+                        // @ts-ignore
+                        message: `${firstName}, your investment rollover request has been activated. Thank you.`,
+                        adminMessage: `${firstName} investment rollover request was activated.`,
                         createdAt: DateTime.now(),
                         metadata: ``,
                     };
