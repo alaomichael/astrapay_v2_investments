@@ -307,13 +307,13 @@ export default class ApprovalsController {
       // console.log("Approval query: ", request.qs());
       const { approvalStatus,email, assignedTo, processedBy, approvedBy } = request.body();
       const { isRolloverSuspended, isPayoutSuspended, } = request.body();
-      //debugger
+      debugger
       let { rolloverReactivationDate, payoutReactivationDate, } = request.body();
       rolloverReactivationDate = rolloverReactivationDate ? rolloverReactivationDate : DateTime.now().plus({ months: 6 });
       payoutReactivationDate = payoutReactivationDate ? payoutReactivationDate : DateTime.now().plus({ months: 6 });
 
-      rolloverReactivationDate = await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY");
-      payoutReactivationDate = await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY");
+      // rolloverReactivationDate = await convertDateToFormat(rolloverReactivationDate, "DD-MM-YYYY");
+      // payoutReactivationDate = await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY");
 
       // console.log("rolloverReactivationDate line 302 @ApprovalContoller ", rolloverReactivationDate)
       // console.log("payoutReactivationDate line 303 @ApprovalContoller ", payoutReactivationDate);
@@ -323,6 +323,7 @@ export default class ApprovalsController {
       let approval;
       let approvalRequestIsExisting = await approvalsService.getApprovalByApprovalId(id)
       // console.log("Existing Approval Request details: ", approvalRequestIsExisting);
+      debugger
       if (!approvalRequestIsExisting) {
         //    return error message to user
         // throw new Error(`Approval Request with Id: ${id} does not exist, please check and try again.`);
@@ -4015,18 +4016,7 @@ export default class ApprovalsController {
           //   console.log("Notification NOT sent successfully");
           //   console.log(newNotificationMessage);
           // }
-          // Send Notification to admin and others stakeholder
-          let investment = record;
-          let messageKey = "rollover_pending";
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // console.log("newNotificationMessage line 1959:", newNotificationMessageWithoutPdf);
-          // //debugger
-          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessageWithoutPdf);
-          }
+         
 
           // update record
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -4036,6 +4026,19 @@ export default class ApprovalsController {
           //debugger
           // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
           // console.log(" Current log, line 1459 :", updatedInvestment);
+          // Send Notification to admin and others stakeholder
+          let investment = record;
+          let messageKey = "rollover_pending";
+          // let newNotificationMessageWithoutPdf = await 
+          sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // // console.log("newNotificationMessage line 1959:", newNotificationMessageWithoutPdf);
+          // // //debugger
+          // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessageWithoutPdf);
+          // }
 
           // } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && isPayoutSuspended === false && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
         } else if (approval.requestType === "payout_investment" && approval.approvalStatus === "activate_payout" && record.status !== "completed" && record.status !== "initiated") { //&& record.status == "submitted"
@@ -4145,8 +4148,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY") }. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate,"DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4159,15 +4162,16 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout_pending";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2143:", newNotificationMessageWithoutPdf);
-            // //debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 2143:", newNotificationMessageWithoutPdf);
+            // // //debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
           } else if (isPayoutSuspended === false) {
             // newStatus = "completed";//"matured"; //"payout_activated";//
@@ -4193,15 +4197,16 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout_activation";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2194:", newNotificationMessageWithoutPdf);
-            // //debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 2194:", newNotificationMessageWithoutPdf);
+            // // //debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
           }
 
@@ -4704,15 +4709,16 @@ export default class ApprovalsController {
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "payout";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 1338:", newNotificationMessageWithoutPdf);
-              // //debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+              // let newNotificationMessageWithoutPdf = await 
+              sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // // console.log("newNotificationMessage line 1338:", newNotificationMessageWithoutPdf);
+              // // //debugger
+              // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessageWithoutPdf);
+              // }
 
               // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
             } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status !== 200) {
@@ -4761,15 +4767,16 @@ export default class ApprovalsController {
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "payout";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
-              // //debugger
-              if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+              // let newNotificationMessageWithoutPdf = await 
+              sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+              // // //debugger
+              // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessageWithoutPdf);
+              // }
 
               // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
             } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status !== 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
@@ -4820,15 +4827,16 @@ export default class ApprovalsController {
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "payout";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 1484:", newNotificationMessageWithoutPdf);
-              // //debugger
-              if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+              // let newNotificationMessageWithoutPdf = await 
+              sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // // console.log("newNotificationMessage line 1484:", newNotificationMessageWithoutPdf);
+              // // //debugger
+              // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessageWithoutPdf);
+              // }
 
             } else {
               throw Error(`Unable to Payout the investment with ID: ${id}, at this time. Please try again later. Thank you.`);
@@ -4938,8 +4946,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended, it will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate,"DD-MM-YYYY")}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended, it will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate,"DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4952,15 +4960,16 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout_pending";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2382:", newNotificationMessageWithoutPdf);
-            // //debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 2382:", newNotificationMessageWithoutPdf);
+            // // //debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
             // Notification for Rollover
             // update timeline
@@ -5002,15 +5011,16 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             investment = record;
             messageKey = "rollover_pending";
-            newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2424:", newNotificationMessageWithoutPdf);
-            // //debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 2424:", newNotificationMessageWithoutPdf);
+            // // //debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
           }
 
@@ -5026,8 +5036,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${payoutReactivationDate}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${payoutReactivationDate}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate,"DD-MM-YYYY")}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate,"DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -5040,15 +5050,16 @@ export default class ApprovalsController {
             // Send Notification to admin and others stakeholder
             let investment = record;
             let messageKey = "payout_pending";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
-            // //debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 2329:", newNotificationMessageWithoutPdf);
+            // // //debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
           }
 
@@ -5123,15 +5134,16 @@ export default class ApprovalsController {
           let investment = record;
           let messageKey = "liquidation";
           // //debugger
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
-          // //debugger
-          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessageWithoutPdf);
-          }
+          // let newNotificationMessageWithoutPdf = await 
+          sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
+          // // //debugger
+          // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessageWithoutPdf);
+          // }
 
         } else if (approval.requestType == "liquidate_investment" && approval.approvalStatus == "declined" && record.status == "active" && record.investmentType === "fixed") {
           // newStatus = 'active'
@@ -5196,15 +5208,16 @@ export default class ApprovalsController {
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageKey = "liquidation_rejection";
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // console.log("newNotificationMessage line 2563:", newNotificationMessageWithoutPdf);
-          // //debugger
-          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessageWithoutPdf);
-          }
+          // let newNotificationMessageWithoutPdf = await
+           sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // // console.log("newNotificationMessage line 2563:", newNotificationMessageWithoutPdf);
+          // // //debugger
+          // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessageWithoutPdf);
+          // }
 
 
         } else if (approval.requestType == "start_investment" && approval.approvalStatus == "approved" && record.status == "active" && record.investmentType === "fixed") {
@@ -5269,15 +5282,16 @@ export default class ApprovalsController {
           let investment = record;
           let messageKey = "liquidation";
           // //debugger
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
-          // //debugger
-          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessageWithoutPdf);
-          }
+          // let newNotificationMessageWithoutPdf = await 
+          sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // // console.log("newNotificationMessage line 2496:", newNotificationMessageWithoutPdf);
+          // // //debugger
+          // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessageWithoutPdf);
+          // }
 
         } else {
           console.log("Entering no record for update 3590 ==================================")
@@ -5315,7 +5329,7 @@ export default class ApprovalsController {
       console.log("Error line 3967", error.message);
       // let { status, message,messages,errorCode,errorMessage} = error;
       let { message, messages, } = error;
-      // //debugger
+      debugger
       if (error.code === 'E_APP_EXCEPTION') {
         console.log(error.codeSt)
         let statusCode = error.codeSt ? error.codeSt : 500

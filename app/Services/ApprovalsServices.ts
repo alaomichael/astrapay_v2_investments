@@ -210,7 +210,7 @@ export default class ApprovalsServices {
         try {
             let saveApproval = await selectedApproval.merge(updateApproval)
             await saveApproval.save();
-            // debugger
+            debugger
             const investmentService = new InvestmentsServices();
             const selectedInvestmentRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
             const timelineService = new TimelinesServices();
@@ -1038,6 +1038,7 @@ export default class ApprovalsServices {
                 }
 
             } else if (saveApproval.requestType === "payout_investment") {
+                debugger
                 const selectedInvestmentPayoutRequest = await investmentService.getInvestmentByInvestmentId(saveApproval.investmentId);
                 // get the request by request id
                 // update status based on admin action
@@ -1083,6 +1084,7 @@ export default class ApprovalsServices {
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
+                    debugger
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "payout_suspended" //saveApproval.approvalStatus;
                     selectedInvestmentPayoutRequestUpdate.isPayoutSuspended = true;
@@ -1109,6 +1111,7 @@ export default class ApprovalsServices {
                     // console.log("Timeline object line 849:", timelineObject);
                     await timelineService.createTimeline(timelineObject);
                 } else if (saveApproval.approvalStatus.toLowerCase() === "suspend_rollover" && saveApproval.isRolloverSuspended === true) {
+                    debugger
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1138,6 +1141,7 @@ export default class ApprovalsServices {
                     // console.log("Timeline object line 383:", timelineObject);
                     await timelineService.createTimeline(timelineObject);
                 }else if (saveApproval.approvalStatus.toLowerCase() === "activate_payout" && saveApproval.isPayoutSuspended === false) {
+                                        debugger
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
@@ -1166,6 +1170,7 @@ export default class ApprovalsServices {
                     // console.log("Timeline object line 849:", timelineObject);
                     await timelineService.createTimeline(timelineObject);
                 } else if (saveApproval.approvalStatus.toLowerCase() === "activate_rollover" && saveApproval.isRolloverSuspended === false) {
+                    debugger
                     // update the neccesary field
                     // console.log("selectedInvestmentPayoutRequest ========================================================")
                     // console.log(selectedInvestmentPayoutRequest)
