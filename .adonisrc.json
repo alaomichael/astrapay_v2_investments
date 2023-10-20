@@ -4,7 +4,9 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "@adonisjs/mail/build/commands",
+    "adonis5-scheduler/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -15,7 +17,14 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel"
+    "./start/kernel",
+    {
+      "file": "./start/rabbit",
+      "environment": [
+        "web"
+      ]
+    },
+    "./start/events"
   ],
   "providers": [
     "./providers/AppProvider",
@@ -23,7 +32,10 @@
     "@adonisjs/lucid",
     "./providers/QueryBuilderProvider",
     "@adonisjs/attachment-lite",
-    "@adonisjs/session"
+    "@adonisjs/session",
+    "@adonisjs/mail",
+    "adonis5-scheduler",
+    "adonis-rabbit"
   ],
   "aceProviders": [
     "@adonisjs/repl"

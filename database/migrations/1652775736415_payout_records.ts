@@ -9,8 +9,12 @@ export default class PayoutRecords extends BaseSchema {
       table.text('user_id').unsigned().notNullable().index()
       table.text('investment_id').unsigned().notNullable().index()
       table.string('wallet_id').unsigned().nullable().index()
+      table.string("first_name", 225).notNullable().index();
+      table.string("last_name", 225).notNullable().index();
+      table.string("phone", 225).notNullable().index();
+      table.string("email", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
-      table.string('duration', 100).notNullable().index()
+      table.integer('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
       table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
       table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
@@ -18,9 +22,9 @@ export default class PayoutRecords extends BaseSchema {
 
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable()
-      table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('long').unsigned().nullable().index()
-      table.float('lat').unsigned().nullable().index()
+      // table.jsonb('wallet_holder_details').notNullable().index()
+      table.string('lng').nullable().index()
+      table.string('lat').nullable().index()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().notNullable().index()
       table.float('total_amount_paid').unsigned().notNullable().index()
@@ -31,13 +35,13 @@ export default class PayoutRecords extends BaseSchema {
       table.timestamp('created_at', { useTz: true })
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
-      table.string('request_type', 255).notNullable().defaultTo('payout investment').index()
+      table.string('request_type', 255).notNullable().defaultTo('payout_investment').index()
       table.boolean('is_payout_authorized').notNullable().defaultTo(true).index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(true).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(true).index()
       table.string('approval_status', 255).notNullable().defaultTo('approved').index()
       table.string('status', 255).notNullable().index()
-      table.jsonb('timeline').nullable().index()
+      // table.jsonb('timeline').nullable().index()
       table.text('certificate_url').nullable().index()
       // table.timestamp('date_payout_was_done', { useTz: true })
       table.string('date_payout_was_done').notNullable().index()
@@ -55,8 +59,8 @@ export default class PayoutRecords extends BaseSchema {
           'rollover_target',
           'rollover_done',
           'investment_type',
-          'wallet_holder_details',
-          'long',
+          // 'wallet_holder_details',
+          'lng',
           'lat',
           'start_date',
           'payout_date',

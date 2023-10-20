@@ -13,14 +13,14 @@ export default class RatesController {
       investmentType,
       rolloverCode,
       status,
-      productName,
+      typeName,
       interestRate,
     } = request.qs()
     console.log('Rate query line 19: ', request.qs())
     const countActiveRates = await Rate.query().where('status', 'active').getCount()
     console.log('Rate Investment count: ', countActiveRates)
     // const countSuspended = await Rate.query().where('status', 'suspended').getCount()
-    // console.log('Terminated Investment count: ', countSuspended)
+    // console.log('Liquidated Investment count: ', countSuspended)
     // const rate = await Rate.query().offset(0).limit(1)
     const rate = await Rate.all()
     let sortedRates = rate
@@ -33,8 +33,8 @@ export default class RatesController {
 
     if (duration) {
       sortedRates = sortedRates.filter((rate) => {
-        console.log(' Rate Duration:', rate.duration)
-        console.log(' Query Duration:', duration)
+        // console.log(' Rate Duration:', rate.duration)
+        // console.log(' Query Duration:', duration)
         // @ts-ignore
         return rate.duration === duration
       })
@@ -54,10 +54,10 @@ export default class RatesController {
       })
     }
 
-    if (productName) {
+    if (typeName) {
       sortedRates = sortedRates.filter((rate) => {
         // @ts-ignore
-        return rate.productName!.includes(productName)
+        return rate.typeName!.includes(typeName)
       })
     }
     if (status) {
@@ -76,13 +76,13 @@ export default class RatesController {
     if (limit) {
       sortedRates = sortedRates.slice(0, Number(limit))
     }
-    console.log('sortedRates line 79: ', sortedRates)
+    // console.log('sortedRates line 79: ', sortedRates)
 
     if (sortedRates.length < 1) {
       return response.status(200).json({
         status: 'OK',
         message: 'no investment rate matched your search',
-        data: [],
+        data: null,
       })
     }
     // return rate(s)
@@ -95,7 +95,7 @@ export default class RatesController {
   public async store({ request, response }: HttpContextContract) {
     // const user = await auth.authenticate()
     const rateSchema = schema.create({
-      productName: schema.string({ escape: true }, [rules.maxLength(20)]),
+      typeName: schema.string({ escape: true }, [rules.maxLength(20)]),
       lowestAmount: schema.number(),
       highestAmount: schema.number(),
       duration: schema.string({ escape: true }, [rules.maxLength(4)]),
@@ -122,7 +122,7 @@ export default class RatesController {
     // @ts-ignore
     // rate.status = 'active'
     await rate.save()
-    console.log('The new investment:', rate)
+    // console.log('The new investment:', rate)
 
     console.log('A New Rate has been Created.')
 
@@ -140,19 +140,19 @@ export default class RatesController {
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { productName, rateId } = request.qs()
+      const { typeName, rateId } = request.qs()
       console.log('Rate query: ', request.qs())
       // let rate = await Rate.query().where({
-      //   product_name: request.input('productName'),
+      //   type_name: request.input('typeName'),
       //   id: request.input('rateId'),
       // })
       let rate = await Rate.query().where({
-        product_name: productName,
+        type_name: typeName,
         id: rateId,
       })
-      console.log(' QUERY RESULT: ', rate)
+      // console.log(' QUERY RESULT: ', rate)
       if (rate.length > 0) {
-        console.log('Investment rate Selected for Update:', rate)
+        // console.log('Investment rate Selected for Update:', rate)
         if (rate) {
           rate[0].productName = request.input('newProductName')
             ? request.input('newProductName')
@@ -186,7 +186,7 @@ export default class RatesController {
           if (rate) {
             // send to user
             await rate[0].save()
-            console.log('Update Investment rate:', rate)
+            // console.log('Update Investment rate:', rate)
             return response.status(200).json({
               status: 'OK',
               data: rate.map((rate) => {
@@ -211,26 +211,26 @@ export default class RatesController {
 
   public async destroy({ request, response }: HttpContextContract) {
     // let id = request.input('rateId')
-    const { productName, rateId } = request.qs()
+    const { typeName, rateId } = request.qs()
     console.log('Rate query: ', request.qs())
     // let rate = await Rate.query().where({
-    //   product_name: request.input('productName'),
+    //   type_name: request.input('typeName'),
     //   id: request.input('rateId'),
     // })
     let rate = await Rate.query().where({
-      product_name: productName,
+      type_name: typeName,
       id: rateId,
     })
-    console.log(' QUERY RESULT: ', rate)
+    // console.log(' QUERY RESULT: ', rate)
 
     if (rate.length > 0) {
       rate = await Rate.query()
         .where({
-          product_name: productName,
+          type_name: typeName,
           id: rateId,
         })
         .delete()
-      console.log('Deleted data:', rate)
+      // console.log('Deleted data:', rate)
       return response.send('Rate Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

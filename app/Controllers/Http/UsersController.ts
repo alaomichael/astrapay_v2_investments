@@ -50,7 +50,7 @@ export default class UsersController {
       return response.status(200).json({
         status: 'OK',
         message: 'no user matched your search',
-        data: [],
+        data: null,
       })
     }
     // return user(s)
@@ -87,11 +87,11 @@ export default class UsersController {
       }),
     })
     const payload: any = await request.validate({ schema: userSchema })
-    console.log('The new user payload:', payload)
+    // console.log('The new user payload:', payload)
     const user = await User.create(payload)
 
     await user.save()
-    console.log('The new user rate:', user)
+    // console.log('The new user :', user)
 
     // TODO
     console.log('A New user has been Created.')
@@ -139,9 +139,9 @@ export default class UsersController {
           userId: userId,
         })
         .first()
-      console.log(' QUERY RESULT: ', user)
+      // console.log(' QUERY RESULT: ', user)
       if (user) {
-        console.log('Investment user Selected for Update:', user)
+        // console.log('Investment user Selected for Update:', user)
         if (user) {
           user.merge(payload)
           // @ts-ignore
@@ -149,7 +149,7 @@ export default class UsersController {
           if (user) {
             // send to user
             await user.save()
-            console.log('Update Investment user:', user)
+            // console.log('Update Investment user:', user)
             return user
           }
           return // 422
@@ -174,7 +174,7 @@ export default class UsersController {
     let user = await User.query().where({
       id: id,
     })
-    console.log(' QUERY RESULT: ', user)
+    // console.log(' QUERY RESULT: ', user)
 
     if (user.length > 0) {
       user = await User.query()
@@ -182,7 +182,7 @@ export default class UsersController {
           id: id,
         })
         .delete()
-      console.log('Deleted data:', user)
+      // console.log('Deleted data:', user)
       return response.send('user Delete.')
     } else {
       return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })

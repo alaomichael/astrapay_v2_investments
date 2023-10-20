@@ -1,9 +1,9 @@
 {
-  "updateInterval": 1800,
-  "logging": true,
-  "silent": true,
-  "runOnStart": true,
-  "commitMessage": "--- Auto Git Commit ---",
-  "locale": "en-US",
-  "timeZone": "Europe/Berlin"
+    "updateInterval": 180000,
+    "logging": false,
+    "silent": true,
+    "runOnStart": false,
+    "commitMessage": "--- Auto Git Commit ---",
+    "locale": "en-US",
+    "timeZone": "Europe/Berlin"
 }

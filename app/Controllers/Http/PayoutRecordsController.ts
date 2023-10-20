@@ -13,12 +13,12 @@ import PayoutRecord from 'App/Models/PayoutRecord'
 export default class PayoutRecordsController {
   public async index({ params, request, response }: HttpContextContract) {
     console.log('PayoutRecord params: ', params)
-    const { search, limit,userId, investmentId,status } = request.qs()
+    const { search, limit, userId, investmentId, status } = request.qs()
     console.log('PayoutRecord query: ', request.qs())
     const countPayouts = await PayoutRecord.query().where('status', 'paid').getCount()
     console.log('PayoutRecord Investment count: ', countPayouts)
-    const countTerminated = await PayoutRecord.query().where('request_type', 'terminate investment').getCount()
-    console.log('Terminated Investment count: ', countTerminated)
+    const countTerminated = await PayoutRecord.query().where('request_type', 'liquidate_investment').getCount()
+    console.log('Liquidated Investment count: ', countTerminated)
     // const PayoutRecord = await Investment.query().offset(0).limit(1)
     const payoutRecord = await PayoutRecord.all()
     let sortedPayouts = payoutRecord
@@ -30,33 +30,33 @@ export default class PayoutRecordsController {
         return payoutRecord.walletHolderDetails.lastName!.startsWith(search)
       })
     }
-       if (status) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.status.includes(status)
-         })
-       }
+    if (status) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.status.includes(status)
+      })
+    }
 
-       if (userId) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.userId === userId
-         })
-       }
-       if (investmentId) {
-         sortedPayouts = sortedPayouts.filter((payoutRecord) => {
-           // @ts-ignore
-           return payoutRecord.investmentId === investmentId
-         })
-       }
+    if (userId) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.userId === userId
+      })
+    }
+    if (investmentId) {
+      sortedPayouts = sortedPayouts.filter((payoutRecord) => {
+        // @ts-ignore
+        return payoutRecord.investmentId === investmentId
+      })
+    }
     if (limit) {
       sortedPayouts = sortedPayouts.slice(0, Number(limit))
     }
     if (sortedPayouts.length < 1) {
       return response.status(200).json({
-        status: 'FAILED',
+        status: 'OK',
         message: 'no investment payout record matched your search',
-        data: [],
+        data: null,
       })
     }
     // return payoutRecord

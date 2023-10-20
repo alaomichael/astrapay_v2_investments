@@ -18,49 +18,87 @@ export default class Investments extends BaseSchema {
         .unsigned()
         .notNullable()
         .index()
-        .references('user_id')
-        .inTable('users')
-        .onDelete('CASCADE')
+        // .references('user_id')
+        // .inTable('users')
+        // .onDelete('CASCADE')
       table
         .text('wallet_id')
         .unsigned()
         .nullable()
         .index()
-        .references('wallet_id')
-        .inTable('users')
-        .onDelete('CASCADE')
+        // .references('wallet_id')
+        // .inTable('users')
+        // .onDelete('CASCADE')
+      table.uuid("rfi_record_id")
+        .references("id")
+        .inTable("rfi_records")
+        .notNullable()
+        .index()
+        .onDelete("CASCADE");
+      table.string("rfi_code", 225).notNullable().index();
+      table.string("first_name", 225).notNullable().index();
+      table.string("last_name", 225).notNullable().index();
+      table.string("phone", 225).notNullable().index();
+      table.string("email", 225).notNullable().index();
+      table.string("investor_funding_wallet_id", 225).notNullable().index();
       table.float('amount', 255).unsigned().notNullable().index()
-      table.string('duration', 100).notNullable().index()
+      table.integer('duration', 100).notNullable().index()
       table.enum('rollover_type', ['100', '101', '102', '103']).unsigned().notNullable().index()
       table.integer('rollover_target').unsigned().notNullable().defaultTo(0).index()
       table.integer('rollover_done').unsigned().notNullable().defaultTo(0).index()
+      table.string('investment_type_name',255).notNullable().index()
+      table.uuid('investment_type_id')
+        .references("id")
+        .inTable("types")
+        .notNullable()
+        .index()
+        .onDelete("CASCADE");
       table.enum('investment_type', ['fixed', 'debenture']).notNullable().index()
       table.string('tag_name', 255).notNullable()
       table.string('currency_code', 10).notNullable().index()
-      table.jsonb('wallet_holder_details').notNullable().index()
-      table.float('long').unsigned().nullable()
-      table.float('lat').unsigned().nullable()
+      // table.jsonb('wallet_holder_details').notNullable().index()
       table.float('interest_rate').unsigned().nullable()
       table.float('interest_due_on_investment').unsigned().nullable()
       table.float('total_amount_to_payout').unsigned().nullable().index()
+      table.float('penalty').unsigned().nullable().index()
+      table.boolean("is_request_sent").notNullable().defaultTo(false);
+      table.string("investment_request_reference").nullable();
+      table.string("principal_payout_request_reference").nullable();
+      table.string("interest_payout_request_reference").nullable();
+      table.boolean("is_investment_created").notNullable().defaultTo(false);
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      table.timestamp('created_at', { useTz: true }).index()
+     
       table.date('start_date').nullable().index()
       table.date('payout_date').nullable().index()
-      table.boolean('is_payout_authorized').notNullable().defaultTo(false).index()
+      table.boolean("is_investment_completed").notNullable().defaultTo(false);
+      table.timestamp("investment_completion_date").nullable().index();
+      table.boolean('is_rollover_activated').notNullable().defaultTo(false).index()
+      table.boolean('is_rollover_suspended').notNullable().defaultTo(false).index()
+      table.date('rollover_reactivation_date').nullable().index()
+      table.boolean('is_payout_authorized').notNullable().defaultTo(true).index()
+      table.boolean('is_payout_suspended').notNullable().defaultTo(false).index()
+      table.date('payout_reactivation_date').nullable().index()
       table.boolean('is_termination_authorized').notNullable().defaultTo(false).index()
       table.boolean('is_payout_successful').notNullable().defaultTo(false).index()
-      table.string('request_type', 255).notNullable().defaultTo('start investment').index()
+      table.string('request_type', 255).notNullable().defaultTo('start_investment').index()
       table.string('approval_status', 255).notNullable().defaultTo('pending').index()
       table.string('status', 255).notNullable().defaultTo('initiated').index()
-      table.jsonb('timeline').nullable().index()
+      table.string('principal_payout_status', 255).notNullable().defaultTo('pending').index()
+      table.string('interest_payout_status', 255).notNullable().defaultTo('pending').index()
+      // table.jsonb('timeline').nullable().index()
       table.text('certificate_url').nullable().index()
 
       // table.timestamp('date_payout_was_done', { useTz: true })
-      table.string('date_payout_was_done').nullable().index()
+      table.date('date_payout_was_done').nullable().index()
+      table.float('lng').unsigned().nullable()
+      table.float('lat').unsigned().nullable()
+      table.string("processed_by", 255).notNullable().defaultTo("automation").index();
+      table.string("approved_by", 255).notNullable().defaultTo("automation").index();
+      table.string("assigned_to", 255).notNullable().defaultTo("automation").index();
+      table.timestamp('created_at', { useTz: true }).index()
       table.timestamp('updated_at', { useTz: true })
 
       // indexes
@@ -75,8 +113,7 @@ export default class Investments extends BaseSchema {
           'rollover_target',
           'rollover_done',
           'investment_type',
-          'wallet_holder_details',
-          'long',
+          'lng',
           'lat',
           'start_date',
           'payout_date',

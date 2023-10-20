@@ -110,6 +110,43 @@ const generateRate = (amount, duration, investment_type) => {
 // generateRate(198, '752', 'fixed')
 
 // generateRate(1000, '300', 'debenture')
+// Get decimal place
+const getDecimalPlace = (n, r = 2) => {
+  let valueToReturn;
+  const numToSeparate = n; //12345;
+  // const arrayOfDigits = Array.from(String(numToSeparate), Number);
+  // console.log(arrayOfDigits);   //[1,2,3,4,5]
+  const arrayOfDigits02 = numToSeparate.toString().split("");
+  // console.log(arrayOfDigits02);
+  let indexOfDecimalPoint = arrayOfDigits02.indexOf(".");
+  // console.log(indexOfDecimalPoint);
+  // console.log(arrayOfDigits02[indexOfDecimalPoint + r + 2]);
+  // console.log(arrayOfDigits02[indexOfDecimalPoint + r + 3]);
+  if (arrayOfDigits02[indexOfDecimalPoint + r + 1] >= 4 && arrayOfDigits02[indexOfDecimalPoint + r + 2] >= 4 && arrayOfDigits02[indexOfDecimalPoint + r + 3] >= 5) {
+    // console.log("The value of the first next digit is", n.toString()[indexOfDecimalPoint + r + 1]);
+    // console.log("The value of the next digit is", n.toString()[indexOfDecimalPoint + r + 2]);
+    // console.log("The value of the next digit after the one above is", n.toString()[indexOfDecimalPoint + r + 3]);
+    let valueToAdd = 1 * 10 ** (-(r)); // eg 0.0001;
+    // console.log(valueToAdd);
+    valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r);
+    // console.log("valueToReturn line 132 ================");
+    // console.log(valueToReturn);
+    // console.log("valueToReturn.toString()[r] line 134 ================");
+    // console.log(valueToReturn.toString()[r]);
+    if ((r == 1 && valueToReturn.toString()[r] != undefined) || (valueToAdd <= 0.01 && valueToReturn.toString()[r] < 5)) {
+      valueToReturn = valueToReturn + valueToAdd;
+      // console.log("valueToReturn line 138 ================");
+      // console.log(valueToReturn);
+      valueToReturn = Number(valueToReturn.toFixed(r));
+      // console.log("valueToReturn line 141 ================");
+      // console.log(valueToReturn);
+    }
+  } else {
+    valueToReturn = (Math.round(Math.round(n * 10 ** (r + 1)) / 10) / 10 ** r)
+  }
+  console.log(n + ' rounded to ' + r + ' decimal places is ' + valueToReturn);
+  return valueToReturn
+}
 
 // Generate Return on Investment
 const interestDueOnPayout = (amount, rate, duration) => {
@@ -119,18 +156,25 @@ const interestDueOnPayout = (amount, rate, duration) => {
     }
     let interestDue
     let interestDueDaily
-    interestDue = amount * rate
-    interestDueDaily = interestDue / duration
+    let decPl = 2;
+    interestDue = (duration / 360) * (rate / 100);
+    // debugger
+    interestDue = amount * interestDue;
+    debugger
+    interestDue = Number(interestDue.toFixed(decPl));
+    debugger
+    if (interestDue < 0.1) {
+      interestDue = 0.1
+    }
+    debugger
+    // interestDue = getDecimalPlace(interestDue,decPl);
+    interestDueDaily = interestDue / duration;
     let day = 'day'
     if (duration > 1) {
       day = 'days'
     }
-    console.log(
-      `Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`
-    )
-    console.log(
-      `Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`
-    )
+    console.log(`Interest due for your investment of ${amount} for ${duration} ${day} is ${interestDue}`);
+    console.log(`Interest due daily for your investment of ${amount} for ${duration} ${day} is ${interestDueDaily}`);
     return resolve(interestDue)
   })
 }
@@ -174,7 +218,7 @@ const dueForPayout = (created_at, duration) => {
     // console.log('From Js-Joda:', getNumberOfDays2('2021-02-01', '2022-04-29'))
 
     let isDueForPayout
-    console.log('Current Date line 159 utils.ts: ' + created_at)
+    // console.log('Current Date line 159 utils.ts: ' + created_at)
     let investmentCreationDate = new Date(created_at).getTime()
     let durationToMs = parseInt(duration) * 24 * 60 * 60 * 1000
     let investmentPayoutDate = new Date(durationToMs + investmentCreationDate).getTime()
@@ -202,7 +246,7 @@ const dueForPayout = (created_at, duration) => {
     //     new Date(currentDate).toLocaleDateString()
     //   )
     // )
-    let day = 'day'
+    let day = 'day';
     if (investmentDuration > 1) {
       day = 'days'
     }
@@ -210,14 +254,12 @@ const dueForPayout = (created_at, duration) => {
     if (currentDate >= investmentPayoutDate || investmentDuration >= parseInt(duration)) {
       isDueForPayout = true
       // investmentPayoutDate = new Date(investmentPayoutDate).toLocaleString()
-      console.log(
-        `Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      )
+      // console.log(`Your investment is due for payout on ${new Date(investmentPayoutDate).toDateString()}`);
     } else {
       isDueForPayout = false
-      console.log(
-        `Your investment will be due for payout on ${new Date(investmentPayoutDate).toDateString()}`
-      )
+      // console.log(
+      //   `Your investment will be due for payout on ${new Date(investmentPayoutDate).toDateString()}`
+      // )
     }
     return resolve(isDueForPayout)
   })
@@ -238,7 +280,7 @@ const investmentDuration = async function getNumberOfDays(start, end) {
 
   // Calculating the no. of days between two dates
   const diffInDays = await Math.round(diffInTime / oneDay)
-  console.log('Duration of the investment is: ', diffInDays)
+  // console.log('Duration of the investment is: ', diffInDays)
   // let currentDate = new Date().toISOString() //.toLocaleString()
   // console.log('currentDate : ', currentDate)
 
@@ -276,13 +318,13 @@ const payoutDueDate = (created_at, duration) => {
 
 const approvalRequest = async function (userId, investmentId, requestType) {
   try {
-    // let requestType = 'start investment'
+    // let requestType = 'start_investment'
     const response = await axios.post(`${API_URL}/investments/approvals`, {
       userId,
       investmentId,
       requestType,
     })
-    console.log('The API response for approval request line 280: ', response.data)
+    // console.log('The API response for approval request line 280: ', response.data)
     if (response && response.data.status === 'OK') {
       console.log('Approval request status is OK')
       return response.data
@@ -303,7 +345,7 @@ const getTaxRate = async function (state, income) {
     const response = await axios.get(`${API_URL}/admin/investments/taxes`, {
       state,
     })
-    console.log('The API response for tax rate request: ', response[0].rate)
+    // console.log('The API response for tax rate request: ', response[0].rate)
     if (response && response[0].rate !== undefined && response[0].rate > 0) {
       console.log('tax request status is OK')
       return response[0].rate
@@ -323,7 +365,7 @@ const sendPaymentDetails = async function (amount, duration, investmentType) {
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${amount}&duration=${duration}&investmentType=${investmentType}`
     )
-    console.log('The API response: ', response.data)
+    // console.log('The API response: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
       return response.data.data[0].interestRate
     } else {
@@ -343,7 +385,7 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
     const response = await axios.get(
       `${API_URL}/investments/rates?amount=${payloadAmount}&duration=${payloadDuration}&investmentType=${payloadInvestmentType}`
     )
-    console.log('The API response line 346: ', response.data)
+    // console.log('The API response line 346: ', response.data)
     if (response.data.status === 'OK' && response.data.data.length > 0) {
       console.log('The API response line 348: ', response.data.data[0].interestRate)
       return response.data.data[0].interestRate
@@ -355,56 +397,53 @@ const investmentRate = async function (payloadAmount, payloadDuration, payloadIn
   }
 }
 
-const createNewInvestment = async function ( payloadAmount,
-                  payloadDuration,
-                  payloadInvestmentType,
-                  investmentData) {
-                      console.log('Investment data line 362: ', investmentData)
-                  console.log('Investment payloadAmount data line 363: ', payloadAmount)
-                  console.log('Investment payloadDuration data line 364: ', payloadDuration)
-                  console.log(
-                    'Investment payloadInvestmentType data line 366: ',
-                    payloadInvestmentType
-                  )
+const createNewInvestment = async function (payloadAmount,
+  payloadDuration,
+  payloadInvestmentType,
+  investmentData) {
+  // console.log('Investment data line 362: ', investmentData)
+  // console.log('Investment payloadAmount data line 363: ', payloadAmount)
+  console.log('Investment payloadDuration data line 364: ', payloadDuration)
+  console.log('Investment payloadInvestmentType data line 366: ', payloadInvestmentType)
   try {
-    // let requestType = 'start investment'
-      let payload
-                  // destructure / extract the needed data from the investment
-                  let {
-                    amount,
-                    rolloverType,
-                    rolloverTarget,
-                    rolloverDone,
-                    investmentType,
-                    duration,
-                    userId,
-                    tagName,
-                    currencyCode,
-                    long,
-                    lat,
-                    walletHolderDetails,
-                  } = investmentData
-                  // copy the investment data to payload
-                  payload = {
-                    amount,
-                    rolloverType,
-                    rolloverTarget,
-                    rolloverDone,
-                    investmentType,
-                    duration,
-                    userId,
-                    tagName,
-                    currencyCode,
-                    long,
-                    lat,
-                    walletHolderDetails,
-                  }
-                  payload.amount = payloadAmount
-                  //  payload.interestRate = rate
-                  console.log('PAYLOAD line 2325 :', payload)
+    // let requestType = 'start_investment'
+    let payload
+    // destructure / extract the needed data from the investment
+    let {
+      amount,
+      rolloverType,
+      rolloverTarget,
+      rolloverDone,
+      investmentType,
+      duration,
+      userId,
+      tagName,
+      currencyCode,
+      long,
+      lat,
+      walletHolderDetails,
+    } = investmentData
+    // copy the investment data to payload
+    payload = {
+      amount,
+      rolloverType,
+      rolloverTarget,
+      rolloverDone,
+      investmentType,
+      duration,
+      userId,
+      tagName,
+      currencyCode,
+      long,
+      lat,
+      walletHolderDetails,
+    }
+    payload.amount = payloadAmount
+    //  payload.interestRate = rate
+    // console.log('PAYLOAD line 2325 :', payload)
 
     const response = await axios.post(`${API_URL}/investments`, {
-      amount:payloadAmount,
+      amount: payloadAmount,
       rolloverType,
       rolloverTarget,
       rolloverDone,
@@ -417,7 +456,7 @@ const createNewInvestment = async function ( payloadAmount,
       lat,
       walletHolderDetails,
     })
-    console.log('The API response for new investment creation request line 420: ', response.data)
+    // console.log('The API response for new investment creation request line 420: ', response.data)
     if (response && response.data.status === 'OK') {
       console.log('New investment created successfully, request status is OK')
       return response.data
@@ -457,9 +496,9 @@ const createNewInvestment = async function ( payloadAmount,
 //                   console.log(' Rate return line 2282 : ', rate)
 //                   if (rate === undefined) {
 //                     return response.status(400).json({
-//                       status: 'FAILED',
+//                       status: 'OK',
 //                       message: 'no investment rate matched your search, please try again.',
-//                       data: [],
+//                       data: null,
 //                     })
 //                   }
 //                   let settings = await Setting.query().where({ tagName: 'default setting' })
@@ -527,21 +566,21 @@ const createNewInvestment = async function ( payloadAmount,
 //                   // Send Investment Initiation Message to Queue
 
 //                   // check if Approval is set to Auto, from Setting Controller
-//                   let requestType = 'start investment'
+//                   let requestType = 'start_investment'
 //                   let approvalIsAutomated = settings[0].isInvestmentAutomated
 //                   if (approvalIsAutomated === false) {
 //                     // Send Approval Request to Admin
 //                     userId = investment.userId
 //                     let investmentId = investment.id
-//                     // let requestType = 'start investment'
+//                     // let requestType = 'start_investment'
 //                     let approval = await approvalRequest(userId, investmentId, requestType)
 //                     console.log(' Approval request return line 2362 : ', approval)
 //                     if (approval === undefined) {
 //                       return response.status(400).json({
-//                         status: 'FAILED',
+//                         status: 'OK',
 //                         message:
 //                           'investment approval request was not successful, please try again.',
-//                         data: [],
+//                         data: null,
 //                       })
 //                     }
 //                     // update timeline
@@ -710,6 +749,7 @@ module.exports = {
   getTaxRate,
   getPrintServerBaseUrl,
   createNewInvestment,
+  getDecimalPlace,
 }
 
 export {
@@ -721,5 +761,5 @@ export {
   investmentDuration,
   sendPaymentDetails,
   investmentRate,
-  getTaxRate,createNewInvestment
+  getTaxRate, createNewInvestment, getDecimalPlace
 }

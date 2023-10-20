@@ -21,6 +21,18 @@ export default class Payout extends AppBaseModel {
   public walletId: string
 
   @column()
+  public firstName: string
+
+  @column()
+  public lastName: string
+
+  @column()
+  public phone: string
+
+  @column()
+  public email: string
+
+  @column()
   public investmentId: string
 
   @column()

@@ -1,5 +1,57 @@
+// {
+//   "extends": "./node_modules/adonis-preset-ts/tsconfig",
+//   "include": [
+//     "**/*"
+//   ],
+//   "exclude": [
+//     "node_modules",
+//     "build"
+//   ],
+//   "compilerOptions": {
+//     "outDir": "build",
+//     "rootDir": "./",
+//     "sourceMap": true,
+//     "lib": [
+//       "es2015",
+//       "es2020",
+//       "es2021",
+//       "esnext"
+//     ],
+//     "module": "CommonJS",
+//     "moduleResolution": "node",
+//     "target": "es2015",
+//     "esModuleInterop": true,
+//     "declaration": true,
+//     "strict": false,
+//     "paths": {
+//       "App/*": [
+//         "./app/*"
+//       ],
+//       "Config/*": [
+//         "./config/*"
+//       ],
+//       "Contracts/*": [
+//         "./contracts/*"
+//       ],
+//       "Database/*": [
+//         "./database/*"
+//       ]
+//     },
+//     "types": [
+//       "@adonisjs/core",
+//       "@adonisjs/repl",
+//       "@japa/preset-adonis/build/adonis-typings",
+//       "@adonisjs/lucid",
+//       "@adonisjs/attachment-lite",
+//       "@adonisjs/session",
+//       "@adonisjs/mail",
+//       "adonis5-scheduler",
+//       "adonis-rabbit"
+//     ]
+//   }
+// }
 {
-  "extends": "./node_modules/adonis-preset-ts/tsconfig",
+  "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
     "**/*"
   ],
@@ -11,18 +63,6 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
-    "lib": [
-      "es2015",
-      "es2020",
-      "es2021",
-      "esnext"
-    ],
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "target": "es2015",
-    "esModuleInterop": true,
-    "declaration": true,
-    "strict": false,
     "paths": {
       "App/*": [
         "./app/*"
@@ -38,12 +78,24 @@
       ]
     },
     "types": [
+      // "node",
+      // "@adonisjs/core",
+      // "@adonisjs/repl",
+      // "@japa/preset-adonis/build/adonis-typings",
+      // "@adonisjs/lucid",
+      // "adonis5-scheduler",
+      // "@shagital/adonisjs-crud-generator",
+      // "adonis-rabbit",
       "@adonisjs/core",
       "@adonisjs/repl",
       "@japa/preset-adonis/build/adonis-typings",
       "@adonisjs/lucid",
       "@adonisjs/attachment-lite",
-      "@adonisjs/session"
+      "@adonisjs/session",
+      "@adonisjs/mail",
+      "adonis5-scheduler",
+      // "amqplib",
+      "adonis-rabbit"
     ]
   }
 }

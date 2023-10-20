@@ -1,8 +1,11 @@
+import RfiRecord from './RfiRecord';
 import { DateTime } from 'luxon'
-import { column, beforeCreate, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeCreate, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuid } from 'uuid'
 import AppBaseModel from 'App/Models/AppBaseModel'
-import User from './User'
+import Approval from './Approval';
+import Timeline from './Timeline';
+// import User from './User'
 
 /**
  * .enum('rollover_type', ['100' = 'no rollover',
@@ -23,10 +26,31 @@ export default class Investment extends AppBaseModel {
   public walletId: string
 
   @column()
+  public rfiRecordId: string
+
+  @column()
+  public rfiCode: string
+
+  @column()
+  public firstName: string
+
+  @column()
+  public lastName: string
+
+  @column()
+  public phone: string
+
+  @column()
+  public email: string
+
+  @column()
+  public investorFundingWalletId: string
+
+  @column()
   public amount: number
 
   @column()
-  public duration: string
+  public duration: number
 
   @column()
   public rolloverType: RollOverType
@@ -38,22 +62,19 @@ export default class Investment extends AppBaseModel {
   public rolloverDone: number
 
   @column()
-  public investmentType: 'fixed' | 'debenture'
+  public investmentTypeName: string
+
+  @column()
+  public investmentTypeId: string
+
+  @column()
+  public investmentType: string // 'fixed' | 'debenture'
 
   @column()
   public tagName: string
 
   @column()
   public currencyCode: string
-
-  @column()
-  public walletHolderDetails: JSON
-
-  @column()
-  public long: number
-
-  @column()
-  public lat: number
 
   @column()
   public interestRate: number
@@ -63,15 +84,54 @@ export default class Investment extends AppBaseModel {
 
   @column()
   public totalAmountToPayout: number
+  
+  @column()
+  public penalty: number
+  
+  // @column()
+  // public walletHolderDetails: JSON
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  @column()
+  public isRequestSent: boolean
+
+  @column()
+  public investmentRequestReference: string
+
+  @column()
+  public principalPayoutRequestReference: string
+
+  @column()
+  public interestPayoutRequestReference: string
+
+  @column()
+  public isInvestmentCreated: boolean
+
+  @column()
+  public isInvestmentCompleted: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public investmentCompletionDate: DateTime
 
   @column.dateTime({ autoCreate: false })
   public startDate: DateTime
 
   @column.dateTime({ autoCreate: false })
   public payoutDate: DateTime
+
+  @column()
+  public isRolloverSuspended: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public rolloverReactivationDate: DateTime
+
+  @column()
+  public isPayoutSuspended: boolean
+
+  @column.dateTime({ autoCreate: false })
+  public payoutReactivationDate: DateTime
+
+  @column()
+  public isRolloverActivated: boolean
 
   @column()
   public isPayoutAuthorized: boolean
@@ -91,8 +151,17 @@ export default class Investment extends AppBaseModel {
   @column()
   public status: string
 
+  @column({ columnName: "verification_request_attempts" })
+  public verificationRequestAttempts: number;
+
+  @column({ columnName: "number_of_attempts" })
+  public numberOfAttempts: number;
+
   @column()
-  public timeline: string
+  public principalPayoutStatus: string
+
+  @column()
+  public interestPayoutStatus: string
 
   @column()
   public certificateUrl: string
@@ -100,11 +169,35 @@ export default class Investment extends AppBaseModel {
   @column.dateTime({ autoCreate: false })
   public datePayoutWasDone: DateTime
 
+  @column()
+  public lng: string
+
+  @column()
+  public lat: string
+
+  @column({})
+  public approvedBy: string
+
+  @column({})
+  public assignedTo: string
+
+  @column({})
+  public processedBy: string
+
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => User, { localKey: 'userId' })
-  public user: BelongsTo<typeof User>
+  @belongsTo(() => RfiRecord, { localKey: 'rfiRecordId' })
+  public rfiRecord: BelongsTo<typeof RfiRecord>
+
+  @hasMany(() => Approval, { localKey: "id" })
+  public approvals: HasMany<typeof Approval>;
+
+  @hasMany(() => Timeline, { localKey: "id" })
+  public timelines: HasMany<typeof Timeline>;
 
   @beforeCreate()
   public static assignUuid(investment: Investment) {

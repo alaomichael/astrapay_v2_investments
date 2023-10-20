@@ -6,9 +6,11 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import path from 'path'
 import createDirectory from 'App/Helpers/CreateDirectory'
 import { getPrintServerBaseUrl /* isProduction */ } from 'App/Helpers/utils'
-import Event from '@ioc:Adonis/Core/Event'
+// import Event from '@ioc:Adonis/Core/Event'
 // import Subscription from 'App/Models/Subscription'
 import Investment from 'App/Models/Investment'
+import Mail from '@ioc:Adonis/Addons/Mail'
+import { sendNotification } from 'App/Helpers/sendNotification'
 interface PrintOptions {
   paperFormat?: PaperFormat
   fileName: string
@@ -37,6 +39,7 @@ export default class PuppeteerServices {
 
   public async printAsPDF(data: Investment) {
     const ctx = HttpContext.get() 
+    let { email,firstName,rfiCode } = data;
 
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--headless', '--disable-gpu', '--window-size=1920x1080'],
@@ -45,8 +48,8 @@ export default class PuppeteerServices {
 
     // 1. Create PDF from URL
     // await page.goto("http://192.168.88.18:3000/")
-    // await page.goto('http://example.com/')
-    await page.goto(this.url)
+    await page.goto('http://example.com')
+    // await page.goto(this.url)
     // await page.setContent("<h1>Hello World !</h1>")
 
     /* if (isProduction) {
@@ -71,14 +74,45 @@ export default class PuppeteerServices {
           printBackground: true,
           margin: { left: '20px', right: '20px', top: '20px', bottom: '20px' },
         })
-        .then(() => {
+        .then(async () => {
           console.log('File created')
-          let customer = JSON.parse(JSON.stringify(data?.walletHolderDetails))
-          Event.emit('investment::investment_certificate_generated', {
-            name: customer.firstName,
-            email: customer.email,
-            filePath: filePath,
-          })
+          // let customer = JSON.parse(JSON.stringify(data))
+          // Event.emit('investment::investment_certificate_generated', {
+          //   name: customer.firstName,
+          //   email: customer.email,
+          //   filePath: filePath,
+          // })
+          await Mail.send((message) => {
+            message
+              .from("mail.astrapolaris.com", "Sig oct") // Sender Email
+              .to("devmichaelalao@gmail.com") // Receiver Email
+              .subject("Congratulations")
+              .htmlView("emails/welcome", { firstName: "Michael" })
+              .attach(filePath);
+          });
+
+          // Send Details to notification service
+          let subject = `${rfiCode.toUpperCase()} Investment Certificate`;
+          let message = `
+                ${firstName} this is to inform you, that your Investment certificate has been generated.
+
+          You can visit this link ${this.url} to download it.
+
+                Please wait while the investment is being activated. 
+
+                Thank you.
+
+                 ${rfiCode.toUpperCase()} Investment.`;
+          let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+          // console.log("newNotificationMessage line 107:", newNotificationMessage);
+          if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            console.log("Notification sent successfully");
+          } else if (newNotificationMessage.message !== "Success") {
+            console.log("Notification NOT sent successfully");
+            console.log(newNotificationMessage);
+          }
+
+
         })
         .catch((error) => {
           Logger.error('Error at PuppeteerServices.printAsPDF > page.pdf(): %j', error)

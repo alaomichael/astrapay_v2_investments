@@ -32,5 +32,6 @@ declare module '@ioc:Adonis/Core/Event' {
     'new:investment': { id: number | string; email: string }
     'list:investments': { id: number | string; email: string }
     'investments:list': { investment: Investment | null }
+    'service_account::send_service_account': {action:string, serviceAccount: Object}
   }
 }

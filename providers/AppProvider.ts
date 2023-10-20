@@ -5,7 +5,7 @@ export default class AppProvider {
 
   public register() {
     // Register your own bindings
-  }
+      }
 
   public async boot() {
     // IoC container is ready
@@ -13,6 +13,8 @@ export default class AppProvider {
 
   public async ready() {
     // App is ready
+    const scheduler = this.app.container.use('Adonis/Addons/Scheduler');
+    scheduler.run();
   }
 
   public async shutdown() {

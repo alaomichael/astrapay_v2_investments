@@ -16,10 +16,22 @@ export default class PayoutRecord extends AppBaseModel {
   public walletId: string
 
   @column()
+  public firstName: string
+
+  @column()
+  public lastName: string
+
+  @column()
+  public phone: string
+
+  @column()
+  public email: string
+
+  @column()
   public amount: number
 
   @column()
-  public duration: string
+  public duration: number
 
   @column()
   public rolloverType: string
@@ -43,10 +55,10 @@ export default class PayoutRecord extends AppBaseModel {
   public walletHolderDetails: JSON
 
   @column()
-  public long: number
+  public lng: string
 
   @column()
-  public lat: number
+  public lat: string
 
   @column()
   public interestRate: number

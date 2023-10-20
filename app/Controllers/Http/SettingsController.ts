@@ -1,211 +1,414 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Setting from 'App/Models/Setting'
-// import { DateTime } from 'luxon'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import Event from '@ioc:Adonis/Core/Event'
+/* eslint-disable prettier/prettier */
+import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import SettingServices from "App/Services/SettingsServices";
+import Event from "@ioc:Adonis/Core/Event";
+import CreateSettingValidator from "App/Validators/CreateSettingValidator";
+import { SettingType } from "App/Services/types/setting_type";
+import UpdateSettingValidator from "App/Validators/UpdateSettingValidator";
+import MessageQueuesServices from "App/Services/MessageQueuesServices";
+import {esClient} from 'App/Services/elasticsearch';
+// const { Client } = require('@elastic/elasticsearch');
+// const Env = require("@ioc:Adonis/Core/Env");
+// const ELASTICSEARCH_HOST = Env.get("ELASTICSEARCH_HOST");
+// const ELASTICSEARCH_PORT = Env.get("ELASTICSEARCH_PORT");
 
 export default class SettingsController {
-  public async index({ params, request, response }: HttpContextContract) {
-    console.log('setting params: ', params)
-    const {
-      fundingWalletId,
-      isPayoutAutomated,
-      fundingSourceTerminal,
-      isInvestmentAutomated,
-      isTerminationAutomated,
-      investmentType,
-      tagName,
-      currencyCode,
-      limit,
-    } = request.qs()
-    console.log('setting query: ', request.qs())
-    const countActiveSetting = await Setting.query().where('investment_type', 'fixed').getCount()
-    console.log('setting Investment count: ', countActiveSetting)
 
-    // const setting = await Setting.query().offset(0).limit(1)
-    const setting = await Setting.all()
-    let sortedSettings = setting
+//   public async index({ request, response }: HttpContextContract) {
 
-    if (fundingWalletId) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.fundingWalletId === parseInt(fundingWalletId)
-      })
-    }
+//     console.log("setting query: ", request.qs());
+//     const settingsService = new SettingServices();
+//     const settings = await settingsService.getSettings(request.qs());
+// // 
+//     const query = request.qs();
+//     debugger
+//     const esClientInstance = new Client({ node: `${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}` });
+//     debugger
+//     // const esClientInstance = await esClient();
+//     // debugger
+//     const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+//        console.log("elastic search results",results)
+//     debugger
+//     return response.status(200).json({
+//       status: "OK",
+//       data: settings
+//     });
+//   }
 
-    if (investmentType) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.investmentType!.includes(investmentType)
-      })
-    }
+  // import { esClient } from 'App/Services/elasticsearch';
 
-    if (isPayoutAutomated) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.isPayoutAutomated.toString() === isPayoutAutomated
-      })
-    }
 
-    if (isInvestmentAutomated) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.isInvestmentAutomated.toString() === isInvestmentAutomated
-      })
-    }
-
-    if (isTerminationAutomated) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.isTerminationAutomated.toString() === isTerminationAutomated
-      })
-    }
-
-    if (fundingSourceTerminal) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.fundingSourceTerminal!.includes(fundingSourceTerminal)
-      })
-    }
-
-    if (tagName) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.tagName!.includes(tagName)
-      })
-    }
-
-    if (currencyCode) {
-      sortedSettings = sortedSettings.filter((setting) => {
-        // @ts-ignore
-        return setting.currencyCode!.includes(currencyCode)
-      })
-    }
-
-    if (limit) {
-      sortedSettings = sortedSettings.slice(0, Number(limit))
-    }
-    if (sortedSettings.length < 1) {
-      return response.status(200).json({
-        status: 'OK',
-        message: 'no investment setting matched your search',
-        data: [],
-      })
-    }
-    // return setting(s)
+  public async index({ request, response }: HttpContextContract) {
+    console.log("setting query: ", request.qs());
+    const settingsService = new SettingServices();
+    const settings = await settingsService.getSettings(request.qs());
+    // const query = request.qs();
+    // const esClientInstance = await esClient();
+    // debugger
+    // const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+    // debugger
+    // console.log("elastic search results", results);
+    const totalCount = settings!.length;
     return response.status(200).json({
-      status: 'OK',
-      data: sortedSettings.map((setting) => setting.$original),
-    })
+      status: "OK",
+      data: settings,
+      totalCount:totalCount,
+    });
   }
 
+  public async indexWithElasticSearch({ request, response }: HttpContextContract) {
+    console.log("setting query: ", request.qs());
+    const settingsService = new SettingServices();
+    const settings = await settingsService.getSettings(request.qs());
+    const query = request.qs();
+    const esClientInstance = await esClient();
+    debugger
+    const results = await esClientInstance.search({ index: 'my_setting_index', body: { query } });
+    debugger
+    console.log("elastic search results", results);
+    return response.status(200).json({
+      status: "OK",
+      data: settings
+    });
+  }
+  // 168605200474015
+
+
   public async store({ request, response }: HttpContextContract) {
-    // const user = await auth.authenticate()
-    const settingSchema = schema.create({
-      fundingWalletId: schema.number(),
-      isPayoutAutomated: schema.boolean(),
-      fundingSourceTerminal: schema.string({ escape: true }, [rules.maxLength(50)]),
-      isInvestmentAutomated: schema.boolean(),
-      isTerminationAutomated: schema.boolean(),
-      investmentType: schema.enum(['fixed', 'debenture']),
-      tagName: schema.string({ escape: true }, [rules.maxLength(100)]),
-      currencyCode: schema.string({ escape: true }, [rules.maxLength(5)]),
-    })
-    const payload: any = await request.validate({ schema: settingSchema })
-    const setting = await Setting.create(payload)
 
-    await setting.save()
-    console.log('The new investment:', setting)
+    try {
+      await request.validate(CreateSettingValidator);
+      const settingsService = new SettingServices();
+      const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName,
+        initiationNotificationEmail,activationNotificationEmail,maturityNotificationEmail,payoutNotificationEmail,
+        rolloverNotificationEmail, liquidationNotificationEmail, isAllPayoutSuspended, isAllRolloverSuspended, liquidationPenalty } = request.body();
+      const payload: SettingType = {
+        rfiName: rfiName,
+        rfiCode: rfiCode,
+        rfiImageUrl: rfiImageUrl,
+        isPayoutAutomated: isPayoutAutomated,
+        investmentWalletId: investmentWalletId,
+        payoutWalletId: payoutWalletId,
+        isInvestmentAutomated: isInvestmentAutomated,
+        isRolloverAutomated: isRolloverAutomated,
+        fundingSourceTerminal: fundingSourceTerminal,
+        // investmentType: investmentType,
+        tagName: tagName,
+        currencyCode: currencyCode,
+        initiationNotificationEmail: initiationNotificationEmail,
+        activationNotificationEmail: activationNotificationEmail,
+        maturityNotificationEmail: maturityNotificationEmail,
+        payoutNotificationEmail: payoutNotificationEmail,
+        rolloverNotificationEmail: rolloverNotificationEmail,
+        liquidationNotificationEmail: liquidationNotificationEmail,
+        isAllPayoutSuspended: isAllPayoutSuspended,
+        isAllRolloverSuspended: isAllRolloverSuspended,
+        liquidationPenalty: liquidationPenalty,
+      }
+      const setting = await settingsService.createSetting(payload);
 
-    // TODO
-    console.log('A New setting has been Created.')
+      // Send setting Creation Message to Queue
+      Event.emit("new:setting", {
+        id: setting.id,
+        extras: setting
+      });
+      // const RfiRecordsService = new RfiRecordsServices()
+      // debugger
+      // // Emit event to ServicAccount Service 
+      // if (setting) {
+      //   const { id,
+      //     rfiName,
+      //     rfiCode,
+      //     investmentWalletId,
+      //     payoutWalletId, } = setting;
+      //   const rfiRecord = await RfiRecordsService.getRfiRecordByRfiRecordRfiCode(rfiCode);
+      //   if (setting.investmentWalletId) {
+      //     console.log("setting.investmentWalletId ", setting.investmentWalletId)
+      //     const serviceAccount: ServiceAccountType = {
+      //       accountNumber: investmentWalletId,//"2056750534",
+      //       id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+      //       // @ts-ignore
+      //       rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+      //       name: rfiName,//"Investment Deposit Wallet Service Account",
+      //       accountName: rfiName,//"Astra polaris",
+      //       bfiCode: rfiCode, //"apmfb",
+      //       bfiName: rfiName,//"Astra Polaris",
+      //       rfiCode: rfiCode,//"ASD",
+      //       customerReference: `investmentWalletId_${id}`,//"123456",
+      //       serviceName: "Investment Service",
+      //       serviceDescription: "Investment service",
+      //       serviceAccountDescription: "description",
+      //       // createdAt: "2023-05-08T12:13:48.115+00:00",
+      //       // updatedAt: "2023-05-08T12:24:40.358+00:00"
+      //     }
+      //     debugger
+      //     Event.emit('service_account::send_service_account', {
+      //       action: "Service Account persist",
+      //       serviceAccount: serviceAccount
+      //     });
+      //     debugger
+      //   }
 
-    // Save setting new status to Database
-    await setting.save()
-    // Send setting Creation Message to Queue
+      //   if (setting.payoutWalletId) {
+      //     console.log("setting.payoutWalletId ", setting.payoutWalletId)
+      //     const serviceAccount: ServiceAccountType = {
+      //       accountNumber: payoutWalletId,//"2056750534",
+      //       id: id, //"7a427ed5-8f6a-4349-acd7-875d74a38329",
+      //       // @ts-ignore
+      //       rfiId: rfiRecord?.id,//"9d72e2a1-c7d2-41a1-9d99-6430019596a5",
+      //       name: rfiName,//"Investment Deposit Wallet Service Account",
+      //       accountName: rfiName,//"Astra polaris",
+      //       bfiCode: rfiCode, //"apmfb",
+      //       bfiName: rfiName,//"Astra Polaris",
+      //       rfiCode: rfiCode,//"ASD",
+      //       customerReference: `payoutWalletId_${id}`,//"123456",
+      //       serviceName: "Investment Service",
+      //       serviceDescription: "Investment service",
+      //       serviceAccountDescription: "description",
+      //       // createdAt: "2023-05-08T12:13:48.115+00:00",
+      //       // updatedAt: "2023-05-08T12:24:40.358+00:00"
+      //     }
+      //     debugger
+      //     Event.emit('service_account::send_service_account', {
+      //       action: "Service Account persist",
+      //       serviceAccount: serviceAccount
 
-    // @ts-ignore
-    Event.emit('new:setting', { id: setting.id, extras: setting.additionalDetails })
-    return response.json({ status: 'OK', data: setting.$original })
+      //     });
+      //     debugger
+      //   }
+      // }
+      return response.json({ status: "OK", data: setting });
+    } catch (error) {
+      // console.log("Error line 55", error.messages);
+      // console.log("Error line 56", error.message);
+      // return response.status(400).json({
+      //     status: "FAILED",
+      //     message: error.messages,
+      //     // extraInfo: error.sqlMessage
+      // });
+      console.log("Error line 55", error.messages);
+      console.log("Error line 56", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+
   }
 
   public async update({ request, response }: HttpContextContract) {
     try {
-      const { id } = request.qs()
-      console.log('Setting query: ', request.qs())
-
-      let setting = await Setting.query().where({
-        id: id,
-      })
-      console.log(' QUERY RESULT: ', setting)
-      if (setting.length > 0) {
-        console.log('Investment setting Selected for Update:', setting)
-        if (setting) {
-          setting[0].fundingWalletId = request.input('fundingWalletId')
-            ? request.input('fundingWalletId')
-            : setting[0].fundingWalletId
-          setting[0].isPayoutAutomated = request.input('isPayoutAutomated')
-            ? request.input('isPayoutAutomated')
-            : setting[0].isPayoutAutomated
-          setting[0].fundingSourceTerminal = request.input('fundingSourceTerminal')
-            ? request.input('fundingSourceTerminal')
-            : setting[0].fundingSourceTerminal
-          setting[0].isInvestmentAutomated = request.input('isInvestmentAutomated')
-            ? request.input('isInvestmentAutomated')
-            : setting[0].isInvestmentAutomated
-          setting[0].isTerminationAutomated = request.input('isTerminationAutomated')
-            ? request.input('isTerminationAutomated')
-            : setting[0].isTerminationAutomated
-          setting[0].investmentType = request.input('investmentType')
-            ? request.input('investmentType')
-            : setting[0].investmentType
-          setting[0].tagName = request.input('tagName')
-            ? request.input('tagName')
-            : setting[0].tagName
-          setting[0].currencyCode = request.input('currencyCode')
-            ? request.input('currencyCode')
-            : setting[0].currencyCode
-
-          if (setting) {
-            // send to user
-            await setting[0].save()
-            console.log('Update Investment setting:', setting)
-            return setting
-          }
-          return // 422
-        } else {
-          return response.status(304).json({ status: 'FAILED', data: setting })
-        }
-      } else {
-        return response
-          .status(404)
-          .json({ status: 'FAILED', message: 'No data match your query parameters' })
+      await request.validate(UpdateSettingValidator);
+      const settingsService = new SettingServices();
+      const { id } = request.params();
+      const { rfiName, rfiCode, rfiImageUrl, currencyCode, isPayoutAutomated, fundingSourceTerminal,
+        investmentWalletId, payoutWalletId, isInvestmentAutomated, isRolloverAutomated, tagName, initiationNotificationEmail,
+        activationNotificationEmail, maturityNotificationEmail, payoutNotificationEmail, rolloverNotificationEmail,
+        liquidationNotificationEmail, isAllPayoutSuspended, isAllRolloverSuspended, liquidationPenalty } = request.body();
+      const payload: SettingType = {
+        rfiName: rfiName,
+        rfiCode: rfiCode,
+        rfiImageUrl: rfiImageUrl,
+        isPayoutAutomated: isPayoutAutomated,
+        investmentWalletId: investmentWalletId,
+        payoutWalletId: payoutWalletId,
+        isInvestmentAutomated: isInvestmentAutomated,
+        isRolloverAutomated: isRolloverAutomated,
+        fundingSourceTerminal: fundingSourceTerminal,
+        // investmentType: investmentType,
+        tagName: tagName,
+        currencyCode: currencyCode,
+        initiationNotificationEmail: initiationNotificationEmail,
+        activationNotificationEmail: activationNotificationEmail,
+        maturityNotificationEmail: maturityNotificationEmail,
+        payoutNotificationEmail: payoutNotificationEmail,
+        rolloverNotificationEmail: rolloverNotificationEmail,
+        liquidationNotificationEmail: liquidationNotificationEmail,
+        isAllPayoutSuspended: isAllPayoutSuspended,
+        isAllRolloverSuspended: isAllRolloverSuspended,
+        liquidationPenalty: liquidationPenalty,
       }
+      // console.log("Request body validation line 100", payload);
+      // get setting by id
+      const selectedSetting = await settingsService.getSettingBySettingId(id);
+      // console.log(" Selected Setting ==============================");
+      // console.log(selectedSetting)
+      if (!selectedSetting) {
+        throw new Error(`Setting with Id: ${id} does not exist, please check and try again.`);
+      }
+      // if (tagName) {
+      //     // check if tag name is existing
+      //     const settingTagNameExist = await settingsService.getSettingBySettingTagName(tagName);
+      //     console.log(" settingTagNameExist ==============================");
+      //     console.log(settingTagNameExist)
+      //     if (settingTagNameExist !== null && settingTagNameExist!.id !== id) {
+      //         // throw Error(`Setting Tag Name: ${tagName} already exists.`)
+      //         console.log(`Setting Tag Name: ${tagName} already exists.`)
+      //         return;
+      //     }
+      // }
+      const setting = await settingsService.updateSetting(selectedSetting, payload);
+      debugger
+      // console.log("Setting updated: ", setting);
+      // send to user
+      return response.json({
+        status: "OK",
+        data: setting
+      });
     } catch (error) {
-      console.error(error)
+      console.log("Error line 111", error.messages);
+      console.log("Error line 112", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
-    // return // 401
+  }
+
+  public async createRfiRecord({ request, response }: HttpContextContract) {
+    try {
+      
+      const MessageQueuesService = new MessageQueuesServices()
+           const content = request.body();
+      const newRfiRecord = await MessageQueuesService.createRfiRecord(content);
+      // console.log("newRfiRecord line 68 ===== ", newRfiRecord)
+      if (!newRfiRecord) {
+        throw Error();
+      }
+  
+      return response.json({
+        status: "OK",
+        data: newRfiRecord
+      });
+    } catch (error) {
+      // console.log("Error line 103", error.messages);
+      // console.log("Error line 104", error.message);
+      // return response.status(400).json({
+      //     status: "FAILED",
+      //     message: error.messages,
+      //     hint: error.message,
+      //     // extraInfo: error.sqlMessage
+      // });
+      console.log("Error line 211", error.messages);
+      console.log("Error line 212", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+  public async createRfiRecordSetting({ request, response }: HttpContextContract) {
+    try {
+          const MessageQueuesService = new MessageQueuesServices()
+      const content = request.body();
+      const { investment } = content;
+      const newRfiRecordSetting = await MessageQueuesService.createRfiRecordSetting(investment);
+      // console.log("newRfiRecordSetting line 259 ===== ", newRfiRecordSetting)
+      if (!newRfiRecordSetting) {
+        throw Error();
+      }
+          // send to user
+      return response.json({
+        status: "OK",
+        data: newRfiRecordSetting
+      });
+    } catch (error) {
+          console.log("Error line 291", error.messages);
+      console.log("Error line 292", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const { id } = request.qs()
-    console.log('Setting query: ', request.qs())
+    try {
+      const { id } = request.qs();
+      const settingsService = new SettingServices();
+      console.log("Setting query: ", request.qs());
+      // get setting by id
+      const selectedSetting = await settingsService.getSettingBySettingId(id);
+      // console.log(" Selected Setting ==============================");
+      // console.log(selectedSetting)
 
-    let setting = await Setting.query().where({
-      id: id,
-    })
-    console.log(' QUERY RESULT: ', setting)
+      if (selectedSetting === null || selectedSetting === undefined) {
+        // throw Error(`Setting with id: ${id} does not exist.`)
+        console.log(`Setting with id: ${id} does not exist.`)
+        return;
+      }
 
-    if (setting.length > 0) {
-      setting = await Setting.query()
-        .where({
-          id: id,
-        })
-        .delete()
-      console.log('Deleted data:', setting)
-      return response.send('setting Delete.')
-    } else {
-      return response.status(404).json({ status: 'FAILED', message: 'Invalid parameters' })
+      const setting = await settingsService.deleteSetting(selectedSetting);
+      // console.log("Deleted data:", setting);
+      return response.json({
+        status: "OK",
+        data: { isDeleted: setting?.$isDeleted }
+      });
+      // .send("Setting Deleted.");
+    }
+    catch (error) {
+      console.log("Error line 147", error.messages);
+      console.log("Error line 148", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
     }
   }
 }
