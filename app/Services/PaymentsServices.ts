@@ -19,6 +19,7 @@ import { creditUserWallet } from 'App/Helpers/creditUserWallet';
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf';
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
+import { convertDateToFormat } from 'App/Helpers/convertDateToFormat';
 // Testing
 const fs = require('fs');
 const randomstring = require("randomstring");
@@ -1536,7 +1537,7 @@ export default class PaymentsServices {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate,"DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate,"DD-MM-YYYY")}.
 
                 Your certificate is attached.
 

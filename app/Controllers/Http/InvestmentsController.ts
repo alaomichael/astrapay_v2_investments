@@ -43,6 +43,7 @@ import UpdateInvestmentValidator from 'App/Validators/UpdateInvestmentValidator'
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
+import { convertDateToFormat } from 'App/Helpers/convertDateToFormat'
 // import { generateString } from 'App/Helpers/generateCertificateNumber'
 // import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
@@ -1720,7 +1721,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
 
                                 Your certificate is attached.
 
@@ -1785,7 +1786,7 @@ export default class InvestmentsController {
               userId: investment.userId,
               requestType: "start_investment",
               approvalStatus: "approved",
-              assignedTo:"automation",
+              assignedTo: "automation",
               processedBy: "automation",
               // remark: "",
             };
@@ -1952,7 +1953,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${investment.startDate} and it will be mature for payout on ${investment.payoutDate}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
 
                                 Your certificate is attached.
 
@@ -1981,28 +1982,31 @@ export default class InvestmentsController {
               //   "name": `${rfiName} `
               // },
             ];
-            let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
-            // console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
-            // debugger
-            if (newNotificationMessageWithPdf && newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithPdf);
-            }
+            // let newNotificationMessageWithPdf = await 
+            sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+            // // console.log("newNotificationMessage line 1786:", newNotificationMessageWithPdf);
+            // // debugger
+            // if (newNotificationMessageWithPdf && newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithPdf);
+            // }
+
             // debugger
             // Send Notification to admin and others stakeholder
             // let investment = record;
             let messageKey = "activation";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            };
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 1791:", newNotificationMessageWithoutPdf);
+            // // debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // };
 
             // debugger
             const approvalsService = new ApprovalsServices()
@@ -2092,15 +2096,16 @@ export default class InvestmentsController {
             // }
             // Send Notification to admin and others stakeholder
             let messageKey = "activation_failed";
-            let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-            // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
-            // debugger
-            if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-              console.log("Notification sent successfully");
-            } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-              console.log("Notification NOT sent successfully");
-              console.log(newNotificationMessageWithoutPdf);
-            }
+            // let newNotificationMessageWithoutPdf = await 
+            sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 1865:", newNotificationMessageWithoutPdf);
+            // // debugger
+            // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
 
             // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
@@ -3732,7 +3737,7 @@ export default class InvestmentsController {
       // START
 
       const investments = await investmentsService.liquidateInvestment(investmentId, request.qs(), loginUserData)
-      
+
       debugger
       if (investments.length > 0) {
         // console.log('Investment data after payout request line 2788:', investments)
