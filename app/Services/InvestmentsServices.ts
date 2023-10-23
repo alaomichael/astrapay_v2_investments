@@ -20,6 +20,7 @@ import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 import { getUserWalletBalanceRecord } from 'App/Helpers/getUserWalletBalanceRecord';
 import { sendNotificationForLowBalanceToAdmin } from 'App/Helpers/sendNotificationForLowBalanceToAdmin';
 import { convertDateToFormat } from 'App/Helpers/convertDateToFormat';
+import { convertToFormatedAmount } from 'App/Helpers/convertToFormatedAmount';
 // Testing
 const fs = require('fs');
 const randomstring = require("randomstring");
@@ -121,7 +122,7 @@ export default class InvestmentsServices {
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
             // Send to the endpoint for debit of wallet
-            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
 
             if (investmentTypeDetails) {
                 let { interestRate, status, lowestAmount, highestAmount, investmentTenures } = investmentTypeDetails;
@@ -217,8 +218,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active. Thank you.`,
-                                adminMmessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active. Thank you.`,
+                                adminMmessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -301,8 +302,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -416,8 +417,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your matured investment has been paid, because the investment type you selected for your rollover is presently not active.`,
+                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} matured investment was paid, because the investment type selected for rollover is presently not active.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -500,8 +501,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -532,9 +533,9 @@ export default class InvestmentsServices {
                 if (amount < lowestAmount || amount > highestAmount) {
                     let message
                     if (amount < lowestAmount) {
-                        message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
+                        message = `The least amount allowed for this type of investment is ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} , please input an amount that is at least ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} but less than or equal to ${currencyCode} ${await convertToFormatedAmount(highestAmount)} and try again. Thank you.`;
                     } else if (amount > highestAmount) {
-                        message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
+                        message = `The highest amount allowed for this type of investment is ${currencyCode} ${await convertToFormatedAmount(highestAmount)} , please input an amount less than or equal to ${currencyCode} ${await convertToFormatedAmount(highestAmount)} but at least ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} and try again. Thank you.`;
                     }
                     // check if transaction with same customer ref exist
                     let checkTransactionStatusByCustomerRef = await checkTransactionStatus(principalPayoutRequestReference, rfiCode);
@@ -630,8 +631,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
+                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -695,8 +696,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -810,8 +811,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid because the amount to be rollover is not within the allowed range for this type of investment. Thank you.`,
+                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid because the amount to be rollover is not within the allowed range for the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -875,8 +876,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -1007,8 +1008,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the tenure selected is not available on selected type of investment.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
+                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid because the tenure selected is not available on selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -1072,8 +1073,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -1188,8 +1189,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
-                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the tenure selected is not available on the selected type of investment.`,
+                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid because the tenure selected is not available on this type of investment. Thank you.`,
+                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid because the tenure selected is not available on the selected type of investment.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -1253,8 +1254,8 @@ export default class InvestmentsServices {
                                 walletId: walletId,// walletId,
                                 userId: userId,// userId,
                                 // @ts-ignore
-                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                 createdAt: DateTime.now(),
                                 metadata: ``,
                             };
@@ -1565,8 +1566,8 @@ export default class InvestmentsServices {
                     walletId: walletId,
                     action: 'investment activated',
                     // @ts-ignore
-                    message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
-                    adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                    message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.`,
+                    adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                     createdAt: investment.startDate,
                     metadata: `duration: ${investment.duration}, payout date : ${investment.payoutDate}`,
                 }
@@ -1575,7 +1576,7 @@ export default class InvestmentsServices {
                 // Send Details to notification service
                 let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                 let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate,"DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate,"DD-MM-YYYY")}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate,"DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate,"DD-MM-YYYY")}.
 
                 Your certificate is attached.
 
@@ -3160,8 +3161,8 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-                                        adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                                        message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+                                        adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
@@ -3174,7 +3175,7 @@ export default class InvestmentsServices {
                                     // Send Details to notification service
                                     let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
                 Please check your device.
 
@@ -3240,9 +3241,9 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
                                         // @ts-ignore
-                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
@@ -3344,8 +3345,8 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-                                        adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                                        message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+                                        adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
@@ -3358,7 +3359,7 @@ export default class InvestmentsServices {
                                     // Send Details to notification service
                                     let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
                 Please check your device.
 
@@ -3424,9 +3425,9 @@ export default class InvestmentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
                                         // @ts-ignore
-                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
@@ -3718,8 +3719,8 @@ export default class InvestmentsServices {
                                     walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
-                                    message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-                                    adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                                    message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+                                    adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                                     createdAt: DateTime.now(),
                                     metadata: ``,
                                 };
@@ -3732,7 +3733,7 @@ export default class InvestmentsServices {
                                 // Send Details to notification service
                                 let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                 let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
                 Please check your device.
 
@@ -3797,9 +3798,9 @@ export default class InvestmentsServices {
                                     walletId: walletIdToSearch,// walletId,
                                     userId: userIdToSearch,// userId,
                                     // @ts-ignore
-                                    message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                    message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
                                     // @ts-ignore
-                                    adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                                    adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
                                     createdAt: DateTime.now(),
                                     metadata: ``,
                                 };
@@ -6330,8 +6331,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     // let creditUserWalletWithPrincipal;
                                     // let creditUserWalletWithInterest;
@@ -6565,8 +6566,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -6626,8 +6627,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -6688,8 +6689,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -6973,8 +6974,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     if (status == "completed_with_interest_payout_outstanding") {
@@ -7063,8 +7064,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -7124,8 +7125,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -7234,8 +7235,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -7295,8 +7296,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -7545,8 +7546,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -7606,9 +7607,9 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
 
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment failed.`,
 
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
@@ -7718,8 +7719,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out.`,
 
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
@@ -7780,8 +7781,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -8049,8 +8050,8 @@ export default class InvestmentsServices {
                                 let beneficiaryPhoneNumber = phone;
                                 let beneficiaryEmail = email;
                                 // Send to the endpoint for debit of wallet
-                                let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                 let creditUserWalletWithPrincipal;
                                 let creditUserWalletWithInterest;
 
@@ -8237,8 +8238,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment was paid out.`,
+                                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} liquidated investment was paid out.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8298,8 +8299,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
-                                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment failed.`,
+                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
+                                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} liquidated investment failed.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8407,8 +8408,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} liquidated investment was paid out.`,
+                                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} liquidated investment was paid out.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8470,8 +8471,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
-                                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} liquidated investment failed.`,
+                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
+                                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} liquidated investment failed.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8588,8 +8589,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment was paid out.`,
+                                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} liquidated investment was paid out.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8649,8 +8650,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
-                                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment failed.`,
+                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
+                                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} liquidated investment failed.`,
 
 
                                                 createdAt: DateTime.now(),
@@ -8760,8 +8761,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} liquidated investment was paid out.`,
+                                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} liquidated investment was paid out.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -8823,8 +8824,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
-                                                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} , the Principal for ${firstName} liquidated investment has failed.`,
+                                                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for your liquidated investment has failed, please be patient as we try again. Thank you.`,
+                                                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Principal for ${firstName} liquidated investment has failed.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -9208,8 +9209,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
                                     if (status.toLowerCase() == "completed_with_interest_payout_outstanding") {
@@ -9296,8 +9297,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
 
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
@@ -9358,8 +9359,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9466,8 +9467,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9527,8 +9528,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9646,8 +9647,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9707,8 +9708,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9816,8 +9817,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -9877,8 +9878,8 @@ export default class InvestmentsServices {
                                                     walletId: walletIdToSearch,// walletId,
                                                     userId: userIdToSearch,// userId,
                                                     // @ts-ignore
-                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                    adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                                                    message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                    adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                                                     createdAt: DateTime.now(),
                                                     metadata: ``,
                                                 };
@@ -10210,8 +10211,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
 
                                     // Check if the user set Rollover
                                     // "rolloverType": "101",
@@ -10312,8 +10313,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
-                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment has been paid out.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment has been paid out.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10373,8 +10374,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment failed.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment failed.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10480,8 +10481,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
-                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment was paid out.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment was paid out.`,
 
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
@@ -10542,8 +10543,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
-                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment failed.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has failed, please be patient as we try again. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment failed.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10636,8 +10637,8 @@ export default class InvestmentsServices {
                                                 walletId: walletIdToSearch,// walletId,
                                                 userId: userIdToSearch,// userId,
                                                 // @ts-ignore
-                                                message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
-                                                adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
+                                                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your matured investment has been rollover. Thank you.`,
+                                                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was rollover.`,
                                                 createdAt: DateTime.now(),
                                                 metadata: ``,
                                             };
@@ -10785,8 +10786,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
-                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} has been rollover. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10844,8 +10845,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
-                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} has been rollover. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -10948,8 +10949,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
-                                                        adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
+                                                        message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} has been rollover. Thank you.`,
+                                                        adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} was rollover.`,
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
                                                     };
@@ -11007,8 +11008,8 @@ export default class InvestmentsServices {
                                                         walletId: walletIdToSearch,// walletId,
                                                         userId: userIdToSearch,// userId,
                                                         // @ts-ignore
-                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${interestDueOnInvestment} has been rollover. Thank you.`,
-                                                        adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${interestDueOnInvestment} was rollover.`,
+                                                        message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has failed, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} has been rollover. Thank you.`,
+                                                        adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment failed, and the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} was rollover.`,
 
                                                         createdAt: DateTime.now(),
                                                         metadata: ``,
@@ -11334,8 +11335,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // NEW CODE START
                                     let creditUserWalletWithPrincipal;
                                     let creditUserWalletWithInterest;
@@ -11562,8 +11563,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -11624,8 +11625,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -11686,8 +11687,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} , the Interest for your matured investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} , the Interest for ${firstName} matured investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} , the Interest for ${firstName} matured investment was paid out.`,
 
                                             createdAt: DateTime.now(),
                                             metadata: ``,
@@ -11774,8 +11775,8 @@ export default class InvestmentsServices {
                                     let beneficiaryPhoneNumber = phone;
                                     let beneficiaryEmail = email;
                                     // Send to the endpoint for debit of wallet
-                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+                                    let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
                                     // Calculate penalty to be deducted
                                     let currentDate = new Date();//.toDateString();  // new Date().toISOString(); //DateTime.now()
                                     // debugger
@@ -12036,8 +12037,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} liquidated investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} liquidated investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -12105,8 +12106,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} liquidated investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} liquidated investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };
@@ -12175,8 +12176,8 @@ export default class InvestmentsServices {
                                             walletId: walletIdToSearch,// walletId,
                                             userId: userIdToSearch,// userId,
                                             // @ts-ignore
-                                            message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your liquidated investment has been paid out, please check your account. Thank you.`,
-                                            adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} liquidated investment was paid out.`,
+                                            message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your liquidated investment has been paid out, please check your account. Thank you.`,
+                                            adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} liquidated investment was paid out.`,
                                             createdAt: DateTime.now(),
                                             metadata: ``,
                                         };

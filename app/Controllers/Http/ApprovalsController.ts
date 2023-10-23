@@ -22,6 +22,7 @@ import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutP
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 import { dueForPayout } from 'App/Helpers/utils';
 import { convertDateToFormat } from 'App/Helpers/convertDateToFormat';
+import { convertToFormatedAmount } from 'App/Helpers/convertToFormatedAmount';
 
 const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
@@ -560,8 +561,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+                adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -574,7 +575,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               let subject = `${rfiCode.toUpperCase()} Investment Activation`;
               let message = `
-              ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+              ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
               Please check your device.
 
@@ -639,9 +640,9 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
+                message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
                 // @ts-ignore
-                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -746,8 +747,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated.`,
-                adminMessage: `${firstName} investment of ${currencyCode} ${amount} was activated.`,
+                message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.`,
+                adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -760,7 +761,7 @@ export default class ApprovalsController {
               // Send Details to notification service
               let subject = `${rfiCode.toUpperCase()} Investment Activation`;
               let message = `
-      ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+      ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
       Please check your device.
 
@@ -825,9 +826,9 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.Thank you.`,
+                message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again.Thank you.`,
                 // @ts-ignore
-                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()}.`,
+                adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()}.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1060,8 +1061,8 @@ export default class ApprovalsController {
               walletId: walletId,
               action: 'investment rollover activated',
               // @ts-ignore
-              message: `${firstName}, your investment rollover of ${currencyCode} ${amount} has been activated.`,
-              adminMessage: `${firstName} investment rollover of ${currencyCode} ${amount} was activated.`,
+              message: `${firstName}, your investment rollover of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.`,
+              adminMessage: `${firstName} investment rollover of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
               createdAt: selectedInvestmentRequestUpdate.startDate,
               metadata: `duration: ${selectedInvestmentRequestUpdate.duration}, payout date : ${selectedInvestmentRequestUpdate.payoutDate}`,
             }
@@ -1076,7 +1077,7 @@ export default class ApprovalsController {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Rollover Activation`;
             let message = `
-                ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${amount} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${await convertDateToFormat(selectedInvestmentRequestUpdate.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(selectedInvestmentRequestUpdate.payoutDate, "DD-MM-YYYY")}.
+                ${firstName} this is to inform you, that the rollover of your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} for the period of ${selectedInvestmentRequestUpdate.duration} days, has been activated on ${await convertDateToFormat(selectedInvestmentRequestUpdate.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(selectedInvestmentRequestUpdate.payoutDate, "DD-MM-YYYY")}.
 
                 Please check your device.
 
@@ -1172,7 +1173,7 @@ export default class ApprovalsController {
             let beneficiaryPhoneNumber = phone;
             let beneficiaryEmail = email;
             // Send to the endpoint for debit of wallet
-            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
+            let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
 
             // update timeline
             timelineObject = {
@@ -1182,8 +1183,8 @@ export default class ApprovalsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the rollover of your investment of ${currencyCode} ${amount} has been declined by the Admin on : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")} , please try again. Thank you.`,
-              adminMessage: `The rollover of investment of ${currencyCode} ${amount} was declined on : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")}`,
+              message: `${firstName}, the rollover of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been declined by the Admin on : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")} , please try again. Thank you.`,
+              adminMessage: `The rollover of investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was declined on : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")}`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1356,8 +1357,8 @@ export default class ApprovalsController {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid because the admin declined approval for the investment rollover. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid because the admin declined approval for the investment rollover.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid because the admin declined approval for the investment rollover. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid because the admin declined approval for the investment rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1438,8 +1439,8 @@ export default class ApprovalsController {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the payout of the sum of ${currencyCode} ${amountPaidOut} for your matured investment has failed, please be patient as we try again. Thank you.`,
-                adminMessage: `The payout of the sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment failed.`,
+                message: `${firstName}, the payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has failed, please be patient as we try again. Thank you.`,
+                adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment failed.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -1574,8 +1575,8 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
           // NEW CODE START
           //debugger
           // Check if the user set Rollover
@@ -1739,8 +1740,8 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1901,8 +1902,8 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -1976,8 +1977,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your matured investment has been rollover. Thank you.`,
+                adminMessage: `The sum of ${ currencyCode } ${ await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -2185,8 +2186,8 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -2348,8 +2349,8 @@ export default class ApprovalsController {
                     walletId: walletIdToSearch,// walletId,
                     userId: userIdToSearch,// userId,
                     // @ts-ignore
-                    message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                    adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+                    message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                    adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                     createdAt: DateTime.now(),
                     metadata: ``,
                   };
@@ -2447,8 +2448,8 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
           // NEW CODE START
           let creditUserWalletWithPrincipal;
           let creditUserWalletWithInterest;
@@ -2911,8 +2912,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2968,8 +2969,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3026,8 +3027,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -3116,8 +3117,8 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
           let isDueForPayout = await dueForPayout(startDate, duration)
           // console.log('Is due for payout status line 2450:', isDueForPayout)
           if (isDueForPayout) {
@@ -3281,8 +3282,8 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3443,8 +3444,8 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3518,8 +3519,8 @@ export default class ApprovalsController {
                   walletId: walletIdToSearch,// walletId,
                   userId: userIdToSearch,// userId,
                   // @ts-ignore
-                  message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your matured investment has been rollover. Thank you.`,
-                  adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was rollover.`,
+                  message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your matured investment has been rollover. Thank you.`,
+                  adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was rollover.`,
                   createdAt: DateTime.now(),
                   metadata: ``,
                 };
@@ -3725,8 +3726,8 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3888,8 +3889,8 @@ export default class ApprovalsController {
                       walletId: walletIdToSearch,// walletId,
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
-                      message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                      adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+                      message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                      adminMessage: `The sum of ${ currencyCode } ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -4156,8 +4157,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4192,8 +4193,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment has been activated for payment processing. Thank you.`,
-              adminMessage: `The sum of ${currencyCode} ${totalAmountToPayout} for ${firstName} matured investment was activated for payment processing.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your investment has been activated for payment processing. Thank you.`,
+              adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was activated for payment processing.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4239,8 +4240,8 @@ export default class ApprovalsController {
           let beneficiaryPhoneNumber = phone;
           let beneficiaryEmail = email;
           // Send to the endpoint for debit of wallet
-          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${amount} for ${beneficiaryName} investment with ID: ${id}.`;
-          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${interestDueOnInvestment} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForPrincipal = `Payout of the principal of ${currencyCode} ${await convertToFormatedAmount(amount)} for ${beneficiaryName} investment with ID: ${id}.`;
+          let descriptionForInterest = `Payout of the interest of ${currencyCode} ${await convertToFormatedAmount(interestDueOnInvestment)} for ${beneficiaryName} investment with ID: ${id}.`;
           let isDueForPayout = await dueForPayout(startDate, duration)
           console.log('Is due for payout status line 3277:', isDueForPayout)
           if (isDueForPayout) {
@@ -4703,8 +4704,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut} for your matured investment has been paid out, please check your account. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut} for ${firstName} matured investment was paid out.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)} for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -4761,8 +4762,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the principal for ${firstName} matured investment was paid out.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -4820,8 +4821,8 @@ export default class ApprovalsController {
                 walletId: walletIdToSearch,// walletId,
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the interest for ${firstName} matured investment was paid out.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the interest for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -4954,8 +4955,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended, it will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} was suspended, it will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -5044,8 +5045,8 @@ export default class ApprovalsController {
               walletId: walletIdToSearch,// walletId,
               userId: userIdToSearch,// userId,
               // @ts-ignore
-              message: `${firstName}, the sum of ${currencyCode} ${totalAmountToPayout} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
-              adminMessage: `The payout of the sum of ${currencyCode} ${totalAmountToPayout} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
+              message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your investment will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}. Thank you.`,
+              adminMessage: `The payout of the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} was suspended and will be process for payment on or before ${await convertDateToFormat(payoutReactivationDate, "DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };

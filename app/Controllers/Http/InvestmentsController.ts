@@ -44,6 +44,7 @@ import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf'
 import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutPdf'
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus'
 import { convertDateToFormat } from 'App/Helpers/convertDateToFormat'
+import { convertToFormatedAmount } from 'App/Helpers/convertToFormatedAmount'
 // import { generateString } from 'App/Helpers/generateCertificateNumber'
 // import Rabbit from '@ioc:Adonis/Addons/Rabbit'
 // import { getDecimalPlace } from 'App/Helpers/utils_02'
@@ -395,10 +396,10 @@ export default class InvestmentsController {
           walletId: investment[0].walletId,// walletId,
           userId: investment[0].userId,// userId,
           // @ts-ignore
-          message: `${investment[0].firstName}, your investment of ${investment[0].currencyCode} ${investment[0].amount} has been activated.`,
-          adminMessage: `${investment[0].firstName}, investment of ${investment[0].currencyCode} ${investment[0].amount} has been activated.`,
+          message: `${investment[0].firstName}, your investment of ${investment[0].currencyCode} ${await convertToFormatedAmount(investment[0].amount)} has been activated.`,
+          adminMessage: `${investment[0].firstName}, investment of ${investment[0].currencyCode} ${await convertToFormatedAmount(investment[0].amount)} has been activated.`,
           createdAt: DateTime.now(),
-          metadata: `amount invested: ${investment[0].amount}, request type : ${investment[0].requestType}`,
+          metadata: `amount invested: ${await convertToFormatedAmount(investment[0].amount)}, request type : ${investment[0].requestType}`,
         }
         // console.log('Timeline object line 348:', timelineObject)
         // //  Push the new object to the array
@@ -1379,9 +1380,9 @@ export default class InvestmentsController {
         if (amount < lowestAmount || amount > highestAmount) {
           let message
           if (amount < lowestAmount) {
-            message = `The least amount allowed for this type of investment is ${currencyCode} ${lowestAmount} , please input an amount that is at least ${currencyCode} ${lowestAmount} but less than or equal to ${currencyCode} ${highestAmount} and try again. Thank you.`;
+            message = `The least amount allowed for this type of investment is ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} , please input an amount that is at least ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} but less than or equal to ${currencyCode} ${await convertToFormatedAmount(highestAmount)} and try again. Thank you.`;
           } else if (amount > highestAmount) {
-            message = `The highest amount allowed for this type of investment is ${currencyCode} ${highestAmount} , please input an amount less than or equal to ${currencyCode} ${highestAmount} but at least ${currencyCode} ${lowestAmount} and try again. Thank you.`;
+            message = `The highest amount allowed for this type of investment is ${currencyCode} ${await convertToFormatedAmount(highestAmount)} , please input an amount less than or equal to ${currencyCode} ${await convertToFormatedAmount(highestAmount)} but at least ${currencyCode} ${await convertToFormatedAmount(lowestAmount)} and try again. Thank you.`;
           }
 
           return response.status(422).json({
@@ -1707,8 +1708,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-              adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
+              message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+              adminMessage: `${firstName}, investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1721,7 +1722,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
 
                                 Your certificate is attached.
 
@@ -1832,8 +1833,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
-              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1939,8 +1940,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-              adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
+              message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+              adminMessage: `${firstName}, investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -1953,7 +1954,7 @@ export default class InvestmentsController {
             // Send Details to notification service
             let subject = `${rfiCode.toUpperCase()} Investment Activation`;
             let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} for the period of ${investment.duration} days, has been activated on ${await convertDateToFormat(investment.startDate, "DD-MM-YYYY")} and it will be mature for payout on ${await convertDateToFormat(investment.payoutDate, "DD-MM-YYYY")}.
 
                                 Your certificate is attached.
 
@@ -2067,8 +2068,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again. Thank you.`,
-              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()}.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -4653,6 +4654,7 @@ export default class InvestmentsController {
               // Save the payment data in payout table
               payload = investmentData
               console.log('Payout investment data line 1619:', payload)
+
               // payout = await Payout.create(payload)
               // payout.status = 'matured'
               // await payout.save()

@@ -20,6 +20,7 @@ import { sendNotificationWithoutPdf } from 'App/Helpers/sendNotificationWithoutP
 import { sendNotificationWithPdf } from 'App/Helpers/sendNotificationWithPdf';
 import { checkTransactionStatus } from 'App/Helpers/checkTransactionStatus';
 import { convertDateToFormat } from 'App/Helpers/convertDateToFormat';
+import { convertToFormatedAmount } from 'App/Helpers/convertToFormatedAmount';
 // Testing
 const fs = require('fs');
 const randomstring = require("randomstring");
@@ -1703,8 +1704,8 @@ export default class PaymentsServices {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Principal for ${firstName} matured investment was paid out.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Principal for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
             };
@@ -2458,8 +2459,8 @@ export default class PaymentsServices {
                 walletId: walletId,// walletId,
                 userId: userId,// userId,
                 // @ts-ignore
-                message: `${firstName}, the sum of ${currencyCode} ${amountPaidOut}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
-                adminMessage: `The sum of ${currencyCode} ${amountPaidOut}, the Interest for ${firstName} matured investment was paid out.`,
+                message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for your matured investment has been paid out, please check your account. Thank you.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the Interest for ${firstName} matured investment was paid out.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
             };
@@ -3515,8 +3516,8 @@ export default class PaymentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, your investment of ${currencyCode} ${amount} has been activated. Thank you.`,
-                                        adminMessage: `${firstName}, investment of ${currencyCode} ${amount} was activated.`,
+                                        message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+                                        adminMessage: `${firstName}, investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
@@ -3529,7 +3530,7 @@ export default class PaymentsServices {
                                     // Send Details to notification service
                                     let subject = `${rfiCode.toUpperCase()} Investment Activation`;
                                     let message = `
-                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${amount} has been activated.
+                ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
                 Please check your device.
 
@@ -3595,9 +3596,9 @@ export default class PaymentsServices {
                                         walletId: walletIdToSearch,// walletId,
                                         userId: userIdToSearch,// userId,
                                         // @ts-ignore
-                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${amount} as we try again. Thank you.`,
+                                        message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
                                         // @ts-ignore
-                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${amount} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} .`,
+                                        adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} .`,
                                         createdAt: DateTime.now(),
                                         metadata: ``,
                                     };
