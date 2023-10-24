@@ -112,6 +112,7 @@ Route.group(() => {
     Route.get("admin/investments/about_to_be_mature_investments", "InvestmentsController.collateAboutToBeMatureInvestment");
     Route.get("admin/investments/reactivate_suspended_investment_payout", "InvestmentsController.reactivateSuspendedPayoutInvestment");
     Route.get("admin/investments/reactivate_suspended_investment_rollover", "InvestmentsController.reactivateSuspendedRolloverInvestment");
+    Route.get("admin/investments/set_investment_for_maturity/:investmentId", "InvestmentsController.setInvestmentForMaturityById");
     Route.get("admin/investments/matured_investments", "InvestmentsController.collateMaturedInvestment");
     Route.get("admin/investments/activate_approved_investments", "InvestmentsController.activateApprovedInvestment");
     Route.get("admin/investments/payout_matured_investments", "InvestmentsController.payoutMaturedInvestment");

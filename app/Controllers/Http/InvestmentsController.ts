@@ -3111,6 +3111,64 @@ export default class InvestmentsController {
     }
   }
 
+  public async setInvestmentForMaturityById({ request, response }: HttpContextContract) {
+    const investmentsService = new InvestmentsServices();
+    try {
+      const { investmentId } = request.params()
+      // const { walletId, userId } = request.all()
+      const investments = await investmentsService.setInvestmentForMaturityById(investmentId);
+      // const totalSum = await investmentsService.getInvestmentsSum(request.qs());
+      const totalSum = await investmentsService.getInvestmentsSum(request.all());
+      debugger
+      if (investments.length > 0) {
+        // console.log('Investment data after payout request line 2000:', investments)
+        // debugger
+        let investmentArray: any[] = [];
+        for (let index = 0; index < investments.length; index++) {
+          let currentInvestment = investments[index];
+          let { id, wallet_id, user_id } = currentInvestment;
+          currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, wallet_id, user_id);
+          investmentArray.push(currentInvestment);
+          // debugger
+        }
+        return response.status(200).json({
+          status: 'OK',
+          data: investmentArray,//.map((inv) => inv.$original),
+          totalSum,
+        })
+        // END
+
+      } else {
+        // debugger
+        return response.status(404).json({
+          status: 'OK',
+          message: 'No investment matched your search',
+          data: null,
+          totalSum,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      console.log("Error line 2193", error.messages);
+      console.log("Error line 2194", error.message);
+      if (error.code === 'E_APP_EXCEPTION') {
+        console.log(error.codeSt)
+        let statusCode = error.codeSt ? error.codeSt : 500
+        return response.status(parseInt(statusCode)).json({
+          status: "FAILED",
+          message: error.messages,
+          hint: error.message
+        });
+      }
+      return response.status(500).json({
+        status: "FAILED",
+        message: error.messages,
+        hint: error.message
+      });
+
+    }
+  }
+
   public async collateMaturedInvestment({ request, response }: HttpContextContract) {
     const investmentsService = new InvestmentsServices();
     try {
