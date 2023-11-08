@@ -3,7 +3,7 @@ import { BaseTask } from 'adonis5-scheduler/build'
 // import { DateTime } from 'luxon'
 // import axios from 'axios'
 // const Env = require("@ioc:Adonis/Core/Env");
-// const CRON_JOBS_RETRY_LIMITS = Env.get('CRON_JOBS_RETRY_LIMITS');
+// const INVESTMENT_CRON_JOBS_RETRY_LIMITS = Env.get('INVESTMENT_CRON_JOBS_RETRY_LIMITS');
 
 export default class ReactivateSuspendedInvestmentRollover extends BaseTask {
     public static get schedule() {
@@ -39,7 +39,7 @@ export default class ReactivateSuspendedInvestmentRollover extends BaseTask {
         // // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         // let queryParams = {
-        //     limit: CRON_JOBS_RETRY_LIMITS ? CRON_JOBS_RETRY_LIMITS : "20",
+        //     limit: INVESTMENT_CRON_JOBS_RETRY_LIMITS ? INVESTMENT_CRON_JOBS_RETRY_LIMITS : "20",
         //     offset: "0",
         //     // add checkedForPaymentAt
         // }

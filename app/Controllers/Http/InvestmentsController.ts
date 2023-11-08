@@ -16,7 +16,7 @@ const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // const axios = require('axios').default
 
 const TRANSACTION_PREFIX = Env.get('TRANSACTION_PREFIX');
-const CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('CRON_JOBS_RETRY_PERIOD_IN_DAYS');
+const INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS');
 
 
 import {
@@ -1028,7 +1028,7 @@ export default class InvestmentsController {
         rolloverReactivationDate,
         isPayoutSuspended,
         payoutReactivationDate, principalPayoutStatus,
-        interestPayoutStatus, retryPeriod,maxAttempts,attempts  } = request.body();
+        interestPayoutStatus, retryPeriod, maxAttempts, attempts } = request.body();
 
       // debugger
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
@@ -1174,11 +1174,11 @@ export default class InvestmentsController {
           investment.attempts = attempts;
           // send for update
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
-                // console.log(" Current log, line 1346 :", currentInvestment);
+          // console.log(" Current log, line 1346 :", currentInvestment);
           // await investmentsService.updateInvestment(currentInvestment, investment);
-                let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
-                console.log(" Current log, line 1180 :", updatedInvestment);
-                debugger
+          let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+          console.log(" Current log, line 1180 :", updatedInvestment);
+          debugger
           // let timeline
           let timelineObject
           try {
@@ -1339,7 +1339,7 @@ export default class InvestmentsController {
         penalty: penalty,
         verificationRequestAttempts: 0,
         numberOfAttempts: 0,
-        retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+        retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
       }
 
       let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);
@@ -1849,8 +1849,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
-              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };
@@ -2084,8 +2084,8 @@ export default class InvestmentsController {
               walletId: walletId,// walletId,
               userId: userId,// userId,
               // @ts-ignore
-              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
-              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(),"DD-MM-YYYY")}.`,
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again. Thank you.`,
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at : ${await convertDateToFormat(DateTime.now(), "DD-MM-YYYY")}.`,
               createdAt: DateTime.now(),
               metadata: ``,
             };

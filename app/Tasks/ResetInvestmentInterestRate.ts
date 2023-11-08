@@ -5,7 +5,7 @@ import TypesServices from 'App/Services/TypesServices'
 // import axios from 'axios'
 const Env = require("@ioc:Adonis/Core/Env");
 const DEFAULT_INTEREST_RATE = Env.get("DEFAULT_INTEREST_RATE");
-const CRON_JOBS_RETRY_LIMITS = Env.get('CRON_JOBS_RETRY_LIMITS');
+const INVESTMENT_CRON_JOBS_RETRY_LIMITS = Env.get('INVESTMENT_CRON_JOBS_RETRY_LIMITS');
 export default class ResetInvestmentInterestRate extends BaseTask {
     public static get schedule() {
         // *    *    *    *    *    *
@@ -40,27 +40,27 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
-            limit: CRON_JOBS_RETRY_LIMITS ? CRON_JOBS_RETRY_LIMITS : "20",
+            limit: INVESTMENT_CRON_JOBS_RETRY_LIMITS ? INVESTMENT_CRON_JOBS_RETRY_LIMITS : "20",
             offset: "0",
             // add checkedForPaymentAt
         }
         let defaultInterestRate;
-        if (DEFAULT_INTEREST_RATE !== undefined || DEFAULT_INTEREST_RATE !== null){
+        if (DEFAULT_INTEREST_RATE !== undefined || DEFAULT_INTEREST_RATE !== null) {
             defaultInterestRate = Number(DEFAULT_INTEREST_RATE);
-        }else{
+        } else {
             defaultInterestRate = 10;
         }
         // console.log("Query params in type service line 42:", queryParams)
         let typesServices = new TypesServices();
-       let listOfInvestmentType = await typesServices.getTypes(queryParams);   
+        let listOfInvestmentType = await typesServices.getTypes(queryParams);
         for (let index = 0; index < listOfInvestmentType.length; index++) {
             const currentInvestmentType = listOfInvestmentType[index];
-            await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
-        //    let updatedInterestRate = await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
-        //     console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
-        //     console.log(updatedInterestRate!.interestRate);  
+            await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);
+            //    let updatedInterestRate = await typesServices.updateTypeInterestRate(currentInvestmentType, defaultInterestRate);  
+            //     console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
+            //     console.log(updatedInterestRate!.interestRate);  
         }
-        
+
         // console.log("After AXIOS CALL for Reset Investment Interest Rate,  ==================================================");
         // console.log("The ASTRAPAY API Reset Investment Interest Rate response,line 64: ");
 

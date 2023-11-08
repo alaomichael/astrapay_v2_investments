@@ -29,7 +29,7 @@ const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // const PENALTY_FOR_LIQUIDATION = Env.get("PENALTY_FOR_LIQUIDATION");
 const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
-const CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('CRON_JOBS_RETRY_PERIOD_IN_DAYS');
+const INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS');
 
 // const CHARGE = Env.get("SERVICE_CHARGE");
 // const API_URL = Env.get("API_URL");
@@ -11480,7 +11480,7 @@ export default class InvestmentsServices {
                                                 penalty: 0,
                                                 verificationRequestAttempts: 0,
                                                 numberOfAttempts: 0,
-                                                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                                                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                                             }
                                             await investmentsService.createNewInvestment(newInvestmentPayload, amount)
                                             // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
@@ -11573,7 +11573,7 @@ export default class InvestmentsServices {
                                                 penalty: 0,
                                                 verificationRequestAttempts: 0,
                                                 numberOfAttempts: 0,
-                                                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                                                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                                             }
                                             await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
                                             // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
@@ -11949,7 +11949,7 @@ export default class InvestmentsServices {
                                                 penalty: 0,
                                                 verificationRequestAttempts: 0,
                                                 numberOfAttempts: 0,
-                                                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                                                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                                             }
 
                                             await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)

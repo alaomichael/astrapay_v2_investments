@@ -3,7 +3,7 @@ import InvestmentsServices from 'App/Services/InvestmentsServices'
 // import { DateTime } from 'luxon'
 // import axios from 'axios'
 const Env = require("@ioc:Adonis/Core/Env");
-const CRON_JOBS_RETRY_LIMITS = Env.get('CRON_JOBS_RETRY_LIMITS');
+const INVESTMENT_CRON_JOBS_RETRY_LIMITS = Env.get('INVESTMENT_CRON_JOBS_RETRY_LIMITS');
 export default class ActivateApprovedInvestment extends BaseTask {
     public static get schedule() {
         // *    *    *    *    *    *
@@ -37,14 +37,14 @@ export default class ActivateApprovedInvestment extends BaseTask {
         // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
-            limit: CRON_JOBS_RETRY_LIMITS ? CRON_JOBS_RETRY_LIMITS : "20",
+            limit: INVESTMENT_CRON_JOBS_RETRY_LIMITS ? INVESTMENT_CRON_JOBS_RETRY_LIMITS : "20",
             offset: "0",
             // add checkedForPaymentAt
         }
         // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
         // await investmentsServices.activateApprovedInvestment(queryParams);  
-        await investmentsServices.activateApprovedInvestmentByCronJob(queryParams);  
+        await investmentsServices.activateApprovedInvestmentByCronJob(queryParams);
         // let listOfActivatedInvestments = await investmentsServices.activateApprovedInvestment(queryParams);  
         // console.log("After AXIOS CALL for Activate Investment ,  ==================================================");
         // console.log("The ASTRAPAY API Activate Investment  response,line 47: ");

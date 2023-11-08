@@ -28,7 +28,7 @@ const randomstring = require("randomstring");
 const Env = require("@ioc:Adonis/Core/Env");
 const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 const TRANSACTION_PREFIX = Env.get("TRANSACTION_PREFIX");
-const CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('CRON_JOBS_RETRY_PERIOD_IN_DAYS');
+const INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS');
 export default class ApprovalsController {
   public async index({ params, request, response }: HttpContextContract) {
     try {
@@ -1962,7 +1962,7 @@ export default class ApprovalsController {
                 penalty: 0,
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
-                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
               };
               await investmentsService.createNewInvestment(newInvestmentPayload, amount)
               // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
@@ -1979,7 +1979,7 @@ export default class ApprovalsController {
                 userId: userIdToSearch,// userId,
                 // @ts-ignore
                 message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for your matured investment has been rollover. Thank you.`,
-                adminMessage: `The sum of ${ currencyCode } ${ await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was rollover.`,
+                adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(totalAmountToPayout)} for ${firstName} matured investment was rollover.`,
                 createdAt: DateTime.now(),
                 metadata: ``,
               };
@@ -2035,7 +2035,7 @@ export default class ApprovalsController {
                 penalty: 0,
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
-                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
               };
               await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
               // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
@@ -2412,7 +2412,7 @@ export default class ApprovalsController {
                 penalty: 0,
                 verificationRequestAttempts: 0,
                 numberOfAttempts: 0,
-                retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
               }
               await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
               // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
@@ -3507,7 +3507,7 @@ export default class ApprovalsController {
                   penalty: 0,
                   verificationRequestAttempts: 0,
                   numberOfAttempts: 0,
-                  retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                  retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                 };
                 await investmentsService.createNewInvestment(newInvestmentPayload, amount)
                 // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, amount)
@@ -3580,7 +3580,7 @@ export default class ApprovalsController {
                   penalty: 0,
                   verificationRequestAttempts: 0,
                   numberOfAttempts: 0,
-                  retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                  retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                 };
                 await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
                 // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, totalAmountToPayout)
@@ -3895,7 +3895,7 @@ export default class ApprovalsController {
                       userId: userIdToSearch,// userId,
                       // @ts-ignore
                       message: `${firstName}, the sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for your matured investment has been paid out, please check your account. Thank you.`,
-                      adminMessage: `The sum of ${ currencyCode } ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
+                      adminMessage: `The sum of ${currencyCode} ${await convertToFormatedAmount(amountPaidOut)}, the principal for ${firstName} matured investment was paid out.`,
                       createdAt: DateTime.now(),
                       metadata: ``,
                     };
@@ -3955,7 +3955,7 @@ export default class ApprovalsController {
                   penalty: 0,
                   verificationRequestAttempts: 0,
                   numberOfAttempts: 0,
-                  retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
+                  retryPeriod: Number(INVESTMENT_CRON_JOBS_RETRY_PERIOD_IN_DAYS),
                 }
                 await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
                 // let newInvestmentDetails = await investmentsService.createNewInvestment(newInvestmentPayload, interestDueOnInvestment)
