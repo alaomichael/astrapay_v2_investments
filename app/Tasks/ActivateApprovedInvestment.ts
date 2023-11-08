@@ -42,7 +42,8 @@ export default class ActivateApprovedInvestment extends BaseTask {
         }
         // console.log("Query params in type service line 42:", queryParams)
         let investmentsServices = new InvestmentsServices();
-        await investmentsServices.activateApprovedInvestment(queryParams);  
+        // await investmentsServices.activateApprovedInvestment(queryParams);  
+        await investmentsServices.activateApprovedInvestmentByCronJob(queryParams);  
         // let listOfActivatedInvestments = await investmentsServices.activateApprovedInvestment(queryParams);  
         // console.log("After AXIOS CALL for Activate Investment ,  ==================================================");
         // console.log("The ASTRAPAY API Activate Investment  response,line 47: ");

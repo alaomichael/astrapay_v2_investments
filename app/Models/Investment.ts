@@ -151,6 +151,18 @@ export default class Investment extends AppBaseModel {
   @column()
   public status: string
 
+  @column()
+  public maxAttempts: number;
+
+  @column()
+  public attempts: number;
+
+  @column()
+  public retryPeriod: number;
+
+  @column.dateTime({ autoCreate: true, autoUpdate: false })
+  public lastAttemptAt: DateTime;
+
   @column({ columnName: "verification_request_attempts" })
   public verificationRequestAttempts: number;
 

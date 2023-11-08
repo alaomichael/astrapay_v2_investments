@@ -15,7 +15,9 @@ const CERTIFICATE_URL = Env.get("CERTIFICATE_URL");
 // import Env from '@ioc:Adonis/Core/Env'
 // const axios = require('axios').default
 
-const TRANSACTION_PREFIX = Env.get('TRANSACTION_PREFIX')
+const TRANSACTION_PREFIX = Env.get('TRANSACTION_PREFIX');
+const CRON_JOBS_RETRY_PERIOD_IN_DAYS = Env.get('CRON_JOBS_RETRY_PERIOD_IN_DAYS');
+
 
 import {
   // generateRate,
@@ -1026,7 +1028,7 @@ export default class InvestmentsController {
         rolloverReactivationDate,
         isPayoutSuspended,
         payoutReactivationDate, principalPayoutStatus,
-        interestPayoutStatus } = request.body();
+        interestPayoutStatus, retryPeriod,maxAttempts,attempts  } = request.body();
 
       // debugger
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
@@ -1088,6 +1090,9 @@ export default class InvestmentsController {
             investment.payoutReactivationDate = payoutReactivationDate;
             investment.principalPayoutStatus = principalPayoutStatus;
             investment.interestPayoutStatus = interestPayoutStatus;
+            investment.retryPeriod = retryPeriod;
+            investment.maxAttempts = maxAttempts;
+            investment.attempts = attempts;
             // Save
             // update record
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
@@ -1156,14 +1161,24 @@ export default class InvestmentsController {
       //   id: request.input('investmentId'),
       // })
       const { investmentId } = request.params()
-      const { walletId, userId } = request.all()
+      const { walletId, userId, retryPeriod, maxAttempts, attempts } = request.all()
       let investment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId)
       if (investment) {
         // console.log('Investment Selected for Update line 1260:', investment.startDate)
         let isDueForPayout
         if (investment.startDate !== null) {
-          let createdAt = investment.createdAt
-          let duration = investment.duration
+          let createdAt = investment.createdAt;
+          let duration = investment.duration;
+          investment.retryPeriod = retryPeriod;
+          investment.maxAttempts = maxAttempts;
+          investment.attempts = attempts;
+          // send for update
+          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
+                // console.log(" Current log, line 1346 :", currentInvestment);
+          // await investmentsService.updateInvestment(currentInvestment, investment);
+                let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, investment);
+                console.log(" Current log, line 1180 :", updatedInvestment);
+                debugger
           // let timeline
           let timelineObject
           try {
@@ -1324,6 +1339,7 @@ export default class InvestmentsController {
         penalty: penalty,
         verificationRequestAttempts: 0,
         numberOfAttempts: 0,
+        retryPeriod: Number(CRON_JOBS_RETRY_PERIOD_IN_DAYS),
       }
 
       let investmentTypeDetails = await typesService.getTypeByTypeId(investmentTypeId);

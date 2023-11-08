@@ -44,5 +44,8 @@ export default class UpdateInvestmentValidator extends BaseValidator {
         payoutReactivationDate: schema.date.optional({ format: 'yyyy-MM-dd', }),
         verificationRequestAttempts: schema.number.optional(),
         numberOfAttempts: schema.number.optional(),
+        maxAttempts: schema.number.optional(),
+        attempts: schema.number.optional(),
+        retryPeriod: schema.number.optional(),
     });
 }
