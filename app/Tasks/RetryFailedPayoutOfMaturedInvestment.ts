@@ -2,6 +2,8 @@ import { BaseTask } from 'adonis5-scheduler/build'
 import InvestmentsServices from 'App/Services/InvestmentsServices'
 // import { DateTime } from 'luxon'
 // import axios from 'axios'
+const Env = require("@ioc:Adonis/Core/Env");
+const CRON_JOBS_RETRY_LIMITS = Env.get('CRON_JOBS_RETRY_LIMITS');
 
 export default class RetryFailedPayoutOfMaturedInvestment extends BaseTask {
     public static get schedule() {
@@ -36,7 +38,7 @@ export default class RetryFailedPayoutOfMaturedInvestment extends BaseTask {
         // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
-            limit: "20",
+            limit: CRON_JOBS_RETRY_LIMITS ? CRON_JOBS_RETRY_LIMITS : "20",
             offset: "0",
             // add checkedForPaymentAt
         }

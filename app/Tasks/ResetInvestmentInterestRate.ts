@@ -5,7 +5,7 @@ import TypesServices from 'App/Services/TypesServices'
 // import axios from 'axios'
 const Env = require("@ioc:Adonis/Core/Env");
 const DEFAULT_INTEREST_RATE = Env.get("DEFAULT_INTEREST_RATE");
-
+const CRON_JOBS_RETRY_LIMITS = Env.get('CRON_JOBS_RETRY_LIMITS');
 export default class ResetInvestmentInterestRate extends BaseTask {
     public static get schedule() {
         // *    *    *    *    *    *
@@ -40,7 +40,7 @@ export default class ResetInvestmentInterestRate extends BaseTask {
         // console.log("last CheckedForPaymentAt @  :", checkedForPaymentAt);
 
         let queryParams = {
-            limit: "20",
+            limit: CRON_JOBS_RETRY_LIMITS ? CRON_JOBS_RETRY_LIMITS : "20",
             offset: "0",
             // add checkedForPaymentAt
         }
