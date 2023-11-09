@@ -3984,9 +3984,10 @@ export default class InvestmentsServices {
                             // debugger
                             // console.log(" Current log, line 3982 :", currentInvestment);
                             // send for update
-                            const updatedRetryRecord = await investmentsService.updateInvestment(currentInvestment, record);
-                            console.log(" updatedRetryRecord attempts log, line 3985 :", updatedRetryRecord?.attempts);
-                            debugger
+                            // const updatedRetryRecord = 
+                            await investmentsService.updateInvestment(currentInvestment, record);
+                            // console.log(" updatedRetryRecord attempts log, line 3985 :", updatedRetryRecord?.attempts);
+                            // debugger
 
                             let senderName = `${firstName} ${lastName}`;
                             let senderAccountNumber = investorFundingWalletId;

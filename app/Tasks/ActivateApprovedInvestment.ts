@@ -17,8 +17,8 @@ export default class ActivateApprovedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/30 * * * *' // runs every 30 minutes
-        // return '0 */2 * * *' // runs every 2 hours 0 minute
+        // return '*/30 * * * *' // runs every 30 minutes
+        return '0 */1 * * *' // runs every 1 hour(s) 0 minute
     }
     /**
      * Set enable use .lock file for block run retry task
