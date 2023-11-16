@@ -11,7 +11,7 @@ export const filterArrayByCriteria = async function filterArrayByCriteria(data, 
         // Normalize all timestamps to UTC for consistent comparison
         const lastAttemptAtUTC = item.last_attempt_at ? new Date(item.last_attempt_at) : null;
         const createdAtDateUTC = new Date(item.created_at);
-        // const retryPeriodUTC = new Date(createdAtDateUTC.getTime() + item.retry_period);
+
         const retryPeriodUTC = new Date(createdAtDateUTC.getTime() + (Number(item.retry_period) * 24 * 60 * 60 * 1000));
 
         debugger
@@ -66,7 +66,7 @@ export const filterArrayByCriteria = async function filterArrayByCriteria(data, 
 }
 
 
-// FOR TESTING PURPOSE
+// FOR TESTING PURPOSE FORMER
 // export const filterArrayByCriteria = async function filterArrayByCriteria(data, timestamp, limit) {
 //     // Convert the input timestamp to UTC
 //     const targetTimestamp = new Date(timestamp);
