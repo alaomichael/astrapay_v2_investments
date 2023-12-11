@@ -331,11 +331,12 @@ const amqplib = require('amqplib');
                         routingKey,//: 'investment.configuration'
                     } = fields;
                     console.log("fields line 323 =====", consumerTag, deliveryTag, redelivered, exchange, routingKey,)
-                    let { investment } = content;
+                    // let { investment } = content;
+                    let { data } = content;
                     debugger
                     // Start service here
                     const MessageQueuesService = new MessageQueuesServices()
-                    const newRfiRecordSetting = await MessageQueuesService.createRfiRecordSetting(investment);
+                    const newRfiRecordSetting = await MessageQueuesService.createRfiRecordSetting(data);
                     console.log("newRfiRecordSetting line 324 ===== ", newRfiRecordSetting)
                     debugger
                     if (newRfiRecordSetting) {
