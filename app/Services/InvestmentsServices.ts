@@ -7729,6 +7729,7 @@ export default class InvestmentsServices {
                 // .useTransaction(trx) // 👈
                 .where('status', "completed_with_interest_payout_outstanding")
                 .orWhere('status', "completed_with_principal_payout_outstanding")
+                // .orWhere('status', "investment_approved")
                 .where('interest_payout_status', "failed")
                 .orWhere('principal_payout_status', "failed")
                 .andWhere('request_type', 'payout_investment')
@@ -7753,6 +7754,25 @@ export default class InvestmentsServices {
                 throw new AppException({ message: `There is no approved investment that is matured for payout or wallet has been successfully credited. Please, check and try again.`, codeSt: "404" })
             }
             // debugger
+
+
+            // Sort and Filter responseData by maxAttempts,attempts , lastAttemptAt and retryPeriod
+            // Apply offset & limit
+
+            const date = new Date();
+            // date.setHours(0, 0, 0, 0); // Set the time to midnight (00:00:00)
+            date.setDate(date.getUTCDate()); // Today in UTC
+            date.setUTCHours(0, 0, 0, 0); // Set the time to midnight (00:00:00) in UTC
+            const beginningOfTodayTimestamp = date.toISOString();
+            console.log("beginningOfTodayTimestamp ", beginningOfTodayTimestamp);
+
+            debugger
+
+            responseData = await filterArrayByCriteria(responseData, beginningOfTodayTimestamp, limit);
+
+            debugger
+
+
             let investmentArray: any[] = [];
             const processInvestment = async (investment) => {
                 let { id, } = investment;//request.all()

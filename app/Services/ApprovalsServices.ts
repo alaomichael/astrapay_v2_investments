@@ -1048,7 +1048,8 @@ export default class ApprovalsServices {
                     // console.log(selectedInvestmentPayoutRequest)
                     let selectedInvestmentPayoutRequestUpdate = selectedInvestmentPayoutRequest;
                     selectedInvestmentPayoutRequestUpdate.approvalStatus = "approved" //saveApproval.approvalStatus;
-                    selectedInvestmentPayoutRequestUpdate.status = "approved";
+                    // selectedInvestmentPayoutRequestUpdate.status = "approved";
+                    
                     // selectedInvestmentPayoutRequestUpdate.remark = saveApproval.remark;
                     // update the record
                     // debugger
