@@ -3597,6 +3597,7 @@ export default class InvestmentsServices {
                                 // console.log("debitUserWalletForInvestment reponse data 2138 ==================================", debitUserWalletForInvestment)
                                 // if successful
                                 if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
+                                    // TODO: MOVE the content of this block to webhook method for successful
                                     // update the investment details
                                     record.status = 'active'
                                     // record.approvalStatus = 'approved'
@@ -3687,6 +3688,7 @@ export default class InvestmentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
+                                    // TODO: COPY the content of this block to webhook method for failed transaction
                                     console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -4015,6 +4017,7 @@ export default class InvestmentsServices {
                                 // console.log("debitUserWalletForInvestment reponse data 1938 ==================================", debitUserWalletForInvestment)
                                 // if successful
                                 if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
+                                    // TODO: MOVE the content of this block to webhook method for successful
                                     // update the investment details
                                     record.status = 'active'
                                     // record.approvalStatus = 'approved'
@@ -4105,6 +4108,7 @@ export default class InvestmentsServices {
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
+                                    // TODO: COPY the content of this block to webhook method for unsuccessful transaction
                                     console.log(`Unsuccessful debit of user with ID: ${userId} and walletId : ${investorFundingWalletId} for investment activation line 2036 ============`);
                                     // debugger
                                     let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -7264,6 +7268,7 @@ export default class InvestmentsServices {
                                             debugger
                                         }
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -7355,6 +7360,7 @@ export default class InvestmentsServices {
                                             debugger
                                         }
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -7407,6 +7413,7 @@ export default class InvestmentsServices {
                                     debugger
                                     // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         // if (creditUserWalletWithPrincipal == undefined && creditUserWalletWithInterest == undefined) {
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
@@ -7472,6 +7479,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7534,6 +7542,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                       // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -7594,6 +7603,7 @@ export default class InvestmentsServices {
 
                                         // debugger
                                     } else {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         console.log("Entering failed payout of principal and interest data block ,line 6595 ==================================")
                                         // update record
                                         debugger
@@ -12291,6 +12301,7 @@ export default class InvestmentsServices {
                                             debugger
                                         }
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -12382,6 +12393,7 @@ export default class InvestmentsServices {
                                         }
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -12431,6 +12443,7 @@ export default class InvestmentsServices {
                                     let decPl = 3;
                                     // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -12494,6 +12507,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -12556,6 +12570,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest &&  creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -12618,6 +12633,7 @@ export default class InvestmentsServices {
                                         // await trx.commit();
                                         // debugger
                                     } else {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         console.log("Entering failed payout of principal and interest data block ,line 11054 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -12750,6 +12766,7 @@ export default class InvestmentsServices {
                                             debugger
                                         }
                                     } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -12842,6 +12859,7 @@ export default class InvestmentsServices {
                                         }
 
                                     } else if (checkTransactionStatusByCustomerRef02 && checkTransactionStatusByCustomerRef02.data.screenStatus === "FAILED") {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         // update the value for number of attempts
                                         // get the current investmentRef, split , add one to the current number, update and try again
                                         let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -12900,6 +12918,7 @@ export default class InvestmentsServices {
                                     // debugger
                                     // if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = amount + interestDueOnInvestment;
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -12970,6 +12989,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "SUCCESSFUL" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status == 200 && creditUserWalletWithPrincipal.data.screenStatus === "APPROVED" && creditUserWalletWithInterest && creditUserWalletWithInterest.status != 200) {
+                                       // TODO: MOVE the content of this block to webhook method for successful transactions
                                         let amountPaidOut = amount
                                         // let decPl = 3;
                                         amountPaidOut = Number(amountPaidOut.toFixed(decPl));
@@ -13039,6 +13059,7 @@ export default class InvestmentsServices {
                                         // debugger
                                         // } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "SUCCESSFUL") {
                                     } else if (creditUserWalletWithPrincipal && creditUserWalletWithPrincipal.status != 200 && creditUserWalletWithInterest && creditUserWalletWithInterest.status == 200 && creditUserWalletWithInterest.data.screenStatus === "APPROVED") {
+                                        // TODO: MOVE the content of this block to webhook method for successful transactions
                                         //   debugger
                                         let amountPaidOut = interestDueOnInvestment
                                         // let decPl = 3;
@@ -13107,6 +13128,7 @@ export default class InvestmentsServices {
                                         // await trx.commit();
                                         // debugger
                                     } else {
+                                        // TODO: COPY the content of this block to webhook method for unsuccessful transactions
                                         console.log("Entering failed payout of principal and interest data block ,line 11501 ==================================")
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
