@@ -12,7 +12,8 @@ export const filterArrayByCriteria = async function filterArrayByCriteria(data, 
         const lastAttemptAtUTC = item.last_attempt_at ? new Date(item.last_attempt_at) : null;
         const createdAtDateUTC = new Date(item.created_at);
 
-        const retryPeriodUTC = new Date(createdAtDateUTC.getTime() + (Number(item.retry_period) * 24 * 60 * 60 * 1000));
+        // const retryPeriodUTC = new Date(createdAtDateUTC.getTime() + (Number(item.retry_period) * 24 * 60 * 60 * 1000)); // In days format
+        const retryPeriodUTC = new Date(createdAtDateUTC.getTime() + (Number(item.retry_period) * 60 * 60 * 1000)); // In hours format
 
         debugger
         if (
