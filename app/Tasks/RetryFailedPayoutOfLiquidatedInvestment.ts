@@ -18,8 +18,9 @@ export default class RetryFailedPayoutOfLiquidatedInvestment extends BaseTask {
         // └───────────────────────── second(0 - 59, OPTIONAL)
         // return '* * * * * *'
 
-        return '*/5 * * * *' // runs every 5 minutes
+        // return '*/5 * * * *' // runs every 5 minutes
         // return '*/50 * * * *' // runs every 50 minutes
+        return '5 */1 * * *' // runs every 1 hours 5 minutes
         // return '30 */3 * * *' // runs every 3 hours 30 minute
     }
     /**
