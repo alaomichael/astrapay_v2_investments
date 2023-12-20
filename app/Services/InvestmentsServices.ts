@@ -4733,15 +4733,16 @@ export default class InvestmentsServices {
                                     // Send Notification to admin and others stakeholder
                                     let messageKey = "activation_failed";
                                     let investment = record;
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // let newNotificationMessageWithoutPdf = 
+                                    await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
                                     // debugger
-                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                                        console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
-                                        console.log("Notification NOT sent successfully");
-                                        console.log(newNotificationMessageWithoutPdf);
-                                    }
+                                    // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessageWithoutPdf);
+                                    // }
 
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     // console.log(" Current log, line 1051 =========:", updatedInvestment);
@@ -4861,27 +4862,30 @@ export default class InvestmentsServices {
                                         //   "name": `${rfiName} `
                                         // },
                                     ];
-                                    let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+                                    // let newNotificationMessageWithPdf = 
+                                    await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
                                     // console.log("newNotificationMessage line 2207:", newNotificationMessageWithPdf);
                                     // debugger
-                                    if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
-                                        console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
-                                        console.log("Notification NOT sent successfully");
-                                        console.log(newNotificationMessageWithPdf);
-                                    }
+                                    // if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessageWithPdf.message != "messages sent successfully") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessageWithPdf);
+                                    // }
+
                                     // Send Notification to admin and others stakeholder
                                     let messageKey = "activation";
                                     let investment = record;
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // let newNotificationMessageWithoutPdf = 
+                                    await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 2219:", newNotificationMessageWithoutPdf);
                                     // debugger
-                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                                        console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
-                                        console.log("Notification NOT sent successfully");
-                                        console.log(newNotificationMessageWithoutPdf);
-                                    }
+                                    // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessageWithoutPdf);
+                                    // }
 
                                     // debugger
                                 } else if (debitUserWalletForInvestment.status != 200 || debitUserWalletForInvestment.status == undefined) {
@@ -4917,15 +4921,17 @@ export default class InvestmentsServices {
                                     // Send Notification to admin and others stakeholder
                                     let messageKey = "activation_failed";
                                     let investment = record;
-                                    let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+                                    // let newNotificationMessageWithoutPdf = 
+                                    await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
                                     // console.log("newNotificationMessage line 2136:", newNotificationMessageWithoutPdf);
                                     // debugger
-                                    if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                                        console.log("Notification sent successfully");
-                                    } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
-                                        console.log("Notification NOT sent successfully");
-                                        console.log(newNotificationMessageWithoutPdf);
-                                    }
+                                    
+                                    // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+                                    //     console.log("Notification sent successfully");
+                                    // } else if (newNotificationMessageWithoutPdf.message != "messages sent successfully") {
+                                    //     console.log("Notification NOT sent successfully");
+                                    //     console.log(newNotificationMessageWithoutPdf);
+                                    // }
 
                                     // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
                                     // console.log(" Current log, line 1051 =========:", updatedInvestment);
