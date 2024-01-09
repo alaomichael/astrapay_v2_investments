@@ -8446,7 +8446,7 @@ export default class InvestmentsServices {
                             // let newStatus;
                             // await approval.save();
                             // console.log("Update Approval Request line 504:", approval);
-                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts } = record;
+                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts,attempts } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
                             console.log("Surname: ", lastName)
                             // console.log("CurrencyCode: ", currencyCode)
@@ -8506,7 +8506,9 @@ export default class InvestmentsServices {
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                            record.numberOfAttempts = numberOfAttempts;
+                                            record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                             interestPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -8551,6 +8553,10 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
+
                                                 // debugger
                                                 // Save the updated record
                                                 // await record.save();
@@ -8608,6 +8614,9 @@ export default class InvestmentsServices {
                                                 record.status = 'completed_with_interest_payout_outstanding';
                                                 // record.principalPayoutStatus = 'completed';
                                                 record.interestPayoutStatus = 'failed';
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
                                                 // record.isPayoutSuccessful = true;
@@ -8674,6 +8683,9 @@ export default class InvestmentsServices {
                                             interestPayoutRequestReference = newPaymentReference;
                                             record.interestPayoutRequestReference = interestPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
+                                            // record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                             debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -8722,6 +8734,9 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // debugger
                                                 // Save the updated record
                                                 // await record.save();
@@ -8779,6 +8794,9 @@ export default class InvestmentsServices {
                                                 record.status = 'completed_with_interest_payout_outstanding';
                                                 // record.principalPayoutStatus = 'completed';
                                                 record.interestPayoutStatus = 'failed';
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
                                                 // record.isPayoutSuccessful = true;
@@ -8988,7 +9006,10 @@ export default class InvestmentsServices {
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                            record.numberOfAttempts = numberOfAttempts;
+                                            // record.numberOfAttempts = numberOfAttempts;
+                                            record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                             interestPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -9028,6 +9049,9 @@ export default class InvestmentsServices {
                                                 record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed';
                                                 record.principalPayoutStatus = 'completed';
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 record.isPayoutAuthorized = true;
@@ -9089,6 +9113,9 @@ export default class InvestmentsServices {
                                                 // record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed_with_principal_payout_outstanding';
                                                 record.principalPayoutStatus = 'failed';
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
@@ -9159,6 +9186,9 @@ export default class InvestmentsServices {
                                             principalPayoutRequestReference = newPaymentReference;
                                             record.principalPayoutRequestReference = principalPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
+                                            // record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                             debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -9206,6 +9236,9 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // debugger
                                                 // Save the updated record
                                                 // await record.save();
@@ -9263,6 +9296,9 @@ export default class InvestmentsServices {
                                                 // record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed_with_principal_payout_outstanding';
                                                 record.principalPayoutStatus = 'failed';
+                                                record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
