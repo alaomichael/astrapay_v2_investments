@@ -97,6 +97,8 @@ export default class InvestmentsServices {
                 //@ts-ignore
                 principalPayoutRequestReference,
                 numberOfAttempts,
+
+                // lastAttemptAt,
                 //@ts-ignore
                 // interestPayoutRequestReference,
                 // interestRate: 0,
@@ -142,7 +144,7 @@ export default class InvestmentsServices {
                         // Create Unique payment reference for the customer
                         let reference = DateTime.now() + randomstring.generate(4);
                         // numberOfAttempts = numberOfAttempts ? numberOfAttempts : 1;
-                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 124 ==================")
                         // console.log(paymentReference);
@@ -151,7 +153,9 @@ export default class InvestmentsServices {
                         // debugger;
                         // @ts-ignore
                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                        record.numberOfAttempts = numberOfAttempts;
+                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                        // record.attempts = attempts + 1;
+                        // record.lastAttemptAt = DateTime.now();
                         principalPayoutRequestReference = paymentReference;
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                         debugger
@@ -551,7 +555,7 @@ export default class InvestmentsServices {
                         let reference = DateTime.now() + randomstring.generate(4);
                         // let numberOfAttempts = 1;
                         // numberOfAttempts = numberOfAttempts ? numberOfAttempts : 1;
-                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 124 ==================")
                         // console.log(paymentReference);
@@ -560,7 +564,9 @@ export default class InvestmentsServices {
                         // debugger;
                         // @ts-ignore
                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                        record.numberOfAttempts = numberOfAttempts;
+                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                        // record.attempts = attempts + 1;
+                        // record.lastAttemptAt = DateTime.now();
                         principalPayoutRequestReference = paymentReference;
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                         debugger
@@ -929,7 +935,7 @@ export default class InvestmentsServices {
                         let reference = DateTime.now() + randomstring.generate(4);
                         // let numberOfAttempts = 1;
                         // numberOfAttempts = numberOfAttempts ? numberOfAttempts : 1;
-                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 1142 ==================")
                         // console.log(paymentReference);
@@ -938,7 +944,9 @@ export default class InvestmentsServices {
                         debugger;
                         // @ts-ignore
                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                        record.numberOfAttempts = numberOfAttempts;
+                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                        // record.attempts = attempts + 1;
+                        // record.lastAttemptAt = DateTime.now();
                         principalPayoutRequestReference = paymentReference;
                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                         // debugger
@@ -1304,7 +1312,7 @@ export default class InvestmentsServices {
             // Create Unique payment reference for the customer
             // let numberOfAttempts = 1;
             // numberOfAttempts = numberOfAttempts ? numberOfAttempts : 1;
-            numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+            numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
             let reference = DateTime.now() + randomstring.generate(4);
             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 590 ==================")
@@ -1312,7 +1320,10 @@ export default class InvestmentsServices {
             // debugger;
             // @ts-ignore
             investment.investmentRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-            investment.numberOfAttempts = numberOfAttempts;
+
+            investment.numberOfAttempts = numberOfAttempts;// + 1;
+            // investment.attempts = attempts + 1;
+            // investment.lastAttemptAt = DateTime.now();
             debugger;
             let currentInvestment = await this.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // debugger
@@ -4567,10 +4578,10 @@ export default class InvestmentsServices {
                                 firstName, lastName, userId, investorFundingWalletId,
                                 phone,
                                 email,
-                                rfiCode, numberOfAttempts } = record;
+                                rfiCode, numberOfAttempts, attempts } = record;
                             debugger
                             // Update attempts & lastAttemptAt , check graceperiod
-                            record.attempts = Number(record.attempts) + 1;
+                            record.attempts = Number(attempts) + 1;
                             record.last_attempt_at = DateTime.now();
                             debugger
                             // update record
@@ -7806,7 +7817,7 @@ export default class InvestmentsServices {
                                         walletId, investorFundingWalletId,
                                         phone,
                                         email,
-                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, numberOfAttempts } = record;
+                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, numberOfAttempts, attempts, } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
                                     let beneficiaryAccountNumber = investorFundingWalletId;//walletId;
                                     let beneficiaryAccountName = beneficiaryName;
@@ -7828,7 +7839,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6259 ==================")
                                         // console.log(paymentReference);
@@ -7837,7 +7848,9 @@ export default class InvestmentsServices {
                                         debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         principalPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -7879,6 +7892,8 @@ export default class InvestmentsServices {
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
                                         record.numberOfAttempts = updatedNumberOfAttempts;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         debugger;
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -7920,7 +7935,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                         // console.log(paymentReference);
@@ -7929,7 +7944,9 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         interestPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -7971,6 +7988,8 @@ export default class InvestmentsServices {
                                         interestPayoutRequestReference = newPaymentReference;
                                         record.interestPayoutRequestReference = interestPayoutRequestReference;
                                         record.numberOfAttempts = updatedNumberOfAttempts;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                                         // console.log(" Current log, line 826 :", currentInvestment);
@@ -8027,7 +8046,9 @@ export default class InvestmentsServices {
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
                                         // debugger
-
+                                        record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
 
                                         // Save the updated record
                                         // await record.save();
@@ -8091,6 +8112,10 @@ export default class InvestmentsServices {
                                         record.isPayoutAuthorized = true;
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
+
+                                        record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         // debugger
                                         // Save the updated record
                                         // await record.save();
@@ -8155,6 +8180,10 @@ export default class InvestmentsServices {
                                         record.isPayoutSuccessful = true;
                                         record.datePayoutWasDone = DateTime.now();
                                         // debugger
+                                        record.numberOfAttempts = numberOfAttempts + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
+
                                         // Save the updated record
                                         // await record.save();
                                         // update record
@@ -8446,7 +8475,7 @@ export default class InvestmentsServices {
                             // let newStatus;
                             // await approval.save();
                             // console.log("Update Approval Request line 504:", approval);
-                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts,attempts } = record;
+                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts, attempts } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
                             console.log("Surname: ", lastName)
                             // console.log("CurrencyCode: ", currencyCode)
@@ -8497,7 +8526,7 @@ export default class InvestmentsServices {
                                             // Create Unique payment reference for the customer
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             // let numberOfAttempts = 1;
-                                            numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                            numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                             // console.log(paymentReference);
@@ -8506,9 +8535,9 @@ export default class InvestmentsServices {
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                            record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                            record.numberOfAttempts = numberOfAttempts;// + 1;
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             interestPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -8553,9 +8582,10 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
 
                                                 // debugger
                                                 // Save the updated record
@@ -8614,9 +8644,10 @@ export default class InvestmentsServices {
                                                 record.status = 'completed_with_interest_payout_outstanding';
                                                 // record.principalPayoutStatus = 'completed';
                                                 record.interestPayoutStatus = 'failed';
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
                                                 // record.isPayoutSuccessful = true;
@@ -8684,8 +8715,8 @@ export default class InvestmentsServices {
                                             record.interestPayoutRequestReference = interestPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
                                             // record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -8734,9 +8765,10 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // debugger
                                                 // Save the updated record
                                                 // await record.save();
@@ -8794,9 +8826,10 @@ export default class InvestmentsServices {
                                                 record.status = 'completed_with_interest_payout_outstanding';
                                                 // record.principalPayoutStatus = 'completed';
                                                 record.interestPayoutStatus = 'failed';
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
                                                 // record.isPayoutSuccessful = true;
@@ -8997,7 +9030,7 @@ export default class InvestmentsServices {
                                             // Create Unique payment reference for the customer
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             // let numberOfAttempts = 1;
-                                            numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                            numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 7345 ==================")
                                             // console.log(paymentReference);
@@ -9007,9 +9040,9 @@ export default class InvestmentsServices {
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                             // record.numberOfAttempts = numberOfAttempts;
-                                            record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                            record.numberOfAttempts = numberOfAttempts;// + 1;
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             interestPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -9049,9 +9082,10 @@ export default class InvestmentsServices {
                                                 record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed';
                                                 record.principalPayoutStatus = 'completed';
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 record.isPayoutAuthorized = true;
@@ -9113,9 +9147,10 @@ export default class InvestmentsServices {
                                                 // record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed_with_principal_payout_outstanding';
                                                 record.principalPayoutStatus = 'failed';
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
@@ -9186,9 +9221,9 @@ export default class InvestmentsServices {
                                             principalPayoutRequestReference = newPaymentReference;
                                             record.principalPayoutRequestReference = principalPayoutRequestReference;
                                             record.numberOfAttempts = updatedNumberOfAttempts;
-                                            // record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             debugger
                                             // update record
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
@@ -9236,9 +9271,10 @@ export default class InvestmentsServices {
                                                 record.isPayoutAuthorized = true;
                                                 record.isPayoutSuccessful = true;
                                                 record.datePayoutWasDone = DateTime.now();
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // debugger
                                                 // Save the updated record
                                                 // await record.save();
@@ -9296,9 +9332,10 @@ export default class InvestmentsServices {
                                                 // record.investmentCompletionDate = DateTime.now();
                                                 record.status = 'completed_with_principal_payout_outstanding';
                                                 record.principalPayoutStatus = 'failed';
+
                                                 record.numberOfAttempts = numberOfAttempts + 1;
-                                        record.attempts = attempts + 1;
-                                        record.lastAttemptAt = DateTime.now();
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 // record.interestPayoutStatus = 'completed';
                                                 // record.approvalStatus = approval.approvalStatus;//'payout'
                                                 // record.isPayoutAuthorized = true;
@@ -9532,11 +9569,9 @@ export default class InvestmentsServices {
             date.setUTCHours(0, 0, 0, 0); // Set the time to midnight (00:00:00) in UTC
             const beginningOfTodayTimestamp = date.toISOString();
             console.log("beginningOfTodayTimestamp ", beginningOfTodayTimestamp);
-
             debugger
 
             responseData = await filterArrayByCriteria(responseData, beginningOfTodayTimestamp, limit);
-
             debugger
 
 
@@ -9629,7 +9664,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8107 ==================")
                                         // console.log(paymentReference);
@@ -9638,9 +9673,11 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts + 1;
+
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
                                         record.attempts = attempts + 1;
                                         record.lastAttemptAt = DateTime.now();
+
                                         interestPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -9730,7 +9767,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8305 ==================")
                                         // console.log(paymentReference);
@@ -9739,9 +9776,11 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts + 1;
+
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
                                         record.attempts = attempts + 1;
                                         record.lastAttemptAt = DateTime.now();
+
                                         principalPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -9786,6 +9825,7 @@ export default class InvestmentsServices {
                                             record.isPayoutAuthorized = true;
                                             record.isPayoutSuccessful = true;
                                             record.datePayoutWasDone = DateTime.now();
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
@@ -9845,9 +9885,11 @@ export default class InvestmentsServices {
                                             // record.investmentCompletionDate = DateTime.now();
                                             record.status = 'liquidated_with_principal_payout_outstanding';
                                             record.principalPayoutStatus = 'failed';
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
+
                                             // record.interestPayoutStatus = 'completed';
                                             // record.approvalStatus = approval.approvalStatus;//'payout'
                                             // record.isPayoutAuthorized = true;
@@ -9914,11 +9956,13 @@ export default class InvestmentsServices {
                                         // console.log(newPaymentReference);
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
+
                                         record.numberOfAttempts = updatedNumberOfAttempts;
                                         // record.numberOfAttempts = numberOfAttempts + 1;
                                         record.attempts = attempts + 1;
                                         record.lastAttemptAt = DateTime.now();
                                         // debugger
+
                                         // update record
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(id, walletId, userId);
                                         // console.log(" Current log, line 8468 :", currentInvestment);
@@ -9965,10 +10009,12 @@ export default class InvestmentsServices {
                                             record.isPayoutAuthorized = true;
                                             record.isPayoutSuccessful = true;
                                             record.datePayoutWasDone = DateTime.now();
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
                                             // debugger
+
                                             // Save the updated record
                                             // await record.save();
                                             // update record
@@ -10026,9 +10072,11 @@ export default class InvestmentsServices {
                                             // record.investmentCompletionDate = DateTime.now();
                                             record.status = 'liquidated_with_principal_payout_outstanding';
                                             record.principalPayoutStatus = 'failed';
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
+
                                             // record.interestPayoutStatus = 'completed';
                                             // record.approvalStatus = approval.approvalStatus;//'payout'
                                             // record.isPayoutAuthorized = true;
@@ -10098,7 +10146,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8305 ==================")
                                         // console.log(paymentReference);
@@ -10108,9 +10156,11 @@ export default class InvestmentsServices {
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
                                         // record.numberOfAttempts = numberOfAttempts;
-                                        record.numberOfAttempts = numberOfAttempts + 1;
+
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
                                         record.attempts = attempts + 1;
                                         record.lastAttemptAt = DateTime.now();
+
                                         principalPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -10155,6 +10205,7 @@ export default class InvestmentsServices {
                                             record.isPayoutAuthorized = true;
                                             record.isPayoutSuccessful = true;
                                             record.datePayoutWasDone = DateTime.now();
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
@@ -10214,6 +10265,7 @@ export default class InvestmentsServices {
                                             // record.investmentCompletionDate = DateTime.now();
                                             record.status = 'liquidated_with_principal_payout_outstanding';
                                             record.principalPayoutStatus = 'failed';
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
@@ -10285,6 +10337,7 @@ export default class InvestmentsServices {
                                         // console.log(newPaymentReference);
                                         principalPayoutRequestReference = newPaymentReference;
                                         record.principalPayoutRequestReference = principalPayoutRequestReference;
+
                                         record.numberOfAttempts = updatedNumberOfAttempts;
                                         // record.numberOfAttempts = numberOfAttempts + 1;
                                         record.attempts = attempts + 1;
@@ -10336,6 +10389,7 @@ export default class InvestmentsServices {
                                             record.isPayoutAuthorized = true;
                                             record.isPayoutSuccessful = true;
                                             record.datePayoutWasDone = DateTime.now();
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
@@ -10397,6 +10451,7 @@ export default class InvestmentsServices {
                                             // record.investmentCompletionDate = DateTime.now();
                                             record.status = 'liquidated_with_principal_payout_outstanding';
                                             record.principalPayoutStatus = 'failed';
+
                                             record.numberOfAttempts = numberOfAttempts + 1;
                                             record.attempts = attempts + 1;
                                             record.lastAttemptAt = DateTime.now();
@@ -10465,7 +10520,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 8107 ==================")
                                         // console.log(paymentReference);
@@ -10474,9 +10529,11 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts + 1;
+
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
                                         record.attempts = attempts + 1;
                                         record.lastAttemptAt = DateTime.now();
+
                                         interestPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -10517,6 +10574,7 @@ export default class InvestmentsServices {
                                         // console.log(newPaymentReference);
                                         interestPayoutRequestReference = newPaymentReference;
                                         record.interestPayoutRequestReference = interestPayoutRequestReference;
+
                                         record.numberOfAttempts = updatedNumberOfAttempts;
                                         // record.numberOfAttempts = numberOfAttempts + 1;
                                         record.attempts = attempts + 1;
@@ -10779,7 +10837,7 @@ export default class InvestmentsServices {
                             // let newStatus;
                             // await approval.save();
                             // console.log("Update Approval Request line 504:", approval);
-                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts } = record;
+                            let { currencyCode, lastName, startDate, duration, status, numberOfAttempts, } = record;
                             // let { currencyCode, lastName, startDate, duration } = record;
                             console.log("Surname: ", lastName)
                             // console.log("CurrencyCode: ", currencyCode)
@@ -10809,7 +10867,7 @@ export default class InvestmentsServices {
                                         walletId, investorFundingWalletId,
                                         phone,
                                         email,
-                                        rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference, } = record;
+                                        rfiCode, interestDueOnInvestment, interestPayoutRequestReference, principalPayoutRequestReference, attempts, } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
                                     let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
@@ -10831,7 +10889,7 @@ export default class InvestmentsServices {
                                             // Create Unique payment reference for the customer
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             // let numberOfAttempts = 1;
-                                            numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                            numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                             // console.log(paymentReference);
@@ -10840,7 +10898,9 @@ export default class InvestmentsServices {
                                             debugger;
                                             // @ts-ignore
                                             record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                            record.numberOfAttempts = numberOfAttempts;
+                                            record.numberOfAttempts = numberOfAttempts;// + 1;
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             interestPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -11178,7 +11238,7 @@ export default class InvestmentsServices {
                                             // Create Unique payment reference for the customer
                                             let reference = DateTime.now() + randomstring.generate(4);
                                             // let numberOfAttempts = 1;
-                                            numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                            numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                             let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                             // console.log("Customer Transaction Reference ,@ InvestmentsServices line 6313 ==================")
                                             // console.log(paymentReference);
@@ -11187,7 +11247,9 @@ export default class InvestmentsServices {
                                             debugger;
                                             // @ts-ignore
                                             record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                            record.numberOfAttempts = numberOfAttempts;
+                                            record.numberOfAttempts = numberOfAttempts;// + 1;
+                                            record.attempts = attempts + 1;
+                                            record.lastAttemptAt = DateTime.now();
                                             principalPayoutRequestReference = paymentReference;
                                             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                             // debugger
@@ -11808,6 +11870,7 @@ export default class InvestmentsServices {
                                         isRolloverSuspended,
                                         principalPayoutRequestReference,
                                         interestPayoutRequestReference,
+                                        attempts
                                         // totalAmountToPayout,
                                         // end
 
@@ -11844,7 +11907,7 @@ export default class InvestmentsServices {
                                                 // Create Unique payment reference for the customer
                                                 let reference = DateTime.now() + randomstring.generate(4);
                                                 // let numberOfAttempts = 1;
-                                                numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                                numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                                 let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                                 // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9647 ==================")
                                                 // console.log(paymentReference);
@@ -11853,7 +11916,9 @@ export default class InvestmentsServices {
                                                 debugger;
                                                 // @ts-ignore
                                                 record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                                record.numberOfAttempts = numberOfAttempts;
+                                                record.numberOfAttempts = numberOfAttempts;// + 1;
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 interestPayoutRequestReference = paymentReference;
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                                 // debugger
@@ -12321,7 +12386,7 @@ export default class InvestmentsServices {
                                                 // Create Unique payment reference for the customer
                                                 let reference = DateTime.now() + randomstring.generate(4);
                                                 // let numberOfAttempts = 1;
-                                                numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                                numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                                 let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                                 // console.log("Customer Transaction Reference ,@ InvestmentsServices line 10864 ==================")
                                                 // console.log(paymentReference);
@@ -12330,7 +12395,9 @@ export default class InvestmentsServices {
                                                 debugger;
                                                 // @ts-ignore
                                                 record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                                record.numberOfAttempts = numberOfAttempts;
+                                                record.numberOfAttempts = numberOfAttempts;// + 1;
+                                                record.attempts = attempts + 1;
+                                                record.lastAttemptAt = DateTime.now();
                                                 principalPayoutRequestReference = paymentReference;
                                                 let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                                 // debugger
@@ -12938,7 +13005,7 @@ export default class InvestmentsServices {
                                         walletId, investorFundingWalletId,
                                         phone,
                                         email,
-                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
+                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, attempts } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
                                     let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
@@ -12960,7 +13027,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9414 ==================")
                                         // console.log(paymentReference);
@@ -12969,7 +13036,9 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         principalPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -13051,7 +13120,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9477 ==================")
                                         // console.log(paymentReference);
@@ -13060,7 +13129,9 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         interestPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -13384,7 +13455,7 @@ export default class InvestmentsServices {
                                         walletId, investorFundingWalletId,
                                         phone,
                                         email,
-                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference } = record;
+                                        rfiCode, interestDueOnInvestment, principalPayoutRequestReference, interestPayoutRequestReference, attempts } = record;
                                     let beneficiaryName = `${firstName} ${lastName}`;
                                     let beneficiaryAccountNumber = investorFundingWalletId;// walletId;
                                     let beneficiaryAccountName = beneficiaryName;
@@ -13425,7 +13496,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 9414 ==================")
                                         // console.log(paymentReference);
@@ -13434,7 +13505,9 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.principalPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         principalPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
@@ -13517,7 +13590,7 @@ export default class InvestmentsServices {
                                         // Create Unique payment reference for the customer
                                         let reference = DateTime.now() + randomstring.generate(4);
                                         // let numberOfAttempts = 1;
-                                        numberOfAttempts = numberOfAttempts > 0 ? numberOfAttempts : 1;
+                                        numberOfAttempts = numberOfAttempts > 0 ? Number(numberOfAttempts + 1) : 1;
                                         let paymentReference = `${TRANSACTION_PREFIX}-${reference}-${investmentId}_${numberOfAttempts}`;
                                         // console.log("Customer Transaction Reference ,@ InvestmentsServices line 12171 ==================")
                                         // console.log(paymentReference);
@@ -13526,7 +13599,9 @@ export default class InvestmentsServices {
                                         // debugger;
                                         // @ts-ignore
                                         record.interestPayoutRequestReference = paymentReference; //DateTime.now() + randomstring.generate(4);
-                                        record.numberOfAttempts = numberOfAttempts;
+                                        record.numberOfAttempts = numberOfAttempts;// + 1;
+                                        record.attempts = attempts + 1;
+                                        record.lastAttemptAt = DateTime.now();
                                         interestPayoutRequestReference = paymentReference;
                                         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
                                         // debugger
