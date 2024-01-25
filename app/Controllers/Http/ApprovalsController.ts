@@ -470,38 +470,20 @@ export default class ApprovalsController {
           await timelineService.createTimeline(timelineObject);
           // let newTimeline = await timelineService.createTimeline(timelineObject);
           // console.log("new Timeline object line 553:", newTimeline);
-          // update record
-
-          // Send Details to notification service
-          // let subject = "AstraPay Investment Approval";
-          // let message = `
-          //       ${firstName} this is to inform you, that your Investment request, has been approved.
-
-          //       Please wait while the investment is being activated.
-
-          //       Thank you.
-
-          //       AstraPay Investment.`;
-          // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-          // // console.log("newNotificationMessage line 567:", newNotificationMessage);
-          // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-          //   console.log("Notification sent successfully");
-          // } else if (newNotificationMessage.message !== "Success") {
-          //   console.log("Notification NOT sent successfully");
-          //   console.log(newNotificationMessage);
-          // }
+          
           // Send Notification to admin and others stakeholder
           let investment = record;
           let messageKey = "approval";
-          let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
-          //debugger
-          if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-            console.log("Notification sent successfully");
-          } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-            console.log("Notification NOT sent successfully");
-            console.log(newNotificationMessageWithoutPdf);
-          }
+          // let newNotificationMessageWithoutPdf = 
+          await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+          // // console.log("newNotificationMessage line 549:", newNotificationMessageWithoutPdf);
+          // //debugger
+          // if (newNotificationMessageWithoutPdf && newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+          //   console.log("Notification sent successfully");
+          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+          //   console.log("Notification NOT sent successfully");
+          //   console.log(newNotificationMessageWithoutPdf);
+          // }
 
 
           // // Data to send for transfer of fund
@@ -536,97 +518,100 @@ export default class ApprovalsController {
             //debugger
             // console.log("debitUserWalletForInvestment reponse data 527 ==================================", debitUserWalletForInvestment)
             // if successful
-            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
-              // update the investment details
-              record.status = 'active'
-              // record.approvalStatus = 'approved'
-              record.startDate = DateTime.now() //.toISODate()
-              record.payoutDate = DateTime.now().plus({ days: record.duration })
-              record.isInvestmentCreated = true
-              // console.log("Updated record Status line 537: ", record);
 
-              // update record
-              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-              // console.log(" Current log, line 540 :", currentInvestment);
-              // send for update
-              await investmentsService.updateInvestment(currentInvestment, record);
-              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-              // console.log(" Current log, line 544 =========:", updatedInvestment);
+            // if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
+            //   // update the investment details
+            //   record.status = 'active'
+            //   // record.approvalStatus = 'approved'
+            //   record.startDate = DateTime.now() //.toISODate()
+            //   record.payoutDate = DateTime.now().plus({ days: record.duration })
+            //   record.isInvestmentCreated = true
+            //   // console.log("Updated record Status line 537: ", record);
 
-              // update timeline
-              timelineObject = {
-                id: uuid(),
-                action: "investment activation",
-                investmentId: investmentId,//id,
-                walletId: walletIdToSearch,// walletId,
-                userId: userIdToSearch,// userId,
-                // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
-                adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
-                createdAt: DateTime.now(),
-                metadata: ``,
-              };
-              // console.log("Timeline object line 558:", timelineObject);
-              await timelineService.createTimeline(timelineObject);
-              // let newTimeline = await timelineService.createTimeline(timelineObject);
-              // console.log("new Timeline object line 561:", newTimeline);
-              // update record
-              // //debugger
-              // Send Details to notification service
-              let subject = `${rfiCode.toUpperCase()} Investment Activation`;
-              let message = `
-              ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
+            //   // update record
+            //   let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+            //   // console.log(" Current log, line 540 :", currentInvestment);
+            //   // send for update
+            //   await investmentsService.updateInvestment(currentInvestment, record);
+            //   // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+            //   // console.log(" Current log, line 544 =========:", updatedInvestment);
 
-              Please check your device.
+            //   // update timeline
+            //   timelineObject = {
+            //     id: uuid(),
+            //     action: "investment activation",
+            //     investmentId: investmentId,//id,
+            //     walletId: walletIdToSearch,// walletId,
+            //     userId: userIdToSearch,// userId,
+            //     // @ts-ignore
+            //     message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated. Thank you.`,
+            //     adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
+            //     createdAt: DateTime.now(),
+            //     metadata: ``,
+            //   };
+            //   // console.log("Timeline object line 558:", timelineObject);
+            //   await timelineService.createTimeline(timelineObject);
+            //   // let newTimeline = await timelineService.createTimeline(timelineObject);
+            //   // console.log("new Timeline object line 561:", newTimeline);
+            //   // update record
+            //   // //debugger
+            //   // Send Details to notification service
+            //   let subject = `${rfiCode.toUpperCase()} Investment Activation`;
+            //   let message = `
+            //   ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
-              Thank you.
+            //   Please check your device.
 
-              ${rfiCode.toUpperCase()} Investment.`;
-              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // console.log("newNotificationMessage line 575:", newNotificationMessage);
-              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              //   console.log("Notification sent successfully");
-              // } else if (newNotificationMessage.message !== "Success") {
-              //   console.log("Notification NOT sent successfully");
-              //   console.log(newNotificationMessage);
-              // }
-              // //debugger
+            //   Thank you.
 
-              // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
-              let recepients = [
-                {
-                  "email": email,
-                  "name": `${firstName} ${lastName} `
-                },
-                // {
-                //   "email": activationNotificationEmail,
-                //   "name": `${rfiName} `
-                // },
-              ];
-              let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
-              // console.log("newNotificationMessage line 596:", newNotificationMessageWithPdf);
-              //debugger
-              if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithPdf);
-              }
+            //   ${rfiCode.toUpperCase()} Investment.`;
+            //   // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+            //   // console.log("newNotificationMessage line 575:", newNotificationMessage);
+            //   // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+            //   //   console.log("Notification sent successfully");
+            //   // } else if (newNotificationMessage.message !== "Success") {
+            //   //   console.log("Notification NOT sent successfully");
+            //   //   console.log(newNotificationMessage);
+            //   // }
+            //   // //debugger
 
-              // Send Notification to admin and others stakeholder
-              let investment = record;
-              let messageKey = "activation";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 609:", newNotificationMessageWithoutPdf);
-              //debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+            //   // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+            //   let recepients = [
+            //     {
+            //       "email": email,
+            //       "name": `${firstName} ${lastName} `
+            //     },
+            //     // {
+            //     //   "email": activationNotificationEmail,
+            //     //   "name": `${rfiName} `
+            //     // },
+            //   ];
+            //   let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+            //   // console.log("newNotificationMessage line 596:", newNotificationMessageWithPdf);
+            //   //debugger
+            //   if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+            //     console.log("Notification sent successfully");
+            //   } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+            //     console.log("Notification NOT sent successfully");
+            //     console.log(newNotificationMessageWithPdf);
+            //   }
 
-            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+            //   // Send Notification to admin and others stakeholder
+            //   let investment = record;
+            //   let messageKey = "activation";
+            //   let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            //   // console.log("newNotificationMessage line 609:", newNotificationMessageWithoutPdf);
+            //   //debugger
+            //   if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //     console.log("Notification sent successfully");
+            //   } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //     console.log("Notification NOT sent successfully");
+            //     console.log(newNotificationMessageWithoutPdf);
+            //   }
+
+            // } else
+            
+            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
               let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
               // console.log(" Current log, line 620 :", currentInvestment);
               // send for update
@@ -650,37 +635,20 @@ export default class ApprovalsController {
               await timelineService.createTimeline(timelineObject);
               // let newTimeline = await timelineService.createTimeline(timelineObject);
               // console.log("new Timeline object line 639:", newTimeline);
-              // update record
-              // //debugger
-              // Send Details to notification service
-              // let subject = "AstraPay Investment Activation Failed";
-              // let message = `
-              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
-
-              //     Thank you.
-
-              //     AstraPay Investment.`;
-              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // // console.log("newNotificationMessage line 651:", newNotificationMessage);
-              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              //   console.log("Notification sent successfully");
-              // } else if (newNotificationMessage.message !== "Success") {
-              //   console.log("Notification NOT sent successfully");
-              //   console.log(newNotificationMessage);
-              // }
 
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "activation_failed";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 663:", newNotificationMessageWithoutPdf);
-              //debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+              // let newNotificationMessageWithoutPdf =
+               await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // // console.log("newNotificationMessage line 663:", newNotificationMessageWithoutPdf);
+              // //debugger
+              // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessageWithoutPdf);
+              // }
 
 
               // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
@@ -721,98 +689,100 @@ export default class ApprovalsController {
             //debugger
             // console.log("debitUserWalletForInvestment reponse data 706 ==================================", debitUserWalletForInvestment)
             // if successful
-            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
-              // update the investment details
-              record.status = 'active';
-              //debugger
-              // record.approvalStatus = 'approved'
-              record.startDate = DateTime.now() //.toISODate()
-              record.payoutDate = DateTime.now().plus({ days: record.duration })
-              record.isInvestmentCreated = true
-              // console.log("Updated record Status line 715: ", record);
 
-              // update record
-              let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-              // console.log(" Current log, line 719 :", currentInvestment);
-              // send for update
-              await investmentsService.updateInvestment(currentInvestment, record);
-              // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
-              // console.log(" Current log, line 723 =========:", updatedInvestment);
+      //       if (debitUserWalletForInvestment && debitUserWalletForInvestment.status == 200) {
+      //         // update the investment details
+      //         record.status = 'active';
+      //         //debugger
+      //         // record.approvalStatus = 'approved'
+      //         record.startDate = DateTime.now() //.toISODate()
+      //         record.payoutDate = DateTime.now().plus({ days: record.duration })
+      //         record.isInvestmentCreated = true
+      //         // console.log("Updated record Status line 715: ", record);
 
-              // update timeline
-              timelineObject = {
-                id: uuid(),
-                action: "investment activation",
-                investmentId: investmentId,//id,
-                walletId: walletIdToSearch,// walletId,
-                userId: userIdToSearch,// userId,
-                // @ts-ignore
-                message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.`,
-                adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
-                createdAt: DateTime.now(),
-                metadata: ``,
-              };
-              // console.log("Timeline object line 737:", timelineObject);
-              await timelineService.createTimeline(timelineObject);
-              // let newTimeline = await timelineService.createTimeline(timelineObject);
-              // console.log("new Timeline object line 740:", newTimeline);
-              // update record
-              // //debugger
-              // Send Details to notification service
-              let subject = `${rfiCode.toUpperCase()} Investment Activation`;
-              let message = `
-      ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
+      //         // update record
+      //         let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+      //         // console.log(" Current log, line 719 :", currentInvestment);
+      //         // send for update
+      //         await investmentsService.updateInvestment(currentInvestment, record);
+      //         // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
+      //         // console.log(" Current log, line 723 =========:", updatedInvestment);
 
-      Please check your device.
+      //         // update timeline
+      //         timelineObject = {
+      //           id: uuid(),
+      //           action: "investment activation",
+      //           investmentId: investmentId,//id,
+      //           walletId: walletIdToSearch,// walletId,
+      //           userId: userIdToSearch,// userId,
+      //           // @ts-ignore
+      //           message: `${firstName}, your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.`,
+      //           adminMessage: `${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} was activated.`,
+      //           createdAt: DateTime.now(),
+      //           metadata: ``,
+      //         };
+      //         // console.log("Timeline object line 737:", timelineObject);
+      //         await timelineService.createTimeline(timelineObject);
+      //         // let newTimeline = await timelineService.createTimeline(timelineObject);
+      //         // console.log("new Timeline object line 740:", newTimeline);
+      //         // update record
+      //         // //debugger
+      //         // Send Details to notification service
+      //         let subject = `${rfiCode.toUpperCase()} Investment Activation`;
+      //         let message = `
+      // ${firstName} this is to inform you, that your Investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has been activated.
 
-      Thank you.
+      // Please check your device.
 
-      ${rfiCode.toUpperCase()} Investment.`;
-              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // console.log("newNotificationMessage line 754:", newNotificationMessage);
-              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              //   console.log("Notification sent successfully");
-              // } else if (newNotificationMessage.message !== "Success") {
-              //   console.log("Notification NOT sent successfully");
-              //   console.log(newNotificationMessage);
-              // }
-              // //debugger
+      // Thank you.
 
-              // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
-              let recepients = [
-                {
-                  "email": email,
-                  "name": `${firstName} ${lastName} `
-                },
-                // {
-                //   "email": activationNotificationEmail,
-                //   "name": `${ rfiName } `
-                // },
-              ];
-              let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
-              // console.log("newNotificationMessage line 775:", newNotificationMessageWithPdf);
-              //debugger
-              if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithPdf);
-              }
+      // ${rfiCode.toUpperCase()} Investment.`;
+      //         // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
+      //         // console.log("newNotificationMessage line 754:", newNotificationMessage);
+      //         // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
+      //         //   console.log("Notification sent successfully");
+      //         // } else if (newNotificationMessage.message !== "Success") {
+      //         //   console.log("Notification NOT sent successfully");
+      //         //   console.log(newNotificationMessage);
+      //         // }
+      //         // //debugger
 
-              // Send Notification to admin and others stakeholder
-              let investment = record;
-              let messageKey = "activation";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 788:", newNotificationMessageWithoutPdf);
-              //debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+      //         // START OF NEW NOTIFICATION WITH CERTIFICATE ATTACHMENT AS PDF
+      //         let recepients = [
+      //           {
+      //             "email": email,
+      //             "name": `${firstName} ${lastName} `
+      //           },
+      //           // {
+      //           //   "email": activationNotificationEmail,
+      //           //   "name": `${ rfiName } `
+      //           // },
+      //         ];
+      //         let newNotificationMessageWithPdf = await sendNotificationWithPdf(CERTIFICATE_URL, rfiCode, message, subject, recepients,);
+      //         // console.log("newNotificationMessage line 775:", newNotificationMessageWithPdf);
+      //         //debugger
+      //         if (newNotificationMessageWithPdf.status == "success" || newNotificationMessageWithPdf.message == "messages sent successfully") {
+      //           console.log("Notification sent successfully");
+      //         } else if (newNotificationMessageWithPdf.message !== "messages sent successfully") {
+      //           console.log("Notification NOT sent successfully");
+      //           console.log(newNotificationMessageWithPdf);
+      //         }
 
-            } else if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+      //         // Send Notification to admin and others stakeholder
+      //         let investment = record;
+      //         let messageKey = "activation";
+      //         let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+      //         // console.log("newNotificationMessage line 788:", newNotificationMessageWithoutPdf);
+      //         //debugger
+      //         if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+      //           console.log("Notification sent successfully");
+      //         } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+      //           console.log("Notification NOT sent successfully");
+      //           console.log(newNotificationMessageWithoutPdf);
+      //         }
+
+      //       } else 
+            if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
               let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
               // console.log(" Current log, line 655 :", currentInvestment);
               // send for update
@@ -836,37 +806,20 @@ export default class ApprovalsController {
               await timelineService.createTimeline(timelineObject);
               // let newTimeline = await timelineService.createTimeline(timelineObject);
               // console.log("new Timeline object line 818:", newTimeline);
-              // update record
-              // //debugger
-              // Send Details to notification service
-              // let subject = "AstraPay Investment Activation Failed";
-              // let message = `
-              //     ${firstName} this is to inform you, that the activation of your investment of ${currencyCode} ${amount} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at : ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${amount} as we try again.
-
-              //     Thank you.
-
-              //     AstraPay Investment.`;
-              // let newNotificationMessage = await sendNotification(email, subject, firstName, message);
-              // // console.log("newNotificationMessage line 830:", newNotificationMessage);
-              // if (newNotificationMessage.status == 200 || newNotificationMessage.message == "Success") {
-              //   console.log("Notification sent successfully");
-              // } else if (newNotificationMessage.message !== "Success") {
-              //   console.log("Notification NOT sent successfully");
-              //   console.log(newNotificationMessage);
-              // }
-
+              
               // Send Notification to admin and others stakeholder
               let investment = record;
               let messageKey = "activation_failed";
-              let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-              // console.log("newNotificationMessage line 842:", newNotificationMessageWithoutPdf);
-              //debugger
-              if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-                console.log("Notification sent successfully");
-              } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-                console.log("Notification NOT sent successfully");
-                console.log(newNotificationMessageWithoutPdf);
-              }
+              // let newNotificationMessageWithoutPdf = 
+              await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+              // // console.log("newNotificationMessage line 842:", newNotificationMessageWithoutPdf);
+              // //debugger
+              // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+              //   console.log("Notification sent successfully");
+              // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+              //   console.log("Notification NOT sent successfully");
+              //   console.log(newNotificationMessageWithoutPdf);
+              // }
 
 
               // let updatedInvestment = await investmentsService.updateInvestment(currentInvestment, record);
@@ -881,7 +834,7 @@ export default class ApprovalsController {
                   message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
                 });
             }
-            
+
           }
 
 

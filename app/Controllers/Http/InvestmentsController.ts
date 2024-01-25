@@ -6063,6 +6063,7 @@ export default class InvestmentsController {
         if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 655 :", currentInvestment);
+          debugger
           // send for update
           await investmentsService.updateInvestment(currentInvestment, record);
 
@@ -6121,7 +6122,16 @@ export default class InvestmentsController {
         // if successful
         debugger
         // checkTransactionStatusByCustomerRef
-        if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus === "SUCCESS") {
+/*
+ AWAITING_APPROVAL,
+    APPROVED,
+    IN_PROGRESS,
+    SUCCESSFUL,
+    FAILED,
+    NOT_APPROVED;
+*/
+
+        if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus === "SUCCESSFUL") {
           // update the investment details
           record.status = 'active'
           // record.approvalStatus = 'approved'
@@ -6202,7 +6212,8 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessageWithoutPdf);
           // }
 
-        } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status !== 200 || checkTransactionStatusByCustomerRef.status == undefined) {
+        } else if ((checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status !== 200 || checkTransactionStatusByCustomerRef.status == undefined) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus != "SUCCESSFUL") ) {
+          debugger
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 620 :", currentInvestment);
           // send for update
