@@ -1695,7 +1695,7 @@ export default class InvestmentsController {
             rfiCode, userId,)
           debugger
           // if successful
-          
+
           // if (debitUserWalletForInvestment && debitUserWalletForInvestment.screenStatus === "APPROVED") {
           //   // update the investment details
           //   investment.status = 'active'
@@ -1859,7 +1859,7 @@ export default class InvestmentsController {
             await timelineService.createTimeline(timelineObject);
             // let newTimeline = await timelineService.createTimeline(timelineObject);
             // console.log("new Timeline object line 1842:", newTimeline);
-            
+
             // Send Notification to admin and others stakeholder
             let messageKey = "activation_failed";
             let newNotificationMessageWithoutPdf = await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
@@ -2055,7 +2055,7 @@ export default class InvestmentsController {
 
 
           // } else
-           if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
             let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletId, userId);
             // console.log(" Current log, line 1802 :", currentInvestment);
             // send for update
@@ -5985,7 +5985,7 @@ export default class InvestmentsController {
 
     // @ts-ignore
     let { transactionStatus, transactionId, customerReference, screenStatus } = request.all()
-    
+
     debugger
 
     let investment = await Investment.query()
@@ -6018,16 +6018,17 @@ export default class InvestmentsController {
       debugger
       let timelineObject;
       // check if transaction with same customer ref exist
-      let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
-      debugger
-      if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
-        debugger
-        return response
-          .status(404)
-          .json({ status: 'FAILED', message: 'Invalid parameters.' })
+      // let checkTransactionStatusByCustomerRef = await checkTransactionStatus(investmentRequestReference, rfiCode);
+      // debugger
+      // if ((!checkTransactionStatusByCustomerRef) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == "FAILED TO GET TRANSACTION STATUS")) {
+      //   debugger
+      //   return response
+      //     .status(404)
+      //     .json({ status: 'FAILED', message: 'Invalid parameters.' })
 
 
-      } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
+      // } else 
+      if (screenStatus === "FAILED") {
         // update the value for number of attempts
         // get the current investmentRef, split , add one to the current number, update and try again
         //  TODO: Add numberOfAttempts column value
@@ -6098,7 +6099,8 @@ export default class InvestmentsController {
             });
         }
 
-      } else if ((checkTransactionStatusByCustomerRef)) {
+      } else 
+      // if (screenStatus) {
         // initiate a new  transaction
         // Send to the endpoint for debit of wallet
         // let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
@@ -6122,7 +6124,7 @@ export default class InvestmentsController {
             NOT_APPROVED;
         */
 
-        if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.screenStatus === "SUCCESSFUL") {
+        if (screenStatus === "SUCCESSFUL") {
           // update the investment details
           record.status = 'active'
           // record.approvalStatus = 'approved'
@@ -6203,7 +6205,7 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessageWithoutPdf);
           // }
 
-        } else if ((checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status !== 200 || checkTransactionStatusByCustomerRef.status == undefined) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.screenStatus != "SUCCESSFUL")) {
+        } else if (screenStatus != "SUCCESSFUL") {
           debugger
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 620 :", currentInvestment);
@@ -6247,11 +6249,11 @@ export default class InvestmentsController {
             .status(200)
             .json({
               status: "OK",//debitUserWalletForInvestment.status,
-              message: `${checkTransactionStatusByCustomerRef.status}, ${checkTransactionStatusByCustomerRef.errorCode}`,
+              message: screenStatus, 
             });
         }
 
-      }
+      // }
 
       debugger
 

@@ -206,7 +206,8 @@ export const checkTransactionStatus = async function checkTransactionStatus(
             //     "beneficiaryWalletHolderName": "MockWalletHolder"
             // }
             // Return the first object in the array
-            console.log(response.data[0])
+            
+            // console.log(response.data[0])
             debugger
             return response.data[0];
         } else {
