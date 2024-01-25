@@ -6024,8 +6024,9 @@ export default class InvestmentsController {
     debugger
     if (investment) {
       let record = investment;
-      let { amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
+      let { id,amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
         lastName, investorFundingWalletId, phone, currencyCode } = record;
+        let investmentId = id;
       let senderName = `${firstName} ${lastName}`;
 
       let senderAccountNumber = investorFundingWalletId;//walletId;
