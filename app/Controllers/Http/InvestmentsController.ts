@@ -5999,15 +5999,25 @@ export default class InvestmentsController {
     const investmentsService = new InvestmentsServices();
 
     // @ts-ignore
-    let { userId, investmentId, walletId, transactionStatus } = request.all()
+    let { transactionStatus, transactionId, customerReference, screenStatus } = request.all()
+    /*
+    private String transactionId;
+    private String customerReference;
+    private S8TransactionStatus transactionStatus;
+    private S8TransactionScreenStatus screenStatus;
+    */ 
     debugger
 
     let investment = await Investment.query()
       .where({
-        id: investmentId,
-        user_id: userId,
-        wallet_id: walletId,
+        investment_request_reference: customerReference,
+        
       })
+      // .where({
+      //   id: investmentId,
+      //   user_id: userId,
+      //   wallet_id: walletId,
+      // })
       // .andWhereNot({ status: 'paid' })
       .first()
     console.log('Investment QUERY RESULT line 6013: ', investment)
