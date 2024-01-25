@@ -664,7 +664,7 @@ export default class ApprovalsController {
                 });
             }
 
-          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             //  TODO: Add numberOfAttempts column value
@@ -1720,7 +1720,7 @@ export default class ApprovalsController {
 
                 }
 
-              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -2169,7 +2169,7 @@ export default class ApprovalsController {
                 }
 
 
-              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+              } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                 // update the value for number of attempts
                 // get the current investmentRef, split , add one to the current number, update and try again
                 let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -2516,7 +2516,7 @@ export default class ApprovalsController {
               debugger
             }
 
-          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+          } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
             // update the value for number of attempts
             // get the current investmentRef, split , add one to the current number, update and try again
             let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -3266,7 +3266,7 @@ export default class ApprovalsController {
                   }
 
 
-                } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+                } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                   // update the value for number of attempts
                   // get the current investmentRef, split , add one to the current number, update and try again
                   let getNumberOfAttempt = interestPayoutRequestReference.split("_");
@@ -3712,7 +3712,7 @@ export default class ApprovalsController {
                   }
 
 
-                } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+                } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
                   // update the value for number of attempts
                   // get the current investmentRef, split , add one to the current number, update and try again
                   let getNumberOfAttempt = principalPayoutRequestReference.split("_");
@@ -4313,7 +4313,7 @@ export default class ApprovalsController {
                 debugger
               }
 
-            } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.data.screenStatus === "FAILED") {
+            } else if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.screenStatus === "FAILED") {
               // update the value for number of attempts
               // get the current investmentRef, split , add one to the current number, update and try again
               let getNumberOfAttempt = principalPayoutRequestReference.split("_");
