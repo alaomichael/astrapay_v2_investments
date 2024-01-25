@@ -6002,16 +6002,16 @@ export default class InvestmentsController {
     let { transactionStatus, transactionId, customerReference, screenStatus } = request.all()
     /*
     private String transactionId;
-    private String customerReference;
+    private String customerReference;customerReference
     private S8TransactionStatus transactionStatus;
     private S8TransactionScreenStatus screenStatus;
-    */ 
+    */
     debugger
 
     let investment = await Investment.query()
       .where({
         investment_request_reference: customerReference,
-        
+
       })
       // .where({
       //   id: investmentId,
@@ -6024,9 +6024,9 @@ export default class InvestmentsController {
     debugger
     if (investment) {
       let record = investment;
-      let { id,amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
+      let { id, amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
         lastName, investorFundingWalletId, phone, currencyCode } = record;
-        let investmentId = id;
+      let investmentId = id;
       let senderName = `${firstName} ${lastName}`;
 
       let senderAccountNumber = investorFundingWalletId;//walletId;
@@ -6133,14 +6133,14 @@ export default class InvestmentsController {
         // if successful
         debugger
         // checkTransactionStatusByCustomerRef
-/*
- AWAITING_APPROVAL,
-    APPROVED,
-    IN_PROGRESS,
-    SUCCESSFUL,
-    FAILED,
-    NOT_APPROVED;
-*/
+        /*
+         AWAITING_APPROVAL,
+            APPROVED,
+            IN_PROGRESS,
+            SUCCESSFUL,
+            FAILED,
+            NOT_APPROVED;
+        */
 
         if (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus === "SUCCESSFUL") {
           // update the investment details
@@ -6223,7 +6223,7 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessageWithoutPdf);
           // }
 
-        } else if ((checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status !== 200 || checkTransactionStatusByCustomerRef.status == undefined) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus != "SUCCESSFUL") ) {
+        } else if ((checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status !== 200 || checkTransactionStatusByCustomerRef.status == undefined) || (checkTransactionStatusByCustomerRef && checkTransactionStatusByCustomerRef.status == 200 && checkTransactionStatusByCustomerRef.data.screenStatus != "SUCCESSFUL")) {
           debugger
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
           // console.log(" Current log, line 620 :", currentInvestment);
@@ -6279,6 +6279,7 @@ export default class InvestmentsController {
       // console.log('data:', investment.$original)
       // return response.json({ status: 'OK', data: payoutRecord.$original })
     } else {
+      debugger
       return response
         .status(404)
         .json({ status: 'FAILED', message: 'Invalid parameters.' })
