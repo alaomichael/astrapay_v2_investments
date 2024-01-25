@@ -13,9 +13,7 @@ export const filterArrayByCriteria = async function filterArrayByCriteria(data, 
         }else{
             retryPeriodUTC = new Date(createdAtDateUTC.getTime() + (Number(item.retry_period) * 60 * 60 * 1000)); // In hours format
         }
-        
-        
-        
+                
         if (retryPeriodUTC < targetTimestampUTC) {
             return false;
         }

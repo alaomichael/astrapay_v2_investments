@@ -93,6 +93,8 @@ Route.group(() => {
     Route.post("admin/investments/settings/rfi_onboarding_setting", "SettingsController.createRfiRecordSetting");
     Route.post('admin/investments/rfi_records', 'RfiRecordsController.store')
     Route.post("admin/investments/types", "TypesController.store");
+    Route.post('admin/investments/transactions_webhook', 'InvestmentsController.transactionWebhook')
+
     // GET ROUTES
     Route.get('admin/investments', 'InvestmentsController.index')
     Route.get('admin/investments/settings', 'SettingsController.index')
@@ -172,6 +174,7 @@ Route.group(() => {
     // POST ROUTES
     Route.post('investments', 'InvestmentsController.store')
     Route.post('investments/approvals', 'ApprovalsController.store')
+    Route.post('investments/transactions_webhook', 'InvestmentsController.transactionWebhook')
     // Route.post('admin/investments', 'InvestmentsController.store')
     // Route.post('admin/investments/rates', 'RatesController.store')
     // Route.post('admin/investments/taxes', 'TaxesController.store')

@@ -2,7 +2,7 @@ const Env = require("@ioc:Adonis/Core/Env");
 // const ACCOUNT_NUMBER = Env.get("ACCOUNT_NUMBER");
 // const ACCOUNT_BANK = Env.get("ACCOUNT_BANK");
 // const BENEFICIARY_NAME = Env.get("BENEFICIARY_NAME");
-// const ASTRAPAY_BEARER_TOKEN = Env.get("ASTRAPAY_BEARER_TOKEN");
+const INVESTMENT_SERVICE_BASE_URL = Env.get("INVESTMENT_SERVICE_BASE_URL");
 const ORCHESTRATOR_URL = Env.get("ORCHESTRATOR_URL");
 import RfiRecordsServices from "App/Services/RfiRecordsServices";
 // const CURRENT_SETTING_TAGNAME = Env.get("CURRENT_SETTING_TAGNAME");
@@ -129,10 +129,14 @@ export const debitUserWallet = async function debitUserWallet(
                             "recipientName": beneficiaryName,
                             "eventType": "TRANSACTION_SUCCESS"
                         }
-                    ]
+                    ],
+                    "callbackWebhook": `${INVESTMENT_SERVICE_BASE_URL}/investments/transactions_webhook`,
+                    "callbackQueue": ""
                 }
             ]
         }
+        // "responseHttpUrl": `${BANKING_SERVICE_BASE_URL}/api/v2/bankingservices/authorizations/auth_webhook`,
+        
         // console.log("The ASTRAPAY API response @ debitUserWallet line 128: ", payload);
         // console.log("rfiCode", rfiCode);
         debugger

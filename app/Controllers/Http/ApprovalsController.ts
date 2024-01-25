@@ -881,6 +881,7 @@ export default class ApprovalsController {
                   message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
                 });
             }
+            
           }
 
 
