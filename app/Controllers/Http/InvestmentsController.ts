@@ -6005,7 +6005,7 @@ export default class InvestmentsController {
     if (investment) {
       let record = investment;
       let { id, amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
-        lastName, investorFundingWalletId, phone, currencyCode ,requestType} = record;
+        lastName, investorFundingWalletId, phone, currencyCode, requestType } = record;
       let investmentId = id;
       let senderName = `${firstName} ${lastName}`;
 
@@ -6029,81 +6029,84 @@ export default class InvestmentsController {
 
       // } else 
 
-      if(requestType === "start_investment" && record.status.toLowerCase() != 'active'){
+      if ((requestType.toLowerCase() === "start_investment" && record.status.toLowerCase() != 'active') || (requestType.toLowerCase() === "start_investment_rollover" && record.status.toLowerCase() != 'active')) {
+        // Entering into Investment Activation Block
+        console.log("Entering into Investment Activation Block")
         debugger
-      if (screenStatus === "FAILED") {
-        // update the value for number of attempts
-        // get the current investmentRef, split , add one to the current number, update and try again
-        //  TODO: Add numberOfAttempts column value
-        let getNumberOfAttempt = investmentRequestReference.split("_");
-        // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
-        let updatedNumberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
-        // console.log(updatedNumberOfAttempts)
-        let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
-        let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
-        // console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
-        // console.log(newPaymentReference);
-        investmentRequestReference = newPaymentReference;
-        record.numberOfAttempts = updatedNumberOfAttempts;
-        // Send to the endpoint for debit of wallet
-        let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
-          senderName,
-          senderAccountNumber,
-          senderAccountName,
-          senderPhoneNumber,
-          senderEmail,
-          rfiCode, userId)
-        //debugger
 
-        if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
-          let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
-          // console.log(" Current log, line 655 :", currentInvestment);
-          debugger
-          // send for update
-          await investmentsService.updateInvestment(currentInvestment, record);
+        if (screenStatus === "FAILED") {
+          // update the value for number of attempts
+          // get the current investmentRef, split , add one to the current number, update and try again
+          //  TODO: Add numberOfAttempts column value
+          let getNumberOfAttempt = investmentRequestReference.split("_");
+          // console.log("getNumberOfAttempt line 690 =====", getNumberOfAttempt[1]);
+          let updatedNumberOfAttempts = record.numberOfAttempts + 1;// Number(getNumberOfAttempt[1]) + 1;
+          // console.log(updatedNumberOfAttempts)
+          let uniqueInvestmentRequestReference = getNumberOfAttempt[0];
+          let newPaymentReference = `${uniqueInvestmentRequestReference}_${updatedNumberOfAttempts}`;
+          // console.log("Customer Transaction Reference ,@ InvestmentsController line 694 ==================")
+          // console.log(newPaymentReference);
+          investmentRequestReference = newPaymentReference;
+          record.numberOfAttempts = updatedNumberOfAttempts;
+          // Send to the endpoint for debit of wallet
+          let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
+            senderName,
+            senderAccountNumber,
+            senderAccountName,
+            senderPhoneNumber,
+            senderEmail,
+            rfiCode, userId)
+          //debugger
 
-          // update timeline
-          timelineObject = {
-            id: uuid(),
-            action: "investment activation failed",
-            investmentId: investmentId,//id,
-            walletId: walletIdToSearch,// walletId,
-            userId: userIdToSearch,// userId,
-            // @ts-ignore
-            message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again.Thank you.`,
-            // @ts-ignore
-            adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()}.`,
-            createdAt: DateTime.now(),
-            metadata: ``,
-          };
-          // console.log("Timeline object line 815:", timelineObject);
-          await timelineService.createTimeline(timelineObject);
+          if (debitUserWalletForInvestment && debitUserWalletForInvestment.status !== 200 || debitUserWalletForInvestment.status == undefined) {
+            let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
+            // console.log(" Current log, line 655 :", currentInvestment);
+            debugger
+            // send for update
+            await investmentsService.updateInvestment(currentInvestment, record);
+
+            // update timeline
+            timelineObject = {
+              id: uuid(),
+              action: "investment activation failed",
+              investmentId: investmentId,//id,
+              walletId: walletIdToSearch,// walletId,
+              userId: userIdToSearch,// userId,
+              // @ts-ignore
+              message: `${firstName}, the activation of your investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit your wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()} , please ensure your account is funded with at least ${currencyCode} ${await convertToFormatedAmount(amount)} as we try again.Thank you.`,
+              // @ts-ignore
+              adminMessage: `The activation of ${firstName} investment of ${currencyCode} ${await convertToFormatedAmount(amount)} has failed due to inability to debit the wallet with ID: ${investorFundingWalletId} as at: ${DateTime.now()}.`,
+              createdAt: DateTime.now(),
+              metadata: ``,
+            };
+            // console.log("Timeline object line 815:", timelineObject);
+            await timelineService.createTimeline(timelineObject);
 
 
-          // Send Notification to admin and others stakeholder
-          let investment = record;
-          let messageKey = "activation_failed";
-          // let newNotificationMessageWithoutPdf = 
-          await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
-          // // console.log("newNotificationMessage line 842:", newNotificationMessageWithoutPdf);
-          // //debugger
-          // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
-          //   console.log("Notification sent successfully");
-          // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
-          //   console.log("Notification NOT sent successfully");
-          //   console.log(newNotificationMessageWithoutPdf);
-          // }
+            // Send Notification to admin and others stakeholder
+            let investment = record;
+            let messageKey = "activation_failed";
+            // let newNotificationMessageWithoutPdf = 
+            await sendNotificationWithoutPdf(messageKey, rfiCode, investment,);
+            // // console.log("newNotificationMessage line 842:", newNotificationMessageWithoutPdf);
+            // //debugger
+            // if (newNotificationMessageWithoutPdf.status == "success" || newNotificationMessageWithoutPdf.message == "messages sent successfully") {
+            //   console.log("Notification sent successfully");
+            // } else if (newNotificationMessageWithoutPdf.message !== "messages sent successfully") {
+            //   console.log("Notification NOT sent successfully");
+            //   console.log(newNotificationMessageWithoutPdf);
+            // }
 
-          return response
-            .status(200)
-            .json({
-              status: "OK",//debitUserWalletForInvestment.status,
-              message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
-            });
-        }
+            return response
+              .status(200)
+              .json({
+                status: "OK",//debitUserWalletForInvestment.status,
+                message: `${debitUserWalletForInvestment.status}, ${debitUserWalletForInvestment.errorCode}`,
+              });
+          }
 
-      } else if (screenStatus === "SUCCESSFUL") {
-            record.status = 'active'
+        } else if (screenStatus === "SUCCESSFUL") {
+          record.status = 'active'
           // record.approvalStatus = 'approved'
           record.startDate = DateTime.now() //.toISODate()
           record.payoutDate = DateTime.now().plus({ days: record.duration })
@@ -6182,11 +6185,11 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessageWithoutPdf);
           // }
 
-             return response
+          return response
             .status(200)
             .json({
               status: "OK",
-              message: screenStatus, 
+              message: screenStatus,
             });
 
         } else if (screenStatus != "SUCCESSFUL") {
@@ -6233,9 +6236,21 @@ export default class InvestmentsController {
             .status(200)
             .json({
               status: "OK",//debitUserWalletForInvestment.status,
-              message: screenStatus, 
+              message: screenStatus,
             });
         }
+
+      } else if ((requestType.toLowerCase() === "payout_investment" && record.status.toLowerCase() != 'completed') || (requestType.toLowerCase() === "payout_investment" && record.status.toLowerCase() != 'liquidated')) {
+
+        // Entering into Investment Payout Block
+        console.log("Entering into Investment Payout Block")
+        debugger
+
+      } else if ((requestType.toLowerCase() === "liquidate_investment" && record.status.toLowerCase() != 'liquidated') || (requestType.toLowerCase() === "liquidate_investment" && record.status.toLowerCase() != 'completed')) {
+
+        // Entering into Investment Liquidation Block
+        console.log("Entering into Investment Liquidation Block")
+        debugger
 
       }
 
