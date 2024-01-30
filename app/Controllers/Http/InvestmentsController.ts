@@ -6005,7 +6005,7 @@ export default class InvestmentsController {
     if (investment) {
       let record = investment;
       let { id, amount, lng, lat, investmentRequestReference, rfiCode, userId, walletId, firstName, email,
-        lastName, investorFundingWalletId, phone, currencyCode } = record;
+        lastName, investorFundingWalletId, phone, currencyCode ,requestType} = record;
       let investmentId = id;
       let senderName = `${firstName} ${lastName}`;
 
@@ -6028,6 +6028,9 @@ export default class InvestmentsController {
 
 
       // } else 
+
+      if(requestType === "start_investment" && record.status.toLowerCase() != 'active'){
+        debugger
       if (screenStatus === "FAILED") {
         // update the value for number of attempts
         // get the current investmentRef, split , add one to the current number, update and try again
@@ -6099,34 +6102,8 @@ export default class InvestmentsController {
             });
         }
 
-      } else 
-      // if (screenStatus) {
-        // initiate a new  transaction
-        // Send to the endpoint for debit of wallet
-        // let debitUserWalletForInvestment = await debitUserWallet(amount, lng, lat, investmentRequestReference,
-        //   senderName,
-        //   senderAccountNumber,
-        //   senderAccountName,
-        //   senderPhoneNumber,
-        //   senderEmail,
-        //   rfiCode, userId,)
-        //debugger
-        // console.log("debitUserWalletForInvestment reponse data 527 ==================================", debitUserWalletForInvestment)
-        // if successful
-        debugger
-        // checkTransactionStatusByCustomerRef
-        /*
-         AWAITING_APPROVAL,
-            APPROVED,
-            IN_PROGRESS,
-            SUCCESSFUL,
-            FAILED,
-            NOT_APPROVED;
-        */
-
-        if (screenStatus === "SUCCESSFUL") {
-          // update the investment details
-          record.status = 'active'
+      } else if (screenStatus === "SUCCESSFUL") {
+            record.status = 'active'
           // record.approvalStatus = 'approved'
           record.startDate = DateTime.now() //.toISODate()
           record.payoutDate = DateTime.now().plus({ days: record.duration })
@@ -6205,6 +6182,13 @@ export default class InvestmentsController {
           //   console.log(newNotificationMessageWithoutPdf);
           // }
 
+             return response
+            .status(200)
+            .json({
+              status: "OK",
+              message: screenStatus, 
+            });
+
         } else if (screenStatus != "SUCCESSFUL") {
           debugger
           let currentInvestment = await investmentsService.getInvestmentsByIdAndWalletIdAndUserId(investmentId, walletIdToSearch, userIdToSearch);
@@ -6253,7 +6237,7 @@ export default class InvestmentsController {
             });
         }
 
-      // }
+      }
 
       debugger
 
